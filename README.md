@@ -1,2 +1,2 @@
 # vkFlow
-Attempt at replicating NeuralNetwork inference/training in Vulkan via native compute shaders
+Attempt at replicating Cudann capabilities in inference/training of Neural Networks in Vulkan via native compute shaders
