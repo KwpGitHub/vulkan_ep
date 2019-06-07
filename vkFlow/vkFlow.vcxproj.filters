@@ -14,20 +14,14 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="vuh">
-      <UniqueIdentifier>{d86ef665-adb2-4455-a155-a3c75609e9ba}</UniqueIdentifier>
+      <UniqueIdentifier>{5a8322aa-89c2-41b1-b85c-8250558be1e5}</UniqueIdentifier>
     </Filter>
     <Filter Include="vuh\arr">
-      <UniqueIdentifier>{1951e2f0-7c63-4e36-a045-3d2bae4caf88}</UniqueIdentifier>
+      <UniqueIdentifier>{f87c5fb0-c06d-4c56-bd3c-93de1df907c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="vkFlow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="base.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="layers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vuh\device.cpp">
@@ -44,12 +38,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="layers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="documentaion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -83,6 +71,12 @@
     <ClInclude Include="vuh\vuh.h">
       <Filter>vuh</Filter>
     </ClInclude>
+    <ClInclude Include="vuh\arr\allocDevice.hpp">
+      <Filter>vuh\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="vuh\arr\arrayIter.hpp">
+      <Filter>vuh\arr</Filter>
+    </ClInclude>
     <ClInclude Include="vuh\arr\arrayProperties.h">
       <Filter>vuh\arr</Filter>
     </ClInclude>
@@ -102,12 +96,6 @@
       <Filter>vuh\arr</Filter>
     </ClInclude>
     <ClInclude Include="vuh\arr\hostArray.hpp">
-      <Filter>vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="vuh\arr\allocDevice.hpp">
-      <Filter>vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="vuh\arr\arrayIter.hpp">
       <Filter>vuh\arr</Filter>
     </ClInclude>
   </ItemGroup>

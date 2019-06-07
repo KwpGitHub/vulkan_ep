@@ -143,12 +143,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;../external/vulkanhpp/Vulkan-Headers/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.106.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\VulkanSDK\1.1.106.0\Lib;$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -190,8 +191,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="base.cpp" />
-    <ClCompile Include="layers.cpp" />
     <ClCompile Include="vkFlow.cpp" />
     <ClCompile Include="vuh\device.cpp" />
     <ClCompile Include="vuh\error.cpp" />
@@ -199,9 +198,7 @@
     <ClCompile Include="vuh\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="base.h" />
     <ClInclude Include="documentaion.h" />
-    <ClInclude Include="layers.h" />
     <ClInclude Include="vuh\array.hpp" />
     <ClInclude Include="vuh\arr\allocDevice.hpp" />
     <ClInclude Include="vuh\arr\arrayIter.hpp" />

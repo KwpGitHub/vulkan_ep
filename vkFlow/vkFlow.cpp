@@ -6,6 +6,7 @@
  * Implements an example function.
  */
 
+
 PyObject* set_device(PyObject* self, PyObject* args, PyObject* kwargs) {
 	PyObject* obj = NULL;
 	int number = 0;
@@ -27,6 +28,8 @@ PyObject* Run(PyObject* self, PyObject* args, PyObject* kwargs) {
 	PyObject* obj = NULL;
 	int number = 0;
 
+	vuh::Instance instance = vuh::Instance();
+	vuh::Device device = instance.devices().at(0);
 
 	Py_RETURN_NONE;
 }
