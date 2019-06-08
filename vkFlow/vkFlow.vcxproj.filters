@@ -36,11 +36,11 @@
     <ClCompile Include="pipeline\utils.cpp">
       <Filter>Pipeline Files</Filter>
     </ClCompile>
+    <ClCompile Include="linear_layer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="documentaion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pipeline\array.hpp">
       <Filter>Pipeline Files</Filter>
     </ClInclude>
@@ -97,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="pipeline\arr\hostArray.hpp">
       <Filter>Pipeline Files\Arr Files</Filter>
+    </ClInclude>
+    <ClInclude Include="documentaion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="linear_layer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

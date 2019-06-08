@@ -191,6 +191,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="linear_layer.cpp" />
     <ClCompile Include="pipeline\device.cpp" />
     <ClCompile Include="pipeline\error.cpp" />
     <ClCompile Include="pipeline\instance.cpp" />
@@ -199,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="documentaion.h" />
+    <ClInclude Include="linear_layer.h" />
     <ClInclude Include="pipeline\array.hpp" />
     <ClInclude Include="pipeline\arr\allocDevice.hpp" />
     <ClInclude Include="pipeline\arr\arrayIter.hpp" />
