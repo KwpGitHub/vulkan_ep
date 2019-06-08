@@ -191,33 +191,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="pipeline\device.cpp" />
+    <ClCompile Include="pipeline\error.cpp" />
+    <ClCompile Include="pipeline\instance.cpp" />
+    <ClCompile Include="pipeline\utils.cpp" />
     <ClCompile Include="vkFlow.cpp" />
-    <ClCompile Include="vuh\device.cpp" />
-    <ClCompile Include="vuh\error.cpp" />
-    <ClCompile Include="vuh\instance.cpp" />
-    <ClCompile Include="vuh\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="documentaion.h" />
-    <ClInclude Include="vuh\array.hpp" />
-    <ClInclude Include="vuh\arr\allocDevice.hpp" />
-    <ClInclude Include="vuh\arr\arrayIter.hpp" />
-    <ClInclude Include="vuh\arr\arrayProperties.h" />
-    <ClInclude Include="vuh\arr\arrayUtils.h" />
-    <ClInclude Include="vuh\arr\arrayView.hpp" />
-    <ClInclude Include="vuh\arr\basicArray.hpp" />
-    <ClInclude Include="vuh\arr\copy_async.hpp" />
-    <ClInclude Include="vuh\arr\deviceArray.hpp" />
-    <ClInclude Include="vuh\arr\hostArray.hpp" />
-    <ClInclude Include="vuh\delayed.hpp" />
-    <ClInclude Include="vuh\device.h" />
-    <ClInclude Include="vuh\error.h" />
-    <ClInclude Include="vuh\instance.h" />
-    <ClInclude Include="vuh\program.hpp" />
-    <ClInclude Include="vuh\resource.hpp" />
-    <ClInclude Include="vuh\traits.hpp" />
-    <ClInclude Include="vuh\utils.h" />
-    <ClInclude Include="vuh\vuh.h" />
+    <ClInclude Include="pipeline\array.hpp" />
+    <ClInclude Include="pipeline\arr\allocDevice.hpp" />
+    <ClInclude Include="pipeline\arr\arrayIter.hpp" />
+    <ClInclude Include="pipeline\arr\arrayProperties.h" />
+    <ClInclude Include="pipeline\arr\arrayUtils.h" />
+    <ClInclude Include="pipeline\arr\arrayView.hpp" />
+    <ClInclude Include="pipeline\arr\basicArray.hpp" />
+    <ClInclude Include="pipeline\arr\copy_async.hpp" />
+    <ClInclude Include="pipeline\arr\deviceArray.hpp" />
+    <ClInclude Include="pipeline\arr\hostArray.hpp" />
+    <ClInclude Include="pipeline\delayed.hpp" />
+    <ClInclude Include="pipeline\device.h" />
+    <ClInclude Include="pipeline\error.h" />
+    <ClInclude Include="pipeline\instance.h" />
+    <ClInclude Include="pipeline\pipeline.h" />
+    <ClInclude Include="pipeline\program.hpp" />
+    <ClInclude Include="pipeline\resource.hpp" />
+    <ClInclude Include="pipeline\traits.hpp" />
+    <ClInclude Include="pipeline\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

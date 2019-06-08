@@ -13,90 +13,90 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="vuh">
-      <UniqueIdentifier>{5a8322aa-89c2-41b1-b85c-8250558be1e5}</UniqueIdentifier>
+    <Filter Include="Pipeline Files">
+      <UniqueIdentifier>{1b2d7f93-30d2-4f25-8ecf-1c68d0c95f83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vuh\arr">
-      <UniqueIdentifier>{f87c5fb0-c06d-4c56-bd3c-93de1df907c7}</UniqueIdentifier>
+    <Filter Include="Pipeline Files\Arr Files">
+      <UniqueIdentifier>{dcf85554-a424-4b1d-af4a-146bbba3eb98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="vkFlow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vuh\device.cpp">
-      <Filter>vuh</Filter>
+    <ClCompile Include="pipeline\device.cpp">
+      <Filter>Pipeline Files</Filter>
     </ClCompile>
-    <ClCompile Include="vuh\error.cpp">
-      <Filter>vuh</Filter>
+    <ClCompile Include="pipeline\error.cpp">
+      <Filter>Pipeline Files</Filter>
     </ClCompile>
-    <ClCompile Include="vuh\instance.cpp">
-      <Filter>vuh</Filter>
+    <ClCompile Include="pipeline\instance.cpp">
+      <Filter>Pipeline Files</Filter>
     </ClCompile>
-    <ClCompile Include="vuh\utils.cpp">
-      <Filter>vuh</Filter>
+    <ClCompile Include="pipeline\utils.cpp">
+      <Filter>Pipeline Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="documentaion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\array.hpp">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\array.hpp">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\delayed.hpp">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\delayed.hpp">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\device.h">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\device.h">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\error.h">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\error.h">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\instance.h">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\instance.h">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\program.hpp">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\pipeline.h">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\resource.hpp">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\program.hpp">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\traits.hpp">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\resource.hpp">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\utils.h">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\traits.hpp">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\vuh.h">
-      <Filter>vuh</Filter>
+    <ClInclude Include="pipeline\utils.h">
+      <Filter>Pipeline Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\allocDevice.hpp">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\allocDevice.hpp">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\arrayIter.hpp">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\arrayIter.hpp">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\arrayProperties.h">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\arrayProperties.h">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\arrayUtils.h">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\arrayUtils.h">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\arrayView.hpp">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\arrayView.hpp">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\basicArray.hpp">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\basicArray.hpp">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\copy_async.hpp">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\copy_async.hpp">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\deviceArray.hpp">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\deviceArray.hpp">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="vuh\arr\hostArray.hpp">
-      <Filter>vuh\arr</Filter>
+    <ClInclude Include="pipeline\arr\hostArray.hpp">
+      <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

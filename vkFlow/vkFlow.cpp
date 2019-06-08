@@ -1,6 +1,6 @@
 #include <Python.h>
 #include "documentaion.h"
-#include "vuh/vuh.h"
+#include "pipeline/pipeline.h"
 
 /*
  * Implements an example function.
@@ -27,9 +27,8 @@ PyObject* Run(PyObject* self, PyObject* args, PyObject* kwargs) {
 	
 	PyObject* obj = NULL;
 	int number = 0;
-
-	vuh::Instance instance = vuh::Instance();
-	vuh::Device device = instance.devices().at(0);
+	pipeline::Instance instance = pipeline::Instance();
+	pipeline::Device device = instance.devices().at(0);
 
 	Py_RETURN_NONE;
 }
@@ -38,7 +37,7 @@ PyObject* Run(PyObject* self, PyObject* args, PyObject* kwargs) {
  * List of functions to add to vkFlow in exec_vkFlow().
  */
 static PyMethodDef vkFlow_functions[] = {
-    { "Run", (PyCFunction)Run, METH_VARARGS | METH_KEYWORDS, vkFlow_example_doc },
+    { "Run", (PyCFunction)Run, METH_NOARGS, vkFlow_Run_doc },
 	{ "set_device", (PyCFunction)set_device, METH_VARARGS | METH_KEYWORDS, vkFlow_example_doc },
     { NULL, NULL, 0, NULL } /* marks end of array */
 };
@@ -51,7 +50,6 @@ int exec_vkFlow(PyObject *module) {
     PyModule_AddFunctions(module, vkFlow_functions);
     PyModule_AddStringConstant(module, "__author__", "monish");
     PyModule_AddStringConstant(module, "__version__", "1.0.0");
-   
 
 
     return 0; /* success */
