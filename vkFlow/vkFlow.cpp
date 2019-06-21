@@ -3,6 +3,7 @@
 #include "pipeline/pipeline.h"
 #include "utils.hpp"
 
+
 namespace py = pybind11;
 
 void Run() {
@@ -29,13 +30,8 @@ void Run() {
 void set_device(int t) {
 	runtime_info::deviceID = t;
 	runtime_info::instance = pipeline::Instance();
-}
-
-PYBIND11_MODULE(vkFlow, m) {
 	m.def("Run", &Run);
 	m.def("set_device", &set_device);
-
-
 #ifdef VERSION_INFO
 	m.attr("__version__") = VERSION_INFO;
 #else
