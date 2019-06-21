@@ -3,14 +3,23 @@
 #include "pipeline/pipeline.h"
 #include "utils.hpp"
 
+<<<<<<< HEAD
+namespace py = pybind11;
+=======
 
 namespace py = pybind11;
+/*
+ * Implements an example function.
+ */
+
+>>>>>>> d31daa46cb63807e36d5a1130b97da1e1f33f386
 
 void Run() {
 	auto y = std::vector<float>(128, 1.0f);
 	auto x = std::vector<float>(128, 2.0f);
 	
 
+<<<<<<< HEAD
 	auto device = runtime_info::instance.devices().at(runtime_info::deviceID);
 
 	pipeline::Array<float> device_x = pipeline::Array<float>(device, x);
@@ -27,19 +36,39 @@ void Run() {
 
 }
 
-void set_device(int id) {
-	runtime_info::deviceID = id;
+void set_device(int t) {
+	runtime_info::deviceID = t;
+	runtime_info::instance = pipeline::Instance();
 }
 
 PYBIND11_MODULE(vkFlow, m) {
-	runtime_info::deviceID = 0;
-	runtime_info::instance = pipeline::Instance();
-	
 	m.def("Run", &Run);
 	m.def("set_device", &set_device);
+
+
 #ifdef VERSION_INFO
 	m.attr("__version__") = VERSION_INFO;
 #else
 	m.attr("__version__") = "dev";
 #endif
+=======
+	pipeline::Instance instance = pipeline::Instance();
+	pipeline::Device device = instance.devices().at(0);
+
+	pipeline::Array<float> device_x = pipeline::Array<float>(device, y);
+	pipeline::Array<float> device_y = pipeline::Array<float>(device, x);
+
+	using Spec = pipeline::typelist<uint32_t>;
+	struct Params { uint32_t size; float a; };
+
+	auto program = pipeline::Program<Spec, Params>(device, "shader");
+	program.grid(128 / 64).spec(64)({ 128, 0.1 }, device_y, device_x);
+
+	device_y.toHost(begin(y));
+}
+
+PYBIND11_MODULE(vkFlow, m) {
+	m.doc() = "Run Pipeline";
+	m.def("Run()", &Run, "Run Model",)
+>>>>>>> d31daa46cb63807e36d5a1130b97da1e1f33f386
 }

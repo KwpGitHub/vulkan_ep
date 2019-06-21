@@ -36,7 +36,6 @@ protected:
 	std::vector<float> y;
 	std::vector<float> weight;
 	std::vector<float> bias;
-	std::vector<float> bias;
 
 	Shape output_shape;
 	Shape input_shape;
