@@ -9,15 +9,18 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Source Files\Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Pipeline Files">
       <UniqueIdentifier>{1b2d7f93-30d2-4f25-8ecf-1c68d0c95f83}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pipeline Files\Arr Files">
       <UniqueIdentifier>{dcf85554-a424-4b1d-af4a-146bbba3eb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{39b831a9-fad2-4c13-9f77-95878ba2af29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +39,13 @@
     <ClCompile Include="pipeline\utils.cpp">
       <Filter>Pipeline Files</Filter>
     </ClCompile>
-    <ClCompile Include="linear_layer.cpp">
+    <ClCompile Include="linear.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="convolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rnn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,11 +107,28 @@
     <ClInclude Include="pipeline\arr\hostArray.hpp">
       <Filter>Pipeline Files\Arr Files</Filter>
     </ClInclude>
-    <ClInclude Include="documentaion.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="linear_layer.h">
+    <ClInclude Include="layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="linear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rnn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\linear_layer.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\convolution_layer.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

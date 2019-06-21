@@ -17,6 +17,7 @@ namespace pipeline {
 	/// different threads.
 	class Device: public vk::Device {
 	public:
+
 		explicit Device(pipeline::Instance& instance, vk::PhysicalDevice physdevice);
 		~Device() noexcept;
 

@@ -178,7 +178,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>Multithreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.106.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -186,21 +186,26 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>libucrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>ucrt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ucrt.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(PythonHome)libs;C:\VulkanSDK\1.1.106.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="linear_layer.cpp" />
+    <ClCompile Include="convolution.cpp" />
+    <ClCompile Include="linear.cpp" />
     <ClCompile Include="pipeline\device.cpp" />
     <ClCompile Include="pipeline\error.cpp" />
     <ClCompile Include="pipeline\instance.cpp" />
     <ClCompile Include="pipeline\utils.cpp" />
+    <ClCompile Include="rnn.cpp" />
     <ClCompile Include="vkFlow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="documentaion.h" />
-    <ClInclude Include="linear_layer.h" />
+    <ClInclude Include="convolution.h" />
+    <ClInclude Include="layer.hpp" />
+    <ClInclude Include="linear.h" />
+    <ClInclude Include="rnn.h" />
+    <ClInclude Include="utils.hpp" />
     <ClInclude Include="pipeline\array.hpp" />
     <ClInclude Include="pipeline\arr\allocDevice.hpp" />
     <ClInclude Include="pipeline\arr\arrayIter.hpp" />
@@ -220,6 +225,10 @@
     <ClInclude Include="pipeline\resource.hpp" />
     <ClInclude Include="pipeline\traits.hpp" />
     <ClInclude Include="pipeline\utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\convolution_layer.glsl" />
+    <None Include="shaders\linear_layer.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
