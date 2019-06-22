@@ -12,7 +12,7 @@
 #include <tuple>
 #include <utility>
 
-namespace pipeline {
+namespace kernel {
 	namespace detail {
 
 		/// Traits to map array type to descriptor type
@@ -77,7 +77,7 @@ namespace pipeline {
 		/// Transient command buffer data with a releaseable interface.
 		struct ComputeBuffer {
 			/// Constructor. Takes ownership over provided buffer.
-			ComputeBuffer(pipeline::Device& device, vk::CommandBuffer buffer)
+			ComputeBuffer(kernel::Device& device, vk::CommandBuffer buffer)
 			   : cmd_buffer(buffer), device(&device){}
 
 			/// Release resources associated with owned command buffer.
@@ -89,14 +89,14 @@ namespace pipeline {
 			}
 		public: // data
 			vk::CommandBuffer cmd_buffer; ///< command buffer to submit async computation commands
-			std::unique_ptr<pipeline::Device, util::NoopDeleter<pipeline::Device>> device; ///< underlying device
+			std::unique_ptr<kernel::Device, util::NoopDeleter<kernel::Device>> device; ///< underlying device
 		}; // struct ComputeData
 
 		/// Helper class for use as a Delayed<> parameter extending the lifetime of the command
 		/// buffer and a noop triggered action.
 		struct Compute: private util::Resource<ComputeBuffer> {
 			/// Constructor
-			explicit Compute(pipeline::Device& device, vk::CommandBuffer buffer)
+			explicit Compute(kernel::Device& device, vk::CommandBuffer buffer)
 			   : Resource<ComputeBuffer>(device, std::move(buffer))
 			{}
 
@@ -122,7 +122,7 @@ namespace pipeline {
 
 			/// Run the Program object on previously bound parameters.
 			/// @return Delayed<Compute> object used for synchronization with host
-			auto run_async()-> pipeline::Delayed<Compute> {
+			auto run_async()-> kernel::Delayed<Compute> {
 				auto buffer = _device.releaseComputeCmdBuffer();
 				auto submitInfo = vk::SubmitInfo(0, nullptr, nullptr, 1, &buffer); // submit a single command buffer
 
@@ -134,16 +134,16 @@ namespace pipeline {
 				return Delayed<Compute>{fence, _device, Compute(_device, buffer)};
 			}
 		protected:
-			/// Construct object using given a pipeline::Device and path to SPIR-V shader code.
-			ProgramBase(pipeline::Device& device        ///< device used to run the code
+			/// Construct object using given a kernel::Device and path to SPIR-V shader code.
+			ProgramBase(kernel::Device& device        ///< device used to run the code
 			            , const char* filepath     ///< file path to SPIR-V shader code
 			            , vk::ShaderModuleCreateFlags flags={}
 			            )
 				: ProgramBase(device, read_spirv(filepath), flags)
 			{}
 
-			/// Construct object using given a pipeline::Device a SPIR-V shader code.
-			ProgramBase(pipeline::Device& device              ///< device used to run the code
+			/// Construct object using given a kernel::Device a SPIR-V shader code.
+			ProgramBase(kernel::Device& device              ///< device used to run the code
 			            , const std::vector<char>& code  ///< actual binary SPIR-V shader code
 			            , vk::ShaderModuleCreateFlags flags={}
 			            )
@@ -208,8 +208,8 @@ namespace pipeline {
 				}
 			}
 
-			/// Initialize the pipeline.
-			/// Creates descriptor set layout, pipeline cache and the pipeline layout.
+			/// Initialize the kernel.
+			/// Creates descriptor set layout, kernel cache and the kernel layout.
 			template<size_t N, class... Arrs>
 			auto init_pipelayout(const std::array<vk::PushConstantRange, N>& psrange, Arrs&...)-> void {
 				auto dscTypes = typesToDscTypes<Arrs...>();
@@ -238,10 +238,10 @@ namespace pipeline {
 			}
 
 			/// Starts writing to the device's compute command buffer.
-			/// Binds a pipeline and a descriptor set.
+			/// Binds a kernel and a descriptor set.
 			template<class... Arrs>
 			auto command_buffer_begin(Arrs&... arrs)-> void {
-				assert(_pipeline); /// pipeline supposed to be initialized before this
+				assert(_pipeline); /// kernel supposed to be initialized before this
 
 				constexpr auto N = sizeof...(arrs);
 				auto dscinfos = std::array<vk::DescriptorBufferInfo, N>{
@@ -259,7 +259,7 @@ namespace pipeline {
 				auto beginInfo = vk::CommandBufferBeginInfo();
 				cmdbuf.begin(beginInfo);
 
-				// Before dispatch bind a pipeline, AND a descriptor set.
+				// Before dispatch bind a kernel, AND a descriptor set.
 				cmdbuf.bindPipeline(vk::PipelineBindPoint::eCompute, _pipeline);
 				cmdbuf.bindDescriptorSets(vk::PipelineBindPoint::eCompute, _pipelayout
 				                          , 0, {_dscset}, {});
@@ -268,7 +268,7 @@ namespace pipeline {
 			/// Ends command buffer creation. Writes dispatch info and signals end of commands recording.
 			auto command_buffer_end()-> void {
 				auto cmdbuf = _device.computeCmdBuffer();
-				cmdbuf.dispatch(_batch[0], _batch[1], _batch[2]); // start compute pipeline, execute the shader
+				cmdbuf.dispatch(_batch[0], _batch[1], _batch[2]); // start compute kernel, execute the shader
 				cmdbuf.end(); // end recording commands
 			}
 		protected: // data
@@ -276,35 +276,35 @@ namespace pipeline {
 			vk::DescriptorSetLayout _dsclayout;  ///< descriptor set layout. This defines the kernel's array parameters interface.
 			vk::DescriptorPool _dscpool;         ///< descitptor ses pool. Descriptors are allocated on this pool.
 			vk::DescriptorSet _dscset;           ///< descriptors set
-			vk::PipelineCache _pipecache;        ///< pipeline cache
-			vk::PipelineLayout _pipelayout;      ///< pipeline layout
-			mutable vk::Pipeline _pipeline;      ///< pipeline itself
+			vk::PipelineCache _pipecache;        ///< kernel cache
+			vk::PipelineLayout _pipelayout;      ///< kernel layout
+			mutable vk::Pipeline _pipeline;      ///< kernel itself
 
-			pipeline::Device& _device;                ///< refer to device to run shader on
+			kernel::Device& _device;                ///< refer to device to run shader on
 			std::array<uint32_t, 3> _batch={0, 0, 0}; ///< 3D evaluation grid dimensions (number of workgroups to run)
 		}; // class ProgramBase
 
 		/// Part of Program handling specialization constants.
 		/// Keeps the specialization constants state
 		/// (between its set by Program::spec() call and actually communicated to device).
-		/// Does the pipeline init.
+		/// Does the kernel init.
 		template<class Specs> class SpecsBase;
 
 		/// Explicit specialization for non-empty specialization constants interface.
 		template<template<class...> class Specs, class... Spec_Ts>
 		class SpecsBase<Specs<Spec_Ts...>>: public ProgramBase {
 		protected:
-			/// Construct object using given a pipeline::Device and path to SPIR-V shader code.
+			/// Construct object using given a kernel::Device and path to SPIR-V shader code.
 			SpecsBase(Device& device, const char* filepath, vk::ShaderModuleCreateFlags flags={})
 			   : ProgramBase(device, filepath, flags)
 			{}
 
-			/// Construct object using given a pipeline::Device a SPIR-V shader code.
+			/// Construct object using given a kernel::Device a SPIR-V shader code.
 			SpecsBase(Device& device, const std::vector<char>& code, vk::ShaderModuleCreateFlags f={})
 			   : ProgramBase(device, code, f)
 			{}
 
-			/// Initialize the pipeline.
+			/// Initialize the kernel.
 			/// Specialization constants interface is defined here.
 			auto init_pipeline()-> void {
 				auto specEntries = specs2mapentries(_specs);
@@ -318,24 +318,24 @@ namespace pipeline {
 				_pipeline = _device.createPipeline(_pipelayout, _pipecache, stageCI);
 			}
 		protected:
-			std::tuple<Spec_Ts...> _specs; ///< hold the state of specialization constants between call to specs() and actual pipeline creation
+			std::tuple<Spec_Ts...> _specs; ///< hold the state of specialization constants between call to specs() and actual kernel creation
 		};
 
 		/// Explicit specialization for empty specialization constants interface.
 		template<>
 		class SpecsBase<typelist<>>: public ProgramBase{
 		protected:
-			/// Construct object using given a pipeline::Device and path to SPIR-V shader code.
+			/// Construct object using given a kernel::Device and path to SPIR-V shader code.
 			SpecsBase(Device& device, const char* filepath, vk::ShaderModuleCreateFlags flags={})
 			   : ProgramBase(device, filepath, flags)
 			{}
 
-			/// Construct object using given a pipeline::Device a SPIR-V shader code.
+			/// Construct object using given a kernel::Device a SPIR-V shader code.
 			SpecsBase(Device& device, const std::vector<char>& code, vk::ShaderModuleCreateFlags f={})
 			   : ProgramBase(device, code, f)
 			{}
 
-			/// Initialize the pipeline with empty specialialization constants interface.
+			/// Initialize the kernel with empty specialialization constants interface.
 			auto init_pipeline()-> void {
 				auto stageCI = vk::PipelineShaderStageCreateInfo(vk::PipelineShaderStageCreateFlags()
 																				 , vk::ShaderStageFlagBits::eCompute
@@ -361,12 +361,12 @@ namespace pipeline {
 		using Base = detail::SpecsBase<Specs<Specs_Ts...>>;
 	public:
 		/// Initialize program on a device using SPIR-V code at a given path
-		Program(pipeline::Device& device, const char* filepath, vk::ShaderModuleCreateFlags flags={})
+		Program(kernel::Device& device, const char* filepath, vk::ShaderModuleCreateFlags flags={})
 		   : Base(device, read_spirv(filepath), flags)
 		{}
 
 		/// Initialize program on a device from binary SPIR-V code
-		Program(pipeline::Device& device, const std::vector<char>& code
+		Program(kernel::Device& device, const std::vector<char>& code
 		        , vk::ShaderModuleCreateFlags flags={}
 		        )
 		   : Base(device, code, flags)
@@ -424,13 +424,13 @@ namespace pipeline {
 		/// @return Delayed<Compute> object for synchronization with host.
 		/// @pre grid dimensions should be specified before callind this.
 		template<class... Arrs>
-		auto run_async(const Params& params, Arrs&&... args)-> pipeline::Delayed<detail::Compute> {
+		auto run_async(const Params& params, Arrs&&... args)-> kernel::Delayed<detail::Compute> {
 			bind(params, args...);
 			return Base::run_async();
 		}
 	private: // helpers
 		/// Set up the state of the kernel that depends on number and types of bound array parameters.
-		/// Initizalizes the pipeline layout, declares the push constants interface.
+		/// Initizalizes the kernel layout, declares the push constants interface.
 		template<class... Arrs>
 		auto init_pipelayout(Arrs&... args)-> void {
 			auto psranges = std::array<vk::PushConstantRange, 1>{{
@@ -455,12 +455,12 @@ namespace pipeline {
 		using Base = detail::SpecsBase<Specs<Specs_Ts...>>;
 	public:
 		/// Initialize program on a device using SPIR-V code at a given path
-		Program(pipeline::Device& device, const char* filepath, vk::ShaderModuleCreateFlags flags={})
+		Program(kernel::Device& device, const char* filepath, vk::ShaderModuleCreateFlags flags={})
 		   : Base(device, filepath, flags)
 		{}
 
 		/// Initialize program on a device from binary SPIR-V code
-		Program(pipeline::Device& device, const std::vector<char>& code
+		Program(kernel::Device& device, const std::vector<char>& code
 		        , vk::ShaderModuleCreateFlags flags={}
 		        )
 		   : Base (device, code, flags)
@@ -511,9 +511,9 @@ namespace pipeline {
 		/// @return Delayed<Compute> object for synchronization with host.
 		/// @pre grid dimensions should be specified before callind this.
 		template<class... Arrs>
-		auto run_async(Arrs&&... args)-> pipeline::Delayed<detail::Compute> {
+		auto run_async(Arrs&&... args)-> kernel::Delayed<detail::Compute> {
 			bind(args...);
 			return Base::run_async();
 		}
 	}; // class Program
-} // namespace pipeline
+} // namespace kernel

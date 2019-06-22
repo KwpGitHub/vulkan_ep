@@ -7,7 +7,7 @@
 #include <cassert>
 #include <cstdint>
 
-namespace pipeline {
+namespace kernel {
 	/// Iterator to use in device-side copying and kernel calls.
 	/// Not suitable for host-side algorithms, dereferencing, etc...
 	template<class Array>
@@ -29,7 +29,7 @@ namespace pipeline {
 		}
 
 		/// @return reference to device where iterated array is allocated
-		auto device()-> pipeline::Device& { return _array->device(); }
+		auto device()-> kernel::Device& { return _array->device(); }
 
 		/// @return reference to Vulkan buffer of iterated array
 		auto buffer()-> vk::Buffer& { return *_array; }
@@ -79,4 +79,4 @@ namespace pipeline {
 		Array* _array;       ///< refers to the array being iterated
 		std::size_t _offset; ///< offset (number of elements) wrt to beginning of the iterated array
 	}; // class DeviceArrayIter
-} // namespace pipeline
+} // namespace kernel

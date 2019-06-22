@@ -4,14 +4,14 @@
 
 #include <vector>
 
-namespace pipeline {
+namespace kernel {
 	class Device;
 
 	using debug_reporter_t = PFN_vkDebugReportCallbackEXT;
 
-	/// Working with pipeline starts from creating an object of this class.
+	/// Working with kernel starts from creating an object of this class.
 	/// Its main responsibility is listing the available devices and handling extensions and layers.
-	/// It is also responsible for logging pipeline and vulkan messages.
+	/// It is also responsible for logging kernel and vulkan messages.
 	/// In debug builds adds default validation layer/extension.
 	/// Default debug reporter sends messages to std::cerr.
 	/// Reentrant.
@@ -30,7 +30,7 @@ namespace pipeline {
 		Instance(Instance&&) noexcept;
 		auto operator= (Instance&&) noexcept-> Instance&;
 
-		auto devices()-> std::vector<pipeline::Device>;
+		auto devices()-> std::vector<kernel::Device>;
 		auto report(const char* prefix, const char* message
 		            , VkDebugReportFlagsEXT flags=VK_DEBUG_REPORT_INFORMATION_BIT_EXT) const-> void;
 	private: // helpers
@@ -40,4 +40,4 @@ namespace pipeline {
 		debug_reporter_t _reporter; ///< points to actual reporting function. This pointer is registered with a reporter callback but can also be used directly.
 		VkDebugReportCallbackEXT _reporter_cbk; ///< report callback. Only used to release the handle in the end.
 	}; // class Instance
-} // namespace pipeline
+} // namespace kernel

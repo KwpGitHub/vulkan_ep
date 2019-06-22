@@ -10,12 +10,12 @@
 #include <type_traits>
 #include <utility>
 
-namespace pipeline {
+namespace kernel {
 	namespace detail {
 		/// Command buffer data packed with allocation and deallocation methods.
 		struct _CmdBuffer {
 			/// Constructor. Creates the new command buffer on a provided device and manages its resources.
-			_CmdBuffer(pipeline::Device& device): device(&device){
+			_CmdBuffer(kernel::Device& device): device(&device){
 				auto bufferAI = vk::CommandBufferAllocateInfo(device.transferCmdPool()
 																			 , vk::CommandBufferLevel::ePrimary, 1);
 				cmd_buffer = device.allocateCommandBuffers(bufferAI)[0];
@@ -23,7 +23,7 @@ namespace pipeline {
 
 			/// Constructor. Takes ownership over the provided buffer.
 			/// @pre buffer should belong to the provided device. No check is made even in a debug build.
-			_CmdBuffer(pipeline::Device& device, vk::CommandBuffer buffer)
+			_CmdBuffer(kernel::Device& device, vk::CommandBuffer buffer)
 				: cmd_buffer(buffer), device(&device)
 			{}
 
@@ -35,7 +35,7 @@ namespace pipeline {
 			}
 		public: // data
 			vk::CommandBuffer cmd_buffer; ///< command buffer managed by this wrapper class
-			std::unique_ptr<pipeline::Device, util::NoopDeleter<pipeline::Device>> device; ///< device holding the buffer
+			std::unique_ptr<kernel::Device, util::NoopDeleter<kernel::Device>> device; ///< device holding the buffer
 		}; // struct _CmdBuffer
 
 		/// Movable command buffer class.
@@ -46,7 +46,7 @@ namespace pipeline {
 		/// Used to keep that alive till async copy is over.
 		/// The delayed action associated with operator() is a noop.
 		struct CopyDevice: private CmdBuffer {
-			CopyDevice(pipeline::Device& device): CmdBuffer(device){}
+			CopyDevice(kernel::Device& device): CmdBuffer(device){}
 
 			/// delayed operation is a noop
 			constexpr auto operator()() const-> void {}
@@ -89,7 +89,7 @@ namespace pipeline {
 
 			/// Constructor. Copies data from host to the internal staging buffer.
 			template<class Iter1, class Iter2>
-			CopyStageFromHost(pipeline::Device& device, Iter1 src_begin, Iter2 src_end)
+			CopyStageFromHost(kernel::Device& device, Iter1 src_begin, Iter2 src_end)
 				: CopyDevice(device), array(device, src_begin, src_end)
 			{}
 		}; // struct CopyStageFromHost
@@ -103,7 +103,7 @@ namespace pipeline {
 			IterDst    dst_begin;  ///< iterator to beginning of the host destination range
 
 			/// Constructor.
-			explicit CopyStageToHost(pipeline::Device& device, std::size_t array_size, IterDst dst_begin)
+			explicit CopyStageToHost(kernel::Device& device, std::size_t array_size, IterDst dst_begin)
 			   : CopyDevice(device), array(device, array_size), dst_begin(dst_begin)
 			{}
 
@@ -177,7 +177,7 @@ namespace pipeline {
 	template<class Array1, class Array2>
 	auto copy_async(ArrayIter<Array1> src_begin, ArrayIter<Array1> src_end
 	                , ArrayIter<Array2> dst_begin
-	                )-> pipeline::Delayed<Copy>
+	                )-> kernel::Delayed<Copy>
 	{
 		auto& src_device = src_begin.array().device();
 		auto copyDevice = detail::CopyDevice(src_device);
@@ -192,9 +192,9 @@ namespace pipeline {
 	/// If device array is host-visible the operation is fully blocking.
 	template<class SrcIter1, class SrcIter2, class T, class Alloc>
 	auto copy_async(SrcIter1 src_begin, SrcIter2 src_end
-	           , pipeline::ArrayIter<arr::DeviceArray<T, Alloc>> dst_begin
+	           , kernel::ArrayIter<arr::DeviceArray<T, Alloc>> dst_begin
 	           )-> std::enable_if_t<traits::are_comparable_host_iterators<SrcIter1, SrcIter2>::value
-	                               , pipeline::Delayed<Copy>
+	                               , kernel::Delayed<Copy>
 	                               >
 	{
 		auto& array = dst_begin.array();
@@ -221,7 +221,7 @@ namespace pipeline {
 	               , ArrayIter<arr::DeviceArray<T, Alloc>> src_end
 	               , DstIter dst_begin
 	               )-> std::enable_if_t<traits::is_host_iterator<DstIter>::value
-	                                   , pipeline::Delayed<Copy>
+	                                   , kernel::Delayed<Copy>
 	                                   >
 	{
 		auto& array = src_begin.array();
@@ -235,4 +235,4 @@ namespace pipeline {
 			                    , Copy::wrap(detail::StdCopy<SrcIter, DstIter>(src_begin, src_end, dst_begin))};
 		}
 	}
-} // namespace pipeline
+} // namespace kernel

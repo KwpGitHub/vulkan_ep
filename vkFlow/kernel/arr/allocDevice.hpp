@@ -8,7 +8,7 @@
 
 #include <cassert>
 
-namespace pipeline {
+namespace kernel {
 namespace arr {
 
 /// Helper class to allocate memory directly from a device memory (incl. host-visible space)
@@ -21,7 +21,7 @@ public:
 	using AllocFallback = AllocDevice<typename Props::fallback_t>; ///< fallback allocator
 
 	/// Create buffer on a device.
-	static auto makeBuffer(pipeline::Device& device   ///< device to create buffer on
+	static auto makeBuffer(kernel::Device& device   ///< device to create buffer on
 	                      , size_t size_bytes    ///< desired size in bytes
 	                      , vk::BufferUsageFlags flags ///< additional (to the ones defined in Props) buffer usage flags
 	                      )-> vk::Buffer
@@ -31,7 +31,7 @@ public:
 	}
 
 	/// Allocate memory for the buffer.
-	auto allocMemory(pipeline::Device& device  ///< device to allocate memory
+	auto allocMemory(kernel::Device& device  ///< device to allocate memory
 	                 , vk::Buffer buffer  ///< buffer to allocate memory for
 	                 , vk::MemoryPropertyFlags flags_memory={} ///< additional (to the ones defined in Props) memory property flags
 	                 )-> vk::DeviceMemory 
@@ -57,7 +57,7 @@ public:
 	}
 
 	/// @return memory property flags of the memory on which actual allocation took place.
-	auto memoryProperties(pipeline::Device& device) const-> vk::MemoryPropertyFlags {
+	auto memoryProperties(kernel::Device& device) const-> vk::MemoryPropertyFlags {
 		return device.memoryProperties(_memid);
 	}
 
@@ -68,7 +68,7 @@ public:
 	/// was originally requested but not available on a given device.
 	/// This would only be reported through reporter associated with Instance, and no error
 	/// raised.
-	static auto findMemory(const pipeline::Device& device ///< device on which to search for suitable memory
+	static auto findMemory(const kernel::Device& device ///< device on which to search for suitable memory
 	                       , vk::Buffer buffer       ///< buffer to find suitable memory for
 	                       , vk::MemoryPropertyFlags flags_memory={} ///< additional memory flags
 	                       )-> uint32_t 
@@ -96,13 +96,13 @@ public:
 	using properties_t = void;
 	
 	/// @throws vk::OutOfDeviceMemoryError
-	auto allocMemory(pipeline::Device&, vk::Buffer, vk::MemoryPropertyFlags)-> vk::DeviceMemory {
+	auto allocMemory(kernel::Device&, vk::Buffer, vk::MemoryPropertyFlags)-> vk::DeviceMemory {
 		throw vk::OutOfDeviceMemoryError("failed to allocate device memory"
 		                                 " and no fallback available");
 	}
 	
-	/// @throws pipeline::NoSuitableMemoryFound
-	static auto findMemory(const pipeline::Device&, vk::Buffer, vk::MemoryPropertyFlags flags
+	/// @throws kernel::NoSuitableMemoryFound
+	static auto findMemory(const kernel::Device&, vk::Buffer, vk::MemoryPropertyFlags flags
 	                       )-> uint32_t
 	{
 		throw NoSuitableMemoryFound("no memory with flags " + std::to_string(uint32_t(flags))
@@ -110,7 +110,7 @@ public:
 	}
 
 	/// Create buffer. Normally this should only be called in tests.
-	static auto makeBuffer(pipeline::Device& device ///< device to create buffer on
+	static auto makeBuffer(kernel::Device& device ///< device to create buffer on
 	                      , size_t size_bytes  ///< desired size in bytes
 	                      , vk::BufferUsageFlags flags ///< additional buffer usage flags
 	                      )-> vk::Buffer
@@ -120,7 +120,7 @@ public:
 	
 	/// @throw std::logic_error
 	/// Should not normally be called.
-	auto memoryProperties(pipeline::Device&) const-> vk::MemoryPropertyFlags {
+	auto memoryProperties(kernel::Device&) const-> vk::MemoryPropertyFlags {
 		throw std::logic_error("this functions is not supposed to be called");
 	}
 
@@ -132,4 +132,4 @@ public:
 };
 
 } // namespace arr
-} // namespace pipeline
+} // namespace kernel

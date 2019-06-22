@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace pipeline {
+namespace kernel {
 	/// Typelist. That is all about it.
 	template<class... Ts> struct typelist{};
 
@@ -12,4 +12,4 @@ namespace pipeline {
 
 	auto read_spirv(const char* filename)-> std::vector<char>;
 
-} // namespace pipeline
+} // namespace kernel

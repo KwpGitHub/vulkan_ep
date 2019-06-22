@@ -144,12 +144,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.106.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\VulkanSDK\1.1.106.0\Lib;$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\VulkanSDK\1.1.108.0\Lib;$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -179,7 +179,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>Multithreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.106.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -188,48 +188,49 @@
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>libucrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <AdditionalDependencies>ucrt.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(PythonHome)libs;C:\VulkanSDK\1.1.106.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\VulkanSDK\1.1.108.0\Lib;$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="convolution.cpp" />
+    <ClCompile Include="kernel\device.cpp" />
+    <ClCompile Include="kernel\error.cpp" />
+    <ClCompile Include="kernel\instance.cpp" />
+    <ClCompile Include="kernel\utils.cpp" />
     <ClCompile Include="linear.cpp" />
-    <ClCompile Include="pipeline\device.cpp" />
-    <ClCompile Include="pipeline\error.cpp" />
-    <ClCompile Include="pipeline\instance.cpp" />
-    <ClCompile Include="pipeline\utils.cpp" />
     <ClCompile Include="rnn.cpp" />
     <ClCompile Include="vkFlow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="convolution.h" />
+    <ClInclude Include="kernel\array.hpp" />
+    <ClInclude Include="kernel\arr\allocDevice.hpp" />
+    <ClInclude Include="kernel\arr\arrayIter.hpp" />
+    <ClInclude Include="kernel\arr\arrayProperties.h" />
+    <ClInclude Include="kernel\arr\arrayUtils.h" />
+    <ClInclude Include="kernel\arr\arrayView.hpp" />
+    <ClInclude Include="kernel\arr\basicArray.hpp" />
+    <ClInclude Include="kernel\arr\copy_async.hpp" />
+    <ClInclude Include="kernel\arr\deviceArray.hpp" />
+    <ClInclude Include="kernel\arr\hostArray.hpp" />
+    <ClInclude Include="kernel\delayed.hpp" />
+    <ClInclude Include="kernel\device.h" />
+    <ClInclude Include="kernel\error.h" />
+    <ClInclude Include="kernel\instance.h" />
+    <ClInclude Include="kernel\kernel.h" />
+    <ClInclude Include="kernel\program.hpp" />
+    <ClInclude Include="kernel\resource.hpp" />
+    <ClInclude Include="kernel\traits.hpp" />
+    <ClInclude Include="kernel\utils.h" />
     <ClInclude Include="layer.hpp" />
     <ClInclude Include="linear.h" />
     <ClInclude Include="rnn.h" />
     <ClInclude Include="utils.hpp" />
-    <ClInclude Include="pipeline\array.hpp" />
-    <ClInclude Include="pipeline\arr\allocDevice.hpp" />
-    <ClInclude Include="pipeline\arr\arrayIter.hpp" />
-    <ClInclude Include="pipeline\arr\arrayProperties.h" />
-    <ClInclude Include="pipeline\arr\arrayUtils.h" />
-    <ClInclude Include="pipeline\arr\arrayView.hpp" />
-    <ClInclude Include="pipeline\arr\basicArray.hpp" />
-    <ClInclude Include="pipeline\arr\copy_async.hpp" />
-    <ClInclude Include="pipeline\arr\deviceArray.hpp" />
-    <ClInclude Include="pipeline\arr\hostArray.hpp" />
-    <ClInclude Include="pipeline\delayed.hpp" />
-    <ClInclude Include="pipeline\device.h" />
-    <ClInclude Include="pipeline\error.h" />
-    <ClInclude Include="pipeline\instance.h" />
-    <ClInclude Include="pipeline\pipeline.h" />
-    <ClInclude Include="pipeline\program.hpp" />
-    <ClInclude Include="pipeline\resource.hpp" />
-    <ClInclude Include="pipeline\traits.hpp" />
-    <ClInclude Include="pipeline\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\convolution_layer.glsl" />
     <None Include="shaders\linear_layer.glsl" />
+    <None Include="shaders\rnn_layer.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

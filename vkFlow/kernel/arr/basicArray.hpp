@@ -7,7 +7,7 @@
 
 #include <cassert>
 
-namespace pipeline {
+namespace kernel {
 namespace arr {
 
 /// Covers basic array functionality. Wraps the SBO buffer.
@@ -20,7 +20,7 @@ public:
 	static constexpr auto descriptor_class = vk::DescriptorType::eStorageBuffer;
 
 	/// Construct SBO array of given size in device memory
-	BasicArray(pipeline::Device& device                     ///< device to allocate array
+	BasicArray(kernel::Device& device                     ///< device to allocate array
 	           , size_t size_bytes                     ///< desired size in bytes
 	           , vk::MemoryPropertyFlags properties={} ///< additional memory property flags. These are 'added' to flags defind by allocator.
 	           , vk::BufferUsageFlags usage={}         ///< additional usage flagsws. These are 'added' to flags defined by allocator.
@@ -60,7 +60,7 @@ public:
 	auto offset() const-> std::size_t { return 0;}
 
 	/// @return reference to device on which underlying buffer is allocated
-	auto device()-> pipeline::Device& { return _dev; }
+	auto device()-> kernel::Device& { return _dev; }
 
 	/// @return true if array is host-visible, ie can expose its data via a normal host pointer.
 	auto isHostVisible() const-> bool {
@@ -99,7 +99,7 @@ private: // helpers
 protected: // data
 	vk::DeviceMemory _mem;           ///< associated chunk of device memory
 	vk::MemoryPropertyFlags _flags;  ///< actual flags of allocated memory (may differ from those requested)
-	pipeline::Device& _dev;               ///< referes underlying logical device
+	kernel::Device& _dev;               ///< referes underlying logical device
 }; // class BasicArray
 } // namespace arr
-} // namespace pipeline
+} // namespace kernel

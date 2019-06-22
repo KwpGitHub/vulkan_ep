@@ -9,12 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Pipeline Files">
-      <UniqueIdentifier>{1b2d7f93-30d2-4f25-8ecf-1c68d0c95f83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pipeline Files\Arr Files">
-      <UniqueIdentifier>{dcf85554-a424-4b1d-af4a-146bbba3eb98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader Files">
       <UniqueIdentifier>{39b831a9-fad2-4c13-9f77-95878ba2af29}</UniqueIdentifier>
     </Filter>
@@ -22,22 +16,16 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Kernel FIles">
+      <UniqueIdentifier>{ec7f2131-7edb-4e90-abed-76087d22494a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kernel FIles\arr">
+      <UniqueIdentifier>{4548db30-f302-4b8f-91cd-74231e8b3e46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="vkFlow.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pipeline\device.cpp">
-      <Filter>Pipeline Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pipeline\error.cpp">
-      <Filter>Pipeline Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pipeline\instance.cpp">
-      <Filter>Pipeline Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pipeline\utils.cpp">
-      <Filter>Pipeline Files</Filter>
     </ClCompile>
     <ClCompile Include="linear.cpp">
       <Filter>Source Files</Filter>
@@ -48,65 +36,20 @@
     <ClCompile Include="rnn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="kernel\device.cpp">
+      <Filter>Kernel FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\error.cpp">
+      <Filter>Kernel FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\instance.cpp">
+      <Filter>Kernel FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel\utils.cpp">
+      <Filter>Kernel FIles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pipeline\array.hpp">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\delayed.hpp">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\device.h">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\error.h">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\instance.h">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\pipeline.h">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\program.hpp">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\resource.hpp">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\traits.hpp">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\utils.h">
-      <Filter>Pipeline Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\allocDevice.hpp">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\arrayIter.hpp">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\arrayProperties.h">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\arrayUtils.h">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\arrayView.hpp">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\basicArray.hpp">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\copy_async.hpp">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\deviceArray.hpp">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline\arr\hostArray.hpp">
-      <Filter>Pipeline Files\Arr Files</Filter>
-    </ClInclude>
     <ClInclude Include="layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -122,12 +65,72 @@
     <ClInclude Include="rnn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="kernel\array.hpp">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\delayed.hpp">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\device.h">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\error.h">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\instance.h">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\kernel.h">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\program.hpp">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\resource.hpp">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\traits.hpp">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\utils.h">
+      <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\allocDevice.hpp">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\arrayIter.hpp">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\arrayProperties.h">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\arrayUtils.h">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\arrayView.hpp">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\basicArray.hpp">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\copy_async.hpp">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\deviceArray.hpp">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel\arr\hostArray.hpp">
+      <Filter>Kernel FIles\arr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\linear_layer.glsl">
       <Filter>Shader Files</Filter>
     </None>
     <None Include="shaders\convolution_layer.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\rnn_layer.glsl">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

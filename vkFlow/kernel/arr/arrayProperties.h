@@ -3,7 +3,7 @@
 #include <vulkan/vulkan.hpp>
 #include <type_traits>
 
-namespace pipeline {
+namespace kernel {
 namespace arr {
 /// Contains the traits to hold together buffer and memory flags for 
 /// some common buffer usage scenarious. Each trait also defines the fall-back trait, 
@@ -66,4 +66,4 @@ namespace properties {
 	};
 } // namespace props
 } // namespace arr
-} // namespace pipeline
+} // namespace kernel

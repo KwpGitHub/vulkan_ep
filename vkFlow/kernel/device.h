@@ -4,7 +4,7 @@
 
 #include <vector>
 
-namespace pipeline {
+namespace kernel {
 	class Instance;
 
 	/// Logical device packed with associated command pools and buffers.
@@ -18,7 +18,7 @@ namespace pipeline {
 	class Device: public vk::Device {
 	public:
 
-		explicit Device(pipeline::Instance& instance, vk::PhysicalDevice physdevice);
+		explicit Device(kernel::Instance& instance, vk::PhysicalDevice physdevice);
 		~Device() noexcept;
 
 		Device(const Device&);
@@ -32,7 +32,7 @@ namespace pipeline {
 		auto numTransferQueues() const-> uint32_t { return 1u;}
 		auto memoryProperties(uint32_t id) const-> vk::MemoryPropertyFlags;
 		auto selectMemory(vk::Buffer buffer, vk::MemoryPropertyFlags properties) const-> uint32_t;
-		auto instance() const-> const pipeline::Instance& {return _instance;}
+		auto instance() const-> const kernel::Instance& {return _instance;}
 		auto hasSeparateQueues() const-> bool;
 
 		auto computeQueue(uint32_t i = 0)-> vk::Queue;
@@ -47,17 +47,17 @@ namespace pipeline {
 		                    , const vk::PipelineShaderStageCreateInfo& shader_stage_info
 		                    , vk::PipelineCreateFlags flags={}
 		                    )-> vk::Pipeline;
-		auto instance()-> pipeline::Instance& { return _instance; }
+		auto instance()-> kernel::Instance& { return _instance; }
 		auto releaseComputeCmdBuffer()-> vk::CommandBuffer;
 		
 	private: // helpers
-		explicit Device(pipeline::Instance& instance, vk::PhysicalDevice physdevice
+		explicit Device(kernel::Instance& instance, vk::PhysicalDevice physdevice
 		                , const std::vector<vk::QueueFamilyProperties>& families);
-		explicit Device(pipeline::Instance& instance, vk::PhysicalDevice physdevice
+		explicit Device(kernel::Instance& instance, vk::PhysicalDevice physdevice
 	                   , uint32_t computeFamilyId, uint32_t transferFamilyId);
 		auto release() noexcept-> void;
 	private: // data
-		pipeline::Instance&     _instance;           ///< refer to Instance object used to create device
+		kernel::Instance&     _instance;           ///< refer to Instance object used to create device
 		vk::PhysicalDevice _physdev;            ///< handle to associated physical device
 		vk::CommandPool    _cmdpool_compute;    ///< handle to command pool for compute commands
 		vk::CommandBuffer  _cmdbuf_compute;     ///< primary command buffer associated with the compute command pool

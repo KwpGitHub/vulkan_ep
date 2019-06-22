@@ -7,7 +7,7 @@
 #include "arr/deviceArray.hpp"
 #include "arr/hostArray.hpp"
 
-namespace pipeline {
+namespace kernel {
 namespace detail {
 
 /// Traits to associate array properties to underlying Array classes (HostArray, DeviceArray).
@@ -47,4 +47,4 @@ namespace mem {
 template<class T, class Alloc=arr::AllocDevice<arr::properties::Device>>
 using Array = typename detail::ArrayClass<typename Alloc::properties_t>::template type<T, Alloc>;
 
-} // namespace pipeline
+} // namespace kernel

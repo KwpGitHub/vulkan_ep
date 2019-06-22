@@ -2,6 +2,7 @@
 #include "device.h"
 
 #include <algorithm>
+#include <vector>
 #include <array>
 #include <iostream>
 
@@ -12,7 +13,7 @@ using std::begin; using std::end;
 namespace {
 #ifndef NDEBUG
 	static const std::array<const char*, 1> default_layers = {"VK_LAYER_LUNARG_standard_validation"};
-	static const std::array<const char*, 1> default_extensions = {VK_EXT_DEBUG_REPORT_EXTENSION_NAME};
+	static const std::array<const char*, 1> default_extensions = {VK_EXT_DEBUG_REPORT_EXTENSION_NAME };
 #else
 	static const std::array<const char*, 0> default_layers = {};
 	static const std::array<const char*, 0> default_extensions = {};
@@ -30,7 +31,7 @@ namespace {
 	                 , const U& tst_values               ///< candidate values
 	                 , const T& ref_values               ///< reference values
 	                 , F&& ffield                        ///< maps reference values to candidate values manifold
-	                 , pipeline::debug_reporter_t report_cbk=nullptr ///< error reporter
+	                 , kernel::debug_reporter_t report_cbk=nullptr ///< error reporter
 	                 , const char* layer_msg=nullptr     ///< base part of the log message about unsuccessful candidate value
 	                 )-> std::vector<const char*>
 	{
@@ -52,10 +53,8 @@ namespace {
 	/// Add default validation layers to debug build.
 	auto filter_layers(const std::vector<const char*>& layers) {
 		const auto avail_layers = vk::enumerateInstanceLayerProperties();
-		auto r = filter_list({}, layers, avail_layers
-		                     , [](const auto& l){return l.layerName;});
-		r = filter_list(std::move(r), default_layers, avail_layers
-		                , [](const auto& l){return l.layerName;});
+		auto r = filter_list({}, layers, avail_layers, [](const auto& l) {return l.layerName; });
+		r = filter_list(std::move(r), default_layers, avail_layers, [](const auto& l) {return l.layerName; });
 		return r;
 	}
 
@@ -63,10 +62,8 @@ namespace {
 	/// Add default debug extensions to debug build.
 	auto filter_extensions(const std::vector<const char*>& extensions) {
 		const auto avail_extensions = vk::enumerateInstanceExtensionProperties();
-		auto r = filter_list({}, extensions, avail_extensions
-		                     , [](const auto& l){return l.extensionName;});
-		r = filter_list(std::move(r), default_extensions, avail_extensions
-		                , [](const auto& l){return l.extensionName;});
+		auto r = filter_list({}, extensions, avail_extensions, [](const auto& l) {return l.extensionName; });
+		r = filter_list(std::move(r), default_extensions, avail_extensions, [](const auto& l) {return l.extensionName; });
 		return r;
 	}
 
@@ -86,7 +83,7 @@ namespace {
 	auto createInstance(const std::vector<const char*>& layers={}
 		                , const std::vector<const char*>& extensions={}
 		                , const vk::ApplicationInfo& info={nullptr, 0, nullptr, 0, VK_API_VERSION_1_0}
-		                , pipeline::debug_reporter_t report_callback=nullptr
+		                , kernel::debug_reporter_t report_callback=nullptr
 	                   )-> vk::Instance
 	{
 		auto createInfo = vk::InstanceCreateInfo(vk::InstanceCreateFlags(), &info
@@ -96,8 +93,7 @@ namespace {
 
 	/// Register a callback function for the extension VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
 	/// so that warnings emitted from the validation layer are actually printed.
-	auto registerReporter(vk::Instance instance, pipeline::debug_reporter_t reporter
-	                     )-> VkDebugReportCallbackEXT
+	auto registerReporter(vk::Instance instance, kernel::debug_reporter_t reporter)-> VkDebugReportCallbackEXT
 	{
 		auto ret = VkDebugReportCallbackEXT(nullptr);
 		auto createInfo = VkDebugReportCallbackCreateInfoEXT{};
@@ -116,7 +112,7 @@ namespace {
 	}
 } // namespace
 
-namespace pipeline {
+namespace kernel {
 	/// Creates Instance object.
 	/// In debug build in addition to user-defined layers attempts to load validation layers.
 	Instance::Instance(const std::vector<const char*>& layers
@@ -188,4 +184,4 @@ namespace pipeline {
 	{
 		_reporter(flags, VkDebugReportObjectTypeEXT{}, 0, 0, 0 , prefix, message, nullptr);
 	}
-} // namespace pipeline
+} // namespace kernel

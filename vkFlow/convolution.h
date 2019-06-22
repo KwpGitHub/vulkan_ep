@@ -44,8 +44,8 @@ protected:
 
 	struct Params { uint32_t size; float a; };
 
-	using Spec = pipeline::typelist<uint32_t>;
-	pipeline::Program<Spec, Params> program = pipeline::Program<Spec, Params>(device, LINEAR_LAYER);
+	using Spec = kernel::typelist<uint32_t>;
+	kernel::Program<Spec, Params> program = kernel::Program<Spec, Params>(device, LINEAR_LAYER);
 
 };
 

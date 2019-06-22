@@ -6,7 +6,7 @@
 
 #include <cassert>
 
-namespace pipeline {
+namespace kernel {
 	namespace detail{
 		/// No action. Runnable with operator()() doing nothing.
 		struct Noop{ constexpr auto operator()() const noexcept-> void{}; };
@@ -32,14 +32,14 @@ namespace pipeline {
 	public:
 		/// Constructor. Takes ownership of the fence.
 		/// It is assumed that the fence belongs to the same device that is passed together with it.
-		Delayed(vk::Fence fence, pipeline::Device& device, Action action={})
+		Delayed(vk::Fence fence, kernel::Device& device, Action action={})
 		   : vk::Fence(fence)
 		   , Action(std::move(action))
 		   , _device(&device)
 		{}
 
 		/// Constructor. Creates the fence in a signalled state.
-		explicit Delayed(pipeline::Device& device, Action action={})
+		explicit Delayed(kernel::Device& device, Action action={})
 		   : vk::Fence(device.createFence({vk::FenceCreateFlagBits::eSignaled}))
 		   , Action(std::move(action))
 		   , _device(&device)
@@ -98,4 +98,4 @@ namespace pipeline {
 
 	/// Delayed No-Action. Just a synchronization point.
 	using Fence = Delayed<detail::Noop>;
-} // namespace pipeline
+} // namespace kernel

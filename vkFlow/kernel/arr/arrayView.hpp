@@ -2,8 +2,8 @@
 
 #include <cassert>
 
-namespace pipeline {
-	/// Read-write view into the continuous portion of some pipeline::Array
+namespace kernel {
+	/// Read-write view into the continuous portion of some kernel::Array
 	/// Maybe used in place of array references in copy routines and kernel invocations
 	/// to pass parts of the array data.
 	template<class Array>
@@ -37,4 +37,4 @@ namespace pipeline {
 	auto array_view(Array& array, std::size_t offset_begin, size_t offset_end)-> ArrayView<Array>{
 		return ArrayView<Array>(array, offset_begin, offset_end);
 	}
-} // namespace pipeline
+} // namespace kernel

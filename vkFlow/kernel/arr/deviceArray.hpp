@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <cassert>
 
-namespace pipeline {
+namespace kernel {
 namespace arr {
 
 /// Array class not supposed to take part in data exchange with host.
@@ -25,7 +25,7 @@ public:
 	using value_type = T;
    /// Constructs object of the class on given device.
    /// Memory is left unintitialized.
-   DeviceOnlyArray( pipeline::Device& device  ///< deice to create array on
+   DeviceOnlyArray( kernel::Device& device  ///< deice to create array on
 	               , size_t n_elements    ///< number of elements
 	               , vk::MemoryPropertyFlags flags_memory={} ///< additional (to defined by allocator) memory usage flags
 	               , vk::BufferUsageFlags flags_buffer={})   ///< additional (to defined by allocator) buffer usage flags
@@ -52,7 +52,7 @@ class DeviceArray: public BasicArray<Alloc>{
 public:
 	using value_type = T;
 	/// Create an instance of DeviceArray with given number of elements. Memory is uninitialized.
-	DeviceArray( pipeline::Device& device   ///< device to create array on
+	DeviceArray( kernel::Device& device   ///< device to create array on
 	           , size_t n_elements     ///< number of elements
 	           , vk::MemoryPropertyFlags flags_memory={} ///< additional (to defined by allocator) memory usage flags
 	           , vk::BufferUsageFlags flags_buffer={})   ///< additional (to defined by allocator) buffer usage flags
@@ -61,8 +61,8 @@ public:
 	{}
 
 	/// Create an instance of DeviceArray and initialize memory by content of some host iterable.
-	template<class C, class=typename std::enable_if_t<pipeline::traits::is_iterable<C>::value>>
-	DeviceArray(pipeline::Device& device  ///< device to create array on
+	template<class C, class=typename std::enable_if_t<kernel::traits::is_iterable<C>::value>>
+	DeviceArray(kernel::Device& device  ///< device to create array on
 	           , const C& c          ///< iterable to initialize from
 	           , vk::MemoryPropertyFlags flags_memory={} ///< additional (to defined by allocator) memory usage flags
 	           , vk::BufferUsageFlags flags_buffer={})	  ///< additional (to defined by allocator) buffer usage flags
@@ -74,7 +74,7 @@ public:
 
 	/// Create an instance of DeviceArray and initialize it from a range of values.
 	template<class It1, class It2>
-   DeviceArray(pipeline::Device& device   ///< device to create array on
+   DeviceArray(kernel::Device& device   ///< device to create array on
 	            , It1 begin           ///< range begin
 	            , It2 end             ///< range end (points to one past the last element of the range)
 	            , vk::MemoryPropertyFlags flags_memory={} ///< additional (to defined by allocator) memory usage flags
@@ -86,7 +86,7 @@ public:
 
 	/// Create an instance of DeviceArray of given size and initialize it using index based initializer function.
 	template<class F>
-	DeviceArray( pipeline::Device& device  ///< device to create array on
+	DeviceArray( kernel::Device& device  ///< device to create array on
 	           , size_t n_elements    ///< number of elements
 	           , F&& fun              ///< callable of a form function<T(size_t)> mapping an offset to array value
 	           , vk::MemoryPropertyFlags flags_memory={} ///< additional (to defined by allocator) memory usage flags
@@ -193,7 +193,7 @@ public:
 	}
 	
 	/// @return host container with a copy of array data.
-	template<class C, typename=typename std::enable_if_t<pipeline::traits::is_iterable<C>::value>>
+	template<class C, typename=typename std::enable_if_t<kernel::traits::is_iterable<C>::value>>
 	auto toHost() const-> C {
 		auto ret = C(size());
 		using std::begin;
@@ -242,4 +242,4 @@ auto device_end(DeviceArray<T, Alloc>& array)-> ArrayIter<DeviceArray<T, Alloc>>
 }
 
 } // namespace arr
-} // namespace pipeline
+} // namespace kernel

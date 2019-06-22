@@ -1,6 +1,6 @@
 #pragma once
-#include "pipeline/pipeline.h"
-#include "pipeline/array.hpp"
+#include "kernel/kernel.h"
+#include "kernel/array.hpp"
 #include "utils.hpp"
 #include <vector>
 
@@ -22,7 +22,7 @@ public:
 	virtual void run(){}
 	
 protected:
-	pipeline::Device device;
+	kernel::Device device;
 	uint32_t deviceID;
 };
 

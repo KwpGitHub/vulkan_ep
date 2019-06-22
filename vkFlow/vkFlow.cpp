@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <vector>
-#include "pipeline/pipeline.h"
+#include "kernel/kernel.h"
 #include "utils.hpp"
 
 
@@ -9,16 +9,15 @@ namespace py = pybind11;
 void Run() {
 	auto y = std::vector<float>(128, 1.0f);
 	auto x = std::vector<float>(128, 2.0f);
-	
+	auto instance = kernel::Instance();
+	auto device = instance.devices().at(0);
 
-	auto device = runtime_info::instance.devices().at(runtime_info::deviceID);
+	kernel::Array<float> device_x = kernel::Array<float>(device, x);
+	kernel::Array<float> device_y = kernel::Array<float>(device, y);
 
-	pipeline::Array<float> device_x = pipeline::Array<float>(device, x);
-	pipeline::Array<float> device_y = pipeline::Array<float>(device, y);
-
-	using Spec = pipeline::typelist<uint32_t>;
+	using Spec = kernel::typelist<uint32_t>;
 	struct Params { uint32_t size; float a; };
-	auto program = pipeline::Program<Spec, Params>(device, LINEAR_LAYER);
+	auto program = kernel::Program<Spec, Params>(device, LINEAR_LAYER);
 	program.grid(128 / 64).spec(64)({ 128, 0.1 }, device_y, device_x);
 	program.grid(128 / 64).spec(64)({ 128, 0.4 }, device_x, device_y);
 	device_y.toHost(begin(y));
@@ -32,9 +31,6 @@ void set_device(int id) {
 }
 
 PYBIND11_MODULE(vkFlow, m) {
-	runtime_info::deviceID = 0;
-	runtime_info::instance = pipeline::Instance();
-	
 	m.def("Run", &Run);
 	m.def("set_device", &set_device);
 #ifdef VERSION_INFO

@@ -4,7 +4,7 @@
 
 #include <fstream>
 
-namespace pipeline {
+namespace kernel {
 	/// Read binary shader file into array of uint32_t. little endian assumed.
 	/// Padded by 0s to a boundary of 4.
 	auto read_spirv(const char* filename)-> std::vector<char> {
@@ -22,7 +22,7 @@ namespace arr {
 	/// Copy data between device buffers using the device transfer command pool and queue.
 	/// Source and destination buffers are supposed to be allocated on the same device.
 	/// Fully sync, no latency hiding whatsoever.
-	auto copyBuf(pipeline::Device& device ///< device where buffers are allocated
+	auto copyBuf(kernel::Device& device ///< device where buffers are allocated
 	             , vk::Buffer src    ///< source buffer
 	             , vk::Buffer dst    ///< destination buffer
 	             , size_t size_bytes ///< size of memory chunk to copy in bytes
@@ -41,4 +41,4 @@ namespace arr {
 		queue.waitIdle();
 	}
 } // namespace arr
-} // namespace pipeline
+} // namespace kernel

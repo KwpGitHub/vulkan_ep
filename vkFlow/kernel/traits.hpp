@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace pipeline {
+namespace kernel {
 namespace traits {
 	namespace detail {
 		/// 
@@ -63,4 +63,4 @@ namespace traits {
 	/// doc me
 	template<class T> using is_host_iterator = decltype(detail::_is_host_iterator<T>(0));
 } // namespace traits
-} // namespace pipeline
+} // namespace kernel

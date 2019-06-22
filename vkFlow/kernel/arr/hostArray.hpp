@@ -5,7 +5,7 @@
 
 #include <algorithm>
 
-namespace pipeline {
+namespace kernel {
 namespace arr {
 
 /// Array with host data exchange interface suitable for memory allocated in host-visible space.
@@ -21,7 +21,7 @@ public:
 	using value_type = T;
 	/// Construct object of the class on given device.
 	/// Memory is not initialized with any data.
-	HostArray(pipeline::Device& device  ///< device to create array on
+	HostArray(kernel::Device& device  ///< device to create array on
 	          , size_t n_elements  ///< number of elements
 	          , vk::MemoryPropertyFlags flags_memory={} ///< additional (to defined by allocator) memory usage flags
 	          , vk::BufferUsageFlags flags_buffer={}    ///< additional (to defined by allocator) buffer usage flags
@@ -32,7 +32,7 @@ public:
 	{}
 
 	/// Construct array on given device and initialize with a provided value.
-	HostArray( pipeline::Device& device ///< device to create array on
+	HostArray( kernel::Device& device ///< device to create array on
 	         , size_t n_elements   ///< number of elements
 	         , T value             ///< initializer value
 	         , vk::MemoryPropertyFlags flags_memory={} ///< additional (to defined by allocator) memory usage flags
@@ -45,7 +45,7 @@ public:
 
 	/// Construct array on given device and initialize it from range of values
 	template<class It1, class It2>
-	HostArray(pipeline::Device& device ///< device to create array on
+	HostArray(kernel::Device& device ///< device to create array on
 	         , It1 begin          ///< beginning of initialization range
 	         , It2 end            ///< end (one past end) of initialization range
 	         , vk::MemoryPropertyFlags flags_memory={} ///< additional (to defined by allocator) memory usage flags
@@ -116,4 +116,4 @@ private: // data
    size_t _size;  ///< Number of elements. Actual allocated memory may be a bit bigger then necessary.
 }; // class HostArray
 } // namespace arr
-} // namespace pipeline
+} // namespace kernel

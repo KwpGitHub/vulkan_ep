@@ -64,7 +64,7 @@ namespace {
 	}
 } // namespace
 
-namespace pipeline {
+namespace kernel {
 	/// Constructs logical device wrapping the physical device of the given instance.
 	Device::Device(Instance& instance, vk::PhysicalDevice physical_device)
 	   : Device(instance, physical_device, physical_device.getQueueFamilyProperties())
@@ -208,7 +208,7 @@ namespace pipeline {
 		return getQueue(_cmp_family_id, i);
 	}
 
-	/// Create compute pipeline with a given layout.
+	/// Create compute kernel with a given layout.
 	/// Shader stage info incapsulates the shader and layout&values of specialization constants.
 	auto Device::createPipeline(vk::PipelineLayout pipe_layout
 	                            , vk::PipelineCache pipe_cache
@@ -250,4 +250,4 @@ namespace pipeline {
 
 	/// @return handle to command buffer for syncronous transfer commands
 	auto Device::transferCmdBuffer()-> vk::CommandBuffer& { return _cmdbuf_transfer; }
-} // namespace pipeline
+} // namespace kernel

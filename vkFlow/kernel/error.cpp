@@ -1,6 +1,6 @@
 #include "error.h"
 
-namespace pipeline {
+namespace kernel {
 	/// Constructs the exception object with explanatory string.
 	NoSuitableMemoryFound::NoSuitableMemoryFound(const std::string& message)
 	   : vk::OutOfDeviceMemoryError(message)
@@ -21,4 +21,4 @@ namespace pipeline {
 	   : std::runtime_error(message)
 	{}
 
-} // namespace pipeline
+} // namespace kernel

@@ -2,7 +2,7 @@
 
 #include <vulkan/vulkan.hpp>
 
-namespace pipeline {
+namespace kernel {
 	/// Exception indicating that memory with requested properties
 	/// has not been found on a device.
 	class NoSuitableMemoryFound: public vk::OutOfDeviceMemoryError {
@@ -17,4 +17,4 @@ namespace pipeline {
 		FileReadFailure(const std::string& message);
 		FileReadFailure(const char* message);
 	};
-} // namespace pipeline
+} // namespace kernel

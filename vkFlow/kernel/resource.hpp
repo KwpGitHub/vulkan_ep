@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace pipeline {
+namespace kernel {
 namespace util {
 	/// Helper class to wrap some class with resource data and a release() function to clean after
 	/// itself into a nice movable entity.
@@ -30,4 +30,4 @@ namespace util {
 	}; // struct NoopDeleter
 
 } // namespace util
-} // namespace pipeline
+} // namespace kernel
