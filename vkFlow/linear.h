@@ -1,4 +1,6 @@
 #pragma once
+#ifndef LINEAR_H
+#define LINEAR_H
 #include "layer.hpp"
 
 class linear :
@@ -19,8 +21,8 @@ protected: //y = x1 * AT + b
 
 	Shape weight_shape;
 	Shape bias_hsape;
-	std::vector<float> weight;
-	std::vector<float> bias;
+	std::vector<float> weight = std::vector<float>(16, 0.0);;
+	std::vector<float> bias = std::vector<float>(16, 0.0);;
 };
 
 class bilinear : //y = x1 * A * x2 + b
@@ -46,3 +48,4 @@ protected:
 	std::vector<float> bias;
 };
 
+#endif //!LINEAR_H

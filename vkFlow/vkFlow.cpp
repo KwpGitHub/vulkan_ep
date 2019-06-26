@@ -26,13 +26,9 @@ void Run() {
 
 }
 
-void set_device(int id) {
-	runtime_info::deviceID = id;
-}
 
 PYBIND11_MODULE(vkFlow, m) {
 	m.def("Run", &Run);
-	m.def("set_device", &set_device);
 #ifdef VERSION_INFO
 	m.attr("__version__") = VERSION_INFO;
 #else

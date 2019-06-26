@@ -1,5 +1,9 @@
-import vkFlow_d as vkFlow
+import numpy as np
+import PIL as Image
+import vkFlow as vkFlow
 
 if (__name__ == "__main__"):
-    vkFlow.Run()
-    print(x)
+    pic = Image.open("ariel.png")
+    x = np.array(pic)
+    print(x.shape)
+   # vkFlow.Run()

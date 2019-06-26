@@ -1,4 +1,6 @@
 #pragma once
+#ifndef RNN_H
+#define RNN_H
 #include "layer.hpp"
 
 
@@ -9,3 +11,4 @@ class rnn :
 
 };
 
+#endif //!RNN_H
