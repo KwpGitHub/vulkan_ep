@@ -34,11 +34,11 @@
     <Filter Include="nn Files\source\vk_layers">
       <UniqueIdentifier>{ac38c554-6707-444d-950f-e986cfe97da8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nn Files\source\x86">
-      <UniqueIdentifier>{b655aa08-81ed-4df5-be89-6eba7cfa8923}</UniqueIdentifier>
+    <Filter Include="nn Files\headers\_x86">
+      <UniqueIdentifier>{c458e573-c4dc-4871-a3cb-79d5e7ceaf55}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nn Files\headers\x86">
-      <UniqueIdentifier>{8f6c039d-5ddf-4046-922e-9f498a50066d}</UniqueIdentifier>
+    <Filter Include="nn Files\source\_x86">
+      <UniqueIdentifier>{889d21d8-e632-4254-849f-7480355a1a39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -393,11 +393,11 @@
     <ClCompile Include="layer\vulkan\unaryop_vulkan.cpp">
       <Filter>nn Files\source\vk_layers</Filter>
     </ClCompile>
-    <ClCompile Include="layer\x86\convolution_x86.cpp">
-      <Filter>nn Files\source\x86</Filter>
+    <ClCompile Include="layer\_x86\convolutiondepthwise_x86.cpp">
+      <Filter>nn Files\source\_x86</Filter>
     </ClCompile>
-    <ClCompile Include="layer\x86\convolutiondepthwise_x86.cpp">
-      <Filter>nn Files\source\x86</Filter>
+    <ClCompile Include="layer\_x86\convolution_x86.cpp">
+      <Filter>nn Files\source\_x86</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -764,53 +764,53 @@
     <ClInclude Include="header\platform.h">
       <Filter>nn Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\avx_mathfun.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\sse_mathfun.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_1x1.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolutiondepthwise_x86.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_1x1_int8.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolutiondepthwise_3x3_int8.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_3x3.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolutiondepthwise_3x3.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_3x3_int8.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_x86.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_5x5.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_sgemm_int8.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_5x5_int8.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_sgemm.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_7x7.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_7x7_int8.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_7x7_int8.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_7x7.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_sgemm.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_5x5_int8.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_sgemm_int8.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_5x5.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolution_x86.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_3x3_int8.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolutiondepthwise_3x3.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_3x3.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolutiondepthwise_3x3_int8.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_1x1_int8.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\convolutiondepthwise_x86.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\convolution_1x1.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
-    <ClInclude Include="layer\x86\sse_mathfun.h">
-      <Filter>nn Files\headers\x86</Filter>
+    <ClInclude Include="layer\_x86\avx_mathfun.h">
+      <Filter>nn Files\headers\_x86</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
