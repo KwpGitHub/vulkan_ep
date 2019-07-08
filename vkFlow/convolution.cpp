@@ -19,8 +19,8 @@ void Convolution::operator ()(std::vector<float>& inpt) {
 
 }
 
-void Convolution::operator ()(kernel::Array<float>& inpt) {
-	X = inpt.;
+void Convolution::operator ()(kernel::Array<float> &inpt) {
+	//X = inpt;
 }
 
 void Convolution::init() {
@@ -38,9 +38,9 @@ void Convolution::init() {
 	size_t input_y = input_shape.C;
 
 	output_shape.C = _out_channels;
-	output_shape.H = (input_shape.H - _kernel_size[0] + 2 * padding[0]) / stride[0] + 1;
-	output_shape.W = (input_shape.W - _kernel_size[0] + 2 * padding[0]) / stride[0] + 1;
-	output_shape.D = (input_shape.D - _kernel_size[0] + 2 * padding[0]) / stride[0] + 1;
+	output_shape.H = (input_shape.H - _kernel_size[0] + 2 * _padding[0]) / _stride[0] + 1;
+	output_shape.W = (input_shape.W - _kernel_size[0] + 2 * _padding[0]) / _stride[0] + 1;
+	output_shape.D = (input_shape.D - _kernel_size[0] + 2 * _padding[0]) / _stride[0] + 1;
 }
 
 void Convolution::forward() {

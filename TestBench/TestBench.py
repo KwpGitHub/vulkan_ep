@@ -1,9 +1,11 @@
 import numpy as np
-import PIL as Image
+from PIL import Image
 import vkFlow as vkFlow
+import onnx
 
 if (__name__ == "__main__"):
-    pic = Image.open("ariel.png")
-    x = np.array(pic)
+    onnx_model = onnx.load('mobilenetv2.onnx')
+    img = Image.open("aerial.png")
+    x = np.array(img)
     print(x.shape)
    # vkFlow.Run()

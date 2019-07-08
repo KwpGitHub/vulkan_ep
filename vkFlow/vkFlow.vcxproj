@@ -18,6 +18,47 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="convolution.cpp" />
+    <ClCompile Include="kernel\device.cpp" />
+    <ClCompile Include="kernel\error.cpp" />
+    <ClCompile Include="kernel\instance.cpp" />
+    <ClCompile Include="kernel\utils.cpp" />
+    <ClCompile Include="linear.cpp" />
+    <ClCompile Include="rnn.cpp" />
+    <ClCompile Include="vkFlow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="convolution.h" />
+    <ClInclude Include="kernel\array.hpp" />
+    <ClInclude Include="kernel\arr\allocDevice.hpp" />
+    <ClInclude Include="kernel\arr\arrayIter.hpp" />
+    <ClInclude Include="kernel\arr\arrayProperties.h" />
+    <ClInclude Include="kernel\arr\arrayUtils.h" />
+    <ClInclude Include="kernel\arr\arrayView.hpp" />
+    <ClInclude Include="kernel\arr\basicArray.hpp" />
+    <ClInclude Include="kernel\arr\copy_async.hpp" />
+    <ClInclude Include="kernel\arr\deviceArray.hpp" />
+    <ClInclude Include="kernel\arr\hostArray.hpp" />
+    <ClInclude Include="kernel\delayed.hpp" />
+    <ClInclude Include="kernel\device.h" />
+    <ClInclude Include="kernel\error.h" />
+    <ClInclude Include="kernel\instance.h" />
+    <ClInclude Include="kernel\kernel.h" />
+    <ClInclude Include="kernel\program.hpp" />
+    <ClInclude Include="kernel\resource.hpp" />
+    <ClInclude Include="kernel\traits.hpp" />
+    <ClInclude Include="kernel\utils.h" />
+    <ClInclude Include="layer.hpp" />
+    <ClInclude Include="linear.h" />
+    <ClInclude Include="rnn.h" />
+    <ClInclude Include="utils.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\convolution_layer.glsl" />
+    <None Include="shaders\linear_layer.glsl" />
+    <None Include="shaders\rnn_layer.glsl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{64E0F9BC-0C31-45ED-B735-51D169A748E5}</ProjectGuid>
     <RootNamespace>vkFlow</RootNamespace>
@@ -82,15 +123,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PropertySheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PropertySheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PropertySheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PropertySheet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -144,7 +189,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.108.0\Include;C:\Users\monish\source\repos\vkFlow\external\onnx\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -191,47 +236,6 @@
       <AdditionalLibraryDirectories>C:\VulkanSDK\1.1.108.0\Lib;$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="convolution.cpp" />
-    <ClCompile Include="kernel\device.cpp" />
-    <ClCompile Include="kernel\error.cpp" />
-    <ClCompile Include="kernel\instance.cpp" />
-    <ClCompile Include="kernel\utils.cpp" />
-    <ClCompile Include="linear.cpp" />
-    <ClCompile Include="rnn.cpp" />
-    <ClCompile Include="vkFlow.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="convolution.h" />
-    <ClInclude Include="kernel\array.hpp" />
-    <ClInclude Include="kernel\arr\allocDevice.hpp" />
-    <ClInclude Include="kernel\arr\arrayIter.hpp" />
-    <ClInclude Include="kernel\arr\arrayProperties.h" />
-    <ClInclude Include="kernel\arr\arrayUtils.h" />
-    <ClInclude Include="kernel\arr\arrayView.hpp" />
-    <ClInclude Include="kernel\arr\basicArray.hpp" />
-    <ClInclude Include="kernel\arr\copy_async.hpp" />
-    <ClInclude Include="kernel\arr\deviceArray.hpp" />
-    <ClInclude Include="kernel\arr\hostArray.hpp" />
-    <ClInclude Include="kernel\delayed.hpp" />
-    <ClInclude Include="kernel\device.h" />
-    <ClInclude Include="kernel\error.h" />
-    <ClInclude Include="kernel\instance.h" />
-    <ClInclude Include="kernel\kernel.h" />
-    <ClInclude Include="kernel\program.hpp" />
-    <ClInclude Include="kernel\resource.hpp" />
-    <ClInclude Include="kernel\traits.hpp" />
-    <ClInclude Include="kernel\utils.h" />
-    <ClInclude Include="layer.hpp" />
-    <ClInclude Include="linear.h" />
-    <ClInclude Include="rnn.h" />
-    <ClInclude Include="utils.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\convolution_layer.glsl" />
-    <None Include="shaders\linear_layer.glsl" />
-    <None Include="shaders\rnn_layer.glsl" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
