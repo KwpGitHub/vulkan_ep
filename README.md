@@ -4,3 +4,5 @@ Work in Progress
 
 ## Refrence
 https://github.com/Glavnokoman/vuh.git
+
+https://www.ibiblio.org/e-notes/webgl/gpu/mul/sgemm.html
