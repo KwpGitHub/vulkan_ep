@@ -74,9 +74,17 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>./SpirV;./header;./layer/vulkan;./layer;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
+      <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -233,6 +241,8 @@
     <ClCompile Include="layer\vulkan\softmax_vulkan.cpp" />
     <ClCompile Include="layer\vulkan\tanh_vulkan.cpp" />
     <ClCompile Include="layer\vulkan\unaryop_vulkan.cpp" />
+    <ClCompile Include="layer\x86\convolutiondepthwise_x86.cpp" />
+    <ClCompile Include="layer\x86\convolution_x86.cpp" />
     <ClCompile Include="layer\yolodetectionoutput.cpp" />
     <ClCompile Include="layer\yolov3detectionoutput.cpp" />
     <ClCompile Include="main.cpp" />
@@ -373,6 +383,22 @@
     <ClInclude Include="layer\vulkan\softmax_vulkan.h" />
     <ClInclude Include="layer\vulkan\tanh_vulkan.h" />
     <ClInclude Include="layer\vulkan\unaryop_vulkan.h" />
+    <ClInclude Include="layer\x86\avx_mathfun.h" />
+    <ClInclude Include="layer\x86\convolutiondepthwise_3x3.h" />
+    <ClInclude Include="layer\x86\convolutiondepthwise_3x3_int8.h" />
+    <ClInclude Include="layer\x86\convolutiondepthwise_x86.h" />
+    <ClInclude Include="layer\x86\convolution_1x1.h" />
+    <ClInclude Include="layer\x86\convolution_1x1_int8.h" />
+    <ClInclude Include="layer\x86\convolution_3x3.h" />
+    <ClInclude Include="layer\x86\convolution_3x3_int8.h" />
+    <ClInclude Include="layer\x86\convolution_5x5.h" />
+    <ClInclude Include="layer\x86\convolution_5x5_int8.h" />
+    <ClInclude Include="layer\x86\convolution_7x7.h" />
+    <ClInclude Include="layer\x86\convolution_7x7_int8.h" />
+    <ClInclude Include="layer\x86\convolution_sgemm.h" />
+    <ClInclude Include="layer\x86\convolution_sgemm_int8.h" />
+    <ClInclude Include="layer\x86\convolution_x86.h" />
+    <ClInclude Include="layer\x86\sse_mathfun.h" />
     <ClInclude Include="layer\yolodetectionoutput.h" />
     <ClInclude Include="layer\yolov3detectionoutput.h" />
   </ItemGroup>

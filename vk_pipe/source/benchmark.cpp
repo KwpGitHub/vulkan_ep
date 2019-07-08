@@ -23,10 +23,10 @@
 
 #if NCNN_BENCHMARK
 #include <stdio.h>
-#include "layer/convolution.h"
-#include "layer/convolutiondepthwise.h"
-#include "layer/deconvolution.h"
-#include "layer/deconvolutiondepthwise.h"
+#include "convolution.h"
+#include "convolutiondepthwise.h"
+#include "deconvolution.h"
+#include "deconvolutiondepthwise.h"
 #endif // NCNN_BENCHMARK
 
 namespace ncnn {
