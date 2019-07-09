@@ -107,6 +107,7 @@ public:
 const GpuInfo& get_gpu_info(int device_index = get_default_gpu_index());
 
 class VkAllocator;
+
 class VulkanDevice
 {
 public:
