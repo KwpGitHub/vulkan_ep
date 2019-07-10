@@ -32,6 +32,9 @@
     <Filter Include="Kernel FIles\Header Files">
       <UniqueIdentifier>{fa8fa0e7-ad12-4ed5-8f5c-ead84a5e3dea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Layer Files">
+      <UniqueIdentifier>{352ee2d7-d75c-4aeb-80cf-afd6b8844a51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="vkFlow.cpp">
@@ -129,9 +132,6 @@
     <ClInclude Include="mat.h">
       <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils.hpp">
-      <Filter>Kernel FIles</Filter>
-    </ClInclude>
     <ClInclude Include="layer.h">
       <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
@@ -146,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="device.h">
       <Filter>Kernel FIles\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Kernel FIles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #include "mat.h"
+
 namespace backend {
 
 	void Mat::substract_mean_normalize(const float* mean_vals, const float* norm_vals)
@@ -8,7 +9,7 @@ namespace backend {
 		if (mean_vals && !norm_vals)
 		{
 			// substract mean only
-			op = backend::Bias;
+			op = new Layer();//backend::Bias;
 
 			backend::ParamDict pd;
 			pd.set(0, c);
@@ -27,7 +28,7 @@ namespace backend {
 		else if (!mean_vals && norm_vals)
 		{
 			// normalize only
-			op = backend::Scale;
+			op = new Layer();//backend::Scale;
 
 			backend::ParamDict pd;
 			pd.set(0, c);
@@ -46,7 +47,7 @@ namespace backend {
 		else if (mean_vals && norm_vals)
 		{
 			// substract mean and normalize
-			op = backend::Scale;
+			op = new Layer();//backend::Scale;
 
 			backend::ParamDict pd;
 			pd.set(0, c);
@@ -137,7 +138,7 @@ namespace backend {
 
 	void copy_make_border(const Mat& src, Mat& dst, int top, int bottom, int left, int right, int type, float v, Allocator* allocator, int num_threads)
 	{
-		backend::Layer* padding = backend::Padding;
+		backend::Layer* padding = new Layer();// backend::Padding;
 
 		backend::ParamDict pd;
 		pd.set(0, top);
@@ -160,7 +161,7 @@ namespace backend {
 
 	void copy_cut_border(const Mat& src, Mat& dst, int top, int bottom, int left, int right, Allocator* allocator, int num_threads)
 	{
-		backend::Layer* crop = backend::Crop;
+		backend::Layer* crop = new Layer();//backend::Crop;
 
 		backend::ParamDict pd;
 		pd.set(0, left);
@@ -183,7 +184,7 @@ namespace backend {
 
 	void resize_bilinear(const Mat& src, Mat& dst, int w, int h, Allocator* allocator, int num_threads)
 	{
-		backend::Layer* interp = backend::Interp);
+		backend::Layer* interp = new Layer();//backend::Interp);
 
 		backend::ParamDict pd;
 		pd.set(0, 2);
@@ -203,7 +204,7 @@ namespace backend {
 
 	void resize_bicubic(const Mat& src, Mat& dst, int w, int h, Allocator* allocator, int num_threads)
 	{
-		backend::Layer* interp = backend::Interps;
+		backend::Layer* interp = new Layer();//backend::Interps;
 
 		backend::ParamDict pd;
 		pd.set(0, 3);
@@ -223,7 +224,7 @@ namespace backend {
 
 	void convert_packing(const Mat& src, Mat& dst, int _packing, Allocator* allocator, int num_threads)
 	{
-		backend::Layer* packing = backend::Packing);
+		backend::Layer* packing = new Layer();//backend::Packing);
 
 		backend::ParamDict pd;
 		pd.set(0, _packing);
@@ -241,7 +242,7 @@ namespace backend {
 
 	void cast_float32_to_float16(const Mat& src, Mat& dst, Allocator* allocator, int num_threads)
 	{
-		backend::Layer* cast = backend::Cast);
+		backend::Layer* cast = new Layer();//backend::Cast);
 
 		backend::ParamDict pd;
 		pd.set(0, 1);
@@ -260,7 +261,7 @@ namespace backend {
 
 	void cast_float16_to_float32(const Mat& src, Mat& dst, Allocator* allocator, int num_threads)
 	{
-		backend::Layer* cast = backend::Cast);
+		backend::Layer* cast = new Layer();//backend::Cast);
 
 		backend::ParamDict pd;
 		pd.set(0, 2);

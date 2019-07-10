@@ -1,23 +1,81 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "mat.h"
+#include "device.h"
+#include "allocator.h"
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <process.h>
 #else
 #include <pthread.h>
 #endif
-#ifdef _WIN32
-
-
-#define MAX_PARAM_COUNT 20
 #include <vulkan/vulkan.h>
 #include <vector>
 
-#include "mat.h"
+
+namespace backend
+
+	class Allocator;
+	class VkAllocator;
+
+	class Option
+
+	{
+	public:
+		// default option
+
+		Option() {
+			lightmode = true;
+			num_threads = get_cpu_count();
+			blob_allocator = 0;
+			workspace_allocator = 0;
+
+			blob_vkallocator = 0;
+			workspace_vkallocator = 0;
+			staging_vkallocator = 0;
+			use_winograd_convolution = true;
+			use_sgemm_convolution = true;
+			use_int8_inference = true;
+			use_vulkan_compute = true;
+
+			use_fp16_packed = true;
+			use_fp16_storage = true;
+			use_fp16_arithmetic = false;
+			use_int8_storage = true;
+			use_int8_arithmetic = false;
+
+			// sanitize
+			if (num_threads <= 0)
+				num_threads = 1;
+		}
+
+	public:
+
+		bool lightmode;
+		int num_threads;
+
+		Allocator* blob_allocator;
+		Allocator* workspace_allocator;
+		VkAllocator* blob_vkallocator;
+		VkAllocator* workspace_vkallocator;
+		VkAllocator* staging_vkallocator;
+
+		bool use_winograd_convolution;
+		bool use_sgemm_convolution;
+		bool use_int8_inference;
+		bool use_vulkan_compute;
+		bool use_fp16_packed;
+		bool use_fp16_storage;
+		bool use_fp16_arithmetic;
+		bool use_int8_storage;
+		bool use_int8_arithmetic;
+	};
+}
+
 
 namespace backend {
+#ifdef _WIN32
 	class Mutex
 	{
 	public:
@@ -27,12 +85,9 @@ namespace backend {
 		void unlock() { ReleaseSRWLockExclusive(&srwlock); }
 	private:
 		friend class ConditionVariable;
-		// NOTE SRWLock is available from windows vista
 		SRWLOCK srwlock;
 	};
-
-
-	#else // _WIN32
+#else // _WIN32
 	class Mutex
 	{
 	public:
@@ -44,7 +99,7 @@ namespace backend {
 		friend class ConditionVariable;
 		pthread_mutex_t mutex;
 	};
-	#endif // _WIN32
+#endif // _WIN32
 
 	class MutexLockGuard
 	{
@@ -55,7 +110,7 @@ namespace backend {
 		Mutex& mutex;
 	};
 
-	#if _WIN32
+#if _WIN32
 	class ConditionVariable
 	{
 	public:
@@ -67,7 +122,7 @@ namespace backend {
 	private:
 		CONDITION_VARIABLE condvar;
 	};
-	#else // _WIN32
+#else // _WIN32
 	class ConditionVariable
 	{
 	public:
@@ -79,9 +134,9 @@ namespace backend {
 	private:
 		pthread_cond_t cond;
 	};
-	#endif // _WIN32
+#endif // _WIN32
 
-	#if _WIN32
+#if _WIN32
 	static unsigned __stdcall start_wrapper(void* args);
 	class Thread
 	{
@@ -102,7 +157,7 @@ namespace backend {
 		t->_start(t->_args);
 		return 0;
 	}
-	#else // _WIN32
+#else // _WIN32
 	class Thread
 	{
 	public:
@@ -112,7 +167,8 @@ namespace backend {
 	private:
 		pthread_t t;
 	};
-	#endif // _WIN32
+#endif // _WIN32
 
 };
+
 #endif //!UTILS_H

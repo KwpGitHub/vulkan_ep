@@ -45,7 +45,6 @@ public:
     void unlock() { ReleaseSRWLockExclusive(&srwlock); }
 private:
     friend class ConditionVariable;
-    // NOTE SRWLock is available from windows vista
     SRWLOCK srwlock;
 };
 #else // _WIN32
@@ -130,6 +129,6 @@ private:
 };
 #endif // _WIN32
 
-} // namespace ncnn
+} // namespace backend
 
-#endif // NCNN_PLATFORM_H
+#endif // !PLATFORM_H

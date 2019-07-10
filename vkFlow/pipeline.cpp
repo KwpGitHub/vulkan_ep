@@ -5,10 +5,12 @@
 
 #include "pipeline.h"
 #include "mat.h"
-#include "utils.hpp"
+#include "utils.h"
 
 
 namespace backend {
+	
+
 	Pipeline::Pipeline(const VulkanDevice* _vkdev) : vkdev(_vkdev)
 	{
 		local_shader_module = 0;
@@ -27,13 +29,14 @@ namespace backend {
 	{
 		destroy();
 	}
-
+	
 
 	int Pipeline::create(const uint32_t* spv_data, size_t spv_data_size, const char* entry_name, const std::vector<vk_specialization_type>& specializations, int binding_count, int push_constant_count)
 	{
 		local_shader_module = vkdev->compile_shader_module(spv_data, spv_data_size);
 		return create(local_shader_module, entry_name, specializations, binding_count, push_constant_count);
 	}
+
 
 	int Pipeline::create(VkShaderModule shader_module, const char* entry_name, const std::vector<vk_specialization_type>& specializations, int binding_count, int push_constant_count)
 	{

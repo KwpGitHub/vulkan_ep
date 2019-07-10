@@ -1,14 +1,16 @@
 #ifndef GPU_H
 #define GPU_H
 
+#include "utils.h"
+#include "allocator.h"
+
 #include <vulkan/vulkan.h>
 #include <vector>
 
-#include "utils.hpp"
-
 namespace backend {
+	//GPU
 
-	// instance
+		// instance
 	int create_gpu_instance();
 	void destroy_gpu_instance();
 
@@ -32,23 +34,20 @@ namespace backend {
 	class GpuInfo
 	{
 	public:
-		// vulkan physical device
 		VkPhysicalDevice physical_device;
-
-		// info
 		uint32_t api_version;
 		uint32_t driver_version;
 		uint32_t vendor_id;
 		uint32_t device_id;
 		uint8_t pipeline_cache_uuid[VK_UUID_SIZE];
 
-		// 0 = discrete gpu
-		// 1 = integrated gpu
-		// 2 = virtual gpu
-		// 3 = cpu
+		/*0 = discrete gpu
+		  1 = integrated gpu
+		  2 = virtual gpu
+		  3 = cpu
+		 */
 		int type;
 
-		// hardware capability
 		uint32_t max_shared_memory_size;
 		uint32_t max_workgroup_count[3];
 		uint32_t max_workgroup_invocations;
@@ -57,7 +56,6 @@ namespace backend {
 		size_t buffer_offset_alignment;
 		float timestamp_period;
 
-		// runtime
 		uint32_t compute_queue_family_index;
 		uint32_t transfer_queue_family_index;
 
@@ -68,7 +66,6 @@ namespace backend {
 		uint32_t device_local_memory_index;
 		uint32_t host_visible_memory_index;
 
-		// fp16 and int8 feature
 		bool support_fp16_packed;
 		bool support_fp16_storage;
 		bool support_fp16_arithmetic;
@@ -89,7 +86,6 @@ namespace backend {
 	};
 
 	const GpuInfo& get_gpu_info(int device_index = get_default_gpu_index());
-
 	class VkAllocator;
 
 	class VulkanDevice
@@ -152,7 +148,24 @@ namespace backend {
 
 	VulkanDevice* get_gpu_device(int device_index = get_default_gpu_index());
 
-} // namespace backend
+	//CPU
 
+	int get_omp_num_threads();
+	void set_omp_num_threads(int num_threads);
+	int get_omp_dynamic();
+	void set_omp_dynamic(int dynamic);
+
+	// neon = armv7 neon or aarch64 asimd
+	int cpu_support_arm_neon();
+	// vfpv4 = armv7 fp16 + fma
+	int cpu_support_arm_vfpv4();
+	// asimdhp = aarch64 asimd half precision
+	int cpu_support_arm_asimdhp();
+
+
+	int get_cpu_powersave();
+	int set_cpu_powersave(int powersave);
+
+} // namespace backend
 
 #endif // GPU_H

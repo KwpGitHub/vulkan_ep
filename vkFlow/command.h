@@ -1,13 +1,14 @@
 #ifndef COMMAND_H
 #define COMMAND_H
+#include "mat.h"
+#include "utils.h"
 
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include "utils.hpp"
-#include "pipeline.h"
-#include "mat.h"
+
 namespace backend {
+
 	class Command
 	{
 	public:
@@ -120,4 +121,5 @@ namespace backend {
 	};
 
 }
+
 #endif //!COMAND_H

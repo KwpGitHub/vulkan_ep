@@ -1,4 +1,5 @@
 #include "command.h"
+
 namespace backend {
 
 	Command::Command(const VulkanDevice* _vkdev, uint32_t _queue_family_index) : vkdev(_vkdev), queue_family_index(_queue_family_index)

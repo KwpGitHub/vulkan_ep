@@ -1,21 +1,21 @@
 #ifndef ALLOCATOR_H
 #define ALLOCATOR_H
 
+#include "utils.h"
+#include "device.h"
+
 #include <Windows.h>
 #include <stdlib.h>
 #include <list>
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include "utils.hpp"
-#endif // !ALLOCATOR_H
 #include <intrin.h>
-
-#define MALLOC_ALIGN 16
-#define NCNN_XADD(addr, delta) (int)_InterlockedExchangeAdd((long volatile*)addr, delta)
 
 
 namespace backend {
+	#define MALLOC_ALIGN 16
+	#define NCNN_XADD(addr, delta) (int)_InterlockedExchangeAdd((long volatile*)addr, delta)
 
 	static inline size_t alignSize(size_t sz, int n) { return (sz + n - 1) & -n; }
 	template<typename _Tp> static inline _Tp* alignPtr(_Tp* ptr, int n = (int)sizeof(_Tp)){ return (_Tp*)(((size_t)ptr + n - 1) & -n); }
@@ -30,7 +30,6 @@ namespace backend {
 	}
 
 
-
 	class Allocator
 	{
 	public:
@@ -38,8 +37,7 @@ namespace backend {
 		virtual void* fastMalloc(size_t size) = 0;
 		virtual void fastFree(void* ptr) = 0;
 	};
-
-
+	   
 
 	class PoolAllocator : public Allocator
 	{
@@ -59,7 +57,6 @@ namespace backend {
 	};
 
 
-
 	class UnlockedPoolAllocator : public Allocator
 	{
 	public:
@@ -77,7 +74,6 @@ namespace backend {
 	};
 
 
-
 	class VkBufferMemory
 	{
 	public:
@@ -88,7 +84,6 @@ namespace backend {
 		mutable int state;
 		int refcount;
 	};
-
 
 
 	class VkAllocator
@@ -107,8 +102,7 @@ namespace backend {
 		VkDeviceMemory allocate_memory(size_t size, uint32_t memory_type_index);
 		VkDeviceMemory allocate_dedicated_memory(size_t size, uint32_t memory_type_index, VkBuffer buffer);
 	};
-
-
+	
 
 	class VkBlobBufferAllocator : public VkAllocator
 	{
@@ -126,8 +120,7 @@ namespace backend {
 		std::vector< std::list< std::pair<size_t, size_t> > > budgets;
 		std::vector<VkBufferMemory*> buffer_blocks;
 	};
-
-
+	
 
 	class VkWeightBufferAllocator : public VkAllocator
 	{
@@ -148,8 +141,7 @@ namespace backend {
 		std::vector<VkBufferMemory*> buffer_blocks;
 		std::vector<VkBufferMemory*> dedicated_buffer_blocks;
 	};
-
-
+	
 
 	class VkStagingBufferAllocator : public VkAllocator
 	{
@@ -166,7 +158,6 @@ namespace backend {
 		unsigned int size_compare_ratio;
 		std::list<VkBufferMemory*> budgets;
 	};
-
 	   
 
 	class VkWeightStagingBufferAllocator : public VkAllocator
@@ -182,3 +173,6 @@ namespace backend {
 	};
 
 };
+
+#endif // !ALLOCATOR_H
+
