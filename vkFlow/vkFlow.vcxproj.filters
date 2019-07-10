@@ -64,6 +64,9 @@
     <ClCompile Include="command.cpp">
       <Filter>Kernel FIles\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="device.cpp">
+      <Filter>Kernel FIles\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kernel\arr\allocDevice.hpp">
@@ -141,10 +144,8 @@
     <ClInclude Include="command.h">
       <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="vkFlow.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ClInclude Include="device.h">
+      <Filter>Kernel FIles\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
