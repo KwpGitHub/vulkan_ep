@@ -921,7 +921,8 @@ int VkTransfer::submit_and_wait()
 
         copy_buffer(staging_data->buffer, staging_buffer_offset, r.vkmat.buffer(), r.vkmat.buffer_offset(), r.size);
 
-        staging_buffer_offset += alignSize(r.size, buffer_offset_alignment);
+        staging_buffer_offset += 
+			(r.size, buffer_offset_alignment);
     }
 
     end_command_buffer();

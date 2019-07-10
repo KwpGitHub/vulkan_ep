@@ -19,17 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="convolution.cpp" />
+    <ClCompile Include="allocator.cpp" />
+    <ClCompile Include="command.cpp" />
     <ClCompile Include="kernel\device.cpp" />
     <ClCompile Include="kernel\error.cpp" />
     <ClCompile Include="kernel\instance.cpp" />
     <ClCompile Include="kernel\utils.cpp" />
-    <ClCompile Include="linear.cpp" />
-    <ClCompile Include="rnn.cpp" />
+    <ClCompile Include="layer.cpp" />
+    <ClCompile Include="mat.cpp" />
+    <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="vkFlow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="convolution.h" />
+    <ClInclude Include="allocator.h" />
+    <ClInclude Include="command.h" />
     <ClInclude Include="kernel\array.hpp" />
     <ClInclude Include="kernel\arr\allocDevice.hpp" />
     <ClInclude Include="kernel\arr\arrayIter.hpp" />
@@ -49,15 +52,13 @@
     <ClInclude Include="kernel\resource.hpp" />
     <ClInclude Include="kernel\traits.hpp" />
     <ClInclude Include="kernel\utils.h" />
-    <ClInclude Include="layer.hpp" />
-    <ClInclude Include="linear.h" />
-    <ClInclude Include="rnn.h" />
+    <ClInclude Include="layer.h" />
+    <ClInclude Include="mat.h" />
+    <ClInclude Include="pipeline.h" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\convolution_layer.glsl" />
-    <None Include="shaders\linear_layer.glsl" />
-    <None Include="shaders\rnn_layer.glsl" />
+    <ResourceCompile Include="vkFlow.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{64E0F9BC-0C31-45ED-B735-51D169A748E5}</ProjectGuid>
