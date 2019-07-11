@@ -61,6 +61,9 @@
     <ClCompile Include="layers\absval.cpp">
       <Filter>Layer Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="network.cpp">
+      <Filter>Kernel FIles\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mat.h">
@@ -97,6 +100,9 @@
       <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="layer_repo.h">
+      <Filter>Kernel FIles\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="network.h">
       <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

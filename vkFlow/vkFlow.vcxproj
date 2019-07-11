@@ -25,6 +25,7 @@
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="layers\absval.cpp" />
     <ClCompile Include="mat.cpp" />
+    <ClCompile Include="network.cpp" />
     <ClCompile Include="option.cpp" />
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="vkFlow.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="layer_shader_registry.h" />
     <ClInclude Include="layer_shader_spv_data.h" />
     <ClInclude Include="mat.h" />
+    <ClInclude Include="network.h" />
     <ClInclude Include="option.h" />
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="utils.h" />
@@ -139,7 +141,7 @@
     <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>vkFlow</TargetName>
+    <TargetName>vkFlow_d</TargetName>
     <TargetExt>.pyd</TargetExt>
     <LocalDebuggerCommand>$(PythonDExe)</LocalDebuggerCommand>
     <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import vkFlow'); import vkFlow"</LocalDebuggerCommandArguments>
@@ -174,10 +176,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)\Include;C:\VulkanSDK\1.1.108.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)\include;C:\VulkanSDK\1.1.108.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -317,7 +317,7 @@ namespace backend {
 		}
 
 		VkSpecializationInfo specializationInfo;
-		specializationInfo.mapEntryCount = specializationMapEntries.size();
+		specializationInfo.mapEntryCount = (uint32_t)specializationMapEntries.size();
 		specializationInfo.pMapEntries = specializationMapEntries.data();
 		specializationInfo.dataSize = specialization_data.size() * sizeof(vk_specialization_type);
 		specializationInfo.pData = specialization_data.data();
