@@ -1,15 +1,61 @@
+#ifndef PARAM_H
+#define PARAM_H
+
+#include <stdio.h>
+#include "mat.h"
+#include "utils.h"
+
+namespace backend {
+
+#define NCNN_MAX_PARAM_COUNT 20
+
+	class ParamDict
+	{
+	public:
+
+		ParamDict();
+		int get(int id, int def) const;
+		float get(int id, float def) const;
+		Mat get(int id, const Mat& def) const;
+
+		void set(int id, int i);
+		void set(int id, float f);
+		void set(int id, const Mat& v);
+
+	protected:
+		//friend class Net;
+
+		void clear();
+		int load_param(const unsigned char*& mem);
+
+	protected:
+		struct
+		{
+			int loaded;
+			union { int i; float f; };
+			Mat v;
+		} params[NCNN_MAX_PARAM_COUNT];
+	};
+
+}
+
+
+#endif // !PARAM_H
+
+
 #ifndef LAYER_H
 #define LAYER_H
 
-#include "mat.h"
+#include <stdio.h>
+#include <string>
+#include <vector>
+#include <math.h>
 #include "utils.h"
-#include "device.h"
+#include "mat.h"
+#include "option.h"
+#include <vulkan/vulkan.h>
 #include "command.h"
 #include "pipeline.h"
-
-#include <vulkan/vulkan.h>
-
-#define NCNN_MAX_PARAM_COUNT 20
 
 namespace backend {
 	
@@ -44,35 +90,6 @@ namespace backend {
 		std::vector<int> bottoms;
 		std::vector<int> tops;
 	};
-
-	class ParamDict
-	{
-	public:
-
-		ParamDict();
-		int get(int id, int def) const;
-		float get(int id, float def) const;
-		Mat get(int id, const Mat& def) const;
-
-		void set(int id, int i);
-		void set(int id, float f);
-		void set(int id, const Mat& v);
-
-	protected:
-		friend class Net;
-
-		void clear();
-		int load_param(const unsigned char*& mem);
-
-	protected:
-		struct
-		{
-			int loaded;
-			union { int i; float f; };
-			Mat v;
-		} params[NCNN_MAX_PARAM_COUNT];
-	};
-
 
 }
 

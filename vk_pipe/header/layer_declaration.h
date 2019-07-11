@@ -9,13 +9,25 @@ class AbsVal_final : virtual public AbsVal, virtual public AbsVal_vulkan
 {
 public:
     virtual int create_pipeline(const Option& opt) {
-        { int ret = AbsVal::create_pipeline(opt); if (ret) return ret; }
-        if (opt.use_vulkan_compute) { int ret = AbsVal_vulkan::create_pipeline(opt); if (ret) return ret; }
+		{
+			int ret = AbsVal::create_pipeline(opt);
+			if (ret) return ret; 
+		}
+
+        if (opt.use_vulkan_compute) { 
+			int ret = AbsVal_vulkan::create_pipeline(opt);
+			if (ret) return ret; 
+		}
         return 0;
     }
     virtual int destroy_pipeline(const Option& opt) {
-        if (opt.use_vulkan_compute) { int ret = AbsVal_vulkan::destroy_pipeline(opt); if (ret) return ret; }
-        { int ret = AbsVal::destroy_pipeline(opt); if (ret) return ret; }
+        if (opt.use_vulkan_compute) {
+			int ret = AbsVal_vulkan::destroy_pipeline(opt); 
+			if (ret) return ret; 
+		}
+        {
+			int ret = AbsVal::destroy_pipeline(opt); if (ret) return ret; 
+		}
         return 0;
     }
 };
@@ -103,8 +115,14 @@ class Convolution_final : virtual public Convolution, virtual public Convolution
 {
 public:
     virtual int create_pipeline(const Option& opt) {
-        { int ret = Convolution::create_pipeline(opt); if (ret) return ret; }
-        if (opt.use_vulkan_compute) { int ret = Convolution_vulkan::create_pipeline(opt); if (ret) return ret; }
+		{ 
+			int ret = Convolution::create_pipeline(opt);
+			if (ret) return ret;
+		}
+        if (opt.use_vulkan_compute) {
+			int ret = Convolution_vulkan::create_pipeline(opt);
+			if (ret) return ret; 		
+		}
         return 0;
     }
     virtual int destroy_pipeline(const Option& opt) {

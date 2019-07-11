@@ -1,80 +1,15 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef UT_H
+#define UT_H
 
-#include "mat.h"
-#include "device.h"
-#include "allocator.h"
-#ifdef _WIN32
 #include <windows.h>
 #include <process.h>
-#else
-#include <pthread.h>
-#endif
+
 #include <vulkan/vulkan.h>
 #include <vector>
 
 
-namespace backend
-
-	class Allocator;
-	class VkAllocator;
-
-	class Option
-
-	{
-	public:
-		// default option
-
-		Option() {
-			lightmode = true;
-			num_threads = get_cpu_count();
-			blob_allocator = 0;
-			workspace_allocator = 0;
-
-			blob_vkallocator = 0;
-			workspace_vkallocator = 0;
-			staging_vkallocator = 0;
-			use_winograd_convolution = true;
-			use_sgemm_convolution = true;
-			use_int8_inference = true;
-			use_vulkan_compute = true;
-
-			use_fp16_packed = true;
-			use_fp16_storage = true;
-			use_fp16_arithmetic = false;
-			use_int8_storage = true;
-			use_int8_arithmetic = false;
-
-			// sanitize
-			if (num_threads <= 0)
-				num_threads = 1;
-		}
-
-	public:
-
-		bool lightmode;
-		int num_threads;
-
-		Allocator* blob_allocator;
-		Allocator* workspace_allocator;
-		VkAllocator* blob_vkallocator;
-		VkAllocator* workspace_vkallocator;
-		VkAllocator* staging_vkallocator;
-
-		bool use_winograd_convolution;
-		bool use_sgemm_convolution;
-		bool use_int8_inference;
-		bool use_vulkan_compute;
-		bool use_fp16_packed;
-		bool use_fp16_storage;
-		bool use_fp16_arithmetic;
-		bool use_int8_storage;
-		bool use_int8_arithmetic;
-	};
-}
-
-
 namespace backend {
+
 #ifdef _WIN32
 	class Mutex
 	{
@@ -169,6 +104,6 @@ namespace backend {
 	};
 #endif // _WIN32
 
-};
+}
 
 #endif //!UTILS_H

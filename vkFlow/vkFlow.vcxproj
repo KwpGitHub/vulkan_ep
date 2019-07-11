@@ -22,12 +22,10 @@
     <ClCompile Include="allocator.cpp" />
     <ClCompile Include="command.cpp" />
     <ClCompile Include="device.cpp" />
-    <ClCompile Include="kernel\device.cpp" />
-    <ClCompile Include="kernel\error.cpp" />
-    <ClCompile Include="kernel\instance.cpp" />
-    <ClCompile Include="kernel\utils.cpp" />
     <ClCompile Include="layer.cpp" />
+    <ClCompile Include="layers\absval.cpp" />
     <ClCompile Include="mat.cpp" />
+    <ClCompile Include="option.cpp" />
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="vkFlow.cpp" />
   </ItemGroup>
@@ -35,27 +33,13 @@
     <ClInclude Include="allocator.h" />
     <ClInclude Include="command.h" />
     <ClInclude Include="device.h" />
-    <ClInclude Include="kernel\array.hpp" />
-    <ClInclude Include="kernel\arr\allocDevice.hpp" />
-    <ClInclude Include="kernel\arr\arrayIter.hpp" />
-    <ClInclude Include="kernel\arr\arrayProperties.h" />
-    <ClInclude Include="kernel\arr\arrayUtils.h" />
-    <ClInclude Include="kernel\arr\arrayView.hpp" />
-    <ClInclude Include="kernel\arr\basicArray.hpp" />
-    <ClInclude Include="kernel\arr\copy_async.hpp" />
-    <ClInclude Include="kernel\arr\deviceArray.hpp" />
-    <ClInclude Include="kernel\arr\hostArray.hpp" />
-    <ClInclude Include="kernel\delayed.hpp" />
-    <ClInclude Include="kernel\device.h" />
-    <ClInclude Include="kernel\error.h" />
-    <ClInclude Include="kernel\instance.h" />
-    <ClInclude Include="kernel\kernel.h" />
-    <ClInclude Include="kernel\program.hpp" />
-    <ClInclude Include="kernel\resource.hpp" />
-    <ClInclude Include="kernel\traits.hpp" />
-    <ClInclude Include="kernel\utils.h" />
     <ClInclude Include="layer.h" />
+    <ClInclude Include="layers\absval.h" />
+    <ClInclude Include="layer_repo.h" />
+    <ClInclude Include="layer_shader_registry.h" />
+    <ClInclude Include="layer_shader_spv_data.h" />
     <ClInclude Include="mat.h" />
+    <ClInclude Include="option.h" />
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
@@ -190,7 +174,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;C:\VulkanSDK\1.1.108.0\Include;C:\Users\monish\source\repos\vkFlow\external\onnx\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)\Include;C:\VulkanSDK\1.1.108.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp14</LanguageStandard>

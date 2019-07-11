@@ -136,7 +136,6 @@ int Net::load_param(FILE* fp)
         return -1;
     }
 
-    // parse
     int layer_count = 0;
     int blob_count = 0;
     nbr = fscanf(fp, "%d %d", &layer_count, &blob_count);
@@ -153,8 +152,6 @@ int Net::load_param(FILE* fp)
     if (opt.use_vulkan_compute)
     {
         if (!vkdev) vkdev = get_gpu_device();
-
-        // sanitize use options
         if (!vkdev->info.support_fp16_packed) opt.use_fp16_packed = false;
         if (!vkdev->info.support_fp16_storage) opt.use_fp16_storage = false;
         if (!vkdev->info.support_fp16_arithmetic) opt.use_fp16_arithmetic = false;
@@ -199,7 +196,6 @@ int Net::load_param(FILE* fp)
 
         layer->type = std::string(layer_type);
         layer->name = std::string(layer_name);
-//         fprintf(stderr, "new layer %d %s\n", i, layer_name);
 
         layer->bottoms.resize(bottom_count);
 
@@ -220,7 +216,6 @@ int Net::load_param(FILE* fp)
                 bottom_blob_index = blob_index;
 
                 blob.name = std::string(bottom_name);
-//                 fprintf(stderr, "new blob %s\n", bottom_name);
 
                 blob_index++;
             }
@@ -245,8 +240,6 @@ int Net::load_param(FILE* fp)
             }
 
             blob.name = std::string(blob_name);
-//             fprintf(stderr, "new blob %s\n", blob_name);
-
             blob.producer = i;
 
             layer->tops[j] = blob_index;

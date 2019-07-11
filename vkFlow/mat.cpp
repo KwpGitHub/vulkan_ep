@@ -1,4 +1,7 @@
 #include "mat.h"
+#include <math.h>
+#include "device.h"
+#include "layer.h"
 
 namespace backend {
 

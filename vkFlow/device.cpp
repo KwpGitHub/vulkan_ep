@@ -1,28 +1,30 @@
+#include "device.h"
+
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
 #include <vector>
 
-#include "device.h"
 #include "mat.h"
-
 
 #ifdef _OPENMP
 #include <omp.h>
 #endif
 
+//GPU
 #define ENABLE_VALIDATION_LAYER 0
 
 namespace backend {
 
+	
 	static VkInstance g_instance = 0;
 	static int g_gpu_count = 0;
 	static int g_default_gpu_index = -1;
-#define NCNN_MAX_GPU_COUNT 8
-	static GpuInfo g_gpu_infos[NCNN_MAX_GPU_COUNT];
+	#define MAX_GPU_COUNT 8
+	static GpuInfo g_gpu_infos[MAX_GPU_COUNT];
 	static Mutex g_default_vkdev_lock;
-	static VulkanDevice* g_default_vkdev[NCNN_MAX_GPU_COUNT] = { 0 };
+	static VulkanDevice* g_default_vkdev[MAX_GPU_COUNT] = { 0 };
 
 	int support_VK_KHR_get_physical_device_properties2 = 0;
 	int support_VK_EXT_debug_utils = 0;
@@ -59,7 +61,7 @@ namespace backend {
 		VkDebugUtilsMessageSeverityFlagBitsEXT,
 		VkDebugUtilsMessageTypeFlagsEXT,
 		const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-		void* /*pUserData*/)	
+		void* /*pUserData*/)
 	{
 		return VK_FALSE;
 	}
@@ -127,7 +129,7 @@ namespace backend {
 				return i;
 			}
 		}
-		
+
 		uint32_t compute_queue_index = find_device_compute_queue(queueFamilyProperties);
 		if (compute_queue_index != (uint32_t)-1)
 		{
@@ -339,9 +341,9 @@ namespace backend {
 		instanceCreateInfo.pNext = 0;
 		instanceCreateInfo.flags = 0;
 		instanceCreateInfo.pApplicationInfo = &applicationInfo;
-		instanceCreateInfo.enabledLayerCount = enabledLayers.size();
+		instanceCreateInfo.enabledLayerCount = (uint32_t)enabledLayers.size();
 		instanceCreateInfo.ppEnabledLayerNames = enabledLayers.data();
-		instanceCreateInfo.enabledExtensionCount = enabledExtensions.size();
+		instanceCreateInfo.enabledExtensionCount = (uint32_t)enabledExtensions.size();
 		instanceCreateInfo.ppEnabledExtensionNames = enabledExtensions.data();
 
 		ret = vkCreateInstance(&instanceCreateInfo, 0, &g_instance);
@@ -379,8 +381,8 @@ namespace backend {
 			return -1;
 		}
 
-		if (physicalDeviceCount > NCNN_MAX_GPU_COUNT)
-			physicalDeviceCount = NCNN_MAX_GPU_COUNT;
+		if (physicalDeviceCount > MAX_GPU_COUNT)
+			physicalDeviceCount = MAX_GPU_COUNT;
 
 		std::vector<VkPhysicalDevice> physicalDevices(physicalDeviceCount);
 
@@ -398,7 +400,6 @@ namespace backend {
 			const VkPhysicalDevice& physicalDevice = physicalDevices[i];
 			GpuInfo& gpu_info = g_gpu_infos[gpu_info_index];
 
-			// device type
 			VkPhysicalDeviceProperties physicalDeviceProperties;
 			vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
 
@@ -418,7 +419,6 @@ namespace backend {
 
 			gpu_info.physical_device = physicalDevice;
 
-			// info
 			gpu_info.api_version = physicalDeviceProperties.apiVersion;
 			gpu_info.driver_version = physicalDeviceProperties.driverVersion;
 			gpu_info.vendor_id = physicalDeviceProperties.vendorID;
@@ -436,7 +436,6 @@ namespace backend {
 			else
 				gpu_info.type = -1;
 
-			// device capability
 			gpu_info.max_shared_memory_size = physicalDeviceProperties.limits.maxComputeSharedMemorySize;
 			gpu_info.max_workgroup_count[0] = physicalDeviceProperties.limits.maxComputeWorkGroupCount[0];
 			gpu_info.max_workgroup_count[1] = physicalDeviceProperties.limits.maxComputeWorkGroupCount[1];
@@ -506,7 +505,7 @@ namespace backend {
 				return -1;
 			}
 
-	
+
 			gpu_info.support_VK_KHR_8bit_storage = 0;
 			gpu_info.support_VK_KHR_16bit_storage = 0;
 			gpu_info.support_VK_KHR_bind_memory2 = 0;
@@ -520,7 +519,7 @@ namespace backend {
 			for (uint32_t j = 0; j < deviceExtensionPropertyCount; j++)
 			{
 				const VkExtensionProperties& exp = deviceExtensionProperties[j];
-		
+
 				if (strcmp(exp.extensionName, "VK_KHR_8bit_storage") == 0)
 					gpu_info.support_VK_KHR_8bit_storage = exp.specVersion;
 				else if (strcmp(exp.extensionName, "VK_KHR_16bit_storage") == 0)
@@ -631,7 +630,7 @@ namespace backend {
 
 	void destroy_gpu_instance()
 	{
-		for (int i = 0; i < NCNN_MAX_GPU_COUNT; i++)
+		for (int i = 0; i < MAX_GPU_COUNT; i++)
 		{
 			delete g_default_vkdev[i];
 			g_default_vkdev[i] = 0;
@@ -669,7 +668,10 @@ namespace backend {
 		size_t spv_data_size;
 	};
 
-
+	#include "layer_shader_spv_data.h"
+	static const layer_shader_registry_entry layer_shader_registry[] = {
+		#include "layer_shader_registry.h"
+	};
 	static const int layer_shader_registry_entry_count = sizeof(layer_shader_registry) / sizeof(layer_shader_registry_entry);
 
 	VulkanDevice::VulkanDevice(int device_index) : info(g_gpu_infos[device_index])
@@ -766,7 +768,7 @@ namespace backend {
 		deviceCreateInfo.pQueueCreateInfos = deviceQueueCreateInfos;
 		deviceCreateInfo.enabledLayerCount = 0;
 		deviceCreateInfo.ppEnabledLayerNames = 0;
-		deviceCreateInfo.enabledExtensionCount = enabledExtensions.size();
+		deviceCreateInfo.enabledExtensionCount = (uint32_t)enabledExtensions.size();
 		deviceCreateInfo.ppEnabledExtensionNames = enabledExtensions.data();
 		deviceCreateInfo.pEnabledFeatures = 0;
 
@@ -813,6 +815,8 @@ namespace backend {
 
 		vkDestroyDevice(device, 0);
 	}
+
+
 
 	VkShaderModule VulkanDevice::get_shader_module(const char* name) const
 	{
@@ -953,7 +957,7 @@ namespace backend {
 
 	static inline bool string_ends_with_fp16p(const char* name)
 	{
-		int len = strlen(name);
+		size_t len = strlen(name);
 		if (len < 6)
 			return false;
 
@@ -962,7 +966,7 @@ namespace backend {
 
 	static inline bool string_ends_with_fp16s(const char* name)
 	{
-		int len = strlen(name);
+		size_t len = strlen(name);
 		if (len < 6)
 			return false;
 
@@ -971,7 +975,7 @@ namespace backend {
 
 	static inline bool string_ends_with_fp16a(const char* name)
 	{
-		int len = strlen(name);
+		size_t len = strlen(name);
 		if (len < 6)
 			return false;
 
@@ -1055,163 +1059,32 @@ namespace backend {
 
 		return 0;
 	}
+}
 
-	VulkanDevice* get_gpu_device(int device_index)
-	{
-		if (device_index < 0 || device_index >= g_gpu_count)
-			return 0;
 
-		MutexLockGuard lock(g_default_vkdev_lock);
+//CPU
+#include <stdio.h>
+#include <string.h>
+#include <vector>
 
-		if (!g_default_vkdev[device_index])
-			g_default_vkdev[device_index] = new VulkanDevice(device_index);
-
-		return g_default_vkdev[device_index];
-	}
-
-	
-	static int g_cpucount = get_cpucount();
-
-	int get_cpu_count()
-	{
-		return g_cpucount;
-	}
-	static int g_powersave = 0;
-
-	int get_cpu_powersave()
-	{
-		return g_powersave;
-	}
-
+namespace backend{
 
 	static int get_cpucount()
 	{
-#ifdef __ANDROID__
-		// get cpu count from /proc/cpuinfo
-		FILE* fp = fopen("/proc/cpuinfo", "rb");
-		if (!fp)
-			return 1;
 
-		int count = 0;
-		char line[1024];
-		while (!feof(fp))
-		{
-			char* s = fgets(line, 1024, fp);
-			if (!s)
-				break;
-
-			if (memcmp(line, "processor", 9) == 0)
-			{
-				count++;
-			}
-		}
-
-		fclose(fp);
-
-		if (count < 1)
-			count = 1;
-
-		return count;
-#elif __IOS__
-		int count = 0;
-		size_t len = sizeof(count);
-		sysctlbyname("hw.ncpu", &count, &len, NULL, 0);
-
-		if (count < 1)
-			count = 1;
-
-		return count;
-#else
 #ifdef _OPENMP
 		return omp_get_max_threads();
 #else
 		return 4;
 #endif // _OPENMP
-#endif
+
 	}
 
 
 	int set_cpu_powersave(int powersave)
 	{
-#ifdef __ANDROID__
-		static std::vector<int> sorted_cpuids;
-		static int little_cluster_offset = 0;
-
-		if (sorted_cpuids.empty())
-		{
-			// 0 ~ g_cpucount
-			sorted_cpuids.resize(g_cpucount);
-			for (int i = 0; i < g_cpucount; i++)
-			{
-				sorted_cpuids[i] = i;
-			}
-
-			// descent sort by max frequency
-			sort_cpuid_by_max_frequency(sorted_cpuids, &little_cluster_offset);
-		}
-
-		if (little_cluster_offset == 0 && powersave != 0)
-		{
-			powersave = 0;
-			fprintf(stderr, "SMP cpu powersave not supported\n");
-		}
-
-		// prepare affinity cpuid
-		std::vector<int> cpuids;
-		if (powersave == 0)
-		{
-			cpuids = sorted_cpuids;
-		}
-		else if (powersave == 1)
-		{
-			cpuids = std::vector<int>(sorted_cpuids.begin() + little_cluster_offset, sorted_cpuids.end());
-		}
-		else if (powersave == 2)
-		{
-			cpuids = std::vector<int>(sorted_cpuids.begin(), sorted_cpuids.begin() + little_cluster_offset);
-		}
-		else
-		{
-			fprintf(stderr, "powersave %d not supported\n", powersave);
-			return -1;
-		}
-
-#ifdef _OPENMP
-		// set affinity for each thread
-		int num_threads = cpuids.size();
-		omp_set_num_threads(num_threads);
-		std::vector<int> ssarets(num_threads, 0);
-#pragma omp parallel for
-		for (int i = 0; i < num_threads; i++)
-		{
-			ssarets[i] = set_sched_affinity(cpuids);
-		}
-		for (int i = 0; i < num_threads; i++)
-		{
-			if (ssarets[i] != 0)
-			{
-				return -1;
-			}
-		}
-#else
-		int ssaret = set_sched_affinity(cpuids);
-		if (ssaret != 0)
-		{
-			return -1;
-		}
-#endif
-
-		g_powersave = powersave;
-
+		//g_powersave = powersave;
 		return 0;
-#elif __IOS__
-		// thread affinity not supported on ios
-		return -1;
-#else
-		// TODO
-		(void)powersave;  // Avoid unused parameter warning.
-		return -1;
-#endif
 	}
 
 	int get_omp_num_threads()
@@ -1249,5 +1122,34 @@ namespace backend {
 		(void)dynamic;
 #endif
 	}
+	VulkanDevice* get_gpu_device(int device_index)
+	{
+		if (device_index < 0 || device_index >= g_gpu_count)
+			return 0;
+
+		MutexLockGuard lock(g_default_vkdev_lock);
+
+		if (!g_default_vkdev[device_index])
+			g_default_vkdev[device_index] = new VulkanDevice(device_index);
+
+		return g_default_vkdev[device_index];
+	}
+
+	
+	static int g_cpucount = get_cpucount();
+
+	int get_cpu_count()
+	{
+		return g_cpucount;
+	}
+	static int g_powersave = 0;
+
+	int get_cpu_powersave()
+	{
+		return g_powersave;
+	}
+
+
+
 
 } //namespace backend

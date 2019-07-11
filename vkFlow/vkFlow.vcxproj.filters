@@ -17,15 +17,6 @@
     <Filter Include="Shader Files">
       <UniqueIdentifier>{473686e0-1da6-46b1-ab58-941e26068580}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pythonbind FIes">
-      <UniqueIdentifier>{f44d3d56-4ffd-42d5-9717-f4646ea1c444}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Kernel FIles\vuh">
-      <UniqueIdentifier>{a2ce713a-85a9-44f3-90ed-0f572e521e33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Kernel FIles\vuh\arr">
-      <UniqueIdentifier>{d89a20d9-9390-41a4-a2f9-9fd4eb5831ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Kernel FIles\Source Files">
       <UniqueIdentifier>{13d9bf7e-11eb-4ce3-876d-35eefc90bff6}</UniqueIdentifier>
     </Filter>
@@ -35,23 +26,14 @@
     <Filter Include="Layer Files">
       <UniqueIdentifier>{352ee2d7-d75c-4aeb-80cf-afd6b8844a51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Layer Files\Header Files">
+      <UniqueIdentifier>{1f2db696-2c5e-410f-a9ca-85a10fb8af7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Layer Files\Source Files">
+      <UniqueIdentifier>{a2920112-05f2-43b1-bbda-5f15f065e448}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="vkFlow.cpp">
-      <Filter>Pythonbind FIes</Filter>
-    </ClCompile>
-    <ClCompile Include="kernel\device.cpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClCompile>
-    <ClCompile Include="kernel\error.cpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClCompile>
-    <ClCompile Include="kernel\instance.cpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClCompile>
-    <ClCompile Include="kernel\utils.cpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClCompile>
     <ClCompile Include="mat.cpp">
       <Filter>Kernel FIles\Source Files</Filter>
     </ClCompile>
@@ -70,65 +52,17 @@
     <ClCompile Include="device.cpp">
       <Filter>Kernel FIles\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vkFlow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="option.cpp">
+      <Filter>Kernel FIles\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\absval.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="kernel\arr\allocDevice.hpp">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\arr\arrayIter.hpp">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\arr\arrayProperties.h">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\arr\arrayUtils.h">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\arr\arrayView.hpp">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\arr\basicArray.hpp">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\arr\copy_async.hpp">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\arr\deviceArray.hpp">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\arr\hostArray.hpp">
-      <Filter>Kernel FIles\vuh\arr</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\array.hpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\delayed.hpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\device.h">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\error.h">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\instance.h">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\kernel.h">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\program.hpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\resource.hpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\traits.hpp">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
-    <ClInclude Include="kernel\utils.h">
-      <Filter>Kernel FIles\vuh</Filter>
-    </ClInclude>
     <ClInclude Include="mat.h">
       <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
@@ -149,6 +83,21 @@
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Kernel FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="option.h">
+      <Filter>Kernel FIles\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\absval.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_shader_registry.h">
+      <Filter>Kernel FIles\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_shader_spv_data.h">
+      <Filter>Kernel FIles\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_repo.h">
+      <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,6 +12,8 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
+#define NCNN_VULKAN 1
+
 #include "pipeline.h"
 #include <stdio.h>
 #include <math.h>

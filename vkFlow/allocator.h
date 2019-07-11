@@ -1,20 +1,20 @@
 #ifndef ALLOCATOR_H
 #define ALLOCATOR_H
 
-#include "utils.h"
-#include "device.h"
-
 #include <Windows.h>
 #include <stdlib.h>
 #include <list>
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include <intrin.h>
-
+#include "utils.h"
+#include "device.h"
 
 namespace backend {
+	
 	#define MALLOC_ALIGN 16
+
+	#include <intrin.h>
 	#define NCNN_XADD(addr, delta) (int)_InterlockedExchangeAdd((long volatile*)addr, delta)
 
 	static inline size_t alignSize(size_t sz, int n) { return (sz + n - 1) & -n; }

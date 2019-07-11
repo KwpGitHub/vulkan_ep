@@ -1,4 +1,6 @@
 #include "command.h"
+#include <stdio.h>
+#include "option.h"
 
 namespace backend {
 
@@ -239,7 +241,7 @@ namespace backend {
 
 	void VkCompute::record_pipeline(const Pipeline* pipeline, const std::vector<VkMat>& bindings, const std::vector<vk_constant_type>& constants, const VkMat& m)
 	{
-		const int binding_count = bindings.size();
+		const int binding_count = (const int)bindings.size();
 		for (int i = 0; i < binding_count; i++)
 		{
 			if (bindings[i].data->state == 4) continue;
@@ -271,7 +273,7 @@ namespace backend {
 
 	void VkCompute::record_update_bindings(VkPipelineLayout pipeline_layout, VkDescriptorSetLayout descriptorset_layout, VkDescriptorUpdateTemplateKHR descriptor_update_template, const std::vector<VkMat>& bindings)
 	{
-		const int binding_count = bindings.size();
+		const int binding_count = (const int)bindings.size();
 
 		if (binding_count == 0)
 			return;
@@ -546,7 +548,7 @@ namespace backend {
 
 	void VkCompute::copy_buffer_regions(VkBuffer src, VkBuffer dst, const std::vector<VkBufferCopy>& regions)
 	{
-		vkCmdCopyBuffer(command_buffer, src, dst, regions.size(), regions.data());
+		vkCmdCopyBuffer(command_buffer, src, dst, (uint32_t)regions.size(), regions.data());
 	}
 
 	void VkCompute::bind_pipeline(VkPipeline pipeline)
@@ -566,7 +568,7 @@ namespace backend {
 
 	void VkCompute::push_constants(VkPipelineLayout pipeline_layout, const std::vector<vk_constant_type>& constants)
 	{
-		vkCmdPushConstants(command_buffer, pipeline_layout, VK_SHADER_STAGE_COMPUTE_BIT, 0, constants.size() * sizeof(vk_constant_type), constants.data());
+		vkCmdPushConstants(command_buffer, pipeline_layout, VK_SHADER_STAGE_COMPUTE_BIT, 0, (uint32_t)constants.size() * sizeof(vk_constant_type), constants.data());
 	}
 
 	void VkCompute::dispatch(const uint32_t* group_count_xyz)
@@ -695,13 +697,13 @@ namespace backend {
 	{
 		if (delayed_records.empty()) return 0;
 
-		int transfer_count = delayed_records.size();
+		int transfer_count = (int)delayed_records.size();
 
 		size_t staging_buffer_size = 0;
 		for (int i = 0; i < transfer_count; i++)
 		{
 			const record_type& r = delayed_records[i];
-			staging_buffer_size += alignSize(r.size, buffer_offset_alignment);
+			staging_buffer_size += alignSize(r.size, (int)buffer_offset_alignment);
 		}
 
 		staging_data = staging_vkallocator->fastMalloc(staging_buffer_size);
@@ -710,7 +712,7 @@ namespace backend {
 		{
 			const record_type& r = delayed_records[i];
 			memcpy((unsigned char*)staging_data->mapped_ptr + mapped_ptr_offset, r.mat.data, r.size);
-			mapped_ptr_offset += alignSize(r.size, buffer_offset_alignment);
+			mapped_ptr_offset += alignSize(r.size, (int)buffer_offset_alignment);
 		}
 
 		begin_command_buffer();
@@ -720,7 +722,7 @@ namespace backend {
 		{
 			const record_type& r = delayed_records[i];
 			copy_buffer(staging_data->buffer, staging_buffer_offset, r.vkmat.buffer(), r.vkmat.buffer_offset(), r.size);
-			staging_buffer_offset += (r.size, buffer_offset_alignment);
+			staging_buffer_offset += (r.size, (int)buffer_offset_alignment);
 		}
 
 		end_command_buffer();
@@ -746,7 +748,7 @@ namespace backend {
 
 	void VkTransfer::copy_buffer_regions(VkBuffer src, VkBuffer dst, const std::vector<VkBufferCopy>& regions)
 	{
-		vkCmdCopyBuffer(command_buffer, src, dst, regions.size(), regions.data());
+		vkCmdCopyBuffer(command_buffer, src, dst, (uint32_t)regions.size(), regions.data());
 	}
 
 

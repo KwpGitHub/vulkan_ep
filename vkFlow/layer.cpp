@@ -1,5 +1,11 @@
 #include "layer.h"
-#include "utils.h"
+
+#include <math.h>
+#include <stdio.h>
+#include <string>
+#include <algorithm>
+#include "device.h"
+
 
 namespace backend {
 
@@ -16,17 +22,17 @@ namespace backend {
 
 	Layer::~Layer()	{	}
 
-	int Layer::load_param(const ParamDict& /*pd*/)
+	int Layer::load_param(const ParamDict& pd)
 	{
 		return 0;
 	}
 
-	int Layer::create_pipeline(const Option& /*opt*/)
+	int Layer::create_pipeline(const Option& opt)
 	{
 		return 0;
 	}
 
-	int Layer::destroy_pipeline(const Option& /*opt*/)
+	int Layer::destroy_pipeline(const Option& opt)
 	{
 		return 0;
 	}
@@ -60,18 +66,18 @@ namespace backend {
 		return forward_inplace(top_blob, opt);
 	}
 
-	int Layer::forward_inplace(std::vector<Mat>& /*bottom_top_blobs*/, const Option& /*opt*/) const
+	int Layer::forward_inplace(std::vector<Mat>& bottom_top_blobs, const Option& opt) const
 	{
 		return -1;
 	}
 
-	int Layer::forward_inplace(Mat& /*bottom_top_blob*/, const Option& /*opt*/) const
+	int Layer::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
 	{
 		return -1;
 	}
 
 
-	int Layer::upload_model(VkTransfer& /*cmd*/, const Option& /*opt*/)
+	int Layer::upload_model(VkTransfer& cmd, const Option& opt)
 	{
 		return 0;
 	}
@@ -108,12 +114,12 @@ namespace backend {
 		return forward_inplace(top_blob, cmd, opt);
 	}
 
-	int Layer::forward_inplace(std::vector<VkMat>& /*bottom_top_blobs*/, VkCompute& /*cmd*/, const Option& /*opt*/) const
+	int Layer::forward_inplace(std::vector<VkMat>& bottom_top_blobs, VkCompute& cmd, const Option& opt) const
 	{
 		return -1;
 	}
 
-	int Layer::forward_inplace(VkMat& /*bottom_top_blob*/, VkCompute& /*cmd*/, const Option& /*opt*/) const
+	int Layer::forward_inplace(VkMat& bottom_top_blob, VkCompute& cmd, const Option& opt) const
 	{
 		return -1;
 	}

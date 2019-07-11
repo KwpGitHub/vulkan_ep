@@ -5,6 +5,7 @@
 #include "utils.h"
 
 namespace backend {
+
 	Allocator::~Allocator(){}
 
 	PoolAllocator::PoolAllocator() {

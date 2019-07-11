@@ -1,11 +1,11 @@
 #ifndef COMMAND_H
 #define COMMAND_H
-#include "mat.h"
-#include "utils.h"
 
+#include "pipeline.h"
 #include <vector>
 #include <vulkan/vulkan.h>
-
+#include "mat.h"
+#include "utils.h"
 
 namespace backend {
 
@@ -24,12 +24,9 @@ namespace backend {
 
 		const VulkanDevice* vkdev;
 		uint32_t queue_family_index;
-
 		VkCommandPool command_pool;
 		VkCommandBuffer command_buffer;
-
 		VkFence fence;
-
 	};
 
 
@@ -44,7 +41,7 @@ namespace backend {
 		void record_copy_region(const VkMat& src, const VkMat& dst, const VkBufferCopy& region);
 		void record_copy_regions(const VkMat& src, const VkMat& dst, const std::vector<VkBufferCopy>& regions);
 		void record_pipeline(const Pipeline* pipeline, const std::vector<VkMat>& bindings, const std::vector<vk_constant_type>& constants, const VkMat& m);
-		void record_write_timestamp(uint32_t query);
+		//void record_write_timestamp(uint32_t query);
 		int submit_and_wait();
 		int reset();
 

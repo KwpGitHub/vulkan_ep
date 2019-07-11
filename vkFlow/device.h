@@ -2,23 +2,18 @@
 #define GPU_H
 
 #include "utils.h"
-#include "allocator.h"
 
 #include <vulkan/vulkan.h>
 #include <vector>
 
 namespace backend {
 	//GPU
-
-		// instance
 	int create_gpu_instance();
 	void destroy_gpu_instance();
 
-	// instance extension capability
 	extern int support_VK_KHR_get_physical_device_properties2;
 	extern int support_VK_EXT_debug_utils;
 
-	// VK_KHR_get_physical_device_properties2
 	extern PFN_vkGetPhysicalDeviceFeatures2KHR vkGetPhysicalDeviceFeatures2KHR;
 	extern PFN_vkGetPhysicalDeviceProperties2KHR vkGetPhysicalDeviceProperties2KHR;
 	extern PFN_vkGetPhysicalDeviceFormatProperties2KHR vkGetPhysicalDeviceFormatProperties2KHR;
@@ -27,8 +22,6 @@ namespace backend {
 	extern PFN_vkGetPhysicalDeviceMemoryProperties2KHR vkGetPhysicalDeviceMemoryProperties2KHR;
 	extern PFN_vkGetPhysicalDeviceSparseImageFormatProperties2KHR vkGetPhysicalDeviceSparseImageFormatProperties2KHR;
 
-	// get info
-	int get_gpu_count();
 	int get_default_gpu_index();
 
 	class GpuInfo
@@ -72,7 +65,6 @@ namespace backend {
 		bool support_int8_storage;
 		bool support_int8_arithmetic;
 
-		// extension capability
 		int support_VK_KHR_8bit_storage;
 		int support_VK_KHR_16bit_storage;
 		int support_VK_KHR_bind_memory2;
@@ -86,9 +78,10 @@ namespace backend {
 	};
 
 	const GpuInfo& get_gpu_info(int device_index = get_default_gpu_index());
+
 	class VkAllocator;
 
-	class VulkanDevice
+	class VulkanDevice 
 	{
 	public:
 		VulkanDevice(int device_index = get_default_gpu_index());
@@ -121,51 +114,45 @@ namespace backend {
 		PFN_vkCmdPushDescriptorSetKHR vkCmdPushDescriptorSetKHR;
 
 	protected:
-		// shader management
 		int create_shader_module();
 		void destroy_shader_module();
 
-		// device extension
 		int init_device_extension();
 
 	private:
 		VkDevice device;
 		std::vector<VkShaderModule> shader_modules;
 
-		// hardware queue
 		mutable std::vector<VkQueue> compute_queues;
 		mutable std::vector<VkQueue> transfer_queues;
 		mutable Mutex queue_lock;
 
-		// default blob allocator for each queue
 		mutable std::vector<VkAllocator*> blob_allocators;
 		mutable Mutex blob_allocator_lock;
-
-		// default staging allocator for each queue
 		mutable std::vector<VkAllocator*> staging_allocators;
 		mutable Mutex staging_allocator_lock;
 	};
 
 	VulkanDevice* get_gpu_device(int device_index = get_default_gpu_index());
 
-	//CPU
+} // namespace backend
 
+#endif // !GPU_H
+
+#ifndef CPU_H
+#define CPU_H
+namespace backend {
+
+	//CPU
+	int get_cpu_count();
+	int get_default_gpu_index();
 	int get_omp_num_threads();
 	void set_omp_num_threads(int num_threads);
 	int get_omp_dynamic();
 	void set_omp_dynamic(int dynamic);
 
-	// neon = armv7 neon or aarch64 asimd
-	int cpu_support_arm_neon();
-	// vfpv4 = armv7 fp16 + fma
-	int cpu_support_arm_vfpv4();
-	// asimdhp = aarch64 asimd half precision
-	int cpu_support_arm_asimdhp();
-
-
 	int get_cpu_powersave();
 	int set_cpu_powersave(int powersave);
 
-} // namespace backend
-
-#endif // GPU_H
+}
+#endif //!CPU_H

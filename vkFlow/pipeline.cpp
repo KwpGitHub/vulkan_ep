@@ -1,16 +1,14 @@
+#include "pipeline.h"
+
 #include <stdio.h>
 #include <math.h>
 #include <algorithm>
 #include <string>
-
-#include "pipeline.h"
 #include "mat.h"
-#include "utils.h"
-
+#include "option.h"
 
 namespace backend {
 	
-
 	Pipeline::Pipeline(const VulkanDevice* _vkdev) : vkdev(_vkdev)
 	{
 		local_shader_module = 0;
