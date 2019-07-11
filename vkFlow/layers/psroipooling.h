@@ -1,40 +1,29 @@
-// Tencent is pleased to support the open source community by making ncnn available.
-//
-// Copyright (C) 2018 THL A29 Limited, a Tencent company. All rights reserved.
-//
-// Licensed under the BSD 3-Clause License (the "License"); you may not use this file except
-// in compliance with the License. You may obtain a copy of the License at
-//
-// https://opensource.org/licenses/BSD-3-Clause
-//
-// Unless required by applicable law or agreed to in writing, software distributed
-// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-// CONDITIONS OF ANY KIND, either express or implied. See the License for the
-// specific language governing permissions and limitations under the License.
+#ifndef PSROIPOOLING_LAYER_H
+#define PSROIPOOLING_LAYER_H
+#include "../layer.h"
 
-#ifndef LAYER_PSROIPOOLING_H
-#define LAYER_PSROIPOOLING_H
+namespace backend {
+	namespace CPU {
+		class PsroiPooling : public Layer {
+		public:
+			PsroiPooling();
+			virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
 
-#include "layer.h"
+			int pooleed_width, pooled_height;
+			float spatial_scale;
+			int output_dim;
+		};
+	}
+	namespace GPU {
+		class PsroiPooling : virtual public CPU::PsroiPooling {
 
-namespace ncnn {
+		public:
+			PsroiPooling();
 
-class PSROIPooling : public Layer
-{
-public:
-    PSROIPooling();
 
-    virtual int load_param(const ParamDict& pd);
+		};
+	}
+}
 
-    virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
+#endif
 
-public:
-    int pooled_width;
-    int pooled_height;
-    float spatial_scale;
-    int output_dim;
-};
-
-} // namespace ncnn
-
-#endif // LAYER_PSROIPOOLING_H

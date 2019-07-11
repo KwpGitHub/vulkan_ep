@@ -1,39 +1,29 @@
-// Tencent is pleased to support the open source community by making ncnn available.
-//
-// Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
-//
-// Licensed under the BSD 3-Clause License (the "License"); you may not use this file except
-// in compliance with the License. You may obtain a copy of the License at
-//
-// https://opensource.org/licenses/BSD-3-Clause
-//
-// Unless required by applicable law or agreed to in writing, software distributed
-// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-// CONDITIONS OF ANY KIND, either express or implied. See the License for the
-// specific language governing permissions and limitations under the License.
+#ifndef MVN_LAYER_H
+#define ABS_LAYER_H
+#include "../layer.h"
 
-#ifndef LAYER_MVN_H
-#define LAYER_MVN_H
+namespace backend {
+	namespace CPU {
+		class Mvn : public Layer {
+		public:
+			Mvn();
+			virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;
 
-#include "layer.h"
+			int normalize_variance;
+			int across_channels;
+			float eps;
+		};
+	}
+	namespace GPU {
+		class Mvn : virtual public CPU::Mvn {
 
-namespace ncnn {
+		public:
+			Mvn();
 
-class MVN : public Layer
-{
-public:
-    MVN();
 
-    virtual int load_param(const ParamDict& pd);
+		};
+	}
+}
 
-    virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;
+#endif
 
-public:
-    int normalize_variance;
-    int across_channels;
-    float eps;
-};
-
-} // namespace ncnn
-
-#endif // LAYER_MVN_H

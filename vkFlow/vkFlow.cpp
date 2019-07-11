@@ -5,13 +5,12 @@
 
 namespace py = pybind11;
 
-static backend::VulkanDevice* g_vkdev = 0;
 
 void run() {
 	std::cout << "HELLO" << std::endl;
 
 	auto l = new layer::AbsVal_t();
-	auto in = backend::Mat(227, 227, 3);
+	auto in = backend::Mat(227,227, 3);
 	in.fill<float>(-1.0);
 	auto t = layer::model_layers;
 	bool x = t[0]->support_inplace;

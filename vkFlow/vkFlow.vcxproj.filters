@@ -64,6 +64,198 @@
     <ClCompile Include="network.cpp">
       <Filter>Kernel FIles\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="layers\argmax.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\batchnorm.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\bias.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\binaryop.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\bnll.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\cast.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\clip.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\concat.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\convolution.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\convolutiondepthwise.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\crop.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\deconvolution.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\deconvolutiondepthwise.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\dequantize.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\detectionoutput.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\dropout.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\eltwise.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\elu.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\embed.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\exp.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\expanddims.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\flatten.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\hardsigmoid.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\innerproduct.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\input.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\instancenorm.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\interp.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\log.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\lrn.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\lstm.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\memorydata.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\mvn.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\normalize.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\packing.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\padding.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\permute.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\pooling.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\power.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\prelu.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\priorbox.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\proposal.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\psroipooling.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\quantize.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\reduction.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\relu.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\reorg.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\requantize.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\reshape.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\rnn.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\roialign.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\roipooling.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\scale.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\selu.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\shufflechannel.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\sigmoid.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\slice.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\softmax.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\split.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\spp.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\squeeze.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\tanh.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\threshold.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\tile.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\unaryop.cpp">
+      <Filter>Layer Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mat.h">
@@ -104,6 +296,198 @@
     </ClInclude>
     <ClInclude Include="network.h">
       <Filter>Kernel FIles\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\argmax.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\batchnorm.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\bias.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\binaryop.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\bnll.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\cast.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\clip.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\concat.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\convolution.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\convolutiondepthwise.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\crop.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\deconvolution.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\deconvolutiondepthwise.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\dequantize.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\detectionoutput.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\dropout.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\eltwise.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\elu.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\embed.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\exp.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\expanddims.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\flatten.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\hardsigmoid.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\innerproduct.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\input.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\instancenorm.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\interp.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\log.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\lrn.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\lstm.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\memorydata.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\mvn.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\normalize.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\packing.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\padding.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\permute.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\pooling.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\power.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\prelu.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\priorbox.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\proposal.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\psroipooling.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\quantize.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\reduction.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\relu.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\reorg.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\requantize.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\reshape.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\rnn.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\roialign.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\roipooling.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\scale.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\selu.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\shufflechannel.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\sigmoid.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\slice.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\softmax.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\split.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\spp.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\squeeze.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\tanh.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\threshold.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\tile.h">
+      <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\unaryop.h">
+      <Filter>Layer Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,45 +1,28 @@
-// Tencent is pleased to support the open source community by making ncnn available.
-//
-// Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
-//
-// Licensed under the BSD 3-Clause License (the "License"); you may not use this file except
-// in compliance with the License. You may obtain a copy of the License at
-//
-// https://opensource.org/licenses/BSD-3-Clause
-//
-// Unless required by applicable law or agreed to in writing, software distributed
-// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-// CONDITIONS OF ANY KIND, either express or implied. See the License for the
-// specific language governing permissions and limitations under the License.
+#ifndef RESHAPE_LAYER_H
+#define RESHAPE_LAYER_H
+#include "../layer.h"
 
-#ifndef LAYER_RESHAPE_H
-#define LAYER_RESHAPE_H
+namespace backend {
+	namespace CPU {
+		class Reshape : public Layer {
+		public:
+			Reshape();
+			virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;
 
-#include "layer.h"
+			int w, h, c;
+			int permute;
+			int ndim;
+		};
+	}
+	namespace GPU {
+		class Reshape : virtual public CPU::Reshape {
 
-namespace ncnn {
+		public:
+			Reshape();
 
-class Reshape : public Layer
-{
-public:
-    Reshape();
+		};
+	}
+}
 
-    virtual int load_param(const ParamDict& pd);
+#endif
 
-    virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;
-
-public:
-    // reshape flag
-    // 0 = copy from bottom
-    // -1 = remaining
-    // -233 = drop this dim (default)
-    int w;
-    int h;
-    int c;
-    int permute;
-    int ndim;
-};
-
-} // namespace ncnn
-
-#endif // LAYER_RESHAPE_H
