@@ -4,7 +4,7 @@
 
 namespace backend {
 	namespace CPU {
-		class Tile : public Tile {
+		class Tile : public Layer {
 		public:
 			Tile();
 			virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;

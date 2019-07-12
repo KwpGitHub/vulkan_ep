@@ -4,9 +4,9 @@
 
 namespace backend {
 	namespace CPU {
-		class Relu : public Layer {
+		class ReLU : public Layer {
 		public:
-			Relu();
+			ReLU();
 			virtual int forward_inplace(Mat& bottom_top_blob, const Option& opt) const;
 			virtual int forward_inplace_int8(Mat& bottom_top_blob, const Option& opt) const;
 
@@ -14,10 +14,10 @@ namespace backend {
 		};
 	}
 	namespace GPU {
-		class Relu : virtual public CPU::Relu {
+		class ReLU : virtual public CPU::ReLU {
 
 		public:
-			Relu();
+			ReLU();
 
 		};
 	}

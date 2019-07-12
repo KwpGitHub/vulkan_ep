@@ -4,9 +4,9 @@
 
 namespace backend {
 	namespace CPU {
-		class bin_op : public Layer {
+		class BinaryOP : public Layer {
 		public:
-			bin_op();
+			BinaryOP();
 			virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
 
 			virtual int forward_inplace(Mat& bottom_top_blob, const Option& opt) const;
@@ -29,10 +29,10 @@ namespace backend {
 		};
 	}
 	namespace GPU {
-		class bin_op : virtual public CPU::bin_op {
+		class BinaryOP : virtual public CPU::BinaryOP {
 
 		public:
-			bin_op();
+			BinaryOP();
 
 			virtual int create_pipeline(const Option& opt);
 			virtual int destroy_pipeline(const Option& opt);

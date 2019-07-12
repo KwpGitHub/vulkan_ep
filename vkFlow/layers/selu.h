@@ -4,19 +4,19 @@
 
 namespace backend {
 	namespace CPU {
-		class Selu : public Layer {
+		class SeLU : public Layer {
 		public:
-			Selu();
+			SeLU();
 			virtual int forward_inplace(Mat& bottom_top_blob, const Option& opt) const;
 
 			float alpha, lambda;
 		};
 	}
 	namespace GPU {
-		class Selu : virtual public CPU::Selu {
+		class SeLU : virtual public CPU::SeLU {
 
 		public:
-			Selu();
+			SeLU();
 
 
 		};

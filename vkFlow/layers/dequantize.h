@@ -4,7 +4,7 @@
 
 namespace backend {
 	namespace CPU {
-		class Dequantize : public Dequantize {
+		class Dequantize : public Layer {
 		public:
 			Dequantize();
 			virtual int forward_inplace(Mat& bottom_top_blob, const Option& opt) const;

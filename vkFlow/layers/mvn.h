@@ -4,9 +4,9 @@
 
 namespace backend {
 	namespace CPU {
-		class Mvn : public Layer {
+		class MVN : public Layer {
 		public:
-			Mvn();
+			MVN();
 			virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;
 
 			int normalize_variance;
@@ -15,7 +15,7 @@ namespace backend {
 		};
 	}
 	namespace GPU {
-		class Mvn : virtual public CPU::Mvn {
+		class MVN : virtual public CPU::MVN {
 
 		public:
 			Mvn();

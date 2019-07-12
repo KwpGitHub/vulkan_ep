@@ -11,7 +11,7 @@ namespace backend {
 			virtual int destroy_pipeline(const Option& opt);
 			virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;
 
-			int num_ouput;
+			int num_output;
 			int bias_term;
 			int weight_data_size;
 			int int8_scale_term;

@@ -4,9 +4,9 @@
 
 namespace backend {
 	namespace CPU {
-		class Lstm : public Layer {
+		class LSTM : public Layer {
 		public:
-			Lstm();
+			LSTM();
 			virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
 			
 			int num_output;
@@ -18,10 +18,10 @@ namespace backend {
 		};
 	}
 	namespace GPU {
-		class Lstm : virtual public CPU::Lstm {
+		class LSTM : virtual public CPU::LSTM {
 
 		public:
-			Lstm();
+			LSTM();
 		};
 	}
 }

@@ -4,9 +4,9 @@
 
 namespace backend {
 	namespace CPU {
-		class Rnn : public Layer {
+		class RNN : public Layer {
 		public:
-			Rnn();
+			RNN();
 			virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
 
 			int num_output;
@@ -20,10 +20,10 @@ namespace backend {
 		};
 	}
 	namespace GPU {
-		class Rnn : virtual public CPU::Rnn {
+		class RNN : virtual public CPU::RNN {
 
 		public:
-			Rnn();
+			RNN();
 
 		};
 	}

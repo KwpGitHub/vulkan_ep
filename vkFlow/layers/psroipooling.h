@@ -4,21 +4,21 @@
 
 namespace backend {
 	namespace CPU {
-		class PsroiPooling : public Layer {
+		class PSROIPooling : public Layer {
 		public:
-			PsroiPooling();
+			PSROIPooling();
 			virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
 
-			int pooleed_width, pooled_height;
+			int pooled_width, pooled_height;
 			float spatial_scale;
 			int output_dim;
 		};
 	}
 	namespace GPU {
-		class PsroiPooling : virtual public CPU::PsroiPooling {
+		class PSROIPooling : virtual public CPU::PSROIPooling {
 
 		public:
-			PsroiPooling();
+			PSROIPooling();
 
 
 		};

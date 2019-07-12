@@ -4,9 +4,9 @@
 
 namespace backend {
 	namespace CPU {
-		class RoAlign : public Layer {
+		class ROIAlign : public Layer {
 		public:
-			RoAlign();
+			ROIAlign();
 			virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
 
 			int pooled_width, pooled_height;
@@ -14,10 +14,10 @@ namespace backend {
 		};
 	}
 	namespace GPU {
-		class RoAlign : virtual public CPU::RoAlign {
+		class ROIAlign : virtual public CPU::ROIAlign {
 
 		public:
-			RoAlign();
+			ROIAlign();
 
 		};
 	}

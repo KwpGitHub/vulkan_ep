@@ -4,9 +4,9 @@
 
 namespace backend {
 	namespace CPU {
-		class Spp : public Layer {
+		class SPP : public Layer {
 		public:
-			Spp();
+			SPP();
 			virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;
 			enum { PoolMethod_MAX = 0, PoolMethod_AVE = 1 };
 
@@ -15,7 +15,7 @@ namespace backend {
 		};
 	}
 	namespace GPU {
-		class Spp : virtual public CPU::Spp {
+		class SPP : virtual public CPU::SPP {
 
 		public:
 			Spp();

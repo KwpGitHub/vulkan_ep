@@ -4,7 +4,7 @@
 
 namespace backend {
 	namespace CPU {
-		class Crop : public Crop {
+		class Crop : public Layer {
 		public:
 			Crop();
 			virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;

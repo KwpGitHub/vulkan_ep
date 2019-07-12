@@ -21,13 +21,14 @@ namespace backend {
 			
 			Mat activation_params;
 			Mat weight_data;
+			Mat bias_data;
 			Mat weight_data_int8_scales;
 			float bottom_blob_int8_scale;
 			float top_blob_int8_scale;
 			bool use_int8_inference;
 			bool use_int8_requantize;
 
-			backend::Layer quantize;
+			backend::Layer* quantize;
 			std::vector<backend::Layer*> dequantize_ops;
 			std::vector<backend::Layer*> requantize_ops;
 			std::vector<float> dequantize_scales;

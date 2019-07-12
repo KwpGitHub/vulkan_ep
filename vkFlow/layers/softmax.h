@@ -4,19 +4,19 @@
 
 namespace backend {
 	namespace CPU {
-		class SoftMax : public Layer {
+		class Softmax : public Layer {
 		public:
-			SoftMax();
+			Softmax();
 			virtual int forward_inplace(Mat& bottom_top_blob, const Option& opt) const;
 
 			int axis;
 		};
 	}
 	namespace GPU {
-		class SoftMax : virtual public CPU::SoftMax {
+		class Softmax : virtual public CPU::Softmax {
 
 		public:
-			SoftMax();
+			Softmax();
 
 		};
 	}

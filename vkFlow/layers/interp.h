@@ -13,7 +13,7 @@ namespace backend {
 			float width_scale;
 			float height_scale;
 			int output_width;
-			int otput_height;
+			int output_height;
 		};
 	}
 	namespace GPU {

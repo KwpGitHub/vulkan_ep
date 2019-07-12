@@ -22,6 +22,7 @@ namespace backend {
 
 			Mat activation_params;
 			Mat weight_data;
+			Mat bias_data;
 			Mat weight_data_int8_scales;
 			float bottom_blob_int8_scale;
 			float top_blob_int8_scale;
