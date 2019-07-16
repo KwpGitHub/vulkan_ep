@@ -17,7 +17,6 @@ namespace backend {
 	union vk_specialization_type { int i; float f; uint32_t u32; };
 	union vk_constant_type { int i; float f; };
 
-
 	enum
 	{
 		BORDER_CONSTANT = 0,

@@ -2,8 +2,8 @@
 
 namespace backend {
 	namespace CPU {
-		Slice::Slice();
-
+		Slice::Slice() {
+		}
 
 		int Slice::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const
 		{

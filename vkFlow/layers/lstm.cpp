@@ -7,7 +7,6 @@ namespace backend {
 			support_inplace = false;
 		}
 
-
 		int LSTM::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const {
 			const Mat& input_blob = bottom_blobs[0];
 			size_t elemsize = input_blob.elemsize;
@@ -100,6 +99,7 @@ namespace backend {
 			}
 			return 0;
 
+		}
 	}
 	namespace GPU {
 

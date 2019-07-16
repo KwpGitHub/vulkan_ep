@@ -18,7 +18,7 @@ namespace backend {
 		class MVN : virtual public CPU::MVN {
 
 		public:
-			Mvn();
+			MVN();
 
 
 		};

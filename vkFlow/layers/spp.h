@@ -18,7 +18,7 @@ namespace backend {
 		class SPP : virtual public CPU::SPP {
 
 		public:
-			Spp();
+			SPP();
 
 		};
 	}

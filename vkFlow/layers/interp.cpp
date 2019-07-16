@@ -1,4 +1,5 @@
 #include "interp.h"
+#include <algorithm>
 
 namespace backend {
 	namespace CPU {
@@ -88,7 +89,7 @@ namespace backend {
 			const float A = -0.75f;
 			float fx0 = fx + 1;
 			float fx1 = fx;
-			float fx2 = 1 - fx
+			float fx2 = 1 - fx;
 			coeffs[0] = A * fx0 * fx0 * fx0 - 5 * A * fx0 * fx0 + 8 * A * fx0 - 4 * A;
 			coeffs[1] = (A + 2) * fx1 * fx1 * fx1 - (A + 3) * fx1 * fx1 + 1;
 			coeffs[2] = (A + 2) * fx2 * fx2 * fx2 - (A + 3) * fx2 * fx2 + 1;

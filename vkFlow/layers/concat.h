@@ -9,7 +9,7 @@ namespace backend {
 			Concat();
 			virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
 
-			int axis
+			int axis;
 		};
 	}
 	namespace GPU {

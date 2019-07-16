@@ -80,7 +80,7 @@ namespace backend {
 						float hend = roi_y1 + (ph + 1) * bin_size_h;
 						float wend = roi_x1 + (pw + 1) * bin_size_w;
 						hstart = std::min<float>(std::max<float>(hstart, 0.f), (float)h);
-						wstart = std::min<float>(std::max<float>?(wstart, 0.f), (float)w);
+						wstart = std::min<float>(std::max<float>(wstart, 0.f), (float)w);
 						hend = std::min<float>(std::max<float>(hend, 0.f), (float)h);
 						wend = std::min<float>(std::max<float>(wend, 0.f), (float)w);
 						int bin_grid_h = ceil(hend - hstart);

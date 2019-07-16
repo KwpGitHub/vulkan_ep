@@ -13,7 +13,7 @@ namespace backend {
 			int across_channel;
 			int channel_shared;
 			float eps;
-			int scale_data_)size;
+			int scale_data_size;
 		
 			Mat scale_data;
 		};

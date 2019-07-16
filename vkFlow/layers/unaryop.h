@@ -4,7 +4,7 @@
 
 namespace backend {
 	namespace CPU {
-		class UnaryOP : public UnaryOP {
+		class UnaryOP : public Layer {
 		public:
 			UnaryOP();
 			virtual int forward_inplace(Mat& bottom_top_blob, const Option& opt) const;

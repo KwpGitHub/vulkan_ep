@@ -1,5 +1,5 @@
 #include "reduction.h"
-
+#include <functional>
 namespace backend {
 	namespace CPU {
 		Reduction::Reduction()
@@ -56,7 +56,7 @@ namespace backend {
 				for (int q = 0; q < channels; q++)	{
 					const float* ptr = a.channel(q);
 					float sum = v0;
-					for (int i = 0; i < size; i++
+					for (int i = 0; i < size; i++)
 						sum = op(sum, ptr[i]);
 
 					b[q] = sum * coeff;
@@ -125,22 +125,22 @@ namespace backend {
 		}
 
 		template<typename T>
-		struct reduction_op_asum : std::binary_function<T, T, T> {
+		struct reduction_op_asum {
 			T operator() (const T& x, const T& y) const { return x + fabs(y); }
 		};
 
 		template<typename T>
-		struct reduction_op_sumsq : std::binary_function<T, T, T> {
+		struct reduction_op_sumsq  {
 			T operator() (const T& x, const T& y) const { return x + y * y; }
 		};
 
 		template<typename T>
-		struct reduction_op_max : std::binary_function<T, T, T> {
+		struct reduction_op_max {
 			T operator() (const T& x, const T& y) const { return std::max(x, y); }
 		};
 
 		template<typename T>
-		struct reduction_op_min : std::binary_function<T, T, T> {
+		struct reduction_op_min {
 			T operator() (const T& x, const T& y) const { return std::min(x, y); }
 		};
 

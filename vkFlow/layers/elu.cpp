@@ -7,7 +7,7 @@ namespace backend {
 			support_inplace = true;
 		}
 
-		Elu::forward_inplace(Mat& bottom_top_blob, const Option& opt) {
+		int Elu::forward_inplace(Mat& bottom_top_blob, const Option& opt) const {
 			int w = bottom_top_blob.w;
 			int h = bottom_top_blob.h;
 			int channels = bottom_top_blob.c;

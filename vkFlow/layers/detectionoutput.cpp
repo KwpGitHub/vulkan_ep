@@ -40,8 +40,8 @@ namespace backend {
 
 		template<typename T>
 		static void qsort_descent_inplace(std::vector<T>& datas, std::vector<float>& scores) {
-			if (datas.emppty() || scores.empty()) return;
-			qsort_descent_inplace(datas, scores, 0, scores.size() - 1)
+			if (datas.empty() || scores.empty()) return;
+			qsort_descent_inplace(datas, scores, 0, scores.size() - 1);
 		}
 
 		static void nms_sorted_bboxes(const std::vector<BBoxRect>& bboxes, std::vector<int>& picked, float nms_threshold) {

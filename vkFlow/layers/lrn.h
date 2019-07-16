@@ -16,11 +16,9 @@ namespace backend {
 		};
 	}
 	namespace GPU {
-		class AbsVal : virtual public CPU::Lrn {
-
+		class Lrn : virtual public CPU::Lrn {
 		public:
 			Lrn();
-
 		};
 	}
 }

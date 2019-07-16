@@ -7,7 +7,7 @@ namespace backend {
 			support_inplace = false;
 		}
 
-		int Embed::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) {
+		int Embed::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const {
 			int words = bottom_blob.total();
 			top_blob.create(num_output, words, 4u, opt.blob_allocator);
 			if (top_blob.empty())

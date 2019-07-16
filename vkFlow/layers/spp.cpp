@@ -1,5 +1,5 @@
 #include "spp.h"
-
+#include <algorithm>
 namespace backend {
 	namespace CPU {
 		SPP::SPP()
@@ -114,4 +114,4 @@ namespace backend {
 	namespace GPU {
 
 	}
-}"
+}

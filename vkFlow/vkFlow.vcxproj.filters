@@ -291,9 +291,6 @@
     <ClInclude Include="layer_shader_spv_data.h">
       <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="layer_repo.h">
-      <Filter>Kernel FIles\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="network.h">
       <Filter>Kernel FIles\Header Files</Filter>
     </ClInclude>
@@ -488,6 +485,9 @@
     </ClInclude>
     <ClInclude Include="layers\unaryop.h">
       <Filter>Layer Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_repo.h">
+      <Filter>Kernel FIles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

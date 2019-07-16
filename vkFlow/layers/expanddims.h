@@ -11,7 +11,7 @@ namespace backend {
 
 			int expand_w;
 			int expand_h;
-			int expand_w;
+			int expand_c;
 
 		};
 	}
