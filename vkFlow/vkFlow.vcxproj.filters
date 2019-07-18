@@ -489,5 +489,8 @@
     <ClInclude Include="layer_repo.h">
       <Filter>Kernel FIles</Filter>
     </ClInclude>
+    <ClInclude Include="operators.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

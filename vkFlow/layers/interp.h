@@ -1,5 +1,5 @@
-#ifndef _LAYER_H
-#define ABS_LAYER_H
+#ifndef INTERP_LAYER_H
+#define INTERP_LAYER_H
 #include "../layer.h"
 
 namespace backend {

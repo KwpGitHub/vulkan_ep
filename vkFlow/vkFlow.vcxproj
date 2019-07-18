@@ -169,6 +169,7 @@
     <ClInclude Include="layer_shader_spv_data.h" />
     <ClInclude Include="mat.h" />
     <ClInclude Include="network.h" />
+    <ClInclude Include="operators.h" />
     <ClInclude Include="option.h" />
     <ClInclude Include="pipeline.h" />
     <ClInclude Include="utils.h" />

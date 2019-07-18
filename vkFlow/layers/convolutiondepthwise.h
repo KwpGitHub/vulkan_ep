@@ -4,8 +4,7 @@
 
 namespace backend {
 	namespace CPU {
-		class ConvolutionDepthwise : public Layer
-		{
+		class ConvolutionDepthwise : public Layer {
 		public:
 			ConvolutionDepthwise();
 			virtual int create_pipeline(const Option& opt);

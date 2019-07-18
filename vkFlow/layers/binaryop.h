@@ -1,5 +1,5 @@
 #ifndef BINOP_LAYER_H
-#define ABS_LAYER_H
+#define BINOP_LAYER_H
 #include "../layer.h"
 
 namespace backend {
@@ -8,9 +8,7 @@ namespace backend {
 		public:
 			BinaryOP();
 			virtual int forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blobs, const Option& opt) const;
-
 			virtual int forward_inplace(Mat& bottom_top_blob, const Option& opt) const;
-
 			enum {
 				Operation_ADD = 0,
 				Operation_SUB = 1,

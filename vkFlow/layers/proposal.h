@@ -1,5 +1,5 @@
 #ifndef PROPOSAL_LAYER_H
-#define  PROPOSAL_LAYER_H
+#define PROPOSAL_LAYER_H
 #include "../layer.h"
 
 namespace backend {

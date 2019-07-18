@@ -1,5 +1,8 @@
 #include "reduction.h"
+#include <algorithm>
 #include <functional>
+
+
 namespace backend {
 	namespace CPU {
 		Reduction::Reduction()
@@ -136,12 +139,12 @@ namespace backend {
 
 		template<typename T>
 		struct reduction_op_max {
-			T operator() (const T& x, const T& y) const { return std::max(x, y); }
+			T operator() (const T& x, const T& y) const { return std::max<T>(x, y); }
 		};
 
 		template<typename T>
 		struct reduction_op_min {
-			T operator() (const T& x, const T& y) const { return std::min(x, y); }
+			T operator() (const T& x, const T& y) const { return std::min<T>(x, y); }
 		};
 
 		int Reduction::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const

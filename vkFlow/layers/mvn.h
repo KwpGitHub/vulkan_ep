@@ -1,5 +1,5 @@
 #ifndef MVN_LAYER_H
-#define ABS_LAYER_H
+#define MVN_LAYER_H
 #include "../layer.h"
 
 namespace backend {

@@ -4,7 +4,7 @@
 
 namespace backend {
 	namespace CPU {
-		class Deconvolution : public Deconvolution {
+		/*class Deconvolution : public Deconvolution {
 		public:
 			Deconvolution();
 			virtual int forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const;
@@ -18,15 +18,15 @@ namespace backend {
 			Mat activation_params;
 			Mat weight_data;
 			Mat bias_data;
-		};
+		};*/
 	}
 	namespace GPU {
-		class Deconvolution : virtual public CPU::Deconvolution {
+		//class Deconvolution : virtual public CPU::Deconvolution {
 
-		public:
-			Deconvolution();
+	//	public:
+//			Deconvolution();
 
-		};
+	//	};
 	}
 }
 

@@ -349,12 +349,12 @@ namespace backend {
 
 		template<typename T>
 		struct binary_op_max {
-			T operator() (const T& x, const T& y) const { return std::max(x, y); }
+			T operator() (const T& x, const T& y) const { return std::max<T>(x, y); }
 		};
 
 		template<typename T>
 		struct binary_op_min {
-			T operator() (const T& x, const T& y) const { return std::min(x, y); }
+			T operator() (const T& x, const T& y) const { return std::min<T>(x, y); }
 		};
 
 		template<typename T>

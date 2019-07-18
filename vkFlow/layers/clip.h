@@ -3,8 +3,7 @@
 #include "../layer.h"
 
 namespace backend {
-	namespace CPU 
-	{
+	namespace CPU {
 		class Clip : public Layer {
 		public:
 			Clip();
