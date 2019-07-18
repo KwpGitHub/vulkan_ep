@@ -3,6 +3,6 @@ Attempt at replicating Cudann capabilities in inference/training of Neural Netwo
 Work in Progress
 
 ## Refrence
-https://github.com/Glavnokoman/vuh.git
+https://github.com/Tencent/ncnn.git
 
 https://www.ibiblio.org/e-notes/webgl/gpu/mul/sgemm.html
