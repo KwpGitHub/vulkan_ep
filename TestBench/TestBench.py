@@ -1,6 +1,6 @@
+import pprint
 import numpy as np
 from PIL import Image
-import google.protobuf as protobuf
 from onnx import ModelProto, GraphProto, NodeProto
 import vulkan_ep_d as vulkan_ep
 ##import vkFlow as vkFlow
@@ -16,15 +16,16 @@ def o_g():
         print(type(node))
         print(type(val))
     vulkan_ep.create_layer()
-    inputs = []
-    outputs = []
        
-       
-    return inputs
+
+     
+
+    return layers
 
 
 if (__name__ == "__main__"):
     vals = o_g()
+    pp.pprint(vals)
     img = Image.open("aerial.png")
     x = np.array(img)
    # vkFlow.Run()
