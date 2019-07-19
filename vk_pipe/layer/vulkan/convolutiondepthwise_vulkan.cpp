@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2019 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -16,7 +16,7 @@
 #include <algorithm>
 #include "layer_type.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 DEFINE_LAYER_CREATOR(ConvolutionDepthWise_vulkan)
 
@@ -40,10 +40,10 @@ ConvolutionDepthWise_vulkan::ConvolutionDepthWise_vulkan()
 int ConvolutionDepthWise_vulkan::create_pipeline(const Option& opt)
 {
     {
-        padding = ncnn::create_layer(ncnn::LayerType::Padding);
+        padding = vulkan_ep::create_layer(vulkan_ep::LayerType::Padding);
         padding->vkdev = vkdev;
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, pad_h);
         pd.set(1, pad_h);
         pd.set(2, pad_w);
@@ -132,10 +132,10 @@ int ConvolutionDepthWise_vulkan::create_pipeline(const Option& opt)
 
     if (channels % 4 == 0 && channels_g % 4 != 0)
     {
-        packing_pack1 = ncnn::create_layer(ncnn::LayerType::Packing);
+        packing_pack1 = vulkan_ep::create_layer(vulkan_ep::LayerType::Packing);
         packing_pack1->vkdev = vkdev;
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, 1);
 
         packing_pack1->load_param(pd);
@@ -145,10 +145,10 @@ int ConvolutionDepthWise_vulkan::create_pipeline(const Option& opt)
 
     if (num_output_g % 4 != 0 && num_output % 4 == 0)
     {
-        packing_pack4 = ncnn::create_layer(ncnn::LayerType::Packing);
+        packing_pack4 = vulkan_ep::create_layer(vulkan_ep::LayerType::Packing);
         packing_pack4->vkdev = vkdev;
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, 4);
 
         packing_pack4->load_param(pd);
@@ -469,7 +469,7 @@ int ConvolutionDepthWise_vulkan::forward(const VkMat& bottom_blob, VkMat& top_bl
     VkMat bottom_blob_bordered = bottom_blob;
     if (pad_w > 0 || pad_h > 0)
     {
-        ncnn::Option opt_pad = opt;
+        vulkan_ep::Option opt_pad = opt;
         opt_pad.blob_vkallocator = opt.workspace_vkallocator;
 
         padding->forward(bottom_blob, bottom_blob_bordered, cmd, opt_pad);
@@ -483,7 +483,7 @@ int ConvolutionDepthWise_vulkan::forward(const VkMat& bottom_blob, VkMat& top_bl
         int hpad = kernel_extent_h + (h - 1) / stride_h * stride_h - h;
         if (wpad > 0 || hpad > 0)
         {
-            ncnn::Option opt_pad = opt;
+            vulkan_ep::Option opt_pad = opt;
             opt_pad.blob_vkallocator = opt.workspace_vkallocator;
 
             VkMat padding_param_blob(4, (size_t)4u, 1, opt.staging_vkallocator, opt.staging_vkallocator);
@@ -558,7 +558,7 @@ int ConvolutionDepthWise_vulkan::forward(const VkMat& bottom_blob, VkMat& top_bl
     VkMat bottom_blob_bordered_unpacked = bottom_blob_bordered;
     if (packing == 4 && channels_g % 4 != 0)
     {
-        ncnn::Option opt_pack1 = opt;
+        vulkan_ep::Option opt_pack1 = opt;
         opt_pack1.blob_vkallocator = opt.workspace_vkallocator;
 
         packing_pack1->forward(bottom_blob_bordered, bottom_blob_bordered_unpacked, cmd, opt_pack1);
@@ -641,4 +641,4 @@ int ConvolutionDepthWise_vulkan::forward(const VkMat& bottom_blob, VkMat& top_bl
     return 0;
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep

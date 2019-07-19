@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -12,17 +12,17 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-#ifndef NCNN_PARAMDICT_H
-#define NCNN_PARAMDICT_H
+#ifndef VK_EP_PARAMDICT_H
+#define VK_EP_PARAMDICT_H
 
 #include <stdio.h>
 #include "mat.h"
 #include "platform.h"
 
 // at most 20 parameters
-#define NCNN_MAX_PARAM_COUNT 20
+#define VK_EP_MAX_PARAM_COUNT 20
 
-namespace ncnn {
+namespace vulkan_ep {
 
 class Net;
 class ParamDict
@@ -50,13 +50,13 @@ protected:
 
     void clear();
 
-#if NCNN_STDIO
-#if NCNN_STRING
+#if VK_EP_STDIO
+#if VK_EP_STRING
     int load_param(FILE* fp);
     int load_param_mem(const char*& mem);
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
     int load_param_bin(FILE* fp);
-#endif // NCNN_STDIO
+#endif // VK_EP_STDIO
     int load_param(const unsigned char*& mem);
 
 protected:
@@ -65,9 +65,9 @@ protected:
         int loaded;
         union { int i; float f; };
         Mat v;
-    } params[NCNN_MAX_PARAM_COUNT];
+    } params[VK_EP_MAX_PARAM_COUNT];
 };
 
-} // namespace ncnn
+} // namespace vulkan_ep
 
-#endif // NCNN_PARAMDICT_H
+#endif // VK_EP_PARAMDICT_H

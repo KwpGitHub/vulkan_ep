@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2019 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -12,7 +12,7 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-#define NCNN_VULKAN 1
+#define VK_EP_VULKAN 1
 
 #include "pipeline.h"
 #include <stdio.h>
@@ -22,9 +22,9 @@
 #include "mat.h"
 #include "option.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
 Pipeline::Pipeline(const VulkanDevice* _vkdev) : vkdev(_vkdev)
 {
     local_shader_module = 0;
@@ -426,6 +426,6 @@ int Pipeline::create_descriptor_update_template(int binding_count)
 
     return 0;
 }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
-} // namespace ncnn
+} // namespace vulkan_ep

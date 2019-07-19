@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -18,7 +18,7 @@
 #include "paramdict.h"
 #include "platform.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 ParamDict::ParamDict()
 {
@@ -60,15 +60,15 @@ void ParamDict::set(int id, const Mat& v)
 
 void ParamDict::clear()
 {
-    for (int i = 0; i < NCNN_MAX_PARAM_COUNT; i++)
+    for (int i = 0; i < VK_EP_MAX_PARAM_COUNT; i++)
     {
         params[i].loaded = 0;
         params[i].v = Mat();
     }
 }
 
-#if NCNN_STDIO
-#if NCNN_STRING
+#if VK_EP_STDIO
+#if VK_EP_STRING
 static bool vstr_is_float(const char vstr[16])
 {
     // look ahead for determine isfloat
@@ -280,7 +280,7 @@ int ParamDict::load_param_mem(const char*& mem)
     }
     return 0;
 }
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
 
 int ParamDict::load_param_bin(FILE* fp)
 {
@@ -358,7 +358,7 @@ int ParamDict::load_param_bin(FILE* fp)
 
     return 0;
 }
-#endif // NCNN_STDIO
+#endif // VK_EP_STDIO
 
 int ParamDict::load_param(const unsigned char*& mem)
 {
@@ -400,4 +400,4 @@ int ParamDict::load_param(const unsigned char*& mem)
     return 0;
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep

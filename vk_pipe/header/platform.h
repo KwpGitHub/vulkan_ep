@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -12,18 +12,18 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-#ifndef NCNN_PLATFORM_H
-#define NCNN_PLATFORM_H
+#ifndef VK_EP_PLATFORM_H
+#define VK_EP_PLATFORM_H
 
-#define NCNN_STDIO 1
-#define NCNN_STRING 1
-#define NCNN_OPENCV 0
-#define NCNN_BENCHMARK 0
-#define NCNN_PIXEL 1
-#define NCNN_PIXEL_ROTATE 0
-#define NCNN_VULKAN 1
-#define NCNN_REQUANT 0
-#define NCNN_AVX2 0
+#define VK_EP_STDIO 1
+#define VK_EP_STRING 1
+#define VK_EP_OPENCV 0
+#define VK_EP_BENCHMARK 0
+#define VK_EP_PIXEL 1
+#define VK_EP_PIXEL_ROTATE 0
+#define VK_EP_VULKAN 1
+#define VK_EP_REQUANT 0
+#define VK_EP_AVX2 0
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -33,7 +33,7 @@
 #include <pthread.h>
 #endif
 
-namespace ncnn {
+namespace vulkan_ep {
 
 #ifdef _WIN32
 class Mutex

@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2018 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -17,7 +17,7 @@
 #include <math.h>
 #include "layer_type.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 DEFINE_LAYER_CREATOR(YoloDetectionOutput)
 
@@ -41,9 +41,9 @@ int YoloDetectionOutput::load_param(const ParamDict& pd)
 int YoloDetectionOutput::create_pipeline(const Option& opt)
 {
     {
-        softmax = ncnn::create_layer(ncnn::LayerType::Softmax);
+        softmax = vulkan_ep::create_layer(vulkan_ep::LayerType::Softmax);
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, 0);// axis
 
         softmax->load_param(pd);
@@ -329,4 +329,4 @@ int YoloDetectionOutput::forward_inplace(std::vector<Mat>& bottom_top_blobs, con
     return 0;
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep

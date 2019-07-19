@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2019 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -16,7 +16,7 @@
 #include <algorithm>
 #include "layer_type.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 DEFINE_LAYER_CREATOR(Deconvolution_vulkan)
 
@@ -34,10 +34,10 @@ Deconvolution_vulkan::Deconvolution_vulkan()
 int Deconvolution_vulkan::create_pipeline(const Option& opt)
 {
     {
-        crop = ncnn::create_layer(ncnn::LayerType::Crop);
+        crop = vulkan_ep::create_layer(vulkan_ep::LayerType::Crop);
         crop->vkdev = vkdev;
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, pad_w);
         pd.set(1, pad_h);
         pd.set(2, 0);
@@ -445,4 +445,4 @@ int Deconvolution_vulkan::forward(const VkMat& bottom_blob, VkMat& top_blob, VkC
     return 0;
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep

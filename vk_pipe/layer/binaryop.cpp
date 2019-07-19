@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <functional>
 
-namespace ncnn {
+namespace vulkan_ep {
 
 	DEFINE_LAYER_CREATOR(BinaryOp)
 
@@ -424,4 +424,4 @@ namespace ncnn {
 		return 0;
 	}
 
-}// namespace ncnn
+}// namespace vulkan_ep

@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -15,7 +15,7 @@
 #include "interp.h"
 #include <algorithm>
 
-namespace ncnn {
+namespace vulkan_ep {
 
 DEFINE_LAYER_CREATOR(Interp);
 
@@ -509,4 +509,4 @@ int Interp::forward(const Mat &bottom_blob, Mat &top_blob, const Option& opt) co
     }
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep

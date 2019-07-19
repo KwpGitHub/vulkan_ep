@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -12,14 +12,14 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-#ifndef NCNN_MODELBIN_H
-#define NCNN_MODELBIN_H
+#ifndef VK_EP_MODELBIN_H
+#define VK_EP_MODELBIN_H
 
 #include <stdio.h>
 #include "mat.h"
 #include "platform.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 class Net;
 class ModelBin
@@ -38,7 +38,7 @@ public:
     virtual Mat load(int w, int h, int c, int type) const;
 };
 
-#if NCNN_STDIO
+#if VK_EP_STDIO
 class ModelBinFromStdio : public ModelBin
 {
 public:
@@ -50,7 +50,7 @@ public:
 protected:
     FILE* binfp;
 };
-#endif // NCNN_STDIO
+#endif // VK_EP_STDIO
 
 class ModelBinFromMemory : public ModelBin
 {
@@ -76,6 +76,6 @@ protected:
     mutable const Mat* weights;
 };
 
-} // namespace ncnn
+} // namespace vulkan_ep
 
-#endif // NCNN_MODELBIN_H
+#endif // VK_EP_MODELBIN_H

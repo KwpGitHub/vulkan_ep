@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -16,7 +16,7 @@
 #include <algorithm>
 #include "layer_type.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 DEFINE_LAYER_CREATOR(InnerProduct)
 
@@ -84,9 +84,9 @@ int InnerProduct::create_pipeline(const Option& opt)
     // initial the quantize,dequantize op layer
     if (use_int8_inference)
     {
-        quantize = ncnn::create_layer(ncnn::LayerType::Quantize);
+        quantize = vulkan_ep::create_layer(vulkan_ep::LayerType::Quantize);
         {
-            ncnn::ParamDict pd;
+            vulkan_ep::ParamDict pd;
             pd.set(0, bottom_blob_int8_scale);// scale
 
             quantize->load_param(pd);
@@ -97,7 +97,7 @@ int InnerProduct::create_pipeline(const Option& opt)
         dequantize_ops.resize(num_output);
         for (int n=0; n<num_output; n++)
         {
-            dequantize_ops[n] = ncnn::create_layer(ncnn::LayerType::Dequantize);
+            dequantize_ops[n] = vulkan_ep::create_layer(vulkan_ep::LayerType::Dequantize);
 
             float top_rescale = 1.f;
 
@@ -106,14 +106,14 @@ int InnerProduct::create_pipeline(const Option& opt)
             else
                 top_rescale = 1.f / (bottom_blob_int8_scale * weight_data_int8_scales[n]);
 
-            ncnn::ParamDict pd;
+            vulkan_ep::ParamDict pd;
             pd.set(0, top_rescale);// scale
             pd.set(1, bias_term);  // bias_term
             pd.set(2, 1);          // bias_data_size
 
             dequantize_ops[n]->load_param(pd);
 
-            ncnn::Mat weights[1];
+            vulkan_ep::Mat weights[1];
             weights[0] = bias_data.range(n, 1);
 
             dequantize_ops[n]->load_model(ModelBinFromMatArray(weights));
@@ -134,16 +134,16 @@ int InnerProduct::create_pipeline(const Option& opt)
 
         for (int n=0; n<num_output; n++)
         {
-            Layer* op = ncnn::create_layer(ncnn::LayerType::Quantize);
+            Layer* op = vulkan_ep::create_layer(vulkan_ep::LayerType::Quantize);
 
-            ncnn::ParamDict pd;
+            vulkan_ep::ParamDict pd;
             pd.set(0, weight_data_int8_scales[n]);// scale
 
             op->load_param(pd);
 
             op->create_pipeline(opt_cpu);
 
-            ncnn::Option opt;
+            vulkan_ep::Option opt;
             opt.blob_allocator = int8_weight_data.allocator;
 
             const Mat weight_data_n = weight_data.range(weight_data_size_output * n, weight_data_size_output);
@@ -205,7 +205,7 @@ int InnerProduct::forward(const Mat& bottom_blob, Mat& top_blob, const Option& o
 
             // quantize, scale and round to nearest
             {
-                ncnn::Option opt_g = opt;
+                vulkan_ep::Option opt_g = opt;
                 opt_g.blob_allocator = bottom_blob_int8.allocator;
 
                 quantize->forward(bottom_blob, bottom_blob_int8, opt_g);
@@ -311,4 +311,4 @@ int InnerProduct::forward(const Mat& bottom_blob, Mat& top_blob, const Option& o
     return 0;
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep

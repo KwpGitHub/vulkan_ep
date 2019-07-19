@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2018 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -18,7 +18,7 @@
 #include <algorithm>
 #include "gpu.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 Allocator::~Allocator() 
 {
@@ -54,7 +54,7 @@ void PoolAllocator::clear()
     for (; it != budgets.end(); it++)
     {
         void* ptr = it->second;
-        ncnn::fastFree(ptr);
+        vulkan_ep::fastFree(ptr);
     }
     budgets.clear();
 
@@ -104,7 +104,7 @@ void* PoolAllocator::fastMalloc(size_t size)
     budgets_lock.unlock();
 
     // new
-    void* ptr = ncnn::fastMalloc(size);
+    void* ptr = vulkan_ep::fastMalloc(size);
 
     payouts_lock.lock();
 
@@ -144,7 +144,7 @@ void PoolAllocator::fastFree(void* ptr)
     payouts_lock.unlock();
 
     fprintf(stderr, "FATAL ERROR! pool allocator get wild %p\n", ptr);
-    ncnn::fastFree(ptr);
+    vulkan_ep::fastFree(ptr);
 }
 
 UnlockedPoolAllocator::UnlockedPoolAllocator()
@@ -174,7 +174,7 @@ void UnlockedPoolAllocator::clear()
     for (; it != budgets.end(); it++)
     {
         void* ptr = it->second;
-        ncnn::fastFree(ptr);
+        vulkan_ep::fastFree(ptr);
     }
     budgets.clear();
 }
@@ -212,7 +212,7 @@ void* UnlockedPoolAllocator::fastMalloc(size_t size)
     }
 
     // new
-    void* ptr = ncnn::fastMalloc(size);
+    void* ptr = vulkan_ep::fastMalloc(size);
 
     payouts.push_back(std::make_pair(size, ptr));
 
@@ -238,10 +238,10 @@ void UnlockedPoolAllocator::fastFree(void* ptr)
     }
 
     fprintf(stderr, "FATAL ERROR! unlocked pool allocator get wild %p\n", ptr);
-    ncnn::fastFree(ptr);
+    vulkan_ep::fastFree(ptr);
 }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
 VkAllocator::VkAllocator(const VulkanDevice* _vkdev) : vkdev(_vkdev)
 {
     mappable = false;
@@ -891,6 +891,6 @@ void VkWeightStagingBufferAllocator::fastFree(VkBufferMemory* ptr)
     delete ptr;
 }
 
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
-} // namespace ncnn
+} // namespace vulkan_ep

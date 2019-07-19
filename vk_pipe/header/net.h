@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -12,8 +12,8 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-#ifndef NCNN_NET_H
-#define NCNN_NET_H
+#ifndef VK_EP_NET_H
+#define VK_EP_NET_H
 
 #include <stdio.h>
 #include <vector>
@@ -23,11 +23,11 @@
 #include "mat.h"
 #include "option.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
 class VkCompute;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 class Extractor;
 class Net
 {
@@ -41,31 +41,31 @@ public:
     // option can be changed before loading
     Option opt;
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     // set gpu device by index
     void set_vulkan_device(int device_index);
 
     // set gpu device by device handle, no owner transfer
     void set_vulkan_device(const VulkanDevice* vkdev);
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
-#if NCNN_STRING
+#if VK_EP_STRING
     // register custom layer by layer type name
     // return 0 if success
     int register_custom_layer(const char* type, layer_creator_func creator);
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
     // register custom layer by layer type
     // return 0 if success
     int register_custom_layer(int index, layer_creator_func creator);
 
-#if NCNN_STDIO
-#if NCNN_STRING
+#if VK_EP_STDIO
+#if VK_EP_STRING
     // load network structure from plain param file
     // return 0 if success
     int load_param(FILE* fp);
     int load_param(const char* protopath);
     int load_param_mem(const char* mem);
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
     // load network structure from binary param file
     // return 0 if success
     int load_param_bin(FILE* fp);
@@ -75,7 +75,7 @@ public:
     // return 0 if success
     int load_model(FILE* fp);
     int load_model(const char* modelpath);
-#endif // NCNN_STDIO
+#endif // VK_EP_STDIO
 
     // load network structure from external memory
     // memory pointer must be 32-bit aligned
@@ -100,7 +100,7 @@ protected:
     // fuse int8 op dequantize and quantize by requantize
     int fuse_network();
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
 
     int upload_model();
 
@@ -108,21 +108,21 @@ protected:
 
     int destroy_pipeline();
 
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     friend class Extractor;
-#if NCNN_STRING
+#if VK_EP_STRING
     int find_blob_index_by_name(const char* name) const;
     int find_layer_index_by_name(const char* name) const;
     int custom_layer_to_index(const char* type);
     Layer* create_custom_layer(const char* type);
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
     Layer* create_custom_layer(int index);
     int forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt) const;
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     int forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector<VkMat>& blob_mats_gpu, VkCompute& cmd, Option& opt) const;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
 protected:
     std::vector<Blob> blobs;
@@ -130,17 +130,17 @@ protected:
 
     std::vector<layer_registry_entry> custom_layer_registry;
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     const VulkanDevice* vkdev;
 
     VkAllocator* weight_vkallocator;
     VkAllocator* weight_staging_vkallocator;
 
-    ncnn::Layer* cast_float32_to_float16;
-    ncnn::Layer* cast_float16_to_float32;
-    ncnn::Layer* packing_pack1;
-    ncnn::Layer* packing_pack4;
-#endif // NCNN_VULKAN
+    vulkan_ep::Layer* cast_float32_to_float16;
+    vulkan_ep::Layer* cast_float16_to_float32;
+    vulkan_ep::Layer* packing_pack1;
+    vulkan_ep::Layer* packing_pack4;
+#endif // VK_EP_VULKAN
 };
 
 class Extractor
@@ -162,7 +162,7 @@ public:
     // set workspace memory allocator
     void set_workspace_allocator(Allocator* allocator);
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     void set_vulkan_compute(bool enable);
 
     void set_blob_vkallocator(VkAllocator* allocator);
@@ -170,9 +170,9 @@ public:
     void set_workspace_vkallocator(VkAllocator* allocator);
 
     void set_staging_vkallocator(VkAllocator* allocator);
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
-#if NCNN_STRING
+#if VK_EP_STRING
     // set input by blob name
     // return 0 if success
     int input(const char* blob_name, const Mat& in);
@@ -180,7 +180,7 @@ public:
     // get result by blob name
     // return 0 if success
     int extract(const char* blob_name, Mat& feat);
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
 
     // set input by blob index
     // return 0 if success
@@ -190,8 +190,8 @@ public:
     // return 0 if success
     int extract(int blob_index, Mat& feat);
 
-#if NCNN_VULKAN
-#if NCNN_STRING
+#if VK_EP_VULKAN
+#if VK_EP_STRING
     // set input by blob name
     // return 0 if success
     int input(const char* blob_name, const VkMat& in);
@@ -199,7 +199,7 @@ public:
     // get result by blob name
     // return 0 if success
     int extract(const char* blob_name, VkMat& feat, VkCompute& cmd);
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
 
     // set input by blob index
     // return 0 if success
@@ -208,7 +208,7 @@ public:
     // get result by blob index
     // return 0 if success
     int extract(int blob_index, VkMat& feat, VkCompute& cmd);
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
 protected:
     friend Extractor Net::create_extractor() const;
@@ -219,11 +219,11 @@ private:
     std::vector<Mat> blob_mats;
     Option opt;
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     std::vector<VkMat> blob_mats_gpu;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 };
 
-} // namespace ncnn
+} // namespace vulkan_ep
 
-#endif // NCNN_NET_H
+#endif // VK_EP_NET_H

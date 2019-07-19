@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2019 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -15,7 +15,7 @@
 #include "crop_vulkan.h"
 #include <algorithm>
 
-namespace ncnn {
+namespace vulkan_ep {
 
 DEFINE_LAYER_CREATOR(Crop_vulkan)
 
@@ -253,4 +253,4 @@ int Crop_vulkan::forward(const std::vector<VkMat>& bottom_blobs, std::vector<VkM
     return 0;
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep

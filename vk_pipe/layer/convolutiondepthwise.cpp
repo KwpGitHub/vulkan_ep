@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -16,7 +16,7 @@
 #include <algorithm>
 #include "layer_type.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 DEFINE_LAYER_CREATOR(ConvolutionDepthWise)
 
@@ -125,16 +125,16 @@ int ConvolutionDepthWise::create_pipeline(const Option& opt)
 
         for (int g=0; g<group; g++)
         {
-            Layer* op = ncnn::create_layer(ncnn::LayerType::Quantize);
+            Layer* op = vulkan_ep::create_layer(vulkan_ep::LayerType::Quantize);
 
-            ncnn::ParamDict pd;
+            vulkan_ep::ParamDict pd;
             pd.set(0, weight_data_int8_scales[g]);// scale
 
             op->load_param(pd);
 
             op->create_pipeline(opt_cpu);
 
-            ncnn::Option opt;
+            vulkan_ep::Option opt;
             opt.blob_allocator = int8_weight_data.allocator;
 
             const Mat weight_data_g = weight_data.range(weight_data_size_g * g, weight_data_size_g);
@@ -154,9 +154,9 @@ int ConvolutionDepthWise::create_pipeline(const Option& opt)
 
         for (int g=0; g<group; g++)
         {
-            quantize_ops[g] = ncnn::create_layer(ncnn::LayerType::Quantize);
+            quantize_ops[g] = vulkan_ep::create_layer(vulkan_ep::LayerType::Quantize);
 
-            ncnn::ParamDict pd;
+            vulkan_ep::ParamDict pd;
             pd.set(0, bottom_blob_int8_scales[g]);// scale
 
             quantize_ops[g]->load_param(pd);
@@ -166,7 +166,7 @@ int ConvolutionDepthWise::create_pipeline(const Option& opt)
 
         for (int g=0; g<group; g++)
         {
-            dequantize_ops[g] = ncnn::create_layer(ncnn::LayerType::Dequantize);
+            dequantize_ops[g] = vulkan_ep::create_layer(vulkan_ep::LayerType::Dequantize);
 
             float top_rescale = 1.f;
             if (weight_data_int8_scales[g] == 0)
@@ -174,14 +174,14 @@ int ConvolutionDepthWise::create_pipeline(const Option& opt)
             else
                 top_rescale = 1.f / (bottom_blob_int8_scales[g] * weight_data_int8_scales[g]);
 
-            ncnn::ParamDict pd;
+            vulkan_ep::ParamDict pd;
             pd.set(0, top_rescale);// scale
             pd.set(1, bias_term);// bias_term
             pd.set(2, 1);// bias_data_size
 
             dequantize_ops[g]->load_param(pd);
 
-            ncnn::Mat weights[1];
+            vulkan_ep::Mat weights[1];
             weights[0] = bias_data.range(g, 1);
 
             dequantize_ops[g]->load_model(ModelBinFromMatArray(weights));
@@ -238,7 +238,7 @@ int ConvolutionDepthWise::create_requantize_op(void)
     requantize_ops.resize(group);
     for (int g=0; g<group; g++)
     {
-        requantize_ops[g] = ncnn::create_layer(ncnn::LayerType::Requantize);
+        requantize_ops[g] = vulkan_ep::create_layer(vulkan_ep::LayerType::Requantize);
 
         float scale_in = 1.f;
         float scale_out = 1.f;
@@ -254,7 +254,7 @@ int ConvolutionDepthWise::create_requantize_op(void)
 
         scale_out = top_blob_int8_scale;
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, scale_in);   // scale in
         pd.set(1, scale_out);  // scale_out
         pd.set(2, bias_term);  // bias_term
@@ -262,7 +262,7 @@ int ConvolutionDepthWise::create_requantize_op(void)
 
         requantize_ops[g]->load_param(pd);
 
-        ncnn::Mat weights[1];
+        vulkan_ep::Mat weights[1];
         weights[0] = bias_data.range(g, 1);
 
         requantize_ops[g]->load_model(ModelBinFromMatArray(weights));
@@ -309,7 +309,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
         #pragma omp parallel for num_threads(opt.num_threads)
         for (int g=0; g<group; g++)
         {
-            ncnn::Option opt_g = opt;
+            vulkan_ep::Option opt_g = opt;
             opt_g.num_threads = 1;
             opt_g.blob_allocator = bottom_blob_int8.allocator;
 
@@ -417,7 +417,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
 
                     // requantize, reverse scale inplace
                     {
-                        ncnn::Option opt_g = opt;
+                        vulkan_ep::Option opt_g = opt;
                         opt_g.num_threads = 1;
                         opt_g.blob_allocator = top_blob.allocator;
 
@@ -492,7 +492,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                 #pragma omp parallel for num_threads(opt.num_threads)
                 for (int g=0; g<group; g++)
                 {
-                    ncnn::Option opt_g = opt;
+                    vulkan_ep::Option opt_g = opt;
                     opt_g.num_threads = 1;
                     opt_g.blob_allocator = top_blob.allocator;
 
@@ -555,7 +555,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
 
                     // dequantize, reverse scale inplace
                     {
-                        ncnn::Option opt_g = opt;
+                        vulkan_ep::Option opt_g = opt;
                         opt_g.num_threads = 1;
                         opt_g.blob_allocator = top_blob.allocator;
 
@@ -628,7 +628,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                 #pragma omp parallel for num_threads(opt.num_threads)
                 for (int g=0; g<group; g++)
                 {
-                    ncnn::Option opt_g = opt;
+                    vulkan_ep::Option opt_g = opt;
                     opt_g.num_threads = 1;
                     opt_g.blob_allocator = top_blob.allocator;
 
@@ -796,4 +796,4 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
     return 0;
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep

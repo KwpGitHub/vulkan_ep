@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -28,19 +28,19 @@
 #include <omp.h>
 #endif // _OPENMP
 
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
 #include "benchmark.h"
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
 #include "command.h"
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
-namespace ncnn {
+namespace vulkan_ep {
 
 Net::Net()
 {
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     vkdev = 0;
     weight_vkallocator = 0;
     weight_staging_vkallocator = 0;
@@ -49,22 +49,22 @@ Net::Net()
     cast_float16_to_float32 = 0;
     packing_pack1 = 0;
     packing_pack4 = 0;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 }
 
 Net::~Net()
 {
     clear();
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     delete cast_float32_to_float16;
     delete cast_float16_to_float32;
     delete packing_pack1;
     delete packing_pack4;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 }
 
-#if NCNN_STRING
+#if VK_EP_STRING
 int Net::register_custom_layer(const char* type, layer_creator_func creator)
 {
     int typeindex = layer_to_index(type);
@@ -89,7 +89,7 @@ int Net::register_custom_layer(const char* type, layer_creator_func creator)
 
     return 0;
 }
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
 
 int Net::register_custom_layer(int index, layer_creator_func creator)
 {
@@ -102,11 +102,11 @@ int Net::register_custom_layer(int index, layer_creator_func creator)
 
     if ((int)custom_layer_registry.size() <= custom_index)
     {
-#if NCNN_STRING
+#if VK_EP_STRING
         struct layer_registry_entry dummy = { "", 0 };
 #else
         struct layer_registry_entry dummy = { 0 };
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
         custom_layer_registry.resize(custom_index + 1, dummy);
     }
 
@@ -119,8 +119,8 @@ int Net::register_custom_layer(int index, layer_creator_func creator)
     return 0;
 }
 
-#if NCNN_STDIO
-#if NCNN_STRING
+#if VK_EP_STDIO
+#if VK_EP_STRING
 int Net::load_param(FILE* fp)
 {
     int magic = 0;
@@ -148,7 +148,7 @@ int Net::load_param(FILE* fp)
     layers.resize((size_t)layer_count);
     blobs.resize((size_t)blob_count);
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     if (opt.use_vulkan_compute)
     {
         if (!vkdev) vkdev = get_gpu_device();
@@ -158,7 +158,7 @@ int Net::load_param(FILE* fp)
         if (!vkdev->info.support_int8_storage) opt.use_int8_storage = false;
         if (!vkdev->info.support_int8_arithmetic) opt.use_int8_arithmetic = false;
     }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     ParamDict pd;
 
@@ -189,10 +189,10 @@ int Net::load_param(FILE* fp)
             return -1;
         }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
         if (opt.use_vulkan_compute)
             layer->vkdev = vkdev;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
         layer->type = std::string(layer_type);
         layer->name = std::string(layer_name);
@@ -313,7 +313,7 @@ int Net::load_param_mem(const char* _mem)
     layers.resize(layer_count);
     blobs.resize(blob_count);
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     if (opt.use_vulkan_compute)
     {
         if (!vkdev) vkdev = get_gpu_device();
@@ -325,7 +325,7 @@ int Net::load_param_mem(const char* _mem)
         if (!vkdev->info.support_int8_storage) opt.use_int8_storage = false;
         if (!vkdev->info.support_int8_arithmetic) opt.use_int8_arithmetic = false;
     }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     ParamDict pd;
 
@@ -356,10 +356,10 @@ int Net::load_param_mem(const char* _mem)
             return -1;
         }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
         if (opt.use_vulkan_compute)
             layer->vkdev = vkdev;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
         layer->type = std::string(layer_type);
         layer->name = std::string(layer_name);
@@ -454,7 +454,7 @@ int Net::load_param(const char* protopath)
 
     return ret;
 }
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
 
 template<typename T> bool readValue(T & val, FILE * fp)
 {
@@ -488,7 +488,7 @@ int Net::load_param_bin(FILE* fp)
     layers.resize(layer_count);
     blobs.resize(blob_count);
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     if (opt.use_vulkan_compute)
     {
         if (!vkdev) vkdev = get_gpu_device();
@@ -500,7 +500,7 @@ int Net::load_param_bin(FILE* fp)
         if (!vkdev->info.support_int8_storage) opt.use_int8_storage = false;
         if (!vkdev->info.support_int8_arithmetic) opt.use_int8_arithmetic = false;
     }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     ParamDict pd;
 
@@ -531,10 +531,10 @@ int Net::load_param_bin(FILE* fp)
             return -1;
         }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
         if (opt.use_vulkan_compute)
             layer->vkdev = vkdev;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
 //         layer->type = std::string(layer_type);
 //         layer->name = std::string(layer_name);
@@ -648,14 +648,14 @@ int Net::load_model(FILE* fp)
         }
     }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     if (opt.use_vulkan_compute)
     {
         create_pipeline();
 
         upload_model();
     }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     fuse_network();
 
@@ -677,7 +677,7 @@ int Net::load_model(const char* modelpath)
 
     return ret;
 }
-#endif // NCNN_STDIO
+#endif // VK_EP_STDIO
 
 int Net::load_param(const unsigned char* _mem)
 {
@@ -708,7 +708,7 @@ int Net::load_param(const unsigned char* _mem)
     layers.resize(layer_count);
     blobs.resize(blob_count);
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     if (opt.use_vulkan_compute)
     {
         if (!vkdev) vkdev = get_gpu_device();
@@ -720,7 +720,7 @@ int Net::load_param(const unsigned char* _mem)
         if (!vkdev->info.support_int8_storage) opt.use_int8_storage = false;
         if (!vkdev->info.support_int8_arithmetic) opt.use_int8_arithmetic = false;
     }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     ParamDict pd;
 
@@ -748,10 +748,10 @@ int Net::load_param(const unsigned char* _mem)
             return -1;
         }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
         if (opt.use_vulkan_compute)
             layer->vkdev = vkdev;
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
 //         layer->type = std::string(layer_type);
 //         layer->name = std::string(layer_name);
@@ -849,14 +849,14 @@ int Net::load_model(const unsigned char* _mem)
         }
     }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     if (opt.use_vulkan_compute)
     {
         create_pipeline();
 
         upload_model();
     }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     return mem - _mem;
 }
@@ -864,7 +864,7 @@ int Net::load_model(const unsigned char* _mem)
 int Net::fuse_network()
 {
     // set the int8 op fusion:requantize
-#if NCNN_STRING && NCNN_REQUANT    
+#if VK_EP_STRING && VK_EP_REQUANT    
     // fprintf(stderr, "Test op fusion to int8 implement:\n");
     // parse the network whether is a quantization model
     bool net_quantized = false;
@@ -1026,9 +1026,9 @@ int Net::fuse_network()
 
 void Net::clear()
 {
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     destroy_pipeline();
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     blobs.clear();
     for (size_t i=0; i<layers.size(); i++)
@@ -1044,7 +1044,7 @@ void Net::clear()
     }
     layers.clear();
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     if (weight_vkallocator)
     {
         delete weight_vkallocator;
@@ -1055,7 +1055,7 @@ void Net::clear()
         delete weight_staging_vkallocator;
         weight_staging_vkallocator = 0;
     }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 }
 
 Extractor Net::create_extractor() const
@@ -1063,7 +1063,7 @@ Extractor Net::create_extractor() const
     return Extractor(this, blobs.size());
 }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
 void Net::set_vulkan_device(int device_index)
 {
     vkdev = get_gpu_device(device_index);
@@ -1076,7 +1076,7 @@ void Net::set_vulkan_device(const VulkanDevice* _vkdev)
 
 int Net::upload_model()
 {
-    ncnn::VkTransfer cmd(vkdev);
+    vulkan_ep::VkTransfer cmd(vkdev);
 
     // create gpu device allocator if null
     if (!weight_vkallocator)
@@ -1114,10 +1114,10 @@ int Net::create_pipeline()
     if (opt.use_fp16_storage && vkdev->info.type != 0)
     {
         {
-        cast_float32_to_float16 = ncnn::create_layer(ncnn::LayerType::Cast);
+        cast_float32_to_float16 = vulkan_ep::create_layer(vulkan_ep::LayerType::Cast);
         cast_float32_to_float16->vkdev = vkdev;
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, 1);
         pd.set(1, 2);
 
@@ -1125,10 +1125,10 @@ int Net::create_pipeline()
         }
 
         {
-        cast_float16_to_float32 = ncnn::create_layer(ncnn::LayerType::Cast);
+        cast_float16_to_float32 = vulkan_ep::create_layer(vulkan_ep::LayerType::Cast);
         cast_float16_to_float32->vkdev = vkdev;
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, 2);
         pd.set(1, 1);
 
@@ -1141,20 +1141,20 @@ int Net::create_pipeline()
     }
 
     {
-    packing_pack1 = ncnn::create_layer(ncnn::LayerType::Packing);
+    packing_pack1 = vulkan_ep::create_layer(vulkan_ep::LayerType::Packing);
     packing_pack1->vkdev = vkdev;
 
-    ncnn::ParamDict pd;
+    vulkan_ep::ParamDict pd;
     pd.set(0, 1);
 
     packing_pack1->load_param(pd);
     }
 
     {
-    packing_pack4 = ncnn::create_layer(ncnn::LayerType::Packing);
+    packing_pack4 = vulkan_ep::create_layer(vulkan_ep::LayerType::Packing);
     packing_pack4->vkdev = vkdev;
 
-    ncnn::ParamDict pd;
+    vulkan_ep::ParamDict pd;
     pd.set(0, 4);
 
     packing_pack4->load_param(pd);
@@ -1183,9 +1183,9 @@ int Net::destroy_pipeline()
 
     return 0;
 }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
-#if NCNN_STRING
+#if VK_EP_STRING
 int Net::find_blob_index_by_name(const char* name) const
 {
     for (size_t i=0; i<blobs.size(); i++)
@@ -1236,7 +1236,7 @@ Layer* Net::create_custom_layer(const char* type)
 
     return create_custom_layer(index);
 }
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
 
 Layer* Net::create_custom_layer(int index)
 {
@@ -1287,14 +1287,14 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt
         if (opt.lightmode && layer->support_inplace)
         {
             Mat& bottom_top_blob = bottom_blob;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
             double start = get_current_time();
             int ret = layer->forward_inplace(bottom_top_blob, opt);
             double end = get_current_time();
             benchmark(layer, bottom_top_blob, bottom_top_blob, start, end);
 #else
             int ret = layer->forward_inplace(bottom_top_blob, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
             if (ret != 0)
                 return ret;
 
@@ -1304,14 +1304,14 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt
         else
         {
             Mat top_blob;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
             double start = get_current_time();
             int ret = layer->forward(bottom_blob, top_blob, opt);
             double end = get_current_time();
             benchmark(layer, bottom_blob, top_blob, start, end);
 #else
             int ret = layer->forward(bottom_blob, top_blob, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
             if (ret != 0)
                 return ret;
 
@@ -1353,14 +1353,14 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt
         if (opt.lightmode && layer->support_inplace)
         {
             std::vector<Mat>& bottom_top_blobs = bottom_blobs;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
             double start = get_current_time();
             int ret = layer->forward_inplace(bottom_top_blobs, opt);
             double end = get_current_time();
             benchmark(layer, start, end);
 #else
             int ret = layer->forward_inplace(bottom_top_blobs, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
             if (ret != 0)
                 return ret;
 
@@ -1375,14 +1375,14 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt
         else
         {
             std::vector<Mat> top_blobs(layer->tops.size());
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
             double start = get_current_time();
             int ret = layer->forward(bottom_blobs, top_blobs, opt);
             double end = get_current_time();
             benchmark(layer, start, end);
 #else
             int ret = layer->forward(bottom_blobs, top_blobs, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
             if (ret != 0)
                 return ret;
 
@@ -1403,7 +1403,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt
     return 0;
 }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
 int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector<VkMat>& blob_mats_gpu, VkCompute& cmd, Option& opt) const
 {
     const Layer* layer = layers[layer_index];
@@ -1435,7 +1435,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                     Mat bottom_blob_cpu_fp16;
                     if (opt.use_fp16_storage && vkdev->info.type == 0)
                     {
-                        ncnn::cast_float32_to_float16(bottom_blob_cpu, bottom_blob_cpu_fp16, opt.blob_allocator, opt.num_threads);
+                        vulkan_ep::cast_float32_to_float16(bottom_blob_cpu, bottom_blob_cpu_fp16, opt.blob_allocator, opt.num_threads);
                     }
                     else
                     {
@@ -1493,13 +1493,13 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             if (opt.lightmode && layer->support_inplace)
             {
                 VkMat& bottom_top_blob = bottom_blob;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 cmd.record_write_timestamp(layer_index * 2);
                 int ret = layer->forward_inplace(bottom_top_blob, cmd, opt);
                 cmd.record_write_timestamp(layer_index * 2 + 1);
 #else
                 int ret = layer->forward_inplace(bottom_top_blob, cmd, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
                 if (ret != 0)
                     return ret;
 
@@ -1509,13 +1509,13 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             else
             {
                 VkMat top_blob;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 cmd.record_write_timestamp(layer_index * 2);
                 int ret = layer->forward(bottom_blob, top_blob, cmd, opt);
                 cmd.record_write_timestamp(layer_index * 2 + 1);
 #else
                 int ret = layer->forward(bottom_blob, top_blob, cmd, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
                 if (ret != 0)
                     return ret;
 
@@ -1548,7 +1548,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                         Mat bottom_blob_cpu_fp16;
                         if (opt.use_fp16_storage && vkdev->info.type == 0)
                         {
-                            ncnn::cast_float32_to_float16(bottom_blob_cpu, bottom_blob_cpu_fp16, opt.blob_allocator, opt.num_threads);
+                            vulkan_ep::cast_float32_to_float16(bottom_blob_cpu, bottom_blob_cpu_fp16, opt.blob_allocator, opt.num_threads);
                         }
                         else
                         {
@@ -1607,13 +1607,13 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             if (opt.lightmode && layer->support_inplace)
             {
                 std::vector<VkMat>& bottom_top_blobs = bottom_blobs;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 cmd.record_write_timestamp(layer_index * 2);
                 int ret = layer->forward_inplace(bottom_top_blobs, cmd, opt);
                 cmd.record_write_timestamp(layer_index * 2 + 1);
 #else
                 int ret = layer->forward_inplace(bottom_top_blobs, cmd, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
                 if (ret != 0)
                     return ret;
 
@@ -1628,13 +1628,13 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             else
             {
                 std::vector<VkMat> top_blobs(layer->tops.size());
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 cmd.record_write_timestamp(layer_index * 2);
                 int ret = layer->forward(bottom_blobs, top_blobs, cmd, opt);
                 cmd.record_write_timestamp(layer_index * 2 + 1);
 #else
                 int ret = layer->forward(bottom_blobs, top_blobs, cmd, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
                 if (ret != 0)
                     return ret;
 
@@ -1710,7 +1710,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
 
                     cmd.submit_and_wait();
 
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                     std::vector<uint64_t> results(layer_index * 2);
                     cmd.get_query_pool_results(0, layer_index * 2, results);
                     for (int i=0; i<layer_index; i++)
@@ -1723,7 +1723,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                         double duration_us = (end - start) * vkdev->info.timestamp_period / 1000;
                         fprintf(stderr, "%-24s %-30s %8.2lfus    |\n", layers[i]->type.c_str(), layers[i]->name.c_str(), duration_us);
                     }
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
 
                     cmd.reset();
 
@@ -1737,7 +1737,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                     Mat& bottom_blob_cpu = blob_mats[bottom_blob_index];
                     if (opt.use_fp16_storage && vkdev->info.type == 0)
                     {
-                        ncnn::cast_float16_to_float32(bottom_blob_cpu_fp16, bottom_blob_cpu, opt.blob_allocator, opt.num_threads);
+                        vulkan_ep::cast_float16_to_float32(bottom_blob_cpu_fp16, bottom_blob_cpu, opt.blob_allocator, opt.num_threads);
                     }
                     else
                     {
@@ -1763,14 +1763,14 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             if (opt.lightmode && layer->support_inplace)
             {
                 Mat& bottom_top_blob = bottom_blob;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 double start = get_current_time();
                 int ret = layer->forward_inplace(bottom_top_blob, opt);
                 double end = get_current_time();
                 benchmark(layer, bottom_top_blob, bottom_top_blob, start, end);
 #else
                 int ret = layer->forward_inplace(bottom_top_blob, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
                 if (ret != 0)
                     return ret;
 
@@ -1780,14 +1780,14 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             else
             {
                 Mat top_blob;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 double start = get_current_time();
                 int ret = layer->forward(bottom_blob, top_blob, opt);
                 double end = get_current_time();
                 benchmark(layer, bottom_blob, top_blob, start, end);
 #else
                 int ret = layer->forward(bottom_blob, top_blob, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
                 if (ret != 0)
                     return ret;
 
@@ -1861,7 +1861,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             {
                 cmd.submit_and_wait();
 
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 std::vector<uint64_t> results(layer_index * 2);
                 cmd.get_query_pool_results(0, layer_index * 2, results);
                 for (int i=0; i<layer_index; i++)
@@ -1874,7 +1874,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                     double duration_us = (end - start) * vkdev->info.timestamp_period / 1000;
                     fprintf(stderr, "%-24s %-30s %8.2lfus    |\n", layers[i]->type.c_str(), layers[i]->name.c_str(), duration_us);
                 }
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
 
                 cmd.reset();
             }
@@ -1898,7 +1898,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                     Mat& bottom_blob_cpu = blob_mats[bottom_blob_index];
                     if (opt.use_fp16_storage && vkdev->info.type == 0)
                     {
-                        ncnn::cast_float16_to_float32(bottom_blob_cpu_fp16, bottom_blob_cpu, opt.blob_allocator, opt.num_threads);
+                        vulkan_ep::cast_float16_to_float32(bottom_blob_cpu_fp16, bottom_blob_cpu, opt.blob_allocator, opt.num_threads);
                     }
                     else
                     {
@@ -1926,14 +1926,14 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             if (opt.lightmode && layer->support_inplace)
             {
                 std::vector<Mat>& bottom_top_blobs = bottom_blobs;
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 double start = get_current_time();
                 int ret = layer->forward_inplace(bottom_top_blobs, opt);
                 double end = get_current_time();
                 benchmark(layer, start, end);
 #else
                 int ret = layer->forward_inplace(bottom_top_blobs, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
                 if (ret != 0)
                     return ret;
 
@@ -1948,14 +1948,14 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             else
             {
                 std::vector<Mat> top_blobs(layer->tops.size());
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 double start = get_current_time();
                 int ret = layer->forward(bottom_blobs, top_blobs, opt);
                 double end = get_current_time();
                 benchmark(layer, start, end);
 #else
                 int ret = layer->forward(bottom_blobs, top_blobs, opt);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
                 if (ret != 0)
                     return ret;
 
@@ -1975,19 +1975,19 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
 
     return 0;
 }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
 Extractor::Extractor(const Net* _net, int blob_count) : net(_net)
 {
     blob_mats.resize(blob_count);
     opt = net->opt;
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
     if (net->opt.use_vulkan_compute)
     {
         blob_mats_gpu.resize(blob_count);
     }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 }
 
 void Extractor::set_light_mode(bool enable)
@@ -2010,7 +2010,7 @@ void Extractor::set_workspace_allocator(Allocator* allocator)
     opt.workspace_allocator = allocator;
 }
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
 void Extractor::set_vulkan_compute(bool enable)
 {
     if (net->opt.use_vulkan_compute)
@@ -2037,9 +2037,9 @@ void Extractor::set_staging_vkallocator(VkAllocator* allocator)
 {
     opt.staging_vkallocator = allocator;
 }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
-#if NCNN_STRING
+#if VK_EP_STRING
 int Extractor::input(const char* blob_name, const Mat& in)
 {
     int blob_index = net->find_blob_index_by_name(blob_name);
@@ -2057,7 +2057,7 @@ int Extractor::extract(const char* blob_name, Mat& feat)
 
     return extract(blob_index, feat);
 }
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
 
 int Extractor::input(int blob_index, const Mat& in)
 {
@@ -2080,7 +2080,7 @@ int Extractor::extract(int blob_index, Mat& feat)
     {
         int layer_index = net->blobs[blob_index].producer;
 
-#if NCNN_VULKAN
+#if VK_EP_VULKAN
         if (opt.use_vulkan_compute)
         {
             VkAllocator* local_blob_allocator = 0;
@@ -2102,10 +2102,10 @@ int Extractor::extract(int blob_index, Mat& feat)
                 opt.staging_vkallocator = local_staging_allocator;
             }
 
-            ncnn::VkCompute cmd(net->vkdev);
-#if NCNN_BENCHMARK
+            vulkan_ep::VkCompute cmd(net->vkdev);
+#if VK_EP_BENCHMARK
             cmd.create_query_pool(net->layers.size() * 2);
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
 
             VkMat feat_gpu;
             ret = extract(blob_index, feat_gpu, cmd);
@@ -2133,7 +2133,7 @@ int Extractor::extract(int blob_index, Mat& feat)
 
                 cmd.submit_and_wait();
 
-#if NCNN_BENCHMARK
+#if VK_EP_BENCHMARK
                 std::vector<uint64_t> results(net->layers.size() * 2);
                 cmd.get_query_pool_results(0, net->layers.size() * 2, results);
                 for (int i=0; i<net->layers.size(); i++)
@@ -2146,7 +2146,7 @@ int Extractor::extract(int blob_index, Mat& feat)
                     double duration_us = (end - start) * net->vkdev->info.timestamp_period / 1000;
                     fprintf(stderr, "%-24s %-30s %8.2lfus    |\n", net->layers[i]->type.c_str(), net->layers[i]->name.c_str(), duration_us);
                 }
-#endif // NCNN_BENCHMARK
+#endif // VK_EP_BENCHMARK
 
                 Mat feat_cpu_fp16;
                 feat_cpu_fp16.create_like(feat_gpu_unpacked, opt.blob_allocator);
@@ -2158,7 +2158,7 @@ int Extractor::extract(int blob_index, Mat& feat)
                 Mat& feat_cpu = blob_mats[blob_index];
                 if (opt.use_fp16_storage && net->vkdev->info.type == 0)
                 {
-                    ncnn::cast_float16_to_float32(feat_cpu_fp16, feat_cpu, opt.blob_allocator, opt.num_threads);
+                    vulkan_ep::cast_float16_to_float32(feat_cpu_fp16, feat_cpu, opt.blob_allocator, opt.num_threads);
                 }
                 else
                 {
@@ -2187,7 +2187,7 @@ int Extractor::extract(int blob_index, Mat& feat)
         }
 #else
         ret = net->forward_layer(layer_index, blob_mats, opt);
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
     }
 
@@ -2196,8 +2196,8 @@ int Extractor::extract(int blob_index, Mat& feat)
     return ret;
 }
 
-#if NCNN_VULKAN
-#if NCNN_STRING
+#if VK_EP_VULKAN
+#if VK_EP_STRING
 int Extractor::input(const char* blob_name, const VkMat& in)
 {
     int blob_index = net->find_blob_index_by_name(blob_name);
@@ -2215,7 +2215,7 @@ int Extractor::extract(const char* blob_name, VkMat& feat, VkCompute& cmd)
 
     return extract(blob_index, feat, cmd);
 }
-#endif // NCNN_STRING
+#endif // VK_EP_STRING
 
 int Extractor::input(int blob_index, const VkMat& in)
 {
@@ -2244,6 +2244,6 @@ int Extractor::extract(int blob_index, VkMat& feat, VkCompute& cmd)
 
     return ret;
 }
-#endif // NCNN_VULKAN
+#endif // VK_EP_VULKAN
 
-} // namespace ncnn
+} // namespace vulkan_ep

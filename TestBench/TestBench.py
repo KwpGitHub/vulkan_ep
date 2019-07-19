@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 import google.protobuf as protobuf
 from onnx import ModelProto, GraphProto, NodeProto
-
+import vulkan_ep_d as vulkan_ep
 ##import vkFlow as vkFlow
 import onnx
 def o_g():
@@ -15,10 +15,10 @@ def o_g():
         layer = val.name
         print(type(node))
         print(type(val))
+    vulkan_ep.create_layer()
     inputs = []
     outputs = []
-    
-    
+       
        
     return inputs
 

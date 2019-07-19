@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2018 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -21,9 +21,9 @@
 #endif // __ARM_NEON
 #include "platform.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
-#if NCNN_PIXEL
+#if VK_EP_PIXEL
 void resize_bilinear_c1(const unsigned char* src, int srcw, int srch, unsigned char* dst, int w, int h)
 {
     const int INTER_RESIZE_COEF_BITS=11;
@@ -1226,6 +1226,6 @@ void resize_bilinear_yuv420sp(const unsigned char* src, int srcw, int srch, unsi
     unsigned char* dstUV = dst + w * h;
     resize_bilinear_c2(srcUV, srcw / 2, srch / 2, dstUV, w / 2, h / 2);
 }
-#endif // NCNN_PIXEL
+#endif // VK_EP_PIXEL
 
-} // namespace ncnn
+} // namespace vulkan_ep

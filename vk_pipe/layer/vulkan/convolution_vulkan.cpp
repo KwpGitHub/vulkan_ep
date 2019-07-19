@@ -1,4 +1,4 @@
-// Tencent is pleased to support the open source community by making ncnn available.
+// Tencent is pleased to support the open source community by making vulkan_ep available.
 //
 // Copyright (C) 2019 THL A29 Limited, a Tencent company. All rights reserved.
 //
@@ -16,7 +16,7 @@
 #include <algorithm>
 #include "layer_type.h"
 
-namespace ncnn {
+namespace vulkan_ep {
 
 DEFINE_LAYER_CREATOR(Convolution_vulkan)
 
@@ -48,10 +48,10 @@ Convolution_vulkan::Convolution_vulkan()
 int Convolution_vulkan::create_pipeline(const Option& opt)
 {
     {
-        padding = ncnn::create_layer(ncnn::LayerType::Padding);
+        padding = vulkan_ep::create_layer(vulkan_ep::LayerType::Padding);
         padding->vkdev = vkdev;
 
-        ncnn::ParamDict pd;
+        vulkan_ep::ParamDict pd;
         pd.set(0, pad_h);
         pd.set(1, pad_h);
         pd.set(2, pad_w);
@@ -137,10 +137,10 @@ int Convolution_vulkan::create_pipeline(const Option& opt)
             if (num_input >= 16 && num_output >= 16)
             {
                 {
-                    winograd23_padding = ncnn::create_layer(ncnn::LayerType::Padding);
+                    winograd23_padding = vulkan_ep::create_layer(vulkan_ep::LayerType::Padding);
                     winograd23_padding->vkdev = vkdev;
 
-                    ncnn::ParamDict pd;
+                    vulkan_ep::ParamDict pd;
                     pd.set(0, -233);
                     pd.set(1, -233);
                     pd.set(2, -233);
@@ -154,10 +154,10 @@ int Convolution_vulkan::create_pipeline(const Option& opt)
                 }
 
                 {
-                    winograd23_crop = ncnn::create_layer(ncnn::LayerType::Crop);
+                    winograd23_crop = vulkan_ep::create_layer(vulkan_ep::LayerType::Crop);
                     winograd23_crop->vkdev = vkdev;
 
-                    ncnn::ParamDict pd;
+                    vulkan_ep::ParamDict pd;
                     pd.set(0, -233);
                     pd.set(1, -233);
                     pd.set(2, -233);
@@ -715,7 +715,7 @@ int Convolution_vulkan::forward(const VkMat& bottom_blob, VkMat& top_blob, VkCom
     VkMat bottom_blob_bordered = bottom_blob;
     if (pad_w > 0 || pad_h > 0)
     {
-        ncnn::Option opt_pad = opt;
+        vulkan_ep::Option opt_pad = opt;
         opt_pad.blob_vkallocator = opt.workspace_vkallocator;
 
         padding->forward(bottom_blob, bottom_blob_bordered, cmd, opt_pad);
@@ -729,7 +729,7 @@ int Convolution_vulkan::forward(const VkMat& bottom_blob, VkMat& top_blob, VkCom
         int hpad = kernel_extent_h + (h - 1) / stride_h * stride_h - h;
         if (wpad > 0 || hpad > 0)
         {
-            ncnn::Option opt_pad = opt;
+            vulkan_ep::Option opt_pad = opt;
             opt_pad.blob_vkallocator = opt.workspace_vkallocator;
 
             VkMat padding_param_blob(4, (size_t)4u, 1, opt.staging_vkallocator, opt.staging_vkallocator);
@@ -780,7 +780,7 @@ int Convolution_vulkan::forward(const VkMat& bottom_blob, VkMat& top_blob, VkCom
 
         // pad to 2n+2
         {
-            ncnn::Option opt_pad = opt;
+            vulkan_ep::Option opt_pad = opt;
             opt_pad.blob_vkallocator = opt.workspace_vkallocator;
 
             VkMat padding_param_blob(4, (size_t)4u, 1, opt.staging_vkallocator, opt.staging_vkallocator);
@@ -1032,4 +1032,4 @@ int Convolution_vulkan::forward(const VkMat& bottom_blob, VkMat& top_blob, VkCom
     return 0;
 }
 
-} // namespace ncnn
+} // namespace vulkan_ep
