@@ -28,14 +28,14 @@
     <Compile Include="TestBench.py" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\vkFlow\vkFlow.vcxproj">
-      <Name>vkFlow</Name>
-      <Project>{64e0f9bc-0c31-45ed-b735-51d169a748e5}</Project>
-      <Private>True</Private>
-    </ProjectReference>
+    <InterpreterReference Include="Global|PythonCore|3.7" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|PythonCore|3.7" />
+    <ProjectReference Include="..\onnx_ep\onnx_ep.vcxproj">
+      <Name>onnx_ep</Name>
+      <Project>{4cabade1-ec4a-440f-8140-0c24d7f4e3c2}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
