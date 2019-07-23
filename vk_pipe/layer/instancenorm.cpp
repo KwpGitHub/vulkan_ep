@@ -62,14 +62,14 @@ int InstanceNorm::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         // mean and var
         float sum = 0.f;
         float sqsum = 0.f;
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             sum += ptr[i];
             //sqsum += ptr[i] * ptr[i];
         }
         float mean = sum / size;
         float tmp = 0.f;
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             tmp = ptr[i] - mean;
             sqsum += tmp * tmp;
@@ -84,7 +84,7 @@ int InstanceNorm::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         float a = gamma / (sqrt(var + eps));
         float b = - mean * a + beta;
 
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             ptr[i] = ptr[i] * a + b;
         }

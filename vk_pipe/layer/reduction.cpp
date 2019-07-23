@@ -90,7 +90,7 @@ static int reduction_op(const Mat& a, Mat& b, float v0, int dim, float coeff, co
             const float* ptr = a.channel(q);
 
             float sum = v0;
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 sum = op(sum, ptr[i]);
             }
@@ -99,7 +99,7 @@ static int reduction_op(const Mat& a, Mat& b, float v0, int dim, float coeff, co
         }
 
         float sum = v0;
-        for (int i=0; i<channels; i++)
+        for (int i=0; i<channels; ++i)
         {
             sum = op2(sum, sums[i]);
         }
@@ -114,7 +114,7 @@ static int reduction_op(const Mat& a, Mat& b, float v0, int dim, float coeff, co
             const float* ptr = a.channel(q);
 
             float sum = v0;
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 sum = op(sum, ptr[i]);
             }
@@ -130,7 +130,7 @@ static int reduction_op(const Mat& a, Mat& b, float v0, int dim, float coeff, co
             const float* ptr = a.channel(q);
             float* outptr = b.row(q);
 
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 float sum = v0;
                 for (int j=0; j<w; j++)
@@ -158,7 +158,7 @@ static int reduction_op(const Mat& a, Mat& b, float v0, int dim, float coeff, co
             const float* ptr = a.channel(q);
             float* mins_ptr = mins.channel(q);
 
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 for (int j=0; j<w; j++)
                 {
@@ -193,13 +193,13 @@ static int reduction_op(const Mat& a, Mat& b, float v0, int dim, float coeff, co
         {
             const float* ptr = a.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 b[i] = op(b[i], ptr[i]);
             }
         }
 
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             b[i] *= coeff;
         }
@@ -267,7 +267,7 @@ int Reduction::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt)
             {
                 float* outptr = top_blob.channel(q);
 
-                for (int i=0; i<h; i++)
+                for (int i=0; i<h; ++i)
                 {
                     outptr[i] /= w;
                 }
@@ -282,7 +282,7 @@ int Reduction::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt)
         }
         else if (dim == -2)
         {
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 top_blob[i] /= channels;
             }

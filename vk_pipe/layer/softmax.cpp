@@ -59,19 +59,19 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         float* ptr = bottom_top_blob;
 
         float max = -FLT_MAX;
-        for (int i=0; i<w; i++)
+        for (int i=0; i<w; ++i)
         {
             max = std::max(max, ptr[i]);
         }
 
         float sum = 0.f;
-        for (int i=0; i<w; i++)
+        for (int i=0; i<w; ++i)
         {
             ptr[i] = exp(ptr[i] - max);
             sum += ptr[i];
         }
 
-        for (int i=0; i<w; i++)
+        for (int i=0; i<w; ++i)
         {
             ptr[i] /= sum;
         }
@@ -90,7 +90,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             return -100;
         max.fill(-FLT_MAX);
 
-        for (int i=0; i<h; i++)
+        for (int i=0; i<h; ++i)
         {
             const float* ptr = bottom_top_blob.row(i);
             for (int j=0; j<w; j++)
@@ -105,7 +105,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             return -100;
         sum.fill(0.f);
 
-        for (int i = 0; i<h; i++)
+        for (int i = 0; i<h; ++i)
         {
             float* ptr = bottom_top_blob.row(i);
             for (int j=0; j<w; j++)
@@ -115,7 +115,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             }
         }
 
-        for (int i=0; i<h; i++)
+        for (int i=0; i<h; ++i)
         {
             float* ptr = bottom_top_blob.row(i);
             for (int j=0; j<w; j++)
@@ -132,7 +132,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         int w = bottom_top_blob.w;
         int h = bottom_top_blob.h;
 
-        for (int i=0; i<h; i++)
+        for (int i=0; i<h; ++i)
         {
             float* ptr = bottom_top_blob.row(i);
             float m = -FLT_MAX;
@@ -173,7 +173,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         {
             const float* ptr = bottom_top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 max[i] = std::max(max[i], ptr[i]);
             }
@@ -188,7 +188,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         {
             float* ptr = bottom_top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 ptr[i] = exp(ptr[i] - max[i]);
                 sum[i] += ptr[i];
@@ -200,7 +200,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         {
             float* ptr = bottom_top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 ptr[i] /= sum[i];
             }
@@ -226,7 +226,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             const float* ptr = bottom_top_blob.channel(q);
             float* maxptr = max.row(q);
 
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 for (int j=0; j<w; j++)
                 {
@@ -249,7 +249,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             float* maxptr = max.row(q);
             float* sumptr = sum.row(q);
 
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 for (int j=0; j<w; j++)
                 {
@@ -267,7 +267,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             float* ptr = bottom_top_blob.channel(q);
             float* sumptr = sum.row(q);
 
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 for (int j=0; j<w; j++)
                 {
@@ -292,7 +292,7 @@ int Softmax::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         {
             float* ptr = bottom_top_blob.channel(q);
 
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 float max = -FLT_MAX;
                 for (int j=0; j<w; j++)

@@ -53,7 +53,7 @@ int Tile::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) cons
         {
             float* outptr = top_blob.channel(p * channels);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 outptr[i] = ptr[i];
             }
@@ -75,7 +75,7 @@ int Tile::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) cons
 
             for (int p=0; p<tiles; p++)
             {
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     outptr[i] = ptr[i];
                 }
@@ -96,7 +96,7 @@ int Tile::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) cons
             const float* ptr = bottom_blob.channel(q);
             float* outptr = top_blob.channel(q);
 
-            for (int i = 0; i < h; i++)
+            for (int i = 0; i < h; ++i)
             {
                 for (int p=0; p<tiles; p++)
                 {

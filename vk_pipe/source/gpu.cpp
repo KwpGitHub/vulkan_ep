@@ -132,7 +132,7 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT
 static uint32_t find_device_compute_queue(const std::vector<VkQueueFamilyProperties>& queueFamilyProperties)
 {
     // first try, compute only queue
-    for (uint32_t i=0; i<queueFamilyProperties.size(); i++)
+    for (uint32_t i=0; i<queueFamilyProperties.size(); ++i)
     {
         const VkQueueFamilyProperties& queueFamilyProperty = queueFamilyProperties[i];
 
@@ -144,7 +144,7 @@ static uint32_t find_device_compute_queue(const std::vector<VkQueueFamilyPropert
     }
 
     // second try, any queue with compute
-    for (uint32_t i=0; i<queueFamilyProperties.size(); i++)
+    for (uint32_t i=0; i<queueFamilyProperties.size(); ++i)
     {
         const VkQueueFamilyProperties& queueFamilyProperty = queueFamilyProperties[i];
 
@@ -161,7 +161,7 @@ static uint32_t find_device_compute_queue(const std::vector<VkQueueFamilyPropert
 static uint32_t find_device_transfer_queue(const std::vector<VkQueueFamilyProperties>& queueFamilyProperties)
 {
     // first try, transfer only queue
-    for (uint32_t i=0; i<queueFamilyProperties.size(); i++)
+    for (uint32_t i=0; i<queueFamilyProperties.size(); ++i)
     {
         const VkQueueFamilyProperties& queueFamilyProperty = queueFamilyProperties[i];
 
@@ -174,7 +174,7 @@ static uint32_t find_device_transfer_queue(const std::vector<VkQueueFamilyProper
     }
 
     // second try, any queue with transfer
-    for (uint32_t i=0; i<queueFamilyProperties.size(); i++)
+    for (uint32_t i=0; i<queueFamilyProperties.size(); ++i)
     {
         const VkQueueFamilyProperties& queueFamilyProperty = queueFamilyProperties[i];
 
@@ -198,7 +198,7 @@ static uint32_t find_device_transfer_queue(const std::vector<VkQueueFamilyProper
 static uint32_t find_unified_memory(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties)
 {
     // first try, host visible + host coherent + device local
-    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; i++)
+    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; ++i)
     {
         const VkMemoryType& memoryType = physicalDeviceMemoryProperties.memoryTypes[i];
 
@@ -211,7 +211,7 @@ static uint32_t find_unified_memory(VkPhysicalDeviceMemoryProperties physicalDev
     }
 
     // second try, host visible + device local
-    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; i++)
+    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; ++i)
     {
         const VkMemoryType& memoryType = physicalDeviceMemoryProperties.memoryTypes[i];
 
@@ -229,7 +229,7 @@ static uint32_t find_unified_memory(VkPhysicalDeviceMemoryProperties physicalDev
 static uint32_t find_device_local_memory(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties)
 {
     // first try, device local only
-    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; i++)
+    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; ++i)
     {
         const VkMemoryType& memoryType = physicalDeviceMemoryProperties.memoryTypes[i];
 
@@ -240,7 +240,7 @@ static uint32_t find_device_local_memory(VkPhysicalDeviceMemoryProperties physic
     }
 
     // second try, with device local bit
-    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; i++)
+    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; ++i)
     {
         const VkMemoryType& memoryType = physicalDeviceMemoryProperties.memoryTypes[i];
 
@@ -257,7 +257,7 @@ static uint32_t find_device_local_memory(VkPhysicalDeviceMemoryProperties physic
 static uint32_t find_host_visible_memory(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties)
 {
     // first try, host visible + host coherent, without device local bit
-    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; i++)
+    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; ++i)
     {
         const VkMemoryType& memoryType = physicalDeviceMemoryProperties.memoryTypes[i];
 
@@ -270,7 +270,7 @@ static uint32_t find_host_visible_memory(VkPhysicalDeviceMemoryProperties physic
     }
 
     // second try, with host visible bit, without device local bit
-    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; i++)
+    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; ++i)
     {
         const VkMemoryType& memoryType = physicalDeviceMemoryProperties.memoryTypes[i];
 
@@ -282,7 +282,7 @@ static uint32_t find_host_visible_memory(VkPhysicalDeviceMemoryProperties physic
     }
 
     // third try, with host visible bit
-    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; i++)
+    for (uint32_t i=0; i<physicalDeviceMemoryProperties.memoryTypeCount; ++i)
     {
         const VkMemoryType& memoryType = physicalDeviceMemoryProperties.memoryTypes[i];
 
@@ -299,14 +299,14 @@ static uint32_t find_host_visible_memory(VkPhysicalDeviceMemoryProperties physic
 static int find_default_vulkan_device_index()
 {
     // first try, discrete gpu
-    for (int i=0; i<g_gpu_count; i++)
+    for (int i=0; i<g_gpu_count; ++i)
     {
         if (g_gpu_infos[i].type == 0)
             return i;
     }
 
     // second try, integrated gpu
-    for (int i=0; i<g_gpu_count; i++)
+    for (int i=0; i<g_gpu_count; ++i)
     {
         if (g_gpu_infos[i].type == 1)
             return i;
@@ -343,7 +343,7 @@ int create_gpu_instance()
         return -1;
     }
 
-    for (uint32_t i=0; i<instanceLayerPropertyCount; i++)
+    for (uint32_t i=0; i<instanceLayerPropertyCount; ++i)
     {
         const VkLayerProperties& lp = instanceLayerProperties[i];
 //         fprintf(stderr, "instance layer %s = %u\n", lp.layerName, lp.implementationVersion);
@@ -465,7 +465,7 @@ int create_gpu_instance()
 
     // find proper device and queue
     int gpu_info_index = 0;
-    for (uint32_t i=0; i<physicalDeviceCount; i++)
+    for (uint32_t i=0; i<physicalDeviceCount; ++i)
     {
         const VkPhysicalDevice& physicalDevice = physicalDevices[i];
         GpuInfo& gpu_info = g_gpu_infos[gpu_info_index];
@@ -739,7 +739,7 @@ int create_gpu_instance()
 
 void destroy_gpu_instance()
 {
-    for (int i=0; i<VK_EP_MAX_GPU_COUNT; i++)
+    for (int i=0; i<VK_EP_MAX_GPU_COUNT; ++i)
     {
         delete g_default_vkdev[i];
         g_default_vkdev[i] = 0;
@@ -764,18 +764,6 @@ int get_default_gpu_index()
 {
     return g_default_gpu_index;
 }
-
-const GpuInfo& get_gpu_info(int device_index)
-{
-    return g_gpu_infos[device_index];
-}
-
-struct layer_shader_registry_entry
-{
-    const char* name;
-    const uint32_t* spv_data;
-    size_t spv_data_size;
-};
 
 #include "layer_shader_spv_data.h"
 
@@ -900,7 +888,7 @@ VulkanDevice::VulkanDevice(int device_index) : info(g_gpu_infos[device_index])
     compute_queues.resize(info.compute_queue_count);
     blob_allocators.resize(info.compute_queue_count);
     staging_allocators.resize(info.compute_queue_count);
-    for (uint32_t i = 0; i < info.compute_queue_count; i++)
+    for (uint32_t i = 0; i < info.compute_queue_count; ++i)
     {
         vkGetDeviceQueue(device, info.compute_queue_family_index, i, &compute_queues[i]);
         blob_allocators[i] = new VkBlobBufferAllocator(this);
@@ -909,7 +897,7 @@ VulkanDevice::VulkanDevice(int device_index) : info(g_gpu_infos[device_index])
     if (info.compute_queue_family_index != info.transfer_queue_family_index)
     {
         transfer_queues.resize(info.transfer_queue_count);
-        for (uint32_t i = 0; i < info.transfer_queue_count; i++)
+        for (uint32_t i = 0; i < info.transfer_queue_count; ++i)
         {
             vkGetDeviceQueue(device, info.transfer_queue_family_index, i, &transfer_queues[i]);
         }
@@ -918,7 +906,7 @@ VulkanDevice::VulkanDevice(int device_index) : info(g_gpu_infos[device_index])
 
 VulkanDevice::~VulkanDevice()
 {
-    for (uint32_t i = 0; i < info.compute_queue_count; i++)
+    for (uint32_t i = 0; i < info.compute_queue_count; ++i)
     {
         delete blob_allocators[i];
         delete staging_allocators[i];
@@ -933,7 +921,7 @@ VulkanDevice::~VulkanDevice()
 
 VkShaderModule VulkanDevice::get_shader_module(const char* name) const
 {
-    for (int i=0; i<layer_shader_registry_entry_count; i++)
+    for (int i=0; i<layer_shader_registry_entry_count; ++i)
     {
         if (strcmp(layer_shader_registry[i].name, name) == 0)
             return shader_modules[i];
@@ -974,7 +962,7 @@ VkQueue VulkanDevice::acquire_queue(uint32_t queue_family_index) const
     MutexLockGuard lock(queue_lock);
 
     std::vector<VkQueue>& queues = queue_family_index == info.compute_queue_family_index ? compute_queues : transfer_queues;
-    for (int i=0; i<(int)queues.size(); i++)
+    for (int i=0; i<(int)queues.size(); ++i)
     {
         VkQueue queue = queues[i];
         if (queue)
@@ -999,7 +987,7 @@ void VulkanDevice::reclaim_queue(uint32_t queue_family_index, VkQueue queue) con
     MutexLockGuard lock(queue_lock);
 
     std::vector<VkQueue>& queues = queue_family_index == info.compute_queue_family_index ? compute_queues : transfer_queues;
-    for (int i=0; i<(int)queues.size(); i++)
+    for (int i=0; i<(int)queues.size(); ++i)
     {
         if (!queues[i])
         {
@@ -1015,7 +1003,7 @@ VkAllocator* VulkanDevice::acquire_blob_allocator() const
 {
     MutexLockGuard lock(blob_allocator_lock);
 
-    for (int i=0; i<(int)blob_allocators.size(); i++)
+    for (int i=0; i<(int)blob_allocators.size(); ++i)
     {
         VkAllocator* allocator = blob_allocators[i];
         if (allocator)
@@ -1033,7 +1021,7 @@ void VulkanDevice::reclaim_blob_allocator(VkAllocator* allocator) const
 {
     MutexLockGuard lock(blob_allocator_lock);
 
-    for (int i=0; i<(int)blob_allocators.size(); i++)
+    for (int i=0; i<(int)blob_allocators.size(); ++i)
     {
         if (!blob_allocators[i])
         {
@@ -1049,7 +1037,7 @@ VkAllocator* VulkanDevice::acquire_staging_allocator() const
 {
     MutexLockGuard lock(staging_allocator_lock);
 
-    for (int i=0; i<(int)staging_allocators.size(); i++)
+    for (int i=0; i<(int)staging_allocators.size(); ++i)
     {
         VkAllocator* allocator = staging_allocators[i];
         if (allocator)
@@ -1067,7 +1055,7 @@ void VulkanDevice::reclaim_staging_allocator(VkAllocator* allocator) const
 {
     MutexLockGuard lock(staging_allocator_lock);
 
-    for (int i=0; i<(int)staging_allocators.size(); i++)
+    for (int i=0; i<(int)staging_allocators.size(); ++i)
     {
         if (!staging_allocators[i])
         {
@@ -1110,7 +1098,7 @@ int VulkanDevice::create_shader_module()
 {
     shader_modules.resize(layer_shader_registry_entry_count, VK_NULL_HANDLE);
 
-    for (int i=0; i<layer_shader_registry_entry_count; i++)
+    for (int i=0; i<layer_shader_registry_entry_count; ++i)
     {
         const char* shader_name = layer_shader_registry[i].name;
 
@@ -1149,7 +1137,7 @@ int VulkanDevice::create_shader_module()
 
 void VulkanDevice::destroy_shader_module()
 {
-    for (int i=0; i<(int)shader_modules.size(); i++)
+    for (int i=0; i<(int)shader_modules.size(); ++i)
     {
         vkDestroyShaderModule(device, shader_modules[i], 0);
     }

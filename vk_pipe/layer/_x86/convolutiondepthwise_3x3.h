@@ -98,7 +98,7 @@ static void convdw3x3s1_sse(const Mat& bottom_blob, Mat& top_blob, const Mat& _k
             outptr2 += outw;
         }
 
-        for (; i < outh; i++)
+        for (; i < outh; ++i)
         {
             int remain = outw;
 
@@ -167,7 +167,7 @@ static void convdw3x3s2_sse(const Mat& bottom_blob, Mat& top_blob, const Mat& _k
 
         int i = 0;
 
-        for (; i < outh; i++)
+        for (; i < outh; ++i)
         {
             int remain = outw;
 

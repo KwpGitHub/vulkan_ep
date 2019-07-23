@@ -50,7 +50,7 @@ static void convdw3x3s1_int8_sse(const Mat &bottom_blob, Mat &top_blob, const Ma
         const signed char *r2 = img0 + w * 2;
 
         int i = 0;
-        for (; i < outh; i++)
+        for (; i < outh; ++i)
         {
             int remain = outw;
 
@@ -116,7 +116,7 @@ static void convdw3x3s2_int8_sse(const Mat &bottom_blob, Mat &top_blob, const Ma
 
         int i = 0;
 
-        for (; i < outh; i++)
+        for (; i < outh; ++i)
         {
             int remain = outw;
 
@@ -181,7 +181,7 @@ static void convdw3x3s1_int8_dequant_sse(const Mat &bottom_blob, Mat &top_blob, 
         const signed char *r2 = img0 + w * 2;
 
         int i = 0;
-        for (; i < outh; i++)
+        for (; i < outh; ++i)
         {
             int remain = outw;
 
@@ -249,7 +249,7 @@ static void convdw3x3s2_int8_dequant_sse(const Mat &bottom_blob, Mat &top_blob, 
 
         int i = 0;
 
-        for (; i < outh; i++)
+        for (; i < outh; ++i)
         {
             int remain = outw;
 
@@ -313,7 +313,7 @@ static void convdw3x3s1_int8_requant_sse(const Mat &bottom_blob, Mat &top_blob, 
         const signed char *r2 = img0 + w * 2;
 
         int i = 0;
-        for (; i < outh; i++)
+        for (; i < outh; ++i)
         {
             int remain = outw;
 
@@ -380,7 +380,7 @@ static void convdw3x3s2_int8_requant_sse(const Mat &bottom_blob, Mat &top_blob, 
 
         int i = 0;
 
-        for (; i < outh; i++)
+        for (; i < outh; ++i)
         {
             int remain = outw;
 

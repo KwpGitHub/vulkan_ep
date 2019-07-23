@@ -103,7 +103,7 @@ static void qsort_descent_inplace(std::vector<T>& datas, std::vector<float>& sco
     while (i <= j)
     {
         while (scores[i] > p)
-            i++;
+            ++i;
 
         while (scores[j] < p)
             j--;
@@ -114,7 +114,7 @@ static void qsort_descent_inplace(std::vector<T>& datas, std::vector<float>& sco
             std::swap(datas[i], datas[j]);
             std::swap(scores[i], scores[j]);
 
-            i++;
+            ++i;
             j--;
         }
     }
@@ -142,7 +142,7 @@ static void nms_sorted_bboxes(const std::vector<BBoxRect>& bboxes, std::vector<i
     const int n = bboxes.size();
 
     std::vector<float> areas(n);
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; ++i)
     {
         const BBoxRect& r = bboxes[i];
 
@@ -152,7 +152,7 @@ static void nms_sorted_bboxes(const std::vector<BBoxRect>& bboxes, std::vector<i
         areas[i] = width * height;
     }
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; ++i)
     {
         const BBoxRect& a = bboxes[i];
 
@@ -223,7 +223,7 @@ int YoloDetectionOutput::forward_inplace(std::vector<Mat>& bottom_top_blobs, con
             Mat scores = bottom_top_blob.channel_range(p+5, num_class);
             softmax->forward_inplace(scores, opt);
 
-            for (int i = 0; i < h; i++)
+            for (int i = 0; i < h; ++i)
             {
                 for (int j = 0; j < w; j++)
                 {
@@ -274,7 +274,7 @@ int YoloDetectionOutput::forward_inplace(std::vector<Mat>& bottom_top_blobs, con
             }
         }
 
-        for (int i = 0; i < num_box; i++)
+        for (int i = 0; i < num_box; ++i)
         {
             const std::vector<BBoxRect>& box_bbox_rects = all_box_bbox_rects[i];
             const std::vector<float>& box_bbox_scores = all_box_bbox_scores[i];
@@ -295,7 +295,7 @@ int YoloDetectionOutput::forward_inplace(std::vector<Mat>& bottom_top_blobs, con
     std::vector<BBoxRect> bbox_rects;
     std::vector<float> bbox_scores;
 
-    for (int i = 0; i < (int)picked.size(); i++)
+    for (int i = 0; i < (int)picked.size(); ++i)
     {
         int z = picked[i];
         bbox_rects.push_back(all_bbox_rects[z]);
@@ -312,7 +312,7 @@ int YoloDetectionOutput::forward_inplace(std::vector<Mat>& bottom_top_blobs, con
     if (top_blob.empty())
         return -100;
 
-    for (int i = 0; i < num_detected; i++)
+    for (int i = 0; i < num_detected; ++i)
     {
         const BBoxRect& r = bbox_rects[i];
         float score = bbox_scores[i];

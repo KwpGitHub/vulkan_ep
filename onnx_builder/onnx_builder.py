@@ -3,6 +3,7 @@ from google.protobuf.json_format import MessageToJson
 import onnx
 import json
 import os
+import onnx_ep as onnx_ep
 
 types = {   'AttrType.STRING'   :'std::string',
             'AttrType.STRINGS'  :'std::vector<string>',
@@ -90,7 +91,9 @@ def graph_def_info(graph):
 
 
 if (__name__ == "__main__"):
-    onnx_proto()
+    #onnx_proto()
+    onnx_ep.create_device()
+    onnx_ep.run()
     #onnx_model_str =  MessageToJson(onnx.load('mobilenetv2.onnx'))
     #graph = json.loads(onnx_model_str)
 

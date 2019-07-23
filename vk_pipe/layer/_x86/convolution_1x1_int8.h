@@ -132,7 +132,7 @@ static void conv1x1s2_int8_sse(const Mat &bottom_blob, Mat &top_blob, const Mat 
             const signed char *r6 = bottom_blob.channel(q + 6);
             const signed char *r7 = bottom_blob.channel(q + 7);
 
-            for(int i = 0; i < outh; i++)
+            for(int i = 0; i < outh; ++i)
             {
                 int remain = outw;
 
@@ -176,7 +176,7 @@ static void conv1x1s2_int8_sse(const Mat &bottom_blob, Mat &top_blob, const Mat 
 
             const signed char *kernel0 = (const signed char *)kernel + p * inch + q;
 
-            for(int i = 0; i < outh; i++)
+            for(int i = 0; i < outh; ++i)
             {
                 int remain = outw;
 

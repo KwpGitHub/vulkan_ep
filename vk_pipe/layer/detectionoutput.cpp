@@ -74,7 +74,7 @@ static void qsort_descent_inplace(std::vector<T>& datas, std::vector<float>& sco
     while (i <= j)
     {
         while (scores[i] > p)
-            i++;
+            ++i;
 
         while (scores[j] < p)
             j--;
@@ -85,7 +85,7 @@ static void qsort_descent_inplace(std::vector<T>& datas, std::vector<float>& sco
             std::swap(datas[i], datas[j]);
             std::swap(scores[i], scores[j]);
 
-            i++;
+            ++i;
             j--;
         }
     }
@@ -113,7 +113,7 @@ static void nms_sorted_bboxes(const std::vector<BBoxRect>& bboxes, std::vector<i
     const int n = bboxes.size();
 
     std::vector<float> areas(n);
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; ++i)
     {
         const BBoxRect& r = bboxes[i];
 
@@ -123,7 +123,7 @@ static void nms_sorted_bboxes(const std::vector<BBoxRect>& bboxes, std::vector<i
         areas[i] = width * height;
     }
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; ++i)
     {
         const BBoxRect& a = bboxes[i];
 
@@ -169,7 +169,7 @@ int DetectionOutput::forward(const std::vector<Mat>& bottom_blobs, std::vector<M
     const float* variance_ptr = mxnet_ssd_style ? 0 : priorbox.row(1);
 
     #pragma omp parallel for num_threads(opt.num_threads)
-    for (int i = 0; i < num_prior; i++)
+    for (int i = 0; i < num_prior; ++i)
     {
         const float* loc = location_ptr + i * 4;
         const float* pb = priorbox_ptr + i * 4;
@@ -202,7 +202,7 @@ int DetectionOutput::forward(const std::vector<Mat>& bottom_blobs, std::vector<M
 
     // start from 1 to ignore background class
     #pragma omp parallel for num_threads(opt.num_threads)
-    for (int i = 1; i < num_class_copy; i++)
+    for (int i = 1; i < num_class_copy; ++i)
     {
         // filter by confidence_threshold
         std::vector<BBoxRect> class_bbox_rects;
@@ -251,7 +251,7 @@ int DetectionOutput::forward(const std::vector<Mat>& bottom_blobs, std::vector<M
     std::vector<BBoxRect> bbox_rects;
     std::vector<float> bbox_scores;
 
-    for (int i = 1; i < num_class_copy; i++)
+    for (int i = 1; i < num_class_copy; ++i)
     {
         const std::vector<BBoxRect>& class_bbox_rects = all_class_bbox_rects[i];
         const std::vector<float>& class_bbox_scores = all_class_bbox_scores[i];
@@ -280,7 +280,7 @@ int DetectionOutput::forward(const std::vector<Mat>& bottom_blobs, std::vector<M
     if (top_blob.empty())
         return -100;
 
-    for (int i = 0; i < num_detected; i++)
+    for (int i = 0; i < num_detected; ++i)
     {
         const BBoxRect& r = bbox_rects[i];
         float score = bbox_scores[i];

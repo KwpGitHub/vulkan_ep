@@ -153,7 +153,7 @@ Mat ModelBinFromStdio::load(int w, int type) const
             }
 
             float* ptr = m;
-            for (int i = 0; i < w; i++)
+            for (int i = 0; i < w; ++i)
             {
                 ptr[i] = quantization_value[ index_array[i] ];
             }
@@ -261,7 +261,7 @@ Mat ModelBinFromMemory::load(int w, int type) const
                 return m;
 
             float* ptr = m;
-            for (int i = 0; i < w; i++)
+            for (int i = 0; i < w; ++i)
             {
                 ptr[i] = quantization_value[ index_array[i] ];
             }

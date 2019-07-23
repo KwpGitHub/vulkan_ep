@@ -104,7 +104,7 @@ static void conv3x3s1_sse(const Mat& bottom_blob, Mat& top_blob, const Mat& _ker
                 outptr2 += outw;
             }
 
-            for (; i < outh; i++)
+            for (; i < outh; ++i)
             {
                 int remain = outw;
 
@@ -167,7 +167,7 @@ static void conv3x3s1_winograd23_transform_kernel_sse(const Mat& kernel, Mat& ke
 
             // h
             float tmp[4][3];
-            for (int i=0; i<4; i++)
+            for (int i=0; i<4; ++i)
             {
                 tmp[i][0] = k0[0] * ktm[i][0] + k0[1] * ktm[i][1] + k0[2] * ktm[i][2];
                 tmp[i][1] = k1[0] * ktm[i][0] + k1[1] * ktm[i][1] + k1[2] * ktm[i][2];
@@ -179,7 +179,7 @@ static void conv3x3s1_winograd23_transform_kernel_sse(const Mat& kernel, Mat& ke
             {
                 float* tmpp = &tmp[j][0];
 
-                for (int i=0; i<4; i++)
+                for (int i=0; i<4; ++i)
                 {
                     kernel_tm0[j*4 + i] = tmpp[0] * ktm[i][0] + tmpp[1] * ktm[i][1] + tmpp[2] * ktm[i][2];
                 }
@@ -243,7 +243,7 @@ static void conv3x3s1_winograd23_sse(const Mat& bottom_blob, Mat& top_blob, cons
                 const float* r2 = r1 + w;
                 const float* r3 = r2 + w;
 
-                for (int i = 0; i < nRowBlocks; i++)
+                for (int i = 0; i < nRowBlocks; ++i)
                 {
 #if __AVX__
                     __m128 _d0, _d1, _d2, _d3;
@@ -362,7 +362,7 @@ static void conv3x3s1_winograd23_sse(const Mat& bottom_blob, Mat& top_blob, cons
             const Mat kernel2_tm = kernel_tm.channel(p+2);
             const Mat kernel3_tm = kernel_tm.channel(p+3);
 
-            for (int i=0; i<tiles; i++)
+            for (int i=0; i<tiles; ++i)
             {
                 float* output0_tm = out0_tm.row(i);
                 float* output1_tm = out1_tm.row(i);
@@ -606,7 +606,7 @@ static void conv3x3s1_winograd23_sse(const Mat& bottom_blob, Mat& top_blob, cons
             Mat out0_tm = top_blob_tm.channel(p);
             const Mat kernel0_tm = kernel_tm.channel(p);
 
-            for (int i=0; i<tiles; i++)
+            for (int i=0; i<tiles; ++i)
             {
                 float* output0_tm = out0_tm.row(i);
 
@@ -684,7 +684,7 @@ static void conv3x3s1_winograd23_sse(const Mat& bottom_blob, Mat& top_blob, cons
                 float* outRow0 = out.row(j*2);
                 float* outRow1 = out.row(j*2+1);
 
-                for(int i=0; i<nRowBlocks; i++)
+                for(int i=0; i<nRowBlocks; ++i)
                 {
                     float* out_tile = out_tm.row(j*nRowBlocks + i);
 
@@ -766,7 +766,7 @@ static void conv3x3s1_winograd43_transform_kernel_sse(const Mat& kernel, std::ve
 
             // h
             float tmp[6][3];
-            for (int i=0; i<6; i++)
+            for (int i=0; i<6; ++i)
             {
                 tmp[i][0] = k0[0] * ktm[i][0] + k0[1] * ktm[i][1] + k0[2] * ktm[i][2];
                 tmp[i][1] = k1[0] * ktm[i][0] + k1[1] * ktm[i][1] + k1[2] * ktm[i][2];
@@ -778,7 +778,7 @@ static void conv3x3s1_winograd43_transform_kernel_sse(const Mat& kernel, std::ve
             {
                 float* tmpp = &tmp[j][0];
 
-                for (int i=0; i<6; i++)
+                for (int i=0; i<6; ++i)
                 {
                     kernel_tm0[j*6 + i] = tmpp[0] * ktm[i][0] + tmpp[1] * ktm[i][1] + tmpp[2] * ktm[i][2];
                 }
@@ -1003,7 +1003,7 @@ static void conv3x3s1_winograd43_sse(const Mat& bottom_blob, Mat& top_blob, cons
                 const float* r4 = r3 + w;
                 const float* r5 = r4 + w;
 
-                for (int i = 0; i < nRowBlocks; i++)
+                for (int i = 0; i < nRowBlocks; ++i)
                 {
                     float* out_tm0 = bottom_blob_tm.channel(tiles*0+j*nRowBlocks+i).row(q);
                     float* out_tm1 = bottom_blob_tm.channel(tiles*1+j*nRowBlocks+i).row(q);
@@ -1237,7 +1237,7 @@ static void conv3x3s1_winograd43_sse(const Mat& bottom_blob, Mat& top_blob, cons
                 output6_tm = output6_tm + r*4;
                 output7_tm = output7_tm + r*4;
 
-                for (int i=0; i<tiles; i++)
+                for (int i=0; i<tiles; ++i)
                 {
                     const float* kptr = kernel_tm_test[r].channel(p/8);
                     const float* r0 = bottom_blob_tm.channel(tiles*r+i);
@@ -1496,7 +1496,7 @@ static void conv3x3s1_winograd43_sse(const Mat& bottom_blob, Mat& top_blob, cons
                 output2_tm = output2_tm + r*4;
                 output3_tm = output3_tm + r*4;
 
-                for (int i=0; i<tiles; i++)
+                for (int i=0; i<tiles; ++i)
                 {
                     const float* kptr = kernel_tm_test[r].channel(p/8 + (p%8)/4);
                     const float* r0 = bottom_blob_tm.channel(tiles*r+i);
@@ -1581,7 +1581,7 @@ static void conv3x3s1_winograd43_sse(const Mat& bottom_blob, Mat& top_blob, cons
 
                 output0_tm = output0_tm + r*4;
 
-                for (int i=0; i<tiles; i++)
+                for (int i=0; i<tiles; ++i)
                 {
                     const float* kptr = kernel_tm_test[r].channel(p/8 + (p%8)/4 + p%4);
                     const float* r0 = bottom_blob_tm.channel(tiles*r+i);
@@ -1633,7 +1633,7 @@ static void conv3x3s1_winograd43_sse(const Mat& bottom_blob, Mat& top_blob, cons
             //     Mat out0_tm = top_blob_tm.channel(p);
             //     const Mat kernel0_tm = kernel_tm.channel(p);
 
-            //     for (int i=0; i<tiles; i++)
+            //     for (int i=0; i<tiles; ++i)
             //     {
             //         float* output0_tm = out0_tm.row<int>(i);
 
@@ -1699,7 +1699,7 @@ static void conv3x3s1_winograd43_sse(const Mat& bottom_blob, Mat& top_blob, cons
 
             for (int j=0; j<nColBlocks; j++)
             {
-                for(int i=0; i<nRowBlocks; i++)
+                for(int i=0; i<nRowBlocks; ++i)
                 {
                     // TODO AVX2
                     float s0[6],s1[6],s2[6],s3[6],s4[6],s5[6];
@@ -1810,7 +1810,7 @@ static void conv3x3s2_sse(const Mat &bottom_blob, Mat &top_blob, const Mat &_ker
             const float* k1 = kernel0 + 3;
             const float* k2 = kernel0 + 6;
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 int remain = outw;
 

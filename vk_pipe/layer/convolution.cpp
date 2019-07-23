@@ -182,14 +182,14 @@ int Convolution::destroy_pipeline(const Option& opt)
         quantize = 0;
     }
 
-    for (int i=0; i<(int)dequantize_ops.size(); i++)
+    for (int i=0; i<(int)dequantize_ops.size(); ++i)
     {
         dequantize_ops[i]->destroy_pipeline(opt_cpu);
         delete dequantize_ops[i];
     }
     dequantize_ops.clear();
 
-    for (int i=0; i<(int)requantize_ops.size(); i++)
+    for (int i=0; i<(int)requantize_ops.size(); ++i)
     {
         requantize_ops[i]->destroy_pipeline(opt_cpu);
         delete requantize_ops[i];
@@ -364,7 +364,7 @@ int Convolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& op
         int p1 = 0;
         int p2 = 0;
         int gap = w * dilation_h - kernel_w * dilation_w;
-        for (int i = 0; i < kernel_h; i++)
+        for (int i = 0; i < kernel_h; ++i)
         {
             for (int j = 0; j < kernel_w; j++)
             {
@@ -396,7 +396,7 @@ int Convolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& op
             {
                 int* outptr = top_blob_tm.channel(p);
 
-                for (int i = 0; i < outh; i++)
+                for (int i = 0; i < outh; ++i)
                 {
                     for (int j = 0; j < outw; j++)
                     {
@@ -442,7 +442,7 @@ int Convolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& op
                 {
                     signed char* outptr_s8 = top_blob.channel(p);
 
-                    for (int i = 0; i < outh*outw; i++)
+                    for (int i = 0; i < outh*outw; ++i)
                     {
                         if (outptr_s8[i] < 0)
                             outptr_s8[i] = 0;
@@ -462,7 +462,7 @@ int Convolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& op
             {
                 int* outptr = top_blob.channel(p);
 
-                for (int i = 0; i < outh; i++)
+                for (int i = 0; i < outh; ++i)
                 {
                     for (int j = 0; j < outw; j++)
                     {
@@ -507,7 +507,7 @@ int Convolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& op
                 {
                     float* outptr_fp32 = top_blob.channel(p);
 
-                    for (int i = 0; i < outh*outw; i++)
+                    for (int i = 0; i < outh*outw; ++i)
                     {
                         outptr_fp32[i] = std::max(outptr_fp32[i], 0.f);
                     }
@@ -529,7 +529,7 @@ int Convolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& op
     {
         float* outptr = top_blob.channel(p);
 
-        for (int i = 0; i < outh; i++)
+        for (int i = 0; i < outh; ++i)
         {
             for (int j = 0; j < outw; j++)
             {

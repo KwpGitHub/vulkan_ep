@@ -210,7 +210,7 @@ int DeconvolutionDepthWise_vulkan::upload_model(VkTransfer& cmd, const Option& o
         float* pt = weight_data_transposed;
         const float* p = weight_data;
 
-        for (int i=0; i<(channels/group)*(num_output/group)*group; i++)
+        for (int i=0; i<(channels/group)*(num_output/group)*group; ++i)
         {
             for (int k=0; k<maxk; k++)
             {

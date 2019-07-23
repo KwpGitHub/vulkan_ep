@@ -103,7 +103,7 @@ int Deconvolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& 
         int p1 = 0;
         int p2 = 0;
         int gap = outw * dilation_h - kernel_w * dilation_w;
-        for (int i = 0; i < kernel_h; i++)
+        for (int i = 0; i < kernel_h; ++i)
         {
             for (int j = 0; j < kernel_w; j++)
             {
@@ -125,7 +125,7 @@ int Deconvolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& 
 
         out.fill(bias);
 
-        for (int i = 0; i < h; i++)
+        for (int i = 0; i < h; ++i)
         {
             for (int j = 0; j < w; j++)
             {
@@ -155,7 +155,7 @@ int Deconvolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& 
             float* outptr = out;
             int size = outw * outh;
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < size; ++i)
             {
                 outptr[i] = std::max(outptr[i], 0.f);
             }
@@ -166,7 +166,7 @@ int Deconvolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& 
             int size = outw * outh;
             float slope = activation_params[0];
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < size; ++i)
             {
                 outptr[i] = outptr[i] > 0.f ? outptr[i] : outptr[i] * slope;
             }
@@ -178,7 +178,7 @@ int Deconvolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& 
             float min = activation_params[0];
             float max = activation_params[1];
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < size; ++i)
             {
                 if (outptr[i] < min)
                     outptr[i] = min;
@@ -191,7 +191,7 @@ int Deconvolution::forward(const Mat& bottom_blob, Mat& top_blob, const Option& 
             float* outptr = out;
             int size = outw * outh;
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < size; ++i)
             {
                 outptr[i] = 1.f / (1.f + exp(-outptr[i]));
             }

@@ -49,7 +49,7 @@ static Mat generate_anchors(int base_size, const Mat& ratios, const Mat& scales)
     const float cx = base_size * 0.5f;
     const float cy = base_size * 0.5f;
 
-    for (int i = 0; i < num_ratio; i++)
+    for (int i = 0; i < num_ratio; ++i)
     {
         float ar = ratios[i];
 
@@ -124,7 +124,7 @@ static void qsort_descent_inplace(std::vector<T>& datas, std::vector<float>& sco
     while (i <= j)
     {
         while (scores[i] > p)
-            i++;
+            ++i;
 
         while (scores[j] < p)
             j--;
@@ -135,7 +135,7 @@ static void qsort_descent_inplace(std::vector<T>& datas, std::vector<float>& sco
             std::swap(datas[i], datas[j]);
             std::swap(scores[i], scores[j]);
 
-            i++;
+            ++i;
             j--;
         }
     }
@@ -163,7 +163,7 @@ static void nms_sorted_bboxes(const std::vector<Rect>& bboxes, std::vector<int>&
     const int n = bboxes.size();
 
     std::vector<float> areas(n);
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; ++i)
     {
         const Rect& r = bboxes[i];
 
@@ -173,7 +173,7 @@ static void nms_sorted_bboxes(const std::vector<Rect>& bboxes, std::vector<int>&
         areas[i] = width * height;
     }
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; ++i)
     {
         const Rect& a = bboxes[i];
 
@@ -228,7 +228,7 @@ int Proposal::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
         float anchor_w = anchor[2] - anchor[0];
         float anchor_h = anchor[3] - anchor[1];
 
-        for (int i = 0; i < h; i++)
+        for (int i = 0; i < h; ++i)
         {
             float anchor_x = anchor[0];
 
@@ -277,7 +277,7 @@ int Proposal::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
     {
         Mat pbs = proposals.channel(q);
 
-        for (int i = 0; i < w * h; i++)
+        for (int i = 0; i < w * h; ++i)
         {
             float* pb = pbs.row(i);
 
@@ -301,7 +301,7 @@ int Proposal::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
         Mat pbs = proposals.channel(q);
         const float* scoreptr = score_blob.channel(q + num_anchors);
 
-        for (int i = 0; i < w * h; i++)
+        for (int i = 0; i < w * h; ++i)
         {
             float* pb = pbs.row(i);
 
@@ -340,7 +340,7 @@ int Proposal::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
     if (roi_blob.empty())
         return -100;
 
-    for (int i=0; i<picked_count; i++)
+    for (int i=0; i<picked_count; ++i)
     {
         float* outptr = roi_blob.channel(i);
 
@@ -357,7 +357,7 @@ int Proposal::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
         if (roi_score_blob.empty())
             return -100;
 
-        for (int i=0; i<picked_count; i++)
+        for (int i=0; i<picked_count; ++i)
         {
             float* outptr = roi_score_blob.channel(i);
             outptr[0] = scores[ picked[i] ];

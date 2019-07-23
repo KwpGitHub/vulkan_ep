@@ -42,7 +42,7 @@ static void conv3x3s1_int8_sse(const Mat &bottom_blob, Mat &top_blob, const Mat 
             const signed char *r1 = img0 + w;
             const signed char *r2 = img0 + w * 2;
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 int remain = outw;
 
@@ -105,7 +105,7 @@ static void conv3x3s1_winograd23_transform_kernel_int8_sse(const Mat& kernel, Ma
 
             // h
             short tmp[4][3];
-            for (int i=0; i<4; i++)
+            for (int i=0; i<4; ++i)
             {
                 tmp[i][0] = (short)k0[0] * ktm[i][0] + k0[1] * ktm[i][1] + k0[2] * ktm[i][2];
                 tmp[i][1] = (short)k1[0] * ktm[i][0] + k1[1] * ktm[i][1] + k1[2] * ktm[i][2];
@@ -117,7 +117,7 @@ static void conv3x3s1_winograd23_transform_kernel_int8_sse(const Mat& kernel, Ma
             {
                 short* tmpp = &tmp[j][0];
 
-                for (int i=0; i<4; i++)
+                for (int i=0; i<4; ++i)
                 {
                     kernel_tm0[j*4 + i] = tmpp[0] * ktm[i][0] + tmpp[1] * ktm[i][1] + tmpp[2] * ktm[i][2];
                 }
@@ -180,7 +180,7 @@ static void conv3x3s1_winograd23_int8_sse(const Mat& bottom_blob, Mat& top_blob,
                 const signed char* r2 = r1 + w;
                 const signed char* r3 = r2 + w;
 
-                for (int i = 0; i < nRowBlocks; i++)
+                for (int i = 0; i < nRowBlocks; ++i)
                 {
                     short d0[4],d1[4],d2[4],d3[4];
                     short w0[4],w1[4],w2[4],w3[4];
@@ -268,7 +268,7 @@ static void conv3x3s1_winograd23_int8_sse(const Mat& bottom_blob, Mat& top_blob,
             const Mat kernel2_tm = kernel_tm.channel(p+2);
             const Mat kernel3_tm = kernel_tm.channel(p+3);
 
-            for (int i=0; i<tiles; i++)
+            for (int i=0; i<tiles; ++i)
             {
                 int* output0_tm = out0_tm.row<int>(i);
                 int* output1_tm = out1_tm.row<int>(i);
@@ -367,7 +367,7 @@ static void conv3x3s1_winograd23_int8_sse(const Mat& bottom_blob, Mat& top_blob,
             Mat out0_tm = top_blob_tm.channel(p);
             const Mat kernel0_tm = kernel_tm.channel(p);
 
-            for (int i=0; i<tiles; i++)
+            for (int i=0; i<tiles; ++i)
             {
                 int* output0_tm = out0_tm.row<int>(i);
 
@@ -443,7 +443,7 @@ static void conv3x3s1_winograd23_int8_sse(const Mat& bottom_blob, Mat& top_blob,
                 int* outRow0 = out.row<int>(j*2);
                 int* outRow1 = out.row<int>(j*2+1);
 
-                for(int i=0; i<nRowBlocks; i++)
+                for(int i=0; i<nRowBlocks; ++i)
                 {
                     int* out_tile = out_tm.row<int>(j*nRowBlocks + i);
 
@@ -533,7 +533,7 @@ static void conv3x3s1_winograd43_transform_kernel_int8_sse(const Mat& kernel, Ma
 
             // h
             short tmp[6][3];
-            for (int i=0; i<6; i++)
+            for (int i=0; i<6; ++i)
             {
                 tmp[i][0] = k0[0] * ktm[i][0] + k0[1] * ktm[i][1] + k0[2] * ktm[i][2];
                 tmp[i][1] = k1[0] * ktm[i][0] + k1[1] * ktm[i][1] + k1[2] * ktm[i][2];
@@ -545,7 +545,7 @@ static void conv3x3s1_winograd43_transform_kernel_int8_sse(const Mat& kernel, Ma
             {
                 short* tmpp = &tmp[j][0];
 
-                for (int i=0; i<6; i++)
+                for (int i=0; i<6; ++i)
                 {
                     kernel_tm0[j*6 + i] = tmpp[0] * ktm[i][0] + tmpp[1] * ktm[i][1] + tmpp[2] * ktm[i][2];
                 }
@@ -619,7 +619,7 @@ static void conv3x3s1_winograd43_int8_sse(const Mat& bottom_blob, Mat& top_blob,
                 const signed char* r4 = r3 + w;
                 const signed char* r5 = r4 + w;
 
-                for (int i = 0; i < nRowBlocks; i++)
+                for (int i = 0; i < nRowBlocks; ++i)
                 {
                     short d0[6],d1[6],d2[6],d3[6],d4[6],d5[6];
                     short w0[6],w1[6],w2[6],w3[6],w4[6],w5[6];
@@ -708,7 +708,7 @@ static void conv3x3s1_winograd43_int8_sse(const Mat& bottom_blob, Mat& top_blob,
             Mat out0_tm = top_blob_tm.channel(p);
             const Mat kernel0_tm = kernel_tm.channel(p);
 
-            for (int i=0; i<tiles; i++)
+            for (int i=0; i<tiles; ++i)
             {
                 int* output0_tm = out0_tm.row<int>(i);
 
@@ -772,7 +772,7 @@ static void conv3x3s1_winograd43_int8_sse(const Mat& bottom_blob, Mat& top_blob,
                 int* outRow2 = out.row<int>(j*4+2);
                 int* outRow3 = out.row<int>(j*4+3);                
 
-                for(int i=0; i<nRowBlocks; i++)
+                for(int i=0; i<nRowBlocks; ++i)
                 {
                     int* out_tile = out_tm.row<int>(j*nRowBlocks + i);
 
@@ -870,7 +870,7 @@ static void conv3x3s2_int8_sse(const Mat &bottom_blob, Mat &top_blob, const Mat 
             const signed char *r1 = img0 + w;
             const signed char *r2 = img0 + w * 2;
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 int remain = outw;
 

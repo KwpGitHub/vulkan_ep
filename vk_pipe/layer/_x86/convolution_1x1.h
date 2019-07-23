@@ -151,7 +151,7 @@ static void conv1x1s2_sse(const Mat& bottom_blob, Mat& top_blob, const Mat& _ker
             const float* r2 = img2;
             const float* r3 = img3;
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 int remain = outw;
 
@@ -190,7 +190,7 @@ static void conv1x1s2_sse(const Mat& bottom_blob, Mat& top_blob, const Mat& _ker
 
             const float* r0 = img0;
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 int remain = outw;
 

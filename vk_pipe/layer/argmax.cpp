@@ -50,7 +50,7 @@ int ArgMax::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) co
     // optional value
     std::vector< std::pair<float, int> > vec;
     vec.resize(size);
-    for (int i=0; i<size; i++)
+    for (int i=0; i<size; ++i)
     {
         vec[i] = std::make_pair(ptr[i], i);
     }
@@ -62,7 +62,7 @@ int ArgMax::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) co
     if (out_max_val)
     {
         float* valptr = outptr + topk;
-        for (int i=0; i<topk; i++)
+        for (int i=0; i<topk; ++i)
         {
             outptr[i] = vec[i].first;
             valptr[i] = vec[i].second;
@@ -70,7 +70,7 @@ int ArgMax::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) co
     }
     else
     {
-        for (int i=0; i<topk; i++)
+        for (int i=0; i<topk; ++i)
         {
             outptr[i] = vec[i].second;
         }

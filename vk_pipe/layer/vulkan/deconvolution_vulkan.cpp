@@ -131,7 +131,7 @@ int Deconvolution_vulkan::upload_model(VkTransfer& cmd, const Option& opt)
         float* pt = weight_data_transposed;
         const float* p = weight_data;
 
-        for (int i=0; i<num_input*num_output; i++)
+        for (int i=0; i<num_input*num_output; ++i)
         {
             for (int k=0; k<maxk; k++)
             {

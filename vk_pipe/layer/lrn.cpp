@@ -56,7 +56,7 @@ int LRN::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         const float* ptr = bottom_top_blob.channel(q);
         float* outptr = square_blob.channel(q);
 
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             outptr[i] = ptr[i] * ptr[i];
         }
@@ -83,14 +83,14 @@ int LRN::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
                     continue;
 
                 const float* sptr = square_blob.channel(p);
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     ssptr[i] += sptr[i];
                 }
             }
 
             float* ptr = bottom_top_blob.channel(q);
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 ptr[i] = ptr[i] * pow(bias + alpha_div_size * ssptr[i], -beta);
             }
@@ -124,7 +124,7 @@ int LRN::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             int p1 = 0;
             int p2 = 0;
             int gap = w - local_size;
-            for (int i = 0; i < local_size; i++)
+            for (int i = 0; i < local_size; ++i)
             {
                 for (int j = 0; j < local_size; j++)
                 {
@@ -142,7 +142,7 @@ int LRN::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             float* ptr = bottom_top_blob.channel(q);
             const Mat m = square_blob_bordered.channel(q);
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 for (int j = 0; j < outw; j++)
                 {

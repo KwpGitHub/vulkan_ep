@@ -200,21 +200,21 @@ int ConvolutionDepthWise::destroy_pipeline(const Option& opt)
     Option opt_cpu = opt;
     opt_cpu.use_vulkan_compute = false;
 
-    for (int i=0; i<(int)quantize_ops.size(); i++)
+    for (int i=0; i<(int)quantize_ops.size(); ++i)
     {
         quantize_ops[i]->destroy_pipeline(opt_cpu);
         delete quantize_ops[i];
     }
     quantize_ops.clear();
 
-    for (int i=0; i<(int)dequantize_ops.size(); i++)
+    for (int i=0; i<(int)dequantize_ops.size(); ++i)
     {
         dequantize_ops[i]->destroy_pipeline(opt_cpu);
         delete dequantize_ops[i];
     }
     dequantize_ops.clear();
 
-    for (int i=0; i<(int)requantize_ops.size(); i++)
+    for (int i=0; i<(int)requantize_ops.size(); ++i)
     {
         requantize_ops[i]->destroy_pipeline(opt_cpu);
         delete requantize_ops[i];
@@ -358,7 +358,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
         int p1 = 0;
         int p2 = 0;
         int gap = w * dilation_h - kernel_w * dilation_w;
-        for (int i = 0; i < kernel_h; i++)
+        for (int i = 0; i < kernel_h; ++i)
         {
             for (int j = 0; j < kernel_w; j++)
             {
@@ -394,7 +394,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                     const signed char* kptr = (const signed char*)weight_data + maxk * g;
                     const Mat m = bottom_blob_bordered.channel(g);
 
-                    for (int i = 0; i < outh; i++)
+                    for (int i = 0; i < outh; ++i)
                     {
                         for (int j = 0; j < outw; j++)
                         {
@@ -431,7 +431,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                     {
                         signed char* outptr_s8 = top_blob.channel(g);
 
-                        for (int i = 0; i < outh*outw; i++)
+                        for (int i = 0; i < outh*outw; ++i)
                         {
                             if (outptr_s8[i] < 0)
                                 outptr_s8[i] = 0;
@@ -456,7 +456,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                         int* outptr = top_blob.channel(g * num_output_g + p);
                         const signed char* weight_data_ptr = (const signed char*)weight_data + maxk * channels_g * num_output_g * g;
 
-                        for (int i = 0; i < outh; i++)
+                        for (int i = 0; i < outh; ++i)
                         {
                             for (int j = 0; j < outw; j++)
                             {
@@ -506,7 +506,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                         { 
                             signed char* outptr_s8 = top_blob.channel(g * num_output_g + p);   
 
-                            for (int i = 0; i < outh*outw; i++)
+                            for (int i = 0; i < outh*outw; ++i)
                             {
                                 if (outptr_s8[i] < 0)
                                     outptr_s8[i] = 0;
@@ -532,7 +532,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                     const signed char* kptr = (const signed char*)weight_data + maxk * g;
                     const Mat m = bottom_blob_bordered.channel(g);
 
-                    for (int i = 0; i < outh; i++)
+                    for (int i = 0; i < outh; ++i)
                     {
                         for (int j = 0; j < outw; j++)
                         {
@@ -568,7 +568,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                     {
                         float* outptr_fp32 = top_blob.channel(g);
 
-                        for (int i = 0; i < outh*outw; i++)
+                        for (int i = 0; i < outh*outw; ++i)
                         {
                             outptr_fp32[i] = std::max(outptr_fp32[i], 0.f);
                         }
@@ -592,7 +592,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                         int* outptr = top_blob.channel(g * num_output_g + p);
                         const signed char* weight_data_ptr = (const signed char*)weight_data + maxk * channels_g * num_output_g * g;
 
-                        for (int i = 0; i < outh; i++)
+                        for (int i = 0; i < outh; ++i)
                         {
                             for (int j = 0; j < outw; j++)
                             {
@@ -641,7 +641,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
                         { 
                             float* outptr_fp32 = top_blob.channel(g * num_output_g + p);   
 
-                            for (int i = 0; i < outh*outw; i++)
+                            for (int i = 0; i < outh*outw; ++i)
                             {
                                 outptr_fp32[i] = std::max(outptr_fp32[i], 0.f);
                             }
@@ -669,7 +669,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
             const float* kptr = (const float*)weight_data + maxk * g;
             const Mat m = bottom_blob_bordered.channel(g);
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 for (int j = 0; j < outw; j++)
                 {
@@ -735,7 +735,7 @@ int ConvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const O
             float* outptr = top_blob.channel(g * num_output_g + p);
             const float* weight_data_ptr = (const float*)weight_data + maxk * channels_g * num_output_g * g;
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 for (int j = 0; j < outw; j++)
                 {

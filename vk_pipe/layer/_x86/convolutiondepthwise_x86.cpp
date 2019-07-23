@@ -79,7 +79,7 @@ int ConvolutionDepthWise_x86::create_pipeline(const Option& opt)
     const int maxk = kernel_w * kernel_h;
     int channels = (weight_data_size / group) / maxk / (num_output / group) * group;
 
-    for (int i=0; i<(int)group_ops.size(); i++)
+    for (int i=0; i<(int)group_ops.size(); ++i)
         delete group_ops[i];
 
     group_ops.clear();      
@@ -176,7 +176,7 @@ int ConvolutionDepthWise_x86::destroy_pipeline(const Option& opt)
         activation = 0;
     }
 
-    for (int i=0; i<(int)group_ops.size(); i++)
+    for (int i=0; i<(int)group_ops.size(); ++i)
     {
         group_ops[i]->destroy_pipeline(opt_cpu);
         delete group_ops[i];

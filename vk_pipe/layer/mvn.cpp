@@ -57,7 +57,7 @@ int MVN::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
         const float* ptr = bottom_blob.channel(q);
 
         float s = 0.f;
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             s += ptr[i];
         }
@@ -82,7 +82,7 @@ int MVN::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
             const float* ptr = bottom_blob.channel(q);
             float* outptr = top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 outptr[i] = ptr[i] - mean;
             }
@@ -98,7 +98,7 @@ int MVN::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
             float* outptr = top_blob.channel(q);
             float mean = sum[q] / size;
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 outptr[i] = ptr[i] - mean;
             }
@@ -118,7 +118,7 @@ int MVN::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
             const float* ptr = top_blob.channel(q);
 
             float s = 0.f;
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 s += ptr[i] * ptr[i];
             }
@@ -146,7 +146,7 @@ int MVN::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
             {
                 float* outptr = top_blob.channel(q);
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     outptr[i] = outptr[i] * norm_var_inv;
                 }
@@ -163,7 +163,7 @@ int MVN::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
                 float norm_var = sqrt(sqmean) + eps;
                 float norm_var_inv = 1.f / norm_var;
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     outptr[i] = outptr[i] * norm_var_inv;
                 }

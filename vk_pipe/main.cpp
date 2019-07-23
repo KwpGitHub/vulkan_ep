@@ -57,7 +57,7 @@ namespace vulkan_ep {
 			int ret = 0;
 
 			ModelBinFromEmpty mb;
-			for (size_t i = 0; i < layers.size(); i++)
+			for (size_t i = 0; i < layers.size(); ++i)
 			{
 				Layer* layer = layers[i];
 
@@ -144,7 +144,7 @@ void benchmark(const char* comment, const vulkan_ep::Mat& in)
 	vulkan_ep::Mat out;
 
 	// warm up
-	for (int i = 0; i < g_warmup_loop_count; i++)
+	for (int i = 0; i < g_warmup_loop_count; ++i)
 	{
 		vulkan_ep::Extractor ex = net.create_extractor();
 		ex.input("data", in);
@@ -155,7 +155,7 @@ void benchmark(const char* comment, const vulkan_ep::Mat& in)
 	double time_max = -DBL_MAX;
 	double time_avg = 0;
 
-	for (int i = 0; i < g_loop_count; i++)
+	for (int i = 0; i < g_loop_count; ++i)
 	{
 		double start = vulkan_ep::get_current_time();
 

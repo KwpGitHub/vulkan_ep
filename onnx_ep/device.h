@@ -19,6 +19,15 @@ namespace backend {
 		friend class ConditionVariable;
 		SRWLOCK srwlock;
 	};
+
+	class MutexLockGuard
+	{
+	public:
+		MutexLockGuard(Mutex& _mutex) : mutex(_mutex) { mutex.lock(); }
+		~MutexLockGuard() { mutex.unlock(); }
+	private:
+		Mutex& mutex;
+	};
 	
 	// instance
 	int create_gpu_instance();
@@ -99,7 +108,7 @@ namespace backend {
 
 	};
 
-	class allocator;
+	class Allocator;
 	
 	class Device
 	{
@@ -109,55 +118,42 @@ namespace backend {
 
 		const DeviceInfo info;
 
+		VkDevice vkdevice()const { return device; }
 		VkShaderModule get_shader_module(const char* name) const;
 		VkShaderModule compile_shader_module(const uint32_t* spv_data, size_t spv_data_size) const;
 
 		VkQueue acquire_queue(uint32_t queue_family_index) const;
 		void reclaim_queue(uint32_t queue_family_index, VkQueue queue) const;
 
-		allocator* acquire_blob_allocator() const;
-		void reclaim_blob_allocator(allocator* allocator) const;
+		Allocator* acquire_blob_allocator() const;
+		void reclaim_blob_allocator(Allocator* allocator) const;
 
-		allocator* acquire_staging_allocator() const;
-		void reclaim_staging_allocator(allocator* allocator) const;
+		Allocator* acquire_staging_allocator() const;
+		void reclaim_staging_allocator(Allocator* allocator) const;
 
-		// VK_KHR_descriptor_update_template
 		PFN_vkCreateDescriptorUpdateTemplateKHR vkCreateDescriptorUpdateTemplateKHR;
 		PFN_vkDestroyDescriptorUpdateTemplateKHR vkDestroyDescriptorUpdateTemplateKHR;
 		PFN_vkUpdateDescriptorSetWithTemplateKHR vkUpdateDescriptorSetWithTemplateKHR;
-
-		// VK_KHR_get_memory_requirements2
 		PFN_vkGetImageMemoryRequirements2KHR vkGetImageMemoryRequirements2KHR;
 		PFN_vkGetBufferMemoryRequirements2KHR vkGetBufferMemoryRequirements2KHR;
 		PFN_vkGetImageSparseMemoryRequirements2KHR vkGetImageSparseMemoryRequirements2KHR;
-
-		// VK_KHR_push_descriptor
 		PFN_vkCmdPushDescriptorSetWithTemplateKHR vkCmdPushDescriptorSetWithTemplateKHR;
 		PFN_vkCmdPushDescriptorSetKHR vkCmdPushDescriptorSetKHR;
 
 	protected:
-		// shader management
 		int create_shader_module();
 		void destroy_shader_module();
-
-		// device extension
 		int init_device_extension();
 
 	private:
 		VkDevice device;
 		std::vector<VkShaderModule> shader_modules;
-
-		// hardware queue
 		mutable std::vector<VkQueue> compute_queues;
 		mutable std::vector<VkQueue> transfer_queues;
 		mutable Mutex queue_lock;
-
-		// default blob allocator for each queue
-		mutable std::vector<allocator*> blob_allocators;
+		mutable std::vector<Allocator*> blob_allocators;
 		mutable Mutex blob_allocator_lock;
-
-		// default staging allocator for each queue
-		mutable std::vector<allocator*> staging_allocators;
+		mutable std::vector<Allocator*> staging_allocators;
 		mutable Mutex staging_allocator_lock;
 
 	};

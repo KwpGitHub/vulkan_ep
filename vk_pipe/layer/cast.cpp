@@ -220,7 +220,7 @@ int Cast::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) cons
             const float* ptr = bottom_blob.channel(q);
             unsigned short* outptr = top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 outptr[i] = float32_to_float16(ptr[i]);
             }
@@ -235,7 +235,7 @@ int Cast::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) cons
             const unsigned short* ptr = bottom_blob.channel(q);
             float* outptr = top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 outptr[i] = float16_to_float32(ptr[i]);
             }

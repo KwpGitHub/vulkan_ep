@@ -13,7 +13,7 @@
 // specific language governing permissions and limitations under the License.
 
 #include "command.h"
-
+#define VK_EP_VULKAN 1
 #if VK_EP_VULKAN
 
 #include <stdio.h>
@@ -184,7 +184,7 @@ VkCompute::~VkCompute()
 {
     if (!vkdev->info.support_VK_KHR_push_descriptor)
     {
-        for (size_t i=0; i<descriptorsets.size(); i++)
+        for (size_t i=0; i<descriptorsets.size(); ++i)
         {
             vkFreeDescriptorSets(vkdev->vkdevice(), descriptor_pools[i], 1, &descriptorsets[i]);
             vkDestroyDescriptorPool(vkdev->vkdevice(), descriptor_pools[i], 0);
@@ -287,7 +287,7 @@ void VkCompute::record_copy_regions(const VkMat& src, const VkMat& dst, const st
 void VkCompute::record_pipeline(const Pipeline* pipeline, const std::vector<VkMat>& bindings, const std::vector<vk_constant_type>& constants, const VkMat& m)
 {
     const int binding_count = bindings.size();
-    for (int i=0; i<binding_count; i++)
+    for (int i=0; i<binding_count; ++i)
     {
         // skip readonly weight blob
         if (bindings[i].data->state == 4)
@@ -342,7 +342,7 @@ void VkCompute::record_update_bindings(VkPipelineLayout pipeline_layout, VkDescr
         return;
 
     std::vector<VkDescriptorBufferInfo> descriptorBufferInfos(binding_count);
-    for (int i=0; i<binding_count; i++)
+    for (int i=0; i<binding_count; ++i)
     {
         descriptorBufferInfos[i].buffer = bindings[i].buffer();
         descriptorBufferInfos[i].offset = bindings[i].buffer_offset();
@@ -403,7 +403,7 @@ void VkCompute::record_update_bindings(VkPipelineLayout pipeline_layout, VkDescr
     else
     {
         std::vector<VkWriteDescriptorSet> writeDescriptorSets(binding_count);
-        for (int i=0; i<binding_count; i++)
+        for (int i=0; i<binding_count; ++i)
         {
             writeDescriptorSets[i].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             writeDescriptorSets[i].pNext = 0;
@@ -550,7 +550,7 @@ int VkCompute::submit_and_wait()
 #endif // VK_EP_BENCHMARK
 
     // handle delayed records
-    for (size_t i=0; i<delayed_records.size(); i++)
+    for (size_t i=0; i<delayed_records.size(); ++i)
     {
         const record_type& r = delayed_records[i];
 
@@ -889,7 +889,7 @@ int VkTransfer::submit_and_wait()
 
     // solve staging buffer size
     size_t staging_buffer_size = 0;
-    for (int i=0; i<transfer_count; i++)
+    for (int i=0; i<transfer_count; ++i)
     {
         const record_type& r = delayed_records[i];
         staging_buffer_size += alignSize(r.size, buffer_offset_alignment);
@@ -900,7 +900,7 @@ int VkTransfer::submit_and_wait()
 
     // copy upload data
     size_t mapped_ptr_offset = 0;
-    for (int i=0; i<transfer_count; i++)
+    for (int i=0; i<transfer_count; ++i)
     {
         const record_type& r = delayed_records[i];
 
@@ -915,7 +915,7 @@ int VkTransfer::submit_and_wait()
 
     // handle delayed records
     size_t staging_buffer_offset = 0;
-    for (int i=0; i<transfer_count; i++)
+    for (int i=0; i<transfer_count; ++i)
     {
         const record_type& r = delayed_records[i];
 

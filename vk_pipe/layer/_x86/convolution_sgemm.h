@@ -138,7 +138,7 @@ static void conv_im2col_sgemm_sse(const Mat &bottom_blob, Mat &top_blob, const M
             {
                 for (int v=0; v<kernel_w; v++)
                 {
-                    for (int i=0; i<outh; i++)
+                    for (int i=0; i<outh; ++i)
                     {
                         for (int j=0; j<outw; j++)
                         {
@@ -164,7 +164,7 @@ static void conv_im2col_sgemm_sse(const Mat &bottom_blob, Mat &top_blob, const M
         int remain_size_start = nn_size << 3;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int ii=0; ii<nn_size; ii++)
+        for (int ii=0; ii<nn_size; i++i)
         {
             int i = ii * 8;
 
@@ -193,7 +193,7 @@ static void conv_im2col_sgemm_sse(const Mat &bottom_blob, Mat &top_blob, const M
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_size_start; i<out_size; i++)
+        for (int i=remain_size_start; i<out_size; ++i)
         {
             const float* img0 = bottom_im2col.channel(0);
             img0 += i;
@@ -903,7 +903,7 @@ static void conv_im2col_sgemm_sse(const Mat &bottom_blob, Mat &top_blob, const M
         remain_outch_start += nn_outch << 2;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_outch_start; i<outch; i++)
+        for (int i=remain_outch_start; i<outch; ++i)
         { 
             float* output = top_blob.channel(i);
 
@@ -1118,7 +1118,7 @@ static void conv_im2col_sgemm_sse(const Mat &bottom_blob, Mat &top_blob, const M
             {
                 for (int v=0; v<kernel_w; v++)
                 {
-                    for (int i=0; i<outh; i++)
+                    for (int i=0; i<outh; ++i)
                     {
                         for (int j=0; j<outw; j++)
                         {
@@ -1144,7 +1144,7 @@ static void conv_im2col_sgemm_sse(const Mat &bottom_blob, Mat &top_blob, const M
         int remain_size_start = nn_size << 2;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int ii=0; ii<nn_size; ii++)
+        for (int ii=0; ii<nn_size; i++i)
         {
             int i = ii * 4;
 
@@ -1169,7 +1169,7 @@ static void conv_im2col_sgemm_sse(const Mat &bottom_blob, Mat &top_blob, const M
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_size_start; i<out_size; i++)
+        for (int i=remain_size_start; i<out_size; ++i)
         {
             const float* img0 = bottom_im2col.channel(0);
             img0 += i;
@@ -1466,7 +1466,7 @@ static void conv_im2col_sgemm_sse(const Mat &bottom_blob, Mat &top_blob, const M
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_outch_start; i<outch; i++)
+        for (int i=remain_outch_start; i<outch; ++i)
         {
             float* output = top_blob.channel(i);
 

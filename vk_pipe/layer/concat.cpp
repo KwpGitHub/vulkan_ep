@@ -122,7 +122,7 @@ int Concat::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_
             return -100;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=0; i<h; i++)
+        for (int i=0; i<h; ++i)
         {
             float* outptr = top_blob.row(i);
             for (size_t b=0; b<bottom_blobs.size(); b++)
@@ -240,7 +240,7 @@ int Concat::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_
         {
             float* outptr = top_blob.channel(q);
 
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 for (size_t b=0; b<bottom_blobs.size(); b++)
                 {

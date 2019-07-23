@@ -42,7 +42,7 @@ int Flatten::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
         const float* ptr = bottom_blob.channel(q);
         float* outptr = (float*)top_blob + size * q;
 
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             outptr[i] = ptr[i];
         }

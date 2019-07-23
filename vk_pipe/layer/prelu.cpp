@@ -53,7 +53,7 @@ int PReLU::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         if (num_slope > 1)
         {
             #pragma omp parallel for num_threads(opt.num_threads)
-            for (int i=0; i<w; i++)
+            for (int i=0; i<w; ++i)
             {
                 if (ptr[i] < 0)
                     ptr[i] *= slope_data[i];
@@ -64,7 +64,7 @@ int PReLU::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             float slope = slope_data[0];
 
             #pragma omp parallel for num_threads(opt.num_threads)
-            for (int i=0; i<w; i++)
+            for (int i=0; i<w; ++i)
             {
                 if (ptr[i] < 0)
                     ptr[i] *= slope;
@@ -78,7 +78,7 @@ int PReLU::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         int h = bottom_top_blob.h;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=0; i<h; i++)
+        for (int i=0; i<h; ++i)
         {
             float* ptr = bottom_top_blob.row(i);
             float slope = num_slope > 1 ? slope_data[i] : slope_data[0];
@@ -104,7 +104,7 @@ int PReLU::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             float* ptr = bottom_top_blob.channel(q);
             float slope = num_slope > 1 ? slope_data[q] : slope_data[0];
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 if (ptr[i] < 0)
                     ptr[i] *= slope;

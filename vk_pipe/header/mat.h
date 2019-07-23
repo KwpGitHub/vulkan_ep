@@ -601,7 +601,7 @@ inline void Mat::fill(T _v)
 {
     int size = total();
     T* ptr = (T*)data;
-    for (int i=0; i<size; i++)
+    for (int i=0; i<size; ++i)
     {
         ptr[i] = _v;
     }
@@ -639,7 +639,7 @@ inline Mat Mat::reshape(int _w, Allocator* _allocator) const
         m.create(_w, elemsize, packing, _allocator);
 
         // flatten
-        for (int i=0; i<c; i++)
+        for (int i=0; i<c; ++i)
         {
             const void* ptr = (unsigned char*)data + i * cstep * elemsize;
             void* mptr = (unsigned char*)m.data + i * w * h * elemsize;
@@ -672,7 +672,7 @@ inline Mat Mat::reshape(int _w, int _h, Allocator* _allocator) const
         m.create(_w, _h, elemsize, packing, _allocator);
 
         // flatten
-        for (int i=0; i<c; i++)
+        for (int i=0; i<c; ++i)
         {
             const void* ptr = (unsigned char*)data + i * cstep * elemsize;
             void* mptr = (unsigned char*)m.data + i * w * h * elemsize;
@@ -707,7 +707,7 @@ inline Mat Mat::reshape(int _w, int _h, int _c, Allocator* _allocator) const
             m.create(_w, _h, _c, elemsize, packing, _allocator);
 
             // align channel
-            for (int i=0; i<_c; i++)
+            for (int i=0; i<_c; ++i)
             {
                 const void* ptr = (unsigned char*)data + i * _w * _h * elemsize;
                 void* mptr = (unsigned char*)m.data + i * m.cstep * m.elemsize;

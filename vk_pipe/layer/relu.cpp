@@ -46,7 +46,7 @@ int ReLU::forward_inplace_int8(Mat& bottom_top_blob, const Option& opt) const
         {
             signed char* ptr = bottom_top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 if (ptr[i] < 0)
                     ptr[i] = 0;
@@ -61,7 +61,7 @@ int ReLU::forward_inplace_int8(Mat& bottom_top_blob, const Option& opt) const
         // {
         //     float* ptr = bottom_top_blob.channel(q);
 
-        //     for (int i=0; i<size; i++)
+        //     for (int i=0; i<size; ++i)
         //     {
         //         if (ptr[i] < 0)
         //             ptr[i] *= slope;
@@ -89,7 +89,7 @@ int ReLU::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         {
             float* ptr = bottom_top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 if (ptr[i] < 0)
                     ptr[i] = 0;
@@ -103,7 +103,7 @@ int ReLU::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         {
             float* ptr = bottom_top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 if (ptr[i] < 0)
                     ptr[i] *= slope;

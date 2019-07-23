@@ -58,7 +58,7 @@ int Eltwise::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top
             const float* ptr1 = bottom_blob1.channel(q);
             float* outptr = top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 outptr[i] = ptr[i] * ptr1[i];
             }
@@ -73,7 +73,7 @@ int Eltwise::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top
                 const float* ptr = bottom_blob1.channel(q);
                 float* outptr = top_blob.channel(q);
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     outptr[i] *= ptr[i];
                 }
@@ -93,7 +93,7 @@ int Eltwise::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top
                 const float* ptr1 = bottom_blob1.channel(q);
                 float* outptr = top_blob.channel(q);
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     outptr[i] = ptr[i] + ptr1[i];
                 }
@@ -108,7 +108,7 @@ int Eltwise::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top
                     const float* ptr = bottom_blob1.channel(q);
                     float* outptr = top_blob.channel(q);
 
-                    for (int i=0; i<size; i++)
+                    for (int i=0; i<size; ++i)
                     {
                         outptr[i] += ptr[i];
                     }
@@ -128,7 +128,7 @@ int Eltwise::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top
                 const float* ptr1 = bottom_blob1.channel(q);
                 float* outptr = top_blob.channel(q);
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     outptr[i] = ptr[i] * coeff0 + ptr1[i] * coeff1;
                 }
@@ -144,7 +144,7 @@ int Eltwise::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top
                     const float* ptr = bottom_blob1.channel(q);
                     float* outptr = top_blob.channel(q);
 
-                    for (int i=0; i<size; i++)
+                    for (int i=0; i<size; ++i)
                     {
                         outptr[i] += ptr[i] * coeff;
                     }
@@ -163,7 +163,7 @@ int Eltwise::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top
             const float* ptr1 = bottom_blob1.channel(q);
             float* outptr = top_blob.channel(q);
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 outptr[i] = std::max(ptr[i], ptr1[i]);
             }
@@ -178,7 +178,7 @@ int Eltwise::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top
                 const float* ptr = bottom_blob1.channel(q);
                 float* outptr = top_blob.channel(q);
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     outptr[i] = std::max(outptr[i], ptr[i]);
                 }

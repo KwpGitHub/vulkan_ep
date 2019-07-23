@@ -38,7 +38,7 @@ static void conv_im2col_sgemm_int8_sse(const Mat &bottom_blob, Mat &top_blob, co
         signed char* ret = (signed char*)bottom_im2row;
         int retID = 0;
     
-        for (int i=0; i<outh; i++)
+        for (int i=0; i<outh; ++i)
         {
             for (int j=0; j<outw; j++)
             {
@@ -75,7 +75,7 @@ static void conv_im2col_sgemm_int8_sse(const Mat &bottom_blob, Mat &top_blob, co
         int remain_size_start = nn_size << 2;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int ii=0; ii<nn_size; ii++)
+        for (int ii=0; ii<nn_size; i++i)
         {
             int i = ii * 4;
 
@@ -121,7 +121,7 @@ static void conv_im2col_sgemm_int8_sse(const Mat &bottom_blob, Mat &top_blob, co
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_size_start; i<out_size; i++)
+        for (int i=remain_size_start; i<out_size; ++i)
         {
             const signed char* img0 = bottom_im2row.row<signed char>(i);
 
@@ -366,7 +366,7 @@ static void conv_im2col_sgemm_int8_sse(const Mat &bottom_blob, Mat &top_blob, co
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_outch_start; i<outch; i++)
+        for (int i=remain_outch_start; i<outch; ++i)
         {
             int* output = top_blob.channel(i);
 
@@ -429,7 +429,7 @@ static void conv_im2col_sgemm_int8_sse(const Mat &bottom_blob, Mat &top_blob, co
 
     // // sgemm(int M, int N, int K, float* A, float* B, float* C)
     // {
-    //     for (int i=0; i<M; i++)
+    //     for (int i=0; i<M; ++i)
     //     {
     //         int* output = top_blob.channel(i);
 
@@ -474,7 +474,7 @@ static void conv_im2col_sgemm_int8_dequant_sse(const Mat &bottom_blob, Mat &top_
         signed char* ret = (signed char*)bottom_im2row;
         int retID = 0;
     
-        for (int i=0; i<outh; i++)
+        for (int i=0; i<outh; ++i)
         {
             for (int j=0; j<outw; j++)
             {
@@ -511,7 +511,7 @@ static void conv_im2col_sgemm_int8_dequant_sse(const Mat &bottom_blob, Mat &top_
         int remain_size_start = nn_size << 2;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int ii=0; ii<nn_size; ii++)
+        for (int ii=0; ii<nn_size; i++i)
         {
             int i = ii * 4;
 
@@ -557,7 +557,7 @@ static void conv_im2col_sgemm_int8_dequant_sse(const Mat &bottom_blob, Mat &top_
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_size_start; i<out_size; i++)
+        for (int i=remain_size_start; i<out_size; ++i)
         {
             const signed char* img0 = bottom_im2row.row<signed char>(i);
 
@@ -812,7 +812,7 @@ static void conv_im2col_sgemm_int8_dequant_sse(const Mat &bottom_blob, Mat &top_
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_outch_start; i<outch; i++)
+        for (int i=remain_outch_start; i<outch; ++i)
         {
             float* output = top_blob.channel(i);
 
@@ -878,7 +878,7 @@ static void conv_im2col_sgemm_int8_dequant_sse(const Mat &bottom_blob, Mat &top_
 
     // // sgemm(int M, int N, int K, float* A, float* B, float* C)
     // {
-    //     for (int i=0; i<M; i++)
+    //     for (int i=0; i<M; ++i)
     //     {
     //         int* output = top_blob.channel(i);
 
@@ -923,7 +923,7 @@ static void conv_im2col_sgemm_int8_requant_sse(const Mat &bottom_blob, Mat &top_
         signed char* ret = (signed char*)bottom_im2row;
         int retID = 0;
     
-        for (int i=0; i<outh; i++)
+        for (int i=0; i<outh; ++i)
         {
             for (int j=0; j<outw; j++)
             {
@@ -960,7 +960,7 @@ static void conv_im2col_sgemm_int8_requant_sse(const Mat &bottom_blob, Mat &top_
         int remain_size_start = nn_size << 2;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int ii=0; ii<nn_size; ii++)
+        for (int ii=0; ii<nn_size; i++i)
         {
             int i = ii * 4;
 
@@ -1006,7 +1006,7 @@ static void conv_im2col_sgemm_int8_requant_sse(const Mat &bottom_blob, Mat &top_
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_size_start; i<out_size; i++)
+        for (int i=remain_size_start; i<out_size; ++i)
         {
             const signed char* img0 = bottom_im2row.row<signed char>(i);
 
@@ -1265,7 +1265,7 @@ static void conv_im2col_sgemm_int8_requant_sse(const Mat &bottom_blob, Mat &top_
         }
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=remain_outch_start; i<outch; i++)
+        for (int i=remain_outch_start; i<outch; ++i)
         {
             signed char* output = top_blob.channel(i);
 
@@ -1333,7 +1333,7 @@ static void conv_im2col_sgemm_int8_requant_sse(const Mat &bottom_blob, Mat &top_
 
     // // sgemm(int M, int N, int K, float* A, float* B, float* C)
     // {
-    //     for (int i=0; i<M; i++)
+    //     for (int i=0; i<M; ++i)
     //     {
     //         int* output = top_blob.channel(i);
 

@@ -58,7 +58,7 @@ int BatchNorm::load_model(const ModelBin& mb)
     if (b_data.empty())
         return -100;
 
-    for (int i=0; i<channels; i++)
+    for (int i=0; i<channels; ++i)
     {
         float sqrt_var = sqrt(var_data[i] + eps);
         a_data[i] = bias_data[i] - slope_data[i] * mean_data[i] / sqrt_var;
@@ -83,7 +83,7 @@ int BatchNorm::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         float* ptr = bottom_top_blob;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=0; i<w; i++)
+        for (int i=0; i<w; ++i)
         {
             ptr[i] = b_data[i] * ptr[i] + a_data[i];
         }
@@ -95,7 +95,7 @@ int BatchNorm::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         int h = bottom_top_blob.h;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i=0; i<h; i++)
+        for (int i=0; i<h; ++i)
         {
             float* ptr = bottom_top_blob.row(i);
             float a = a_data[i];
@@ -121,7 +121,7 @@ int BatchNorm::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             float a = a_data[q];
             float b = b_data[q];
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 ptr[i] = b * ptr[i] + a;
             }

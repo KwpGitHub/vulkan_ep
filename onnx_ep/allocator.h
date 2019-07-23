@@ -36,7 +36,8 @@ namespace backend {
 		size_t offset;
 		size_t capacity;
 		VkDeviceMemory memory;
-		void* mapped;
+		void* mapped_ptr;
+		;
 		/*
 		    // 0=null
 			// 1=created
@@ -56,7 +57,7 @@ namespace backend {
 		virtual ~Allocator(){ clear(); }
 		virtual void clear() {}
 		virtual BufferMemory* fastMalloc(size_t size) = 0;
-		virtual void fastFree(BufferMemory* ptr);
+		virtual void fastFree(BufferMemory* ptr) = 0;
 
 		const Device* dev;
 		bool mappable;

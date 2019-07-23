@@ -71,7 +71,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
                 const float* ptr = bottom_blob.channel(q);
 
                 float max = ptr[0];
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     max = std::max(max, ptr[i]);
                 }
@@ -87,7 +87,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
                 const float* ptr = bottom_blob.channel(q);
 
                 float sum = 0.f;
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     sum += ptr[i];
                 }
@@ -171,7 +171,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
         int p1 = 0;
         int p2 = 0;
         int gap = w - kernel_w;
-        for (int i = 0; i < kernel_h; i++)
+        for (int i = 0; i < kernel_h; ++i)
         {
             for (int j = 0; j < kernel_w; j++)
             {
@@ -191,7 +191,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
             const Mat m = bottom_blob_bordered.channel(q);
             float* outptr = top_blob.channel(q);
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 for (int j = 0; j < outw; j++)
                 {
@@ -220,7 +220,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
             const Mat m = bottom_blob_bordered.channel(q);
             float* outptr = top_blob.channel(q);
 
-            for (int i = 0; i < outh; i++)
+            for (int i = 0; i < outh; ++i)
             {
                 for (int j = 0; j < outw; j++)
                 {
@@ -246,7 +246,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
                 const float scale = (float)kernel_h / (kernel_h - pad_top);
 
                 outptr = top_blob.channel(q).row(0);
-                for (int i = 0; i < outw; i++)
+                for (int i = 0; i < outw; ++i)
                 {
                     outptr[i] *= scale;
                 }
@@ -256,7 +256,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
                 const float scale = (float)kernel_h / (kernel_h - pad_bottom - htailpad);
 
                 outptr = top_blob.channel(q).row(outh - 1);
-                for (int i = 0; i < outw; i++)
+                for (int i = 0; i < outw; ++i)
                 {
                     outptr[i] *= scale;
                 }
@@ -266,7 +266,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
                 const float scale = (float)kernel_w / (kernel_w - pad_left);
 
                 outptr = top_blob.channel(q);
-                for (int i = 0; i < outh; i++)
+                for (int i = 0; i < outh; ++i)
                 {
                     *outptr *= scale;
                     outptr += outw;
@@ -278,7 +278,7 @@ int Pooling::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
 
                 outptr = top_blob.channel(q);
                 outptr += outw - 1;
-                for (int i = 0; i < outh; i++)
+                for (int i = 0; i < outh; ++i)
                 {
                     *outptr *= scale;
                     outptr += outw;

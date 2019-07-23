@@ -74,7 +74,7 @@ int Requantize::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt
             if (bias_data_size > 1)
             {
                 #pragma omp parallel for num_threads(opt.num_threads)
-                for (int i=0; i<w; i++)
+                for (int i=0; i<w; ++i)
                 {
                     ptr[i] = float2int8(((intptr[i] * scale_in) + bias_data[i]) * scale_out);
                     if (fusion_relu && ptr[i] < 0)
@@ -85,7 +85,7 @@ int Requantize::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt
             {
                 float bias = bias_data[0];
                 #pragma omp parallel for num_threads(opt.num_threads)
-                for (int i=0; i<w; i++)
+                for (int i=0; i<w; ++i)
                 {
                     ptr[i] = float2int8(((intptr[i] * scale_in) + bias) * scale_out);
                     if (fusion_relu && ptr[i] < 0)
@@ -96,7 +96,7 @@ int Requantize::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt
         else
         {
             #pragma omp parallel for num_threads(opt.num_threads)
-            for (int i=0; i<w; i++)
+            for (int i=0; i<w; ++i)
             {
                 ptr[i] = float2int8(intptr[i] * scale_in * scale_out);
                 if (fusion_relu && ptr[i] < 0)
@@ -113,7 +113,7 @@ int Requantize::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt
         if (bias_term)
         {
             #pragma omp parallel for num_threads(opt.num_threads)
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 const int* intptr = bottom_blob.row<const int>(i);
                 signed char* ptr = top_blob.row<signed char>(i);
@@ -131,7 +131,7 @@ int Requantize::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt
         else
         {
             #pragma omp parallel for num_threads(opt.num_threads)
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 const int* intptr = bottom_blob.row<const int>(i);
                 signed char* ptr = top_blob.row<signed char>(i);
@@ -163,7 +163,7 @@ int Requantize::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt
 
                 float bias = bias_data_size > 1 ? bias_data[q] : bias_data[0];
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     ptr[i] = float2int8(((intptr[i] * scale_in) + bias) * scale_out);
                     if (fusion_relu && ptr[i] < 0)
@@ -179,7 +179,7 @@ int Requantize::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt
                 const int* intptr = bottom_blob.channel(q);
                 signed char* ptr = top_blob.channel(q);
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     ptr[i] = float2int8(intptr[i] * scale_in * scale_out);
                     if (fusion_relu && ptr[i] < 0)

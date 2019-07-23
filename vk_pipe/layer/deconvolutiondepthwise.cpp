@@ -108,7 +108,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
         int p1 = 0;
         int p2 = 0;
         int gap = outw * dilation_h - kernel_w * dilation_w;
-        for (int i = 0; i < kernel_h; i++)
+        for (int i = 0; i < kernel_h; ++i)
         {
             for (int j = 0; j < kernel_w; j++)
             {
@@ -134,7 +134,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
 
             m.fill(bias);
 
-            for (int i = 0; i < h; i++)
+            for (int i = 0; i < h; ++i)
             {
                 for (int j = 0; j < w; j++)
                 {
@@ -155,7 +155,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
                 float* outptr = m;
                 int size = outw * outh;
 
-                for (int i = 0; i < size; i++)
+                for (int i = 0; i < size; ++i)
                 {
                     outptr[i] = std::max(outptr[i], 0.f);
                 }
@@ -166,7 +166,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
                 int size = outw * outh;
                 float slope = activation_params[0];
 
-                for (int i = 0; i < size; i++)
+                for (int i = 0; i < size; ++i)
                 {
                     outptr[i] = outptr[i] > 0.f ? outptr[i] : outptr[i] * slope;
                 }
@@ -178,7 +178,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
                 float min = activation_params[0];
                 float max = activation_params[1];
 
-                for (int i = 0; i < size; i++)
+                for (int i = 0; i < size; ++i)
                 {
                     if (outptr[i] < min)
                         outptr[i] = min;
@@ -191,7 +191,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
                 float* outptr = m;
                 int size = outw * outh;
 
-                for (int i = 0; i < size; i++)
+                for (int i = 0; i < size; ++i)
                 {
                     outptr[i] = 1.f / (1.f + exp(-outptr[i]));
                 }
@@ -220,7 +220,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
 
                 out.fill(bias);
 
-                for (int i = 0; i < h; i++)
+                for (int i = 0; i < h; ++i)
                 {
                     for (int j = 0; j < w; j++)
                     {
@@ -249,7 +249,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
                     float* outptr = out;
                     int size = outw * outh;
 
-                    for (int i = 0; i < size; i++)
+                    for (int i = 0; i < size; ++i)
                     {
                         outptr[i] = std::max(outptr[i], 0.f);
                     }
@@ -260,7 +260,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
                     int size = outw * outh;
                     float slope = activation_params[0];
 
-                    for (int i = 0; i < size; i++)
+                    for (int i = 0; i < size; ++i)
                     {
                         outptr[i] = outptr[i] > 0.f ? outptr[i] : outptr[i] * slope;
                     }
@@ -272,7 +272,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
                     float min = activation_params[0];
                     float max = activation_params[1];
 
-                    for (int i = 0; i < size; i++)
+                    for (int i = 0; i < size; ++i)
                     {
                         if (outptr[i] < min)
                             outptr[i] = min;
@@ -285,7 +285,7 @@ int DeconvolutionDepthWise::forward(const Mat& bottom_blob, Mat& top_blob, const
                     float* outptr = out;
                     int size = outw * outh;
 
-                    for (int i = 0; i < size; i++)
+                    for (int i = 0; i < size; ++i)
                     {
                         outptr[i] = 1.f / (1.f + exp(-outptr[i]));
                     }

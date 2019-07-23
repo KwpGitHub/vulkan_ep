@@ -61,7 +61,7 @@ int Dequantize::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
             if (bias_data_size > 1)
             {
                 #pragma omp parallel for num_threads(opt.num_threads)
-                for (int i=0; i<w; i++)
+                for (int i=0; i<w; ++i)
                 {
                     ptr[i] = intptr[i] * scale + bias_data[i];
                 }
@@ -71,7 +71,7 @@ int Dequantize::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
                 float bias = bias_data[0];
 
                 #pragma omp parallel for num_threads(opt.num_threads)
-                for (int i=0; i<w; i++)
+                for (int i=0; i<w; ++i)
                 {
                     ptr[i] = intptr[i] * scale + bias;
                 }
@@ -80,7 +80,7 @@ int Dequantize::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         else
         {
             #pragma omp parallel for num_threads(opt.num_threads)
-            for (int i=0; i<w; i++)
+            for (int i=0; i<w; ++i)
             {
                 ptr[i] = intptr[i] * scale;
             }
@@ -95,7 +95,7 @@ int Dequantize::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         if (bias_term)
         {
             #pragma omp parallel for num_threads(opt.num_threads)
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 const int* intptr = bottom_top_blob.row<const int>(i);
                 float* ptr = bottom_top_blob.row(i);
@@ -111,7 +111,7 @@ int Dequantize::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
         else
         {
             #pragma omp parallel for num_threads(opt.num_threads)
-            for (int i=0; i<h; i++)
+            for (int i=0; i<h; ++i)
             {
                 const int* intptr = bottom_top_blob.row<const int>(i);
                 float* ptr = bottom_top_blob.row(i);
@@ -141,7 +141,7 @@ int Dequantize::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
 
                 float bias = bias_data_size > 1 ? bias_data[q] : bias_data[0];
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     ptr[i] = intptr[i] * scale + bias;
                 }
@@ -155,7 +155,7 @@ int Dequantize::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
                 const int* intptr = bottom_top_blob.channel(q);
                 float* ptr = bottom_top_blob.channel(q);
 
-                for (int i=0; i<size; i++)
+                for (int i=0; i<size; ++i)
                 {
                     ptr[i] = intptr[i] * scale;
                 }

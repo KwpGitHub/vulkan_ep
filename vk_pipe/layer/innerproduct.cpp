@@ -171,7 +171,7 @@ int InnerProduct::destroy_pipeline(const Option& opt)
         quantize = 0;
     }
 
-    for (int i=0; i<(int)dequantize_ops.size(); i++)
+    for (int i=0; i<(int)dequantize_ops.size(); ++i)
     {
         dequantize_ops[i]->destroy_pipeline(opt_cpu);
         delete dequantize_ops[i];
@@ -227,7 +227,7 @@ int InnerProduct::forward(const Mat& bottom_blob, Mat& top_blob, const Option& o
                 const signed char* w = (const signed char*)weight_data + size * channels * p + size * q;
                 const signed char* m = bottom_blob_tm.channel(q);
 
-                for (int i = 0; i < size; i++)
+                for (int i = 0; i < size; ++i)
                 {
                     sum += m[i] * w[i];
                 }
@@ -276,7 +276,7 @@ int InnerProduct::forward(const Mat& bottom_blob, Mat& top_blob, const Option& o
             const float* w = (const float*)weight_data + size * channels * p + size * q;
             const float* m = bottom_blob.channel(q);
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < size; ++i)
             {
                 sum += m[i] * w[i];
             }

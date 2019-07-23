@@ -42,7 +42,7 @@ int Slice::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_b
         int w = bottom_blob.w;
 
         int q = 0;
-        for (size_t i=0; i<top_blobs.size(); i++)
+        for (size_t i=0; i<top_blobs.size(); ++i)
         {
             int slice = slices_ptr[i];
             if (slice == -233)
@@ -71,7 +71,7 @@ int Slice::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_b
         int h = bottom_blob.h;
 
         int q = 0;
-        for (size_t i=0; i<top_blobs.size(); i++)
+        for (size_t i=0; i<top_blobs.size(); ++i)
         {
             int slice = slices_ptr[i];
             if (slice == -233)
@@ -102,7 +102,7 @@ int Slice::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_b
         int h = bottom_blob.h;
 
         int q = 0;
-        for (size_t i=0; i<top_blobs.size(); i++)
+        for (size_t i=0; i<top_blobs.size(); ++i)
         {
             int slice = slices_ptr[i];
             if (slice == -233)
@@ -136,7 +136,7 @@ int Slice::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_b
         int channels = bottom_blob.c;
 
         int q = 0;
-        for (size_t i=0; i<top_blobs.size(); i++)
+        for (size_t i=0; i<top_blobs.size(); ++i)
         {
             int slice = slices_ptr[i];
             if (slice == -233)
@@ -168,7 +168,7 @@ int Slice::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_b
         int channels = bottom_blob.c;
 
         int q = 0;
-        for (size_t i=0; i<top_blobs.size(); i++)
+        for (size_t i=0; i<top_blobs.size(); ++i)
         {
             int slice = slices_ptr[i];
             if (slice == -233)
@@ -204,7 +204,7 @@ int Slice::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_b
         int channels = bottom_blob.c;
 
         int q = 0;
-        for (size_t i=0; i<top_blobs.size(); i++)
+        for (size_t i=0; i<top_blobs.size(); ++i)
         {
             int slice = slices_ptr[i];
             if (slice == -233)

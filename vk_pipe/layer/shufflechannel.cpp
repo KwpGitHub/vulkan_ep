@@ -50,7 +50,7 @@ int ShuffleChannel::forward(const Mat& bottom_blob, Mat& top_blob, const Option&
         return -100;
 
     const size_t feature_sz = w * h * elemsize;
-    for (int i = 0; i != group; i++)
+    for (int i = 0; i != group; ++i)
     {
         for (int j = 0; j != chs_per_group; j++)
         {

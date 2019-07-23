@@ -69,7 +69,7 @@ namespace vulkan_ep {
 						const float* ptr = a.channel(q);
 						float* outptr = c.channel(q);
 						const float* b0 = b.channel(q);
-						for (int i = 0; i < size; i++)
+						for (int i = 0; i < size; ++i)
 						{
 							outptr[i] = op(ptr[i], b0[0]);
 						}
@@ -84,7 +84,7 @@ namespace vulkan_ep {
 					const float* ptr1 = b.channel(q);
 					float* outptr = c.channel(q);
 
-					for (int i = 0; i < size; i++)
+					for (int i = 0; i < size; ++i)
 					{
 						outptr[i] = op(ptr[i], ptr1[i]);
 					}
@@ -120,7 +120,7 @@ namespace vulkan_ep {
 					for (int q = 0; q < channels; q++) {
 						const float* ptr = a.channel(q);
 						float* outptr = c.channel(q);
-						for (int i = 0; i < size; i++)
+						for (int i = 0; i < size; ++i)
 							outptr[i] = op(ptr[i], b0);
 
 					}
@@ -134,7 +134,7 @@ namespace vulkan_ep {
 					const float b0 = b[q];
 					float* outptr = c.channel(q);
 
-					for (int i = 0; i < size; i++)
+					for (int i = 0; i < size; ++i)
 						outptr[i] = op(ptr[i], b0);
 				}
 
@@ -171,7 +171,7 @@ namespace vulkan_ep {
 				return -100;
 
 			if (b.dims == 2) {
-				for (int i = 0; i < size; i++)
+				for (int i = 0; i < size; ++i)
 					c[i] = op(a[i], b[i]);
 
 				return 0;
@@ -184,7 +184,7 @@ namespace vulkan_ep {
 
 				if (b.w == 1) {
 					const float b0 = b[0];
-					for (int i = 0; i < size; i++)
+					for (int i = 0; i < size; ++i)
 						c[i] = op(a[i], b0);
 
 					return 0;
@@ -218,7 +218,7 @@ namespace vulkan_ep {
 						const float* ptr1 = b.channel(q);
 						float* outptr = c.channel(q);
 
-						for (int i = 0; i < size1; i++)
+						for (int i = 0; i < size1; ++i)
 							outptr[i] = op(a0, ptr1[i]);
 					}
 
@@ -231,7 +231,7 @@ namespace vulkan_ep {
 						return -100;
 
 					const float a0 = a[0];
-					for (int i = 0; i < size1; i++)
+					for (int i = 0; i < size1; ++i)
 						c[i] = op(a0, b[i]);
 
 					return 0;
@@ -243,7 +243,7 @@ namespace vulkan_ep {
 						return -100;
 
 					const float a0 = a[0];
-					for (int i = 0; i < size1; i++)
+					for (int i = 0; i < size1; ++i)
 						c[i] = op(a0, b[i]);
 
 					return 0;
@@ -260,7 +260,7 @@ namespace vulkan_ep {
 					const float a0 = a[q];
 					const float* ptr1 = b.channel(q);
 					float* outptr = c.channel(q);
-					for (int i = 0; i < size1; i++)
+					for (int i = 0; i < size1; ++i)
 						outptr[i] = op(a0, ptr1[i]);
 				}
 
@@ -294,13 +294,13 @@ namespace vulkan_ep {
 
 				if (b.w == 1) {
 					const float b0 = b[0];
-					for (int i = 0; i < size; i++)
+					for (int i = 0; i < size; ++i)
 						c[i] = op(a[i], b0);
 
 					return 0;
 				}
 
-				for (int i = 0; i < size; i++)
+				for (int i = 0; i < size; ++i)
 					c[i] = op(a[i], b[i]);
 			}
 		}
@@ -322,7 +322,7 @@ namespace vulkan_ep {
 		for (int q = 0; q < channels; q++) {
 			float* ptr = a.channel(q);
 
-			for (int i = 0; i < size; i++) {
+			for (int i = 0; i < size; ++i) {
 				ptr[i] = op(ptr[i], b);
 			}
 		}

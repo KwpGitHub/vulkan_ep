@@ -57,7 +57,7 @@ int Reorg::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) con
             {
                 float* outptr = top_blob.channel(q*stride*stride + sh*stride + sw);
 
-                for (int i = 0; i < outh; i++)
+                for (int i = 0; i < outh; ++i)
                 {
                     const float* sptr = m.row(i*stride + sh) + sw;
                     for (int j = 0; j < outw; j++)

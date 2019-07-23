@@ -59,7 +59,7 @@ int Permute::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
             const float* ptr = bottom_blob;
             float* outptr = top_blob;
 
-            for (int i = 0; i < w; i++)
+            for (int i = 0; i < w; ++i)
             {
                 for (int j = 0; j < h; j++)
                 {
@@ -95,7 +95,7 @@ int Permute::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
             const float* ptr = bottom_blob.channel(q);
             float* outptr = top_blob.channel(q);
 
-            for (int i = 0; i < w; i++)
+            for (int i = 0; i < w; ++i)
             {
                 for (int j = 0; j < h; j++)
                 {
@@ -115,7 +115,7 @@ int Permute::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
         {
             float* outptr = top_blob.channel(q);
 
-            for (int i = 0; i < channels; i++)
+            for (int i = 0; i < channels; ++i)
             {
                 const float* ptr = bottom_blob.channel(i).row(q);
 
@@ -137,7 +137,7 @@ int Permute::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
         {
             float* outptr = top_blob.channel(q);
 
-            for (int i = 0; i < w; i++)
+            for (int i = 0; i < w; ++i)
             {
                 for (int j = 0; j < channels; j++)
                 {
@@ -159,7 +159,7 @@ int Permute::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
         {
             float* outptr = top_blob.channel(q);
 
-            for (int i = 0; i < channels; i++)
+            for (int i = 0; i < channels; ++i)
             {
                 const float* ptr = bottom_blob.channel(i);
 
@@ -181,7 +181,7 @@ int Permute::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) c
         {
             float* outptr = top_blob.channel(q);
 
-            for (int i = 0; i < h; i++)
+            for (int i = 0; i < h; ++i)
             {
                 for (int j = 0; j < channels; j++)
                 {

@@ -54,7 +54,7 @@ int Bias::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
 
         float bias = bias_data[q];
 
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             ptr[i] += bias;
         }

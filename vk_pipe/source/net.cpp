@@ -163,7 +163,7 @@ int Net::load_param(FILE* fp)
     ParamDict pd;
 
     int blob_index = 0;
-    for (int i=0; i<layer_count; i++)
+    for (int i=0; i<layer_count; ++i)
     {
         int nscan = 0;
 
@@ -330,7 +330,7 @@ int Net::load_param_mem(const char* _mem)
     ParamDict pd;
 
     int blob_index = 0;
-    for (int i=0; i<layer_count; i++)
+    for (int i=0; i<layer_count; ++i)
     {
         int nscan = 0;
 
@@ -504,7 +504,7 @@ int Net::load_param_bin(FILE* fp)
 
     ParamDict pd;
 
-    for (int i=0; i<layer_count; i++)
+    for (int i=0; i<layer_count; ++i)
     {
         int typeindex;
         if (!readValue(typeindex, fp))
@@ -620,7 +620,7 @@ int Net::load_model(FILE* fp)
     int ret = 0;
 
     ModelBinFromStdio mb(fp);
-    for (size_t i=0; i<layers.size(); i++)
+    for (size_t i=0; i<layers.size(); ++i)
     {
         Layer* layer = layers[i];
         
@@ -724,7 +724,7 @@ int Net::load_param(const unsigned char* _mem)
 
     ParamDict pd;
 
-    for (int i=0; i<layer_count; i++)
+    for (int i=0; i<layer_count; ++i)
     {
         int typeindex = *(int*)mem;
         mem += 4;
@@ -824,7 +824,7 @@ int Net::load_model(const unsigned char* _mem)
 
     const unsigned char* mem = _mem;
     ModelBinFromMemory mb(mem);
-    for (size_t i=0; i<layers.size(); i++)
+    for (size_t i=0; i<layers.size(); ++i)
     {
         Layer* layer = layers[i];
 
@@ -868,7 +868,7 @@ int Net::fuse_network()
     // fprintf(stderr, "Test op fusion to int8 implement:\n");
     // parse the network whether is a quantization model
     bool net_quantized = false;
-    for (size_t i=0; i<layers.size(); i++)
+    for (size_t i=0; i<layers.size(); ++i)
     {
         Layer* layer = layers[i];
         if (layer->type == "Convolution" || layer->type == "ConvolutionDepthWise")
@@ -884,7 +884,7 @@ int Net::fuse_network()
     if (net_quantized == false)
         return 0;
 
-    for (size_t i=0; i<layers.size(); i++)
+    for (size_t i=0; i<layers.size(); ++i)
     {
         Layer* layer = layers[i];
 
@@ -974,7 +974,7 @@ int Net::fuse_network()
                     else if (layer_next_2->type == "Split")
                     {
                         bool all_conv = true;
-                        for (size_t i=0; i<layer_next_2->tops.size(); i++)
+                        for (size_t i=0; i<layer_next_2->tops.size(); ++i)
                         {
                             int layer_next_3_index = blobs[layer_next_2->tops[i]].consumers[0];
                             if (layers[layer_next_3_index]->type != "Convolution" && layers[layer_next_3_index]->type != "ConvolutionDepthWise" && layers[layer_next_3_index]->type != "PriorBox" )
@@ -987,7 +987,7 @@ int Net::fuse_network()
                         if (all_conv == true && layer_next_2->tops.size() >= size_t(2))
                         {
                             // fprintf(stderr, "%s, %s, %s, ", layer->name.c_str(), layer_next->name.c_str(), layer_next_2->name.c_str());
-                            for (size_t i=0; i<layer_next_2->tops.size(); i++)
+                            for (size_t i=0; i<layer_next_2->tops.size(); ++i)
                             {
                                 int layer_next_3_index = blobs[layer_next_2->tops[i]].consumers[0];
                                 Layer* layer_next_3 = layers[layer_next_3_index];
@@ -1031,7 +1031,7 @@ void Net::clear()
 #endif // VK_EP_VULKAN
 
     blobs.clear();
-    for (size_t i=0; i<layers.size(); i++)
+    for (size_t i=0; i<layers.size(); ++i)
     {
         int dret = layers[i]->destroy_pipeline(opt);
         if (dret != 0)
@@ -1091,7 +1091,7 @@ int Net::upload_model()
     cmd.weight_vkallocator = weight_vkallocator;
     cmd.staging_vkallocator = weight_staging_vkallocator;
 
-    for (size_t i=0; i<layers.size(); i++)
+    for (size_t i=0; i<layers.size(); ++i)
     {
         if (layers[i]->support_vulkan)
         {
@@ -1188,7 +1188,7 @@ int Net::destroy_pipeline()
 #if VK_EP_STRING
 int Net::find_blob_index_by_name(const char* name) const
 {
-    for (size_t i=0; i<blobs.size(); i++)
+    for (size_t i=0; i<blobs.size(); ++i)
     {
         const Blob& blob = blobs[i];
         if (blob.name == name)
@@ -1203,7 +1203,7 @@ int Net::find_blob_index_by_name(const char* name) const
 
 int Net::find_layer_index_by_name(const char* name) const
 {
-    for (size_t i=0; i<layers.size(); i++)
+    for (size_t i=0; i<layers.size(); ++i)
     {
         const Layer* layer = layers[i];
         if (layer->name == name)
@@ -1219,7 +1219,7 @@ int Net::find_layer_index_by_name(const char* name) const
 int Net::custom_layer_to_index(const char* type)
 {
     const int custom_layer_registry_entry_count = custom_layer_registry.size();
-    for (int i=0; i<custom_layer_registry_entry_count; i++)
+    for (int i=0; i<custom_layer_registry_entry_count; ++i)
     {
         if (strcmp(type, custom_layer_registry[i].name) == 0)
             return i;
@@ -1324,7 +1324,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt
     {
         // load bottom blobs
         std::vector<Mat> bottom_blobs(layer->bottoms.size());
-        for (size_t i=0; i<layer->bottoms.size(); i++)
+        for (size_t i=0; i<layer->bottoms.size(); ++i)
         {
             int bottom_blob_index = layer->bottoms[i];
 
@@ -1365,7 +1365,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt
                 return ret;
 
             // store top blobs
-            for (size_t i=0; i<layer->tops.size(); i++)
+            for (size_t i=0; i<layer->tops.size(); ++i)
             {
                 int top_blob_index = layer->tops[i];
 
@@ -1387,7 +1387,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, Option& opt
                 return ret;
 
             // store top blobs
-            for (size_t i=0; i<layer->tops.size(); i++)
+            for (size_t i=0; i<layer->tops.size(); ++i)
             {
                 int top_blob_index = layer->tops[i];
 
@@ -1527,7 +1527,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
         {
             // load bottom blobs
             std::vector<VkMat> bottom_blobs(layer->bottoms.size());
-            for (size_t i=0; i<layer->bottoms.size(); i++)
+            for (size_t i=0; i<layer->bottoms.size(); ++i)
             {
                 int bottom_blob_index = layer->bottoms[i];
 
@@ -1618,7 +1618,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                     return ret;
 
                 // store top blobs
-                for (size_t i=0; i<layer->tops.size(); i++)
+                for (size_t i=0; i<layer->tops.size(); ++i)
                 {
                     int top_blob_index = layer->tops[i];
 
@@ -1639,7 +1639,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                     return ret;
 
                 // store top blobs
-                for (size_t i=0; i<layer->tops.size(); i++)
+                for (size_t i=0; i<layer->tops.size(); ++i)
                 {
                     int top_blob_index = layer->tops[i];
 
@@ -1713,7 +1713,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
 #if VK_EP_BENCHMARK
                     std::vector<uint64_t> results(layer_index * 2);
                     cmd.get_query_pool_results(0, layer_index * 2, results);
-                    for (int i=0; i<layer_index; i++)
+                    for (int i=0; i<layer_index; ++i)
                     {
                         uint64_t start = results[i*2];
                         uint64_t end = results[i*2+1];
@@ -1800,7 +1800,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
         {
             // load bottom blobs
             std::vector<VkMat> bottom_blobs_unpacked(layer->bottoms.size());
-            for (size_t i=0; i<layer->bottoms.size(); i++)
+            for (size_t i=0; i<layer->bottoms.size(); ++i)
             {
                 int bottom_blob_index = layer->bottoms[i];
 
@@ -1864,7 +1864,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
 #if VK_EP_BENCHMARK
                 std::vector<uint64_t> results(layer_index * 2);
                 cmd.get_query_pool_results(0, layer_index * 2, results);
-                for (int i=0; i<layer_index; i++)
+                for (int i=0; i<layer_index; ++i)
                 {
                     uint64_t start = results[i*2];
                     uint64_t end = results[i*2+1];
@@ -1880,7 +1880,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
             }
 
             std::vector<Mat> bottom_blobs(layer->bottoms.size());
-            for (size_t i=0; i<layer->bottoms.size(); i++)
+            for (size_t i=0; i<layer->bottoms.size(); ++i)
             {
                 int bottom_blob_index = layer->bottoms[i];
 
@@ -1938,7 +1938,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                     return ret;
 
                 // store top blobs
-                for (size_t i=0; i<layer->tops.size(); i++)
+                for (size_t i=0; i<layer->tops.size(); ++i)
                 {
                     int top_blob_index = layer->tops[i];
 
@@ -1960,7 +1960,7 @@ int Net::forward_layer(int layer_index, std::vector<Mat>& blob_mats, std::vector
                     return ret;
 
                 // store top blobs
-                for (size_t i=0; i<layer->tops.size(); i++)
+                for (size_t i=0; i<layer->tops.size(); ++i)
                 {
                     int top_blob_index = layer->tops[i];
 
@@ -2136,7 +2136,7 @@ int Extractor::extract(int blob_index, Mat& feat)
 #if VK_EP_BENCHMARK
                 std::vector<uint64_t> results(net->layers.size() * 2);
                 cmd.get_query_pool_results(0, net->layers.size() * 2, results);
-                for (int i=0; i<net->layers.size(); i++)
+                for (int i=0; i<net->layers.size(); ++i)
                 {
                     uint64_t start = results[i*2];
                     uint64_t end = results[i*2+1];

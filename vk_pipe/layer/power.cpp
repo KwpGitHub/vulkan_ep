@@ -46,7 +46,7 @@ int Power::forward_inplace(Mat& bottom_top_blob, const Option& opt) const
     {
         float* ptr = bottom_top_blob.channel(q);
 
-        for (int i=0; i<size; i++)
+        for (int i=0; i<size; ++i)
         {
             ptr[i] = pow((shift + ptr[i] * scale), power);
         }

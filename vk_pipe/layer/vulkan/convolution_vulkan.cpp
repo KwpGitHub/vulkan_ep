@@ -427,7 +427,7 @@ int Convolution_vulkan::upload_model(VkTransfer& cmd, const Option& opt)
 
                     // h
                     float tmp[4][3];
-                    for (int i=0; i<4; i++)
+                    for (int i=0; i<4; ++i)
                     {
                         tmp[i][0] = k0[0] * ktm[i][0] + k0[1] * ktm[i][1] + k0[2] * ktm[i][2];
                         tmp[i][1] = k1[0] * ktm[i][0] + k1[1] * ktm[i][1] + k1[2] * ktm[i][2];
@@ -439,7 +439,7 @@ int Convolution_vulkan::upload_model(VkTransfer& cmd, const Option& opt)
                     {
                         float* tmpp = &tmp[j][0];
 
-                        for (int i=0; i<4; i++)
+                        for (int i=0; i<4; ++i)
                         {
                             kernel_tm0[j*4 + i] = tmpp[0] * ktm[i][0] + tmpp[1] * ktm[i][1] + tmpp[2] * ktm[i][2];
                         }

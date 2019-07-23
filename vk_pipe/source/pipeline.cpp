@@ -229,7 +229,7 @@ int Pipeline::create_descriptorset_layout(int binding_count)
     }
 
     std::vector<VkDescriptorSetLayoutBinding> descriptorSetLayoutBindings(binding_count);
-    for (int i=0; i<binding_count; i++)
+    for (int i=0; i<binding_count; ++i)
     {
         descriptorSetLayoutBindings[i].binding = i;
         descriptorSetLayoutBindings[i].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
@@ -312,7 +312,7 @@ int Pipeline::create_pipeline(VkShaderModule shader_module, const char* entry_na
     std::vector<VkSpecializationMapEntry> specializationMapEntries;
     specializationMapEntries.resize(specialization_count + 3);
 
-    for (int i=0; i<specialization_count; i++)
+    for (int i=0; i<specialization_count; ++i)
     {
         specializationMapEntries[i].constantID = i;
         specializationMapEntries[i].offset = i * sizeof(vk_specialization_type);
@@ -386,7 +386,7 @@ int Pipeline::create_descriptor_update_template(int binding_count)
     }
 
     std::vector<VkDescriptorUpdateTemplateEntryKHR> descriptorUpdateTemplateEntries(binding_count);
-    for (int i=0; i<binding_count; i++)// TODO do not update weights
+    for (int i=0; i<binding_count; ++i)// TODO do not update weights
     {
         descriptorUpdateTemplateEntries[i].dstBinding = i;
         descriptorUpdateTemplateEntries[i].dstArrayElement = 0;

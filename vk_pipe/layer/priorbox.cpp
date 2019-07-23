@@ -72,7 +72,7 @@ int PriorBox::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
             return -100;
 
         #pragma omp parallel for num_threads(opt.num_threads)
-        for (int i = 0; i < h; i++)
+        for (int i = 0; i < h; ++i)
         {
             float* box = (float*)top_blob + i * w * num_prior * 4;
 
@@ -117,7 +117,7 @@ int PriorBox::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
         if (clip)
         {
             float* box = top_blob;
-            for (int i = 0; i < top_blob.w; i++)
+            for (int i = 0; i < top_blob.w; ++i)
             {
                 box[i] = std::min(std::max(box[i], 0.f), 1.f);
             }
@@ -154,7 +154,7 @@ int PriorBox::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
         return -100;
 
     #pragma omp parallel for num_threads(opt.num_threads)
-    for (int i = 0; i < h; i++)
+    for (int i = 0; i < h; ++i)
     {
         float* box = (float*)top_blob + i * w * num_prior * 4;
 
@@ -229,7 +229,7 @@ int PriorBox::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
     if (clip)
     {
         float* box = top_blob;
-        for (int i = 0; i < top_blob.w; i++)
+        for (int i = 0; i < top_blob.w; ++i)
         {
             box[i] = std::min(std::max(box[i], 0.f), 1.f);
         }
@@ -237,7 +237,7 @@ int PriorBox::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& to
 
     // set variance
     float* var = top_blob.row(1);
-    for (int i = 0; i < top_blob.w / 4; i++)
+    for (int i = 0; i < top_blob.w / 4; ++i)
     {
         var[0] = variances[0];
         var[1] = variances[1];

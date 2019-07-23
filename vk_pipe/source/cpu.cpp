@@ -323,7 +323,7 @@ typedef struct
 #endif
     cpu_set_t mask;
     CPU_ZERO(&mask);
-    for (int i=0; i<(int)cpuids.size(); i++)
+    for (int i=0; i<(int)cpuids.size(); ++i)
     {
         CPU_SET(cpuids[i], &mask);
     }
@@ -350,7 +350,7 @@ static int sort_cpuid_by_max_frequency(std::vector<int>& cpuids, int* little_clu
     std::vector<int> cpu_max_freq_khz;
     cpu_max_freq_khz.resize(cpu_count);
 
-    for (int i=0; i<cpu_count; i++)
+    for (int i=0; i<cpu_count; ++i)
     {
         int max_freq_khz = get_max_freq_khz(i);
 
@@ -362,7 +362,7 @@ static int sort_cpuid_by_max_frequency(std::vector<int>& cpuids, int* little_clu
 
     // sort cpuid as big core first
     // simple bubble sort
-    for (int i=0; i<cpu_count; i++)
+    for (int i=0; i<cpu_count; ++i)
     {
         for (int j=i+1; j<cpu_count; j++)
         {
@@ -385,7 +385,7 @@ static int sort_cpuid_by_max_frequency(std::vector<int>& cpuids, int* little_clu
     if (mid_max_freq_khz == cpu_max_freq_khz.back())
         return 0;
 
-    for (int i=0; i<cpu_count; i++)
+    for (int i=0; i<cpu_count; ++i)
     {
         if (cpu_max_freq_khz[i] < mid_max_freq_khz)
         {
@@ -415,7 +415,7 @@ int set_cpu_powersave(int powersave)
     {
         // 0 ~ g_cpucount
         sorted_cpuids.resize(g_cpucount);
-        for (int i=0; i<g_cpucount; i++)
+        for (int i=0; i<g_cpucount; ++i)
         {
             sorted_cpuids[i] = i;
         }
@@ -456,11 +456,11 @@ int set_cpu_powersave(int powersave)
     omp_set_num_threads(num_threads);
     std::vector<int> ssarets(num_threads, 0);
     #pragma omp parallel for
-    for (int i=0; i<num_threads; i++)
+    for (int i=0; i<num_threads; ++i)
     {
         ssarets[i] = set_sched_affinity(cpuids);
     }
-    for (int i=0; i<num_threads; i++)
+    for (int i=0; i<num_threads; ++i)
     {
         if (ssarets[i] != 0)
         {

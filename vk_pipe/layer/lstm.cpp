@@ -125,7 +125,7 @@ int LSTM::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_bl
             float O = O_bias_c_data_ptr[q];
             float G = G_bias_c_data_ptr[q];
 
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 I += weight_xc_data_I[i] * x[i];
                 F += weight_xc_data_F[i] * x[i];

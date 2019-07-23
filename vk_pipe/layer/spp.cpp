@@ -91,7 +91,7 @@ int SPP::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
             int p1 = 0;
             int p2 = 0;
             int gap = w - kernel_w;
-            for (int i = 0; i < kernel_h; i++)
+            for (int i = 0; i < kernel_h; ++i)
             {
                 for (int j = 0; j < kernel_w; j++)
                 {
@@ -111,7 +111,7 @@ int SPP::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
                 const Mat m(w, h, bottom_blob_bordered.channel(q));
                 float* outptr = pyramid_ptr + outh * outw * q;
 
-                for (int i = 0; i < outh; i++)
+                for (int i = 0; i < outh; ++i)
                 {
                     for (int j = 0; j < outw; j++)
                     {
@@ -140,7 +140,7 @@ int SPP::forward(const Mat& bottom_blob, Mat& top_blob, const Option& opt) const
                 const Mat m(w, h, bottom_blob_bordered.channel(q));
                 float* outptr = pyramid_ptr + outh * outw * q;
 
-                for (int i = 0; i < outh; i++)
+                for (int i = 0; i < outh; ++i)
                 {
                     for (int j = 0; j < outw; j++)
                     {

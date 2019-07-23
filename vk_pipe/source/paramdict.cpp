@@ -60,7 +60,7 @@ void ParamDict::set(int id, const Mat& v)
 
 void ParamDict::clear()
 {
-    for (int i = 0; i < VK_EP_MAX_PARAM_COUNT; i++)
+    for (int i = 0; i < VK_EP_MAX_PARAM_COUNT; ++i)
     {
         params[i].loaded = 0;
         params[i].v = Mat();

@@ -105,7 +105,7 @@ int RNN::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blo
             const float* x_data = x;
 
             float s0 = bias_h_data[q];
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 s0 += weight_hh_data_ptr[i] * h_cont + weight_xh_data_ptr[i] * x_data[i];
             }
@@ -122,7 +122,7 @@ int RNN::forward(const std::vector<Mat>& bottom_blobs, std::vector<Mat>& top_blo
             const float* weight_ho_data_ptr = (const float*)weight_ho_data + weight_ho_data.w * q;
 
             float s0 = bias_o_data[q];
-            for (int i=0; i<size; i++)
+            for (int i=0; i<size; ++i)
             {
                 s0 += weight_ho_data_ptr[i] * hidden_data[i];
             }

@@ -151,7 +151,7 @@ static void conv5x5s1_sse(const Mat& bottom_blob, Mat& top_blob, const Mat& _ker
                 outptr2 += outw;
             }
 
-            for (; i < outh; i++)
+            for (; i < outh; ++i)
             {
 
                 int remain = outw;

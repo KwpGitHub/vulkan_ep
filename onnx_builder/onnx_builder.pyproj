@@ -12,6 +12,8 @@
     <Name>onnx_builder</Name>
     <RootNamespace>onnx_builder</RootNamespace>
     <InterpreterId>Global|ContinuumAnalytics|Anaconda37-64</InterpreterId>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <EnableNativeCodeDebugging>True</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,6 +28,13 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|ContinuumAnalytics|Anaconda37-64" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\onnx_ep\onnx_ep.vcxproj">
+      <Name>onnx_ep</Name>
+      <Project>{4cabade1-ec4a-440f-8140-0c24d7f4e3c2}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
