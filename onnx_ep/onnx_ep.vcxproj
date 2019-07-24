@@ -198,6 +198,7 @@
     <ClCompile Include="device.cpp" />
     <ClCompile Include="onnx_ep.cpp" />
     <ClCompile Include="pipeline.cpp" />
+    <ClCompile Include="tensor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="allocator.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="layer_shader_registry.h" />
     <ClInclude Include="layer_shader_spv_data.h" />
     <ClInclude Include="pipeline.h" />
+    <ClInclude Include="tensor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
