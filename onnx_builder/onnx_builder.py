@@ -11,18 +11,21 @@ types = {   'AttrType.STRING'   :'std::string',
             'AttrType.FLOATS'   :'std::vector<float>',
             'AttrType.INT'      :'int',
             'AttrType.INTS'     :'std::vector<int>',
-            'AttrType.TENSOR'   :'tensor',
-            'AttrType.TENSORS'  :'std::vector<tensor>',
-            'AttrType.GRAPH'    :'graph',
-            'AttrType.GRAPHS'   :'std::vector<graph>'
+            'AttrType.TENSOR'   :'//tensor',
+            'AttrType.TENSORS'  :'//std::vector<tensor>',
+            'AttrType.GRAPH'    :'//graph',
+            'AttrType.GRAPHS'   :'//std::vector<graph>'
         }
 
 ops = {}
 op_file = open('op_file.h','w')
 
 class_h = R"""#include <vector>
+#include "../layer.h"
+#include "../kernel/vuh.h"
+
 namespace backend {
-    class %s {
+    class %s : public Layer {
     public:
         %s ();
         ~%s();
@@ -36,7 +39,10 @@ class_cpp = R"""#include "%s.h"
 
 namespace backend {
     %s::%s() {
-        
+        device =  new vuh::Device(instance->devices().at(0));
+		program = new vuh::Program<Specs, Params>(*device, "./shaders/%s.spv");
+		d_input = new vuh::Array<float>(*device, input);
+		d_output = new vuh::Array<float>(*device, output);
     }
 
     ~%s::%s() {
@@ -45,10 +51,20 @@ namespace backend {
 }
 """
 
+class_shader = R"""#version 450
+
+void main() {
+	
+}
+"""
+
 def onnx_proto():
     t = onnx.defs.get_all_schemas()
     if(not os.path.isdir(os.path.join(os.getcwd(),'layers\\'))):
         os.mkdir('layers')
+	if(not os.path.isdir(os.path.join(os.getcwd(),'shaders\\'))):
+		os.mkdir('shaders')
+		
     layers = open('layers.h', 'w')
     layers_lst = list()
     for op in t:
@@ -58,7 +74,7 @@ def onnx_proto():
         lst = ['\n\t\t{} {};'.format(types[str(x.type)], x.name)  for _,x in attr.items()]
 
         class_h_str = class_h % (op.name, op.name, op.name, ''.join(lst))
-        class_cpp_str = class_cpp % (op_name.lower(), op.name, op.name, op.name, op.name)
+        class_cpp_str = class_cpp % (op_name.lower(), op.name, op.name, op.name, op.name, op.name)
         op_file.write(op.name+'=' + ', '.join(lst) + '\n')
 
         if(op.since_version < 8 and op.deprecated==False):
@@ -69,6 +85,9 @@ def onnx_proto():
             f.write(class_h_str)
             f.close()
             layers_lst.append('#include "./layers/'+op_name.lower()+'.h"\n')
+			s_cpp = open('./shaders/'+op_name.lower()+'.comp', 'w')        
+            s_cpp.write(class_shader)
+            s_cpp.close()
     layers.writelines(layers_lst)
     op_file.close()
 
