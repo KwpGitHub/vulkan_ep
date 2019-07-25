@@ -1,23 +1,9 @@
 #include <pybind11/pybind11.h>
 #include <vector>
+#include "layer.h"
 #include "kernel/vuh.h"
 
-static vuh::Instance* instance;
-
-class Layer {
-	
-public:
-	Layer() {}
-	virtual ~Layer() {}
-protected:
-	vuh::Device* device;
-	std::vector<float> input;
-	std::vector<float>output;
-	vuh::Array<float>* d_input;
-	vuh::Array<float>* d_output;
-
-};
-
+/*
 class ABS : public Layer {
 	
 	using Specs = vuh::typelist<uint32_t>;
@@ -28,10 +14,11 @@ public:
 	ABS(const std::vector<float> &tinput) {
 		input = tinput;
 		output = std::vector<float>(128, 0.0f);
-		device =  new vuh::Device(instance->devices().at(0));
+		device =  new vuh::Device(backend::instance->devices().at(0));
 		program = new vuh::Program<Specs, Params>(*device, "./shaders/abs.spv");
 		d_input = new vuh::Array<float>(*device, input);
 		d_output = new vuh::Array<float>(*device, output);
+		
 	}
 	~ABS(){}
 
@@ -43,7 +30,7 @@ public:
 private:
 
 };
-
+*/
 
 void create_instance() {
 	auto y = std::vector<float>(128, 1.0f);

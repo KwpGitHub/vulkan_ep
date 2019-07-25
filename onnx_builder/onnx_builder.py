@@ -6,11 +6,11 @@ import os
 import onnx_ep as onnx_ep
 
 types = {   'AttrType.STRING'   :'std::string',
-            'AttrType.STRINGS'  :'std::vector<string>',
+            'AttrType.STRINGS'  :'std::string[]',
             'AttrType.FLOAT'    :'float',
-            'AttrType.FLOATS'   :'std::vector<float>',
+            'AttrType.FLOATS'   :'float[]',
             'AttrType.INT'      :'int',
-            'AttrType.INTS'     :'std::vector<int>',
+            'AttrType.INTS'     :'int[]',
             'AttrType.TENSOR'   :'//tensor',
             'AttrType.TENSORS'  :'//std::vector<tensor>',
             'AttrType.GRAPH'    :'//graph',
@@ -20,74 +20,77 @@ types = {   'AttrType.STRING'   :'std::string',
 ops = {}
 op_file = open('op_file.h','w')
 
-class_h = R"""#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
-
-namespace backend {
-    class %s : public Layer {
-    public:
-        %s ();
-        ~%s();
-    private:
-%s
-    };
-}
-"""
-
-class_cpp = R"""#include "%s.h"
-
-namespace backend {
-    %s::%s() {
-        device =  new vuh::Device(instance->devices().at(0));
-		program = new vuh::Program<Specs, Params>(*device, "./shaders/%s.spv");
-		d_input = new vuh::Array<float>(*device, input);
-		d_output = new vuh::Array<float>(*device, output);
-    }
-
-    ~%s::%s() {
-        
-    }
-}
-"""
-
-class_shader = R"""#version 450
-
-void main() {
-	
-}
-"""
 
 def onnx_proto():
     t = onnx.defs.get_all_schemas()
-    if(not os.path.isdir(os.path.join(os.getcwd(),'layers\\'))):
-        os.mkdir('layers')
-	if(not os.path.isdir(os.path.join(os.getcwd(),'shaders\\'))):
-		os.mkdir('shaders')
-		
-    layers = open('layers.h', 'w')
+    if(not os.path.isdir(os.path.join(os.getcwd(),'../_backend/layers\\'))):
+        os.mkdir('../_backend/layers')
+    if(not os.path.isdir(os.path.join(os.getcwd(),'../_backend/shaders\\'))):
+        os.mkdir('../_backend/shaders')
+
+    layers = open('../_backend/layers.h', 'w')
     layers_lst = list()
     for op in t:
         ops[op.name] = op
         op_name = str(op.name)
         attr = op.attributes
         lst = ['\n\t\t{} {};'.format(types[str(x.type)], x.name)  for _,x in attr.items()]
+        mapt = {"upper":op_name.upper(), "norm":op_name, "lower":op_name.lower(), "param":''.join(lst)}
+        class_h_str = R'''
+#ifndef {upper}_H
+#define {upper}_H
 
-        class_h_str = class_h % (op.name, op.name, op.name, ''.join(lst))
-        class_cpp_str = class_cpp % (op_name.lower(), op.name, op.name, op.name, op.name, op.name)
+#include <vector>
+#include "../layer.h"
+#include "../kernel/vuh.h"
+
+namespace backend {{
+    class {norm} : public Layer {{
+    using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
+    struct Params {{{param}
+    }};
+    vuh::Program<Specs, Params>* program;
+
+    public:
+       {norm} (){{
+            device =  new vuh::Device(instance->devices().at(0));
+		    program = new vuh::Program<Specs, Params>(*device, "../shaders/bin/{lower}.spv");
+		    d_input = new vuh::Array<float>(*device, input);
+		    d_output = new vuh::Array<float>(*device, output);
+        }}
+
+        ~{norm} () {{}}
+        
+
+    }};
+}}
+
+#endif
+'''.format_map(mapt) 
+
+        class_shader_str = '''
+#version 450
+layout(local_size_x_id = 0, local_size_y_id = 0, local_size_z_id = 0) in;
+layout(std430, binding = 0) buffer lay0 { float y[]; }; 
+layout(std430, binding = 1) buffer lay1 { float x[]; };
+
+void main() {
+    const uint id = gl_LocalInvocationID.z * gl_WorkGroupSize.x * gl_WorkGroupSize.y + gl_LocalInvocationID.y * gl_WorkGroupSize.x + gl_LocalInvocationID.x;
+}
+'''
+
         op_file.write(op.name+'=' + ', '.join(lst) + '\n')
 
         if(op.since_version < 8 and op.deprecated==False):
-            f_cpp = open('./layers/'+op_name.lower()+'.cpp', 'w')        
-            f_cpp.write(class_cpp_str)
-            f_cpp.close()
-            f = open('./layers/'+op_name.lower()+'.h', 'w')
+            f = open('../_backend/layers/'+op_name.lower()+'.h', 'w')
             f.write(class_h_str)
             f.close()
-            layers_lst.append('#include "./layers/'+op_name.lower()+'.h"\n')
-			s_cpp = open('./shaders/'+op_name.lower()+'.comp', 'w')        
-            s_cpp.write(class_shader)
+            s_cpp = open('../_backend/shaders/'+op_name.lower()+'.comp', 'w')
+            s_cpp.write(class_shader_str)
             s_cpp.close()
+
+            layers_lst.append('#include "./layers/'+op_name.lower()+'.h"\n')
+
     layers.writelines(layers_lst)
     op_file.close()
 
@@ -110,9 +113,9 @@ def graph_def_info(graph):
 
 
 if (__name__ == "__main__"):
-    #onnx_proto()
-    onnx_ep.create_device()
-    onnx_ep.run()
+    onnx_proto()
+    #onnx_ep.create_device()
+    #onnx_ep.run()
     #onnx_model_str =  MessageToJson(onnx.load('mobilenetv2.onnx'))
     #graph = json.loads(onnx_model_str)
 
