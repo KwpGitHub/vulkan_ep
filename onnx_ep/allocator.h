@@ -30,6 +30,15 @@ namespace backend {
 			_aligned_free(ptr);
 	}
 
+
+	class CPU_Allocator
+	{
+	public:
+		virtual ~CPU_Allocator() = 0;
+		virtual void* fastMalloc(size_t size) = 0;
+		virtual void fastFree(void* ptr) = 0;
+	};
+
 	class BufferMemory {
 	public:
 		VkBuffer buffer;

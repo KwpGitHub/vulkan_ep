@@ -116,6 +116,97 @@ namespace backend {
 		}
 	}
 
+	void VkCompute::record_upload(const DeviceTensor& m) {
+		/*if (m.allocator->mappable)
+			return;
+		record_prepare_transfer_barrier(m);
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return copy_buffer(m.staging_buffer(), 0, m.buffer(), m.buffer_offset(), m.total() * m.elemsize);
+
+		record_type r;
+		r.type = 0;
+		r.copy.src = m.staging_buffer();
+		r.copy.src_offset = 0;
+		r.copy.dst = m.buffer();
+		r.copy.dst_offset = m.buffer_offset();
+		r.copy.size = m.total() * m.elemsize;
+		delayed_records.push_back(r);*/
+	}
+
+	void VkCompute::record_download(const DeviceTensor& m) {
+		/*if (m.allocator->mappable)
+			return;
+		record_prepare_transfer_barrier(m);
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return copy_buffer(m.buffer(), m.buffer_offset(), m.staging_buffer(), 0, m.total() * m.elemsize);
+
+		record_type r;
+		r.type = 0;
+		r.copy.src = m.buffer();
+		r.copy.src_offset = m.buffer_offset();
+		r.copy.dst = m.staging_buffer();
+		r.copy.dst_offset = 0;
+		r.copy.size = m.total() * m.elemsize;
+		delayed_records.push_back(r);*/
+	}
+
+	void VkCompute::record_clone(const DeviceTensor& src, const DeviceTensor& dst){
+		/*record_prepare_transfer_barrier(src);
+		record_prepare_transfer_barrier(dst);
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return copy_buffer(src.buffer(), src.buffer_offset(), dst.buffer(), dst.buffer_offset(), src.total() * src.elemsize);
+
+		record_type r;
+		r.type = 0;
+		r.copy.src = src.buffer();
+		r.copy.src_offset = src.buffer_offset();
+		r.copy.dst = dst.buffer();
+		r.copy.dst_offset = dst.buffer_offset();
+		r.copy.size = src.total() * src.elemsize;
+		delayed_records.push_back(r);*/
+	}
+
+	void VkCompute::record_copy_region(const DeviceTensor& src, const DeviceTensor& dst, const VkBufferCopy& region) {
+		/*std::vector<VkBufferCopy> regions(1);
+		regions[0] = region;
+		record_copy_regions(src, dst, regions);*/
+	}
+	
+	void VkCompute::record_copy_regions(const DeviceTensor& src, const DeviceTensor& dst, const std::vector<VkBufferCopy>& regions) {
+		/*record_prepare_transfer_barrier(src);
+		record_prepare_transfer_barrier(dst);
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return copy_buffer_regions(src.buffer(), dst.buffer(), regions);
+
+		record_type r;
+		r.type = 1;
+		r.copy_regions.src = src.buffer();
+		r.copy_regions.dst = dst.buffer();
+		r.regions = regions;
+		delayed_records.push_back(r);*/
+	}
+
+
+	void VkCompute::record_pipeline(const Pipeline* pipeline, const std::vector<DeviceTensor>& bindings, const std::vector<vk_constant_type>& constants, const DeviceTensor& m)
+	{
+		const int binding_count = bindings.size();
+		for (int i = 0; i < binding_count; ++i) {
+			if (bindings[i].data->state == 4)
+				continue;
+			record_prepare_compute_barrier(bindings[i]);
+		}
+
+		record_bind_pipeline(pipeline->pipeline);
+		record_update_bindings(pipeline->pipeline_layout, pipeline->descriptorset_layout, pipeline->descriptor_update_template, bindings);
+		record_push_constants(pipeline->pipeline_layout, constants);
+
+		uint32_t group_count_xyz[3];
+		group_count_xyz[0] = (m.dim[2] + pipeline->local_size_x - 1) / pipeline->local_size_x;
+		group_count_xyz[1] = (m.dim[1] + pipeline->local_size_y - 1) / pipeline->local_size_y;
+		group_count_xyz[2] = (m.dim[0] + pipeline->local_size_z - 1) / pipeline->local_size_z;
+
+		record_dispatch(group_count_xyz);
+	}
 
 	void VkCompute::record_bind_pipeline(VkPipeline pipeline){
 		if (dev->info.support_VK_KHR_push_descriptor)
@@ -124,6 +215,98 @@ namespace backend {
 		record_type r;
 		r.type = 2;
 		r.bind_pipeline.pipeline = pipeline;
+		delayed_records.push_back(r);
+	}
+
+	void VkCompute::record_update_bindings(VkPipelineLayout pipeline_layout, VkDescriptorSetLayout descriptorset_layout, VkDescriptorUpdateTemplateKHR descriptor_update_template, const std::vector<DeviceTensor>& bindings) {
+		const int binding_count = bindings.size();
+
+		if (binding_count == 0)
+			return;
+
+		std::vector<VkDescriptorBufferInfo> descriptorBufferInfos(binding_count);
+		for (int i = 0; i < binding_count; ++i)
+		{
+			/*descriptorBufferInfos[i].buffer = bindings[i].buffer();
+			descriptorBufferInfos[i].offset = bindings[i].buffer_offset();
+			descriptorBufferInfos[i].range = bindings[i].total() * bindings[i].elemsize;*/
+		}
+
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return update_bindings(pipeline_layout, descriptor_update_template, descriptorBufferInfos);
+
+		// create new descriptor_pool and descriptorset
+		VkDescriptorPool descriptor_pool;
+		{
+			VkDescriptorPoolSize poolSize;
+			poolSize.type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+			poolSize.descriptorCount = binding_count;
+
+			VkDescriptorPoolCreateInfo descriptorPoolCreateInfo;
+			descriptorPoolCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+			descriptorPoolCreateInfo.pNext = 0;
+			descriptorPoolCreateInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+			descriptorPoolCreateInfo.maxSets = 1;
+			descriptorPoolCreateInfo.poolSizeCount = 1;
+			descriptorPoolCreateInfo.pPoolSizes = &poolSize;
+
+			VkResult ret = vkCreateDescriptorPool(dev->vkdevice(), &descriptorPoolCreateInfo, 0, &descriptor_pool);
+			if (ret != VK_SUCCESS)
+			{
+				fprintf(stderr, "vkCreateDescriptorPool failed %d\n", ret);
+				return;
+			}
+		}
+		descriptor_pools.push_back(descriptor_pool);
+
+		VkDescriptorSet descriptorset;
+		{
+			VkDescriptorSetAllocateInfo descriptorSetAllocateInfo;
+			descriptorSetAllocateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+			descriptorSetAllocateInfo.pNext = 0;
+			descriptorSetAllocateInfo.descriptorPool = descriptor_pool;
+			descriptorSetAllocateInfo.descriptorSetCount = 1;
+			descriptorSetAllocateInfo.pSetLayouts = &descriptorset_layout;
+
+			VkResult ret = vkAllocateDescriptorSets(dev->vkdevice(), &descriptorSetAllocateInfo, &descriptorset);
+			if (ret != VK_SUCCESS)
+			{
+				fprintf(stderr, "vkAllocateDescriptorSets failed %d\n", ret);
+				return;
+			}
+		}
+		descriptorsets.push_back(descriptorset);
+
+		//     fprintf(stderr, "update descriptorset %p\n", descriptorset);
+
+		if (dev->info.support_VK_KHR_descriptor_update_template)
+		{
+			dev->vkUpdateDescriptorSetWithTemplateKHR(dev->vkdevice(), descriptorset, descriptor_update_template, descriptorBufferInfos.data());
+		}
+		else
+		{
+			std::vector<VkWriteDescriptorSet> writeDescriptorSets(binding_count);
+			for (int i = 0; i < binding_count; ++i)
+			{
+				writeDescriptorSets[i].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+				writeDescriptorSets[i].pNext = 0;
+				writeDescriptorSets[i].dstSet = descriptorset;
+				writeDescriptorSets[i].dstBinding = i;
+				writeDescriptorSets[i].dstArrayElement = 0;
+				writeDescriptorSets[i].descriptorCount = 1;
+				writeDescriptorSets[i].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+				writeDescriptorSets[i].pImageInfo = 0;
+				writeDescriptorSets[i].pBufferInfo = &descriptorBufferInfos[i];
+				writeDescriptorSets[i].pTexelBufferView = 0;
+			}
+
+			vkUpdateDescriptorSets(dev->vkdevice(), binding_count, writeDescriptorSets.data(), 0, 0);
+		}
+
+		record_type r;
+		r.type = 3;
+		r.bind_descriptorset.pipeline_layout = pipeline_layout;
+		r.bind_descriptorset.descriptorset = descriptorset;
 		delayed_records.push_back(r);
 	}
 
@@ -150,6 +333,78 @@ namespace backend {
 		delayed_records.push_back(r);
 	}
 
+	void VkCompute::record_transfer_compute_barrier(const DeviceTensor& m) {
+		/*m.data->state = 3;
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return transfer_compute_barrier(m.buffer(), m.buffer_offset(), m.total() * m.elemsize);
+
+		record_type r;
+		r.type = 6;
+		r.transfer_compute_barrier.buffer = m.buffer();
+		r.transfer_compute_barrier.offset = m.buffer_offset();
+		r.transfer_compute_barrier.size = m.total() * m.elemsize;
+		delayed_records.push_back(r);*/
+	}
+
+	void VkCompute::record_compute_transfer_barrier(const DeviceTensor& m) {
+		/*m.data->state = 2;
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return compute_transfer_barrier(m.buffer(), m.buffer_offset(), m.total() * m.elemsize);
+
+		record_type r;
+		r.type = 7;
+		r.compute_transfer_barrier.buffer = m.buffer();
+		r.compute_transfer_barrier.offset = m.buffer_offset();
+		r.compute_transfer_barrier.size = m.total() * m.elemsize;
+		delayed_records.push_back(r);*/
+	}
+
+
+	void VkCompute::record_compute_compute_barrier(const DeviceTensor& m) {
+		/*m.data->state = 3;
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return compute_compute_barrier(m.buffer(), m.buffer_offset(), m.total() * m.elemsize);
+
+		record_type r;
+		r.type = 8;
+		r.compute_compute_barrier.buffer = m.buffer();
+		r.compute_compute_barrier.offset = m.buffer_offset();
+		r.compute_compute_barrier.size = m.total() * m.elemsize;
+		delayed_records.push_back(r);*/
+	}
+
+	void VkCompute::record_transfer_transfer_barrier(const DeviceTensor& m) {
+		/*m.data->state = 2;
+		if (dev->info.support_VK_KHR_push_descriptor)
+			return transfer_transfer_barrier(m.buffer(), m.buffer_offset(), m.total() * m.elemsize);
+
+		record_type r;
+		r.type = 9;
+		r.transfer_transfer_barrier.buffer = m.buffer();
+		r.transfer_transfer_barrier.offset = m.buffer_offset();
+		r.transfer_transfer_barrier.size = m.total() * m.elemsize;
+		delayed_records.push_back(r);*/
+	}
+
+	void VkCompute::record_prepare_transfer_barrier(const DeviceTensor& m) {
+		if (m.data->state == 2)
+			return record_transfer_transfer_barrier(m);
+
+		if (m.data->state == 3)
+			return record_compute_transfer_barrier(m);
+
+		m.data->state = 2;
+	}
+
+	void VkCompute::record_prepare_compute_barrier(const DeviceTensor& m) {
+		if (m.data->state == 2)
+			return record_transfer_compute_barrier(m);
+
+		if (m.data->state == 3)
+			return record_compute_compute_barrier(m);
+
+		m.data->state = 3;
+	}
 
 	int VkCompute::submit_and_wait()
 	{
@@ -321,6 +576,29 @@ namespace backend {
 
 	VkTransfer::~VkTransfer() {}
 
+	void VkTransfer::record_upload(const Tensor& src, DeviceTensor& dst)
+	{
+		/*Tensor src_flattened = src.reshape(src.w * src.h * src.c);
+
+		dst.create_like(src_flattened, weight_vkallocator, staging_vkallocator);
+
+		// set weight blob as readonly
+		dst.data->state = 4;
+
+		if (dst.allocator->mappable)
+		{
+			dst.upload(src_flattened);
+			return;
+		}
+
+		record_type r;
+		r.size = src_flattened.total() * src_flattened.elemsize;
+		r.t = src_flattened;
+		r.d_t = dst;
+		delayed_records.push_back(r);*/
+	}
+
+
 	int VkTransfer::submit_and_wait() {
 		if (delayed_records.empty())
 			return 0;
@@ -338,7 +616,7 @@ namespace backend {
 		size_t mapped_ptr_offset = 0;
 		for (int i = 0; i < transfer_count; ++i) {
 			const record_type& r = delayed_records[i];
-			memcpy((unsigned char*)staging_data->mapped_ptr + mapped_ptr_offset, r.mat.data, r.size);
+			memcpy((unsigned char*)staging_data->mapped_ptr + mapped_ptr_offset, r.t.data, r.size);
 			mapped_ptr_offset += alignSize(r.size, buffer_offset_alignment);
 		}
 
@@ -346,9 +624,9 @@ namespace backend {
 
 		size_t staging_buffer_offset = 0;
 		for (int i = 0; i < transfer_count; ++i) {
-			const record_type& r = delayed_records[i];
-			copy_buffer(staging_data->buffer, staging_buffer_offset, r.vkmat.buffer(), r.vkmat.buffer_offset(), r.size);
-			staging_buffer_offset += (r.size, buffer_offset_alignment);
+			/*const record_type& r = delayed_records[i];
+			copy_buffer(staging_data->buffer, staging_buffer_offset, r.d_t.buffer(), r.d_t.buffer_offset(), r.size);
+			staging_buffer_offset += (r.size, buffer_offset_alignment);*/
 		}
 
 		end_command_buffer();

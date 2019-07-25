@@ -4,6 +4,11 @@
 #include "device.h"
 
 namespace backend{
+	CPU_Allocator::~CPU_Allocator()
+	{
+
+	}
+
 	Allocator::Allocator(const Device* _dev) : dev(_dev){
 		mappable = false;
 	}

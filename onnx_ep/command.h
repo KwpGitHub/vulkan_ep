@@ -6,6 +6,7 @@
 #include <vulkan/vulkan.h>
 #include "allocator.h"
 #include "pipeline.h"
+#include "tensor.h"
 
 
 namespace backend {
@@ -31,16 +32,17 @@ namespace backend {
 	};
 
 	class VkCompute : public Command {
+	public:
 		VkCompute(const Device* _dev);
-		/*tensorOPS*/
-		/*
-		void record_upload(const VkMat& m);
-		void record_download(const VkMat& m);
-		void record_clone(const VkMat& src, const VkMat& dst);
-		void record_copy_region(const VkMat& src, const VkMat& dst, const VkBufferCopy& region);
-		void record_copy_regions(const VkMat& src, const VkMat& dst, const std::vector<VkBufferCopy>& regions);
-		void record_pipeline(const Pipeline* pipeline, const std::vector<VkMat>& bindings, const std::vector<vk_constant_type>& constants, const VkMat& m);
-		*/
+		~VkCompute();
+		/*tensorOPS*/		
+		void record_upload(const DeviceTensor& m);
+		void record_download(const DeviceTensor& m);
+		void record_clone(const DeviceTensor& src, const DeviceTensor& dst);
+		void record_copy_region(const DeviceTensor& src, const DeviceTensor& dst, const VkBufferCopy& region);
+		void record_copy_regions(const DeviceTensor& src, const DeviceTensor& dst, const std::vector<VkBufferCopy>& regions);
+		void record_pipeline(const Pipeline* pipeline, const std::vector<DeviceTensor>& bindings, const std::vector<vk_constant_type>& constants, const DeviceTensor& m);
+		
 		
 		void record_write_timestamp(uint32_t query);
 		int submit_and_wait();
@@ -48,19 +50,19 @@ namespace backend {
 
 	protected:
 		void record_bind_pipeline(VkPipeline pipeline);
-		void record_update_bindings(VkPipelineLayout pipeline_layout, VkDescriptorSetLayout descriptorset_layout, VkDescriptorUpdateTemplateKHR descriptor_update_template, const std::vector<VkMat>& bindings);
+		void record_update_bindings(VkPipelineLayout pipeline_layout, VkDescriptorSetLayout descriptorset_layout, VkDescriptorUpdateTemplateKHR descriptor_update_template, const std::vector<DeviceTensor>& bindings);
 		void record_push_constants(VkPipelineLayout pipeline_layout, const std::vector<vk_constant_type>& constants);
 		void record_dispatch(const uint32_t* group_count_xyz);
 
-/*
-		void record_transfer_compute_barrier(const VkMat& m);
-		void record_compute_transfer_barrier(const VkMat& m);
-		void record_compute_compute_barrier(const VkMat& m);
-		void record_transfer_transfer_barrier(const VkMat& m);
 
-		void record_prepare_transfer_barrier(const VkMat& m);
-		void record_prepare_compute_barrier(const VkMat& m);
-*/
+		void record_transfer_compute_barrier(const DeviceTensor& m);
+		void record_compute_transfer_barrier(const DeviceTensor& m);
+		void record_compute_compute_barrier(const DeviceTensor& m);
+		void record_transfer_transfer_barrier(const DeviceTensor& m);
+
+		void record_prepare_transfer_barrier(const DeviceTensor& m);
+		void record_prepare_compute_barrier(const DeviceTensor& m);
+
 
 		void copy_buffer(VkBuffer src, size_t src_offset, VkBuffer dst, size_t dst_offset, size_t size);
 		void copy_buffer_regions(VkBuffer src, VkBuffer dst, const std::vector<VkBufferCopy>& regions);
@@ -118,7 +120,7 @@ namespace backend {
 		VkTransfer(const Device* _dev);
 		~VkTransfer();
 		/*TensorOps*/
-		/*void record_upload(const Mat& src, VkMat& dst, const Option& opt);*/
+		void record_upload(const Tensor& src, DeviceTensor& dst);
 		int submit_and_wait();
 		Allocator* weight_allocator;
 		Allocator* staging_allocator;
@@ -131,8 +133,8 @@ namespace backend {
 		struct record_type
 		{
 			size_t size;
-			//Tensor
-			//Tensor_gpu
+			Tensor t;
+			DeviceTensor d_t;
 		};
 		std::vector<record_type> delayed_records;
 	};

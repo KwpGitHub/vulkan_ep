@@ -16,6 +16,7 @@
 
 #ifdef _WIN32
 #define NOMINMAX
+#define VK_EP_VULKAN 1
 #include <algorithm>
 #include <windows.h> // Sleep()
 #else

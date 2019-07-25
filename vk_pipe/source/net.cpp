@@ -31,7 +31,7 @@
 #if VK_EP_BENCHMARK
 #include "benchmark.h"
 #endif // VK_EP_BENCHMARK
-
+#define VK_EP_VULKAN 1
 #if VK_EP_VULKAN
 #include "command.h"
 #endif // VK_EP_VULKAN

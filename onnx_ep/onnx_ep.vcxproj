@@ -145,8 +145,9 @@
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(PythonHome)\include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -196,6 +197,7 @@
     <ClCompile Include="allocator.cpp" />
     <ClCompile Include="command.cpp" />
     <ClCompile Include="device.cpp" />
+    <ClCompile Include="layer.cpp" />
     <ClCompile Include="onnx_ep.cpp" />
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="tensor.cpp" />
@@ -204,6 +206,7 @@
     <ClInclude Include="allocator.h" />
     <ClInclude Include="command.h" />
     <ClInclude Include="device.h" />
+    <ClInclude Include="layer.h" />
     <ClInclude Include="layer_registry.h" />
     <ClInclude Include="layer_shader_registry.h" />
     <ClInclude Include="layer_shader_spv_data.h" />
