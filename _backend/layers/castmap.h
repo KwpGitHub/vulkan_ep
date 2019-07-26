@@ -10,7 +10,6 @@ namespace backend {
     class CastMap : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		std::string cast_to;
 		std::string map_form;
 		int max_map;
@@ -26,6 +25,7 @@ namespace backend {
         }
 
         ~CastMap () {}
+        
 
     };
 }

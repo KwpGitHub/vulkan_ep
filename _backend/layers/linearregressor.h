@@ -10,7 +10,6 @@ namespace backend {
     class LinearRegressor : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float[] coefficients;
 		float[] intercepts;
 		std::string post_transform;
@@ -27,6 +26,7 @@ namespace backend {
         }
 
         ~LinearRegressor () {}
+        
 
     };
 }

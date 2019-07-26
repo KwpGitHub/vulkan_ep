@@ -10,7 +10,6 @@ namespace backend {
     class Binarizer : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float threshold;
     };
     vuh::Program<Specs, Params>* program;
@@ -24,6 +23,7 @@ namespace backend {
         }
 
         ~Binarizer () {}
+        
 
     };
 }

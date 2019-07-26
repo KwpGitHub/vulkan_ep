@@ -10,7 +10,6 @@ namespace backend {
     class SVMRegressor : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float[] coefficients;
 		float[] kernel_params;
 		std::string kernel_type;
@@ -31,6 +30,7 @@ namespace backend {
         }
 
         ~SVMRegressor () {}
+        
 
     };
 }

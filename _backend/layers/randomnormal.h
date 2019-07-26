@@ -10,7 +10,6 @@ namespace backend {
     class RandomNormal : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int dtype;
 		float mean;
 		float scale;
@@ -28,6 +27,7 @@ namespace backend {
         }
 
         ~RandomNormal () {}
+        
 
     };
 }

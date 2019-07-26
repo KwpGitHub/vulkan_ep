@@ -10,7 +10,6 @@ namespace backend {
     class Floor : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
     };
     vuh::Program<Specs, Params>* program;
 
@@ -23,6 +22,7 @@ namespace backend {
         }
 
         ~Floor () {}
+        
 
     };
 }

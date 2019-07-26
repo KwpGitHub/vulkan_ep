@@ -10,7 +10,6 @@ namespace backend {
     class Multinomial : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int dtype;
 		int sample_size;
 		float seed;
@@ -26,6 +25,7 @@ namespace backend {
         }
 
         ~Multinomial () {}
+        
 
     };
 }

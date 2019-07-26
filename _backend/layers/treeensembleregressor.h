@@ -10,7 +10,6 @@ namespace backend {
     class TreeEnsembleRegressor : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		std::string aggregate_function;
 		float[] base_values;
 		int n_targets;
@@ -40,6 +39,7 @@ namespace backend {
         }
 
         ~TreeEnsembleRegressor () {}
+        
 
     };
 }

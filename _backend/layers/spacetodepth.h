@@ -10,7 +10,6 @@ namespace backend {
     class SpaceToDepth : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int blocksize;
     };
     vuh::Program<Specs, Params>* program;
@@ -24,6 +23,7 @@ namespace backend {
         }
 
         ~SpaceToDepth () {}
+        
 
     };
 }

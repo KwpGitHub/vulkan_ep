@@ -10,7 +10,6 @@ namespace backend {
     class RandomUniformLike : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int dtype;
 		float high;
 		float low;
@@ -27,6 +26,7 @@ namespace backend {
         }
 
         ~RandomUniformLike () {}
+        
 
     };
 }

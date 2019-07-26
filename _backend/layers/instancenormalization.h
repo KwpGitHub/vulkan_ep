@@ -10,7 +10,6 @@ namespace backend {
     class InstanceNormalization : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float epsilon;
     };
     vuh::Program<Specs, Params>* program;
@@ -24,6 +23,7 @@ namespace backend {
         }
 
         ~InstanceNormalization () {}
+        
 
     };
 }

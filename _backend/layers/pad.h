@@ -10,7 +10,6 @@ namespace backend {
     class Pad : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		std::string mode;
 		int[] pads;
 		float value;
@@ -26,6 +25,7 @@ namespace backend {
         }
 
         ~Pad () {}
+        
 
     };
 }

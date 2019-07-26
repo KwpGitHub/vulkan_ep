@@ -10,7 +10,6 @@ namespace backend {
     class LpPool : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		std::string auto_pad;
 		int[] kernel_shape;
 		int p;
@@ -28,6 +27,7 @@ namespace backend {
         }
 
         ~LpPool () {}
+        
 
     };
 }

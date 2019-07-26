@@ -10,7 +10,6 @@ namespace backend {
     class LRN : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float alpha;
 		float beta;
 		float bias;
@@ -27,6 +26,7 @@ namespace backend {
         }
 
         ~LRN () {}
+        
 
     };
 }

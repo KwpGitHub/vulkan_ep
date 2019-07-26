@@ -10,7 +10,6 @@ namespace backend {
     class TreeEnsembleClassifier : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float[] base_values;
 		int[] class_ids;
 		int[] class_nodeids;
@@ -40,6 +39,7 @@ namespace backend {
         }
 
         ~TreeEnsembleClassifier () {}
+        
 
     };
 }

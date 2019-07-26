@@ -10,7 +10,6 @@ namespace backend {
     class Clip : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float max;
 		float min;
     };
@@ -25,6 +24,7 @@ namespace backend {
         }
 
         ~Clip () {}
+        
 
     };
 }

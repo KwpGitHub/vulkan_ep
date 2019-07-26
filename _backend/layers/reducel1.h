@@ -10,7 +10,6 @@ namespace backend {
     class ReduceL1 : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int[] axes;
 		int keepdims;
     };
@@ -25,6 +24,7 @@ namespace backend {
         }
 
         ~ReduceL1 () {}
+        
 
     };
 }

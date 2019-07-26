@@ -10,7 +10,6 @@ namespace backend {
     class RNN : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float[] activation_alpha;
 		float[] activation_beta;
 		std::string[] activations;
@@ -29,6 +28,7 @@ namespace backend {
         }
 
         ~RNN () {}
+        
 
     };
 }

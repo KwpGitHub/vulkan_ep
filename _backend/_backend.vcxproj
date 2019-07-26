@@ -195,7 +195,6 @@
     <ClCompile Include="kernel\error.cpp" />
     <ClCompile Include="kernel\instance.cpp" />
     <ClCompile Include="kernel\utils.cpp" />
-    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="_backend.cpp" />
   </ItemGroup>
   <ItemGroup>

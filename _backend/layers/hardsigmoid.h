@@ -10,7 +10,6 @@ namespace backend {
     class HardSigmoid : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float alpha;
 		float beta;
     };
@@ -25,6 +24,7 @@ namespace backend {
         }
 
         ~HardSigmoid () {}
+        
 
     };
 }

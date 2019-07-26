@@ -10,7 +10,6 @@ namespace backend {
     class Conv : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		std::string auto_pad;
 		int[] dilations;
 		int group;
@@ -29,6 +28,7 @@ namespace backend {
         }
 
         ~Conv () {}
+        
 
     };
 }

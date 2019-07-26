@@ -5,7 +5,8 @@ import json
 import os
 import onnx_ep as onnx_ep
 
-types = {   'AttrType.STRING'   :'std::string',
+types = {  
+            'AttrType.STRING'   :'std::string',
             'AttrType.STRINGS'  :'std::string[]',
             'AttrType.FLOAT'    :'float',
             'AttrType.FLOATS'   :'float[]',
@@ -57,10 +58,20 @@ namespace backend {{
 		    program = new vuh::Program<Specs, Params>(*device, "../shaders/bin/{lower}.spv");
 		    d_input = new vuh::Array<float>(*device, input);
 		    d_output = new vuh::Array<float>(*device, output);
+
         }}
 
-        ~{norm} () {{}}
-        
+        vuh::Array<float> operator(vuh::Array<float>& inpt) {{
+            d_input = input;
+            
+            return d_output;
+        }}
+
+        void forward(){
+            
+        }
+
+        {norm}& 
 
     }};
 }}
@@ -71,13 +82,17 @@ namespace backend {{
         class_shader_str = '''
 #version 450
 layout(local_size_x_id = 0, local_size_y_id = 0, local_size_z_id = 0) in;
-layout(std430, binding = 0) buffer lay0 { float y[]; }; 
-layout(std430, binding = 1) buffer lay1 { float x[]; };
+layout(std430, binding = 0) buffer lay0 {{ float y[]; }}; 
+layout(std430, binding = 1) buffer lay1 {{ float x[]; }};
+layout(push_constant) uniform Parameters {{
+    uint size;
+}} params;
 
-void main() {
-    const uint id = gl_LocalInvocationID.z * gl_WorkGroupSize.x * gl_WorkGroupSize.y + gl_LocalInvocationID.y * gl_WorkGroupSize.x + gl_LocalInvocationID.x;
-}
-'''
+void main() {{
+    const uint id = gl_LocalInvocationID.z * gl_WorkGroupSize.x * gl_WorkGroupSize.y + gl_LocalInvocationID.y * gl_WorkGroupSize.x + gl_LocalInvocationID.x
+    if(id >= size) {{return;}}
+}}
+''' #.format_map({ "param":''.join(lst) })
 
         op_file.write(op.name+'=' + ', '.join(lst) + '\n')
 

@@ -10,7 +10,6 @@ namespace backend {
     class Imputer : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float[] imputed_value_floats;
 		int[] imputed_value_int64s;
 		float replaced_value_float;
@@ -27,6 +26,7 @@ namespace backend {
         }
 
         ~Imputer () {}
+        
 
     };
 }

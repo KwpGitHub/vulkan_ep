@@ -10,7 +10,6 @@ namespace backend {
     class Scaler : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float[] offset;
 		float[] scale;
     };
@@ -25,6 +24,7 @@ namespace backend {
         }
 
         ~Scaler () {}
+        
 
     };
 }

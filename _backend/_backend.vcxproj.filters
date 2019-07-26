@@ -42,9 +42,6 @@
     <ClCompile Include="kernel\utils.cpp">
       <Filter>Kernel Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Layer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="_backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <vector>
 #include "layer.h"
+#include "layers.h"
 #include "kernel/vuh.h"
 
 /*
@@ -33,17 +34,9 @@ private:
 */
 
 void create_instance() {
-	auto y = std::vector<float>(128, 1.0f);
-	auto x = std::vector<float>(128, -20.0f);
-	instance = new vuh::Instance();
-
-	auto layer = ABS(x);
-	layer.run();
-
+	backend::instance = new vuh::Instance();
+	
 }
-
-
-
 
 
 PYBIND11_MODULE(_backend, m) {

@@ -10,7 +10,6 @@ namespace backend {
     class LinearClassifier : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int[] classlabels_ints;
 		std::string[] classlabels_strings;
 		float[] coefficients;
@@ -29,6 +28,7 @@ namespace backend {
         }
 
         ~LinearClassifier () {}
+        
 
     };
 }

@@ -10,7 +10,6 @@ namespace backend {
     class MaxRoiPool : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int[] pooled_shape;
 		float spatial_scale;
     };
@@ -25,6 +24,7 @@ namespace backend {
         }
 
         ~MaxRoiPool () {}
+        
 
     };
 }

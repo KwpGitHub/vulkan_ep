@@ -10,7 +10,6 @@ namespace backend {
     class LabelEncoder : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		float default_float;
 		int default_int64;
 		std::string default_string;
@@ -32,6 +31,7 @@ namespace backend {
         }
 
         ~LabelEncoder () {}
+        
 
     };
 }

@@ -10,7 +10,6 @@ namespace backend {
     class DictVectorizer : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int[] int64_vocabulary;
 		std::string[] string_vocabulary;
     };
@@ -25,6 +24,7 @@ namespace backend {
         }
 
         ~DictVectorizer () {}
+        
 
     };
 }

@@ -10,7 +10,6 @@ namespace backend {
     class Split : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int axis;
 		int[] split;
     };
@@ -25,6 +24,7 @@ namespace backend {
         }
 
         ~Split () {}
+        
 
     };
 }

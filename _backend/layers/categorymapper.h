@@ -10,7 +10,6 @@ namespace backend {
     class CategoryMapper : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int[] cats_int64s;
 		std::string[] cats_strings;
 		int default_int64;
@@ -27,6 +26,7 @@ namespace backend {
         }
 
         ~CategoryMapper () {}
+        
 
     };
 }

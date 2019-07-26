@@ -10,7 +10,6 @@ namespace backend {
     class LpNormalization : public Layer {
     using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
     struct Params {
-
 		int axis;
 		int p;
     };
@@ -25,6 +24,7 @@ namespace backend {
         }
 
         ~LpNormalization () {}
+        
 
     };
 }
