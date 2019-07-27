@@ -3,15 +3,15 @@ from google.protobuf.json_format import MessageToJson
 import onnx
 import json
 import os
-import onnx_ep as onnx_ep
+import _backend as backend
 
 types = {  
             'AttrType.STRING'   :'std::string',
-            'AttrType.STRINGS'  :'std::string[]',
+            'AttrType.STRINGS'  :'//std::string[]',
             'AttrType.FLOAT'    :'float',
-            'AttrType.FLOATS'   :'float[]',
+            'AttrType.FLOATS'   :'//float[]',
             'AttrType.INT'      :'int',
-            'AttrType.INTS'     :'int[]',
+            'AttrType.INTS'     :'//int[]',
             'AttrType.TENSOR'   :'//tensor',
             'AttrType.TENSORS'  :'//std::vector<tensor>',
             'AttrType.GRAPH'    :'//graph',
@@ -36,42 +36,30 @@ def onnx_proto():
         op_name = str(op.name)
         attr = op.attributes
         lst = ['\n\t\t{} {};'.format(types[str(x.type)], x.name)  for _,x in attr.items()]
-        mapt = {"upper":op_name.upper(), "norm":op_name, "lower":op_name.lower(), "param":''.join(lst)}
-        class_h_str = R'''
-#ifndef {upper}_H
+        lst_t = [', {} {}'.format(types[str(x.type)], x.name)  for _,x in attr.items()]
+
+        mapt = {"upper":op_name.upper(), "norm":op_name, "lower":op_name.lower(), "param":''.join(lst) , 'param_t':''.join(lst_t)}
+        class_h_str = R'''#ifndef {upper}_H
 #define {upper}_H
 
 #include <vector>
 #include "../layer.h"
+#include "../tensor.h"
 #include "../kernel/vuh.h"
 
 namespace backend {{
     class {norm} : public Layer {{
-    using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-    struct Params {{{param}
-    }};
-    vuh::Program<Specs, Params>* program;
-
     public:
-       {norm} (){{
-            device =  new vuh::Device(instance->devices().at(0));
-		    program = new vuh::Program<Specs, Params>(*device, "../shaders/bin/{lower}.spv");
-		    d_input = new vuh::Array<float>(*device, input);
-		    d_output = new vuh::Array<float>(*device, output);
-
+        {norm}() {{
+        }}
+        
+        Tensor& operator()(const Tensor& t) {{
         }}
 
-        vuh::Array<float> operator(vuh::Array<float>& inpt) {{
-            d_input = input;
-            
-            return d_output;
+        void forward(){{          
         }}
 
-        void forward(){
-            
-        }
-
-        {norm}& 
+        ~{norm}(){{}}
 
     }};
 }}
@@ -79,20 +67,27 @@ namespace backend {{
 #endif
 '''.format_map(mapt) 
 
-        class_shader_str = '''
+        class_shader_str = '''//{name}
 #version 450
-layout(local_size_x_id = 0, local_size_y_id = 0, local_size_z_id = 0) in;
-layout(std430, binding = 0) buffer lay0 {{ float y[]; }}; 
-layout(std430, binding = 1) buffer lay1 {{ float x[]; }};
+
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;  
+
 layout(push_constant) uniform Parameters {{
     uint size;
 }} params;
 
-void main() {{
-    const uint id = gl_LocalInvocationID.z * gl_WorkGroupSize.x * gl_WorkGroupSize.y + gl_LocalInvocationID.y * gl_WorkGroupSize.x + gl_LocalInvocationID.x
-    if(id >= size) {{return;}}
+layout(std430, binding = 1) buffer lay1 {{ float x[]; }};
+
+void main(){{
+    const uint id = gl_GlobalInvocationID.x; 
+    if(params.size <= id){{
+        return;
+    }}
+    x[id] = x[id];
 }}
-''' #.format_map({ "param":''.join(lst) })
+'''.format_map({ "name":op_name, "param":''.join(lst) })
 
         op_file.write(op.name+'=' + ', '.join(lst) + '\n')
 
@@ -129,10 +124,9 @@ def graph_def_info(graph):
 
 if (__name__ == "__main__"):
     onnx_proto()
-    #onnx_ep.create_device()
+    #backend.create_instance()
     #onnx_ep.run()
     #onnx_model_str =  MessageToJson(onnx.load('mobilenetv2.onnx'))
     #graph = json.loads(onnx_model_str)
 
     #node_info = graph_def_info(graph['graph'])
-    

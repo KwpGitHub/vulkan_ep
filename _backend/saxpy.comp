@@ -1,5 +1,9 @@
 #version 450
-layout(local_size_x_id = 0) in;             // workgroup size (set with .spec(64) on C++ side)
+
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;  
+
 layout(push_constant) uniform Parameters {  // push constants (set with {128, 0.1} on C++ side)
    uint size;                               // array size
    float a;                                 // scaling parameter
@@ -13,5 +17,5 @@ void main(){
    if(params.size <= id){                   // drop threads outside the buffer
       return;
    }
-   arr_y[id] = params.a*arr_x[id];         // saxpy
+   arr_y[id] += params.a*arr_x[id];         // saxpy
 }

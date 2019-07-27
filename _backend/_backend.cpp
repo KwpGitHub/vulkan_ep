@@ -1,44 +1,34 @@
 #include <pybind11/pybind11.h>
 #include <vector>
-#include "layer.h"
-#include "layers.h"
 #include "kernel/vuh.h"
 
-/*
-class ABS : public Layer {
-	
-	using Specs = vuh::typelist<uint32_t>;
-	struct Params { uint32_t size; float a; };
 
-	vuh::Program<Specs, Params>* program;
-public:
-	ABS(const std::vector<float> &tinput) {
-		input = tinput;
-		output = std::vector<float>(128, 0.0f);
-		device =  new vuh::Device(backend::instance->devices().at(0));
-		program = new vuh::Program<Specs, Params>(*device, "./shaders/abs.spv");
-		d_input = new vuh::Array<float>(*device, input);
-		d_output = new vuh::Array<float>(*device, output);
-		
-	}
-	~ABS(){}
+void test() {
+	auto y = std::vector<float>(128, 1.0f);
+	auto x = std::vector<float>(128, 2.0f);
 
-	void run() {
-		program->grid(128 / 64).spec(64)({ 128, 0.1f }, *d_output, *d_input);
-		d_output->toHost(begin(output));
-		printf("DONE");
-	}
-private:
+	auto instance = vuh::Instance();
+	auto device = instance.devices().at(0);    // just get the first available device
 
-};
-*/
+	auto d_y = vuh::Array<float>(device, y);   // create device arrays and copy data
+	auto d_x = vuh::Array<float>(device, x);
+
+	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	struct Params { uint32_t size; float a; };    // shader push-constants interface
+
+	auto program = vuh::Program<Specs, Params>(device, "saxpy.spv");
+	program.grid(128/64, 1, 1).spec(64, 1, 1)({ 128, 0.1 }, d_y, d_x); 
+	d_y.toHost(begin(y));	
+
+	return;
+}
 
 void create_instance() {
-	backend::instance = new vuh::Instance();
 	
 }
 
 
 PYBIND11_MODULE(_backend, m) {
-	m.def("create_instance", &create_instance);
+	m.def("run", &create_instance);
+	m.def("test", &test);
 }

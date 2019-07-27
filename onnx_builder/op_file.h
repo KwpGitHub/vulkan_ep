@@ -1,7 +1,7 @@
 LSTM=
-		float[] activation_alpha;, 
-		float[] activation_beta;, 
-		std::string[] activations;, 
+		//float[] activation_alpha;, 
+		//float[] activation_beta;, 
+		//std::string[] activations;, 
 		float clip;, 
 		std::string direction;, 
 		int hidden_size;, 
@@ -20,9 +20,9 @@ AveragePool=
 		std::string auto_pad;, 
 		int ceil_mode;, 
 		int count_include_pad;, 
-		int[] kernel_shape;, 
-		int[] pads;, 
-		int[] strides;
+		//int[] kernel_shape;, 
+		//int[] pads;, 
+		//int[] strides;
 And=
 LRN=
 		float alpha;, 
@@ -56,9 +56,9 @@ Clip=
 		float max;, 
 		float min;
 RNN=
-		float[] activation_alpha;, 
-		float[] activation_beta;, 
-		std::string[] activations;, 
+		//float[] activation_alpha;, 
+		//float[] activation_beta;, 
+		//std::string[] activations;, 
 		float clip;, 
 		std::string direction;, 
 		int hidden_size;
@@ -68,29 +68,29 @@ Constant=
 		//tensor value;
 LpPool=
 		std::string auto_pad;, 
-		int[] kernel_shape;, 
+		//int[] kernel_shape;, 
 		int p;, 
-		int[] pads;, 
-		int[] strides;
+		//int[] pads;, 
+		//int[] strides;
 Conv=
 		std::string auto_pad;, 
-		int[] dilations;, 
+		//int[] dilations;, 
 		int group;, 
-		int[] kernel_shape;, 
-		int[] pads;, 
-		int[] strides;
+		//int[] kernel_shape;, 
+		//int[] pads;, 
+		//int[] strides;
 Not=
 Gather=
 		int axis;
 ConvTranspose=
 		std::string auto_pad;, 
-		int[] dilations;, 
+		//int[] dilations;, 
 		int group;, 
-		int[] kernel_shape;, 
-		int[] output_padding;, 
-		int[] output_shape;, 
-		int[] pads;, 
-		int[] strides;
+		//int[] kernel_shape;, 
+		//int[] output_padding;, 
+		//int[] output_shape;, 
+		//int[] pads;, 
+		//int[] strides;
 Dropout=
 		float ratio;
 LeakyRelu=
@@ -106,20 +106,20 @@ Gemm=
 MaxPool=
 		std::string auto_pad;, 
 		int ceil_mode;, 
-		int[] dilations;, 
-		int[] kernel_shape;, 
-		int[] pads;, 
+		//int[] dilations;, 
+		//int[] kernel_shape;, 
+		//int[] pads;, 
 		int storage_order;, 
-		int[] strides;
+		//int[] strides;
 Equal=
 Tile=
 Flatten=
 		int axis;
 Floor=
 GRU=
-		float[] activation_alpha;, 
-		float[] activation_beta;, 
-		std::string[] activations;, 
+		//float[] activation_alpha;, 
+		//float[] activation_beta;, 
+		//std::string[] activations;, 
 		float clip;, 
 		std::string direction;, 
 		int hidden_size;, 
@@ -150,7 +150,7 @@ RandomNormal=
 		float mean;, 
 		float scale;, 
 		float seed;, 
-		int[] shape;
+		//int[] shape;
 Slice=
 PRelu=
 Log=
@@ -163,16 +163,16 @@ LpNormalization=
 		int p;
 MatMul=
 ReduceL2=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 Max=
 MaxRoiPool=
-		int[] pooled_shape;, 
+		//int[] pooled_shape;, 
 		float spatial_scale;
 Or=
 Pad=
 		std::string mode;, 
-		int[] pads;, 
+		//int[] pads;, 
 		float value;
 RandomUniformLike=
 		int dtype;, 
@@ -193,56 +193,56 @@ RandomUniform=
 		float high;, 
 		float low;, 
 		float seed;, 
-		int[] shape;
+		//int[] shape;
 ReduceL1=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 ReduceLogSum=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 ReduceLogSumExp=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 ReduceMax=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 OneHotEncoder=
-		int[] cats_int64s;, 
-		std::string[] cats_strings;, 
+		//int[] cats_int64s;, 
+		//std::string[] cats_strings;, 
 		int zeros;
 IsNaN=
 ReduceMean=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 ReduceMin=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 TreeEnsembleRegressor=
 		std::string aggregate_function;, 
-		float[] base_values;, 
+		//float[] base_values;, 
 		int n_targets;, 
-		int[] nodes_falsenodeids;, 
-		int[] nodes_featureids;, 
-		float[] nodes_hitrates;, 
-		int[] nodes_missing_value_tracks_true;, 
-		std::string[] nodes_modes;, 
-		int[] nodes_nodeids;, 
-		int[] nodes_treeids;, 
-		int[] nodes_truenodeids;, 
-		float[] nodes_values;, 
+		//int[] nodes_falsenodeids;, 
+		//int[] nodes_featureids;, 
+		//float[] nodes_hitrates;, 
+		//int[] nodes_missing_value_tracks_true;, 
+		//std::string[] nodes_modes;, 
+		//int[] nodes_nodeids;, 
+		//int[] nodes_treeids;, 
+		//int[] nodes_truenodeids;, 
+		//float[] nodes_values;, 
 		std::string post_transform;, 
-		int[] target_ids;, 
-		int[] target_nodeids;, 
-		int[] target_treeids;, 
-		float[] target_weights;
+		//int[] target_ids;, 
+		//int[] target_nodeids;, 
+		//int[] target_treeids;, 
+		//float[] target_weights;
 ReduceProd=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 ReduceSum=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 ReduceSumSquare=
-		int[] axes;, 
+		//int[] axes;, 
 		int keepdims;
 Relu=
 Reshape=
@@ -260,22 +260,22 @@ TfIdfVectorizer=
 		int max_skip_count;, 
 		int min_gram_length;, 
 		std::string mode;, 
-		int[] ngram_counts;, 
-		int[] ngram_indexes;, 
-		int[] pool_int64s;, 
-		std::string[] pool_strings;, 
-		float[] weights;
+		//int[] ngram_counts;, 
+		//int[] ngram_indexes;, 
+		//int[] pool_int64s;, 
+		//std::string[] pool_strings;, 
+		//float[] weights;
 Split=
 		int axis;, 
-		int[] split;
+		//int[] split;
 Imputer=
-		float[] imputed_value_floats;, 
-		int[] imputed_value_int64s;, 
+		//float[] imputed_value_floats;, 
+		//int[] imputed_value_int64s;, 
 		float replaced_value_float;, 
 		int replaced_value_int64;
 Sqrt=
 Squeeze=
-		int[] axes;
+		//int[] axes;
 TopK=
 		int axis;
 Sub=
@@ -285,23 +285,23 @@ Shrink=
 		float lambd;
 Tanh=
 Transpose=
-		int[] perm;
+		//int[] perm;
 Unsqueeze=
-		int[] axes;
+		//int[] axes;
 Upsample=
 		std::string mode;
 SVMClassifier=
-		int[] classlabels_ints;, 
-		std::string[] classlabels_strings;, 
-		float[] coefficients;, 
-		float[] kernel_params;, 
+		//int[] classlabels_ints;, 
+		//std::string[] classlabels_strings;, 
+		//float[] coefficients;, 
+		//float[] kernel_params;, 
 		std::string kernel_type;, 
 		std::string post_transform;, 
-		float[] prob_a;, 
-		float[] prob_b;, 
-		float[] rho;, 
-		float[] support_vectors;, 
-		int[] vectors_per_class;
+		//float[] prob_a;, 
+		//float[] prob_b;, 
+		//float[] rho;, 
+		//float[] support_vectors;, 
+		//int[] vectors_per_class;
 Xor=
 Acos=
 Asin=
@@ -316,18 +316,18 @@ Multinomial=
 Scan=
 		//graph body;, 
 		int num_scan_inputs;, 
-		int[] scan_input_axes;, 
-		int[] scan_input_directions;, 
-		int[] scan_output_axes;, 
-		int[] scan_output_directions;
+		//int[] scan_input_axes;, 
+		//int[] scan_input_directions;, 
+		//int[] scan_output_axes;, 
+		//int[] scan_output_directions;
 Compress=
 		int axis;
 ConstantOfShape=
 		//tensor value;
 MaxUnpool=
-		int[] kernel_shape;, 
-		int[] pads;, 
-		int[] strides;
+		//int[] kernel_shape;, 
+		//int[] pads;, 
+		//int[] strides;
 Scatter=
 		int axis;
 Sinh=
@@ -342,12 +342,12 @@ Erf=
 Where=
 NonZero=
 MeanVarianceNormalization=
-		int[] axes;
+		//int[] axes;
 StringNormalizer=
 		std::string case_change_action;, 
 		int is_case_sensitive;, 
 		std::string locale;, 
-		std::string[] stopwords;
+		//std::string[] stopwords;
 Mod=
 		int fmod;
 ThresholdedRelu=
@@ -356,18 +356,18 @@ MatMulInteger=
 QLinearMatMul=
 ConvInteger=
 		std::string auto_pad;, 
-		int[] dilations;, 
+		//int[] dilations;, 
 		int group;, 
-		int[] kernel_shape;, 
-		int[] pads;, 
-		int[] strides;
+		//int[] kernel_shape;, 
+		//int[] pads;, 
+		//int[] strides;
 QLinearConv=
 		std::string auto_pad;, 
-		int[] dilations;, 
+		//int[] dilations;, 
 		int group;, 
-		int[] kernel_shape;, 
-		int[] pads;, 
-		int[] strides;
+		//int[] kernel_shape;, 
+		//int[] pads;, 
+		//int[] strides;
 QuantizeLinear=
 DequantizeLinear=
 IsInf=
@@ -383,69 +383,69 @@ ArrayFeatureExtractor=
 Binarizer=
 		float threshold;
 CategoryMapper=
-		int[] cats_int64s;, 
-		std::string[] cats_strings;, 
+		//int[] cats_int64s;, 
+		//std::string[] cats_strings;, 
 		int default_int64;, 
 		std::string default_string;
 DictVectorizer=
-		int[] int64_vocabulary;, 
-		std::string[] string_vocabulary;
+		//int[] int64_vocabulary;, 
+		//std::string[] string_vocabulary;
 FeatureVectorizer=
-		int[] inputdimensions;
+		//int[] inputdimensions;
 LabelEncoder=
 		float default_float;, 
 		int default_int64;, 
 		std::string default_string;, 
-		float[] keys_floats;, 
-		int[] keys_int64s;, 
-		std::string[] keys_strings;, 
-		float[] values_floats;, 
-		int[] values_int64s;, 
-		std::string[] values_strings;
+		//float[] keys_floats;, 
+		//int[] keys_int64s;, 
+		//std::string[] keys_strings;, 
+		//float[] values_floats;, 
+		//int[] values_int64s;, 
+		//std::string[] values_strings;
 LinearClassifier=
-		int[] classlabels_ints;, 
-		std::string[] classlabels_strings;, 
-		float[] coefficients;, 
-		float[] intercepts;, 
+		//int[] classlabels_ints;, 
+		//std::string[] classlabels_strings;, 
+		//float[] coefficients;, 
+		//float[] intercepts;, 
 		int multi_class;, 
 		std::string post_transform;
 LinearRegressor=
-		float[] coefficients;, 
-		float[] intercepts;, 
+		//float[] coefficients;, 
+		//float[] intercepts;, 
 		std::string post_transform;, 
 		int targets;
 Normalizer=
 		std::string norm;
 SVMRegressor=
-		float[] coefficients;, 
-		float[] kernel_params;, 
+		//float[] coefficients;, 
+		//float[] kernel_params;, 
 		std::string kernel_type;, 
 		int n_supports;, 
 		int one_class;, 
 		std::string post_transform;, 
-		float[] rho;, 
-		float[] support_vectors;
+		//float[] rho;, 
+		//float[] support_vectors;
 Scaler=
-		float[] offset;, 
-		float[] scale;
+		//float[] offset;, 
+		//float[] scale;
 TreeEnsembleClassifier=
-		float[] base_values;, 
-		int[] class_ids;, 
-		int[] class_nodeids;, 
-		int[] class_treeids;, 
-		float[] class_weights;, 
-		int[] classlabels_int64s;, 
-		std::string[] classlabels_strings;, 
-		int[] nodes_falsenodeids;, 
-		int[] nodes_featureids;, 
-		float[] nodes_hitrates;, 
-		int[] nodes_missing_value_tracks_true;, 
-		std::string[] nodes_modes;, 
-		int[] nodes_nodeids;, 
-		int[] nodes_treeids;, 
-		int[] nodes_truenodeids;, 
-		float[] nodes_values;, 
+		//float[] base_values;, 
+		//int[] class_ids;, 
+		//int[] class_nodeids;, 
+		//int[] class_treeids;, 
+		//float[] class_weights;, 
+		//int[] classlabels_int64s;, 
+		//std::string[] classlabels_strings;, 
+		//int[] nodes_falsenodeids;, 
+		//int[] nodes_featureids;, 
+		//float[] nodes_hitrates;, 
+		//int[] nodes_missing_value_tracks_true;, 
+		//std::string[] nodes_modes;, 
+		//int[] nodes_nodeids;, 
+		//int[] nodes_treeids;, 
+		//int[] nodes_truenodeids;, 
+		//float[] nodes_values;, 
 		std::string post_transform;
 ZipMap=
-		int[] classlabels_int64s;, 
-		std::string[] classlabels_strings;
+		//int[] classlabels_int64s;, 
+		//std::string[] classlabels_strings;
