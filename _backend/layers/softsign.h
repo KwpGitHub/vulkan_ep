@@ -12,10 +12,16 @@ namespace backend {
         Softsign() {
         }
         
-        Tensor& operator()(const Tensor& t) {
+        vuh::Array<float>& operator()(const vuh::Array<float>& t) {
+            
         }
 
-        void forward(){          
+        void forward(){
+        
+        }
+
+        void build_pipeline(){
+            
         }
 
         ~Softsign(){}

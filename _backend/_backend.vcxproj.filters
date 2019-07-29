@@ -413,5 +413,8 @@
     <ClInclude Include="layers\zipmap.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="tensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

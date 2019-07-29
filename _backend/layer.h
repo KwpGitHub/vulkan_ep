@@ -9,21 +9,20 @@ namespace backend {
 	static char static_execution = 0;
 
 #define PROCESSKERNEL_SIZE 32
-
 	
 	class Layer
 	{
 	public:
 		Layer() {}
+		virtual Tensor& operator() (const Tensor& it)  { return &it; }
 		virtual ~Layer() {}
 		virtual void build_pipeline(){}
 		virtual void forward() {}
 	protected:
-		vuh::Device* device;
+
 		Tensor input;
-		Tensor output;
-		
 	};
 }
+
 
 #endif //!LAYER_H

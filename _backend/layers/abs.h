@@ -11,11 +11,15 @@ namespace backend {
     public:
         Abs() {
         }
-        
-        Tensor& operator()(const Tensor& t) {
+	
+		Tensor& operator()(const Tensor& it){}
+
+        void forward(){
+
         }
 
-        void forward(){          
+        void build_pipeline(){
+            
         }
 
         ~Abs(){}

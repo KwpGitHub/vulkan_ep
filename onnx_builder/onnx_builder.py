@@ -44,7 +44,6 @@ def onnx_proto():
 
 #include <vector>
 #include "../layer.h"
-#include "../tensor.h"
 #include "../kernel/vuh.h"
 
 namespace backend {{
@@ -53,10 +52,16 @@ namespace backend {{
         {norm}() {{
         }}
         
-        Tensor& operator()(const Tensor& t) {{
+        vuh::Array<float>& operator()(const vuh::Array<float>& t) {{
+            
         }}
 
-        void forward(){{          
+        void forward(){{
+        
+        }}
+
+        void build_pipeline(){{
+            
         }}
 
         ~{norm}(){{}}
@@ -124,8 +129,6 @@ def graph_def_info(graph):
 
 if (__name__ == "__main__"):
     onnx_proto()
-    #backend.create_instance()
-    #onnx_ep.run()
     #onnx_model_str =  MessageToJson(onnx.load('mobilenetv2.onnx'))
     #graph = json.loads(onnx_model_str)
 

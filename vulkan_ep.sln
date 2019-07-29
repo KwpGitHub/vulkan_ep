@@ -11,6 +11,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "onnx_builder", "onnx_builde
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_backend", "_backend\_backend.vcxproj", "{91E2152E-2C2F-471B-9088-204EB4C55F82}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TestingPipeline", "TestingPipeline\TestingPipeline.pyproj", "{DC794B97-D4B1-4756-AEE3-F00F8F38332F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,12 @@ Global
 		{91E2152E-2C2F-471B-9088-204EB4C55F82}.Release|x64.Build.0 = Release|x64
 		{91E2152E-2C2F-471B-9088-204EB4C55F82}.Release|x86.ActiveCfg = Release|Win32
 		{91E2152E-2C2F-471B-9088-204EB4C55F82}.Release|x86.Build.0 = Release|Win32
+		{DC794B97-D4B1-4756-AEE3-F00F8F38332F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC794B97-D4B1-4756-AEE3-F00F8F38332F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DC794B97-D4B1-4756-AEE3-F00F8F38332F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DC794B97-D4B1-4756-AEE3-F00F8F38332F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC794B97-D4B1-4756-AEE3-F00F8F38332F}.Release|x64.ActiveCfg = Release|Any CPU
+		{DC794B97-D4B1-4756-AEE3-F00F8F38332F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

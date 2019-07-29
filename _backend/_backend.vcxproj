@@ -320,6 +320,7 @@
     <ClInclude Include="layers\unsqueeze.h" />
     <ClInclude Include="layers\xor.h" />
     <ClInclude Include="layers\zipmap.h" />
+    <ClInclude Include="tensor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
