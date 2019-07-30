@@ -5,6 +5,7 @@
 #include <numeric>
 #include "kernel/vuh.h"
 #include "tensor.h"
+#include "layers_map.h"
 
 namespace py = pybind11;
 
@@ -21,15 +22,23 @@ void test() {
 	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
 	struct Params { uint32_t size; float a; };    // shader push-constants interface
 
-	auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
+	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
+	auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
+
 	program.grid(128/64, 1, 1).spec(64, 1, 1)({ 128, 0.1 }, d_y, d_x); 
 	d_y.toHost(begin(y));	
 
+	if (abs(y[0] - (1.0 + 0.1 * x[0])) <= 1e-7)
+		std::cout << ":::PIPELINE VALIDATION SUCCESS:::" << std::endl;
+	else
+		std::cout << ":::PIPELINE VALIDATION FAILURE:::" << std::endl;
+	
 	return;
 }
 
 void create_instance() {
 	backend::instance = new vuh::Instance();
+	backend::device = new vuh::Device(backend::instance->devices().at(1));
 }
 
 void build_input_tensor(py::array_t<float> input){
@@ -58,13 +67,50 @@ void create_tensor(py::str name, py::list data, py::list shape) {
 		s.push_back(x.cast<uint32_t>());
 	for (auto x : data)
 		d.push_back(x.cast<float>());
-	backend::Tensor* x = new backend::Tensor(d, s);
+
+	std::cout << "TENSOR ::: "<< name << std::endl;
+	backend::Tensor* x = new backend::Tensor(d, s);	
 	backend::tensor_dict.insert(std::pair<std::string, backend::Tensor*>(std::string(name), x));
+}
+
+void create_layer(py::str name, py::str opType, py::list inputs, py::list outputs, py::dict attribute) {
+	std::vector<std::string> i;
+	std::vector<std::string> o;
+	std::string n = std::string(name);
+	std::string oT = std::string(opType);
+	std::map<std::string, std::vector<std::string>> a;
+
+	for (auto attr : attribute) {
+		auto param = std::string(py::str(attr.first));
+		std::vector<std::string> tmp;
+		for (auto x : attr.second) {
+			tmp.push_back(std::string(py::str(x)));
+		}
+		a.insert(std::pair<std::string, std::vector<std::string>>(param, tmp));
+	}
+
+	for (auto x : inputs)
+		i.push_back(x.cast<std::string>());
+
+	for (auto x : outputs)
+		o.push_back(x.cast<std::string>());
+	
+	std::cout << "LAYERS ::: " << name << "\n\t input:[ ";
+	for (auto x : i)
+		std::cout << x << " ";
+	std::cout << "] \n\t output:[";
+	for (auto x : o)
+		std::cout << x << " ";
+	std::cout << "]" << std::endl;
+
+	backend::Layer layer = layer_map[oT];
+
 }
 
 PYBIND11_MODULE(_backend, m) {
 	m.def("create_instance", &create_instance);
 	m.def("create_tensor", &create_tensor);
+	m.def("create_layer", &create_layer);
 	m.def("input", &build_input_tensor);
 	m.def("test", &test);
 }

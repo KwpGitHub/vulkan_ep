@@ -1,5 +1,6 @@
 #ifndef LAYER_H
 #define LAYER_H
+#include <map>
 #include <vector>
 
 #include "kernel/vuh.h"
@@ -13,14 +14,16 @@ namespace backend {
 	class Layer
 	{
 	public:
-		Layer() {}
-		virtual Tensor& operator() (const Tensor& it)  { return &it; }
+		Layer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : name(n), inputs(i), outputs(o), attribute(a) {}
+		//virtual Tensor& operator() (const Tensor& it)  { return ; }
 		virtual ~Layer() {}
 		virtual void build_pipeline(){}
 		virtual void forward() {}
 	protected:
-
-		Tensor input;
+		std::map<std::string, std::vector<std::string>> attribute;
+		std::vector<std::string> inputs;
+		std::vector<std::string> outputs;
+		std::string name;
 	};
 }
 

@@ -3,7 +3,6 @@ from google.protobuf.json_format import MessageToJson
 import onnx
 import json
 import os
-import _backend as backend
 
 types = {  
             'AttrType.STRING'   :'std::string',
@@ -30,7 +29,9 @@ def onnx_proto():
         os.mkdir('../_backend/shaders')
 
     layers = open('../_backend/layers.h', 'w')
+    layer_map_file = open("../_backend/layers_map.h", 'w')
     layers_lst = list()
+    layer_map = list()
     for op in t:
         ops[op.name] = op
         op_name = str(op.name)
@@ -49,8 +50,7 @@ def onnx_proto():
 namespace backend {{
     class {norm} : public Layer {{
     public:
-        {norm}() {{
-        }}
+        {norm}(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {{}}
         
         vuh::Array<float>& operator()(const vuh::Array<float>& t) {{
             
@@ -103,33 +103,24 @@ void main(){{
             s_cpp = open('../_backend/shaders/'+op_name.lower()+'.comp', 'w')
             s_cpp.write(class_shader_str)
             s_cpp.close()
-
             layers_lst.append('#include "./layers/'+op_name.lower()+'.h"\n')
+            layer_map.append('	{{ "{0}", &{0} }}'.format(op_name))
 
+    
     layers.writelines(layers_lst)
     op_file.close()
-
-def graph_def_info(graph):
-    nodes = {}
-    init_vals = {}
-    
-    for data in graph['initializer']:
-        init_vals[data['name']] = data
-
-    for node in graph['node']:
-        nodes[node['name']] = node
-        for i, input in enumerate(node['input']):
-            for data_names in init_vals.keys():
-                if(data_names == input):
-                    nodes[node['name']]['input'][i] = init_vals[data_names]
-    return nodes
-
-    
+    layer_map_str = """#include <map>
+#include "layers.h"
+namespace backend {{
+std::map<const char*, Layer> layer_map = {{
+{0}
+}};
+}}
+    """.format(",\n".join(layer_map))
+    layer_map_file.write(layer_map_str)
+    layer_map_file.close()
 
 
 if (__name__ == "__main__"):
     onnx_proto()
-    #onnx_model_str =  MessageToJson(onnx.load('mobilenetv2.onnx'))
-    #graph = json.loads(onnx_model_str)
-
-    #node_info = graph_def_info(graph['graph'])
+   
