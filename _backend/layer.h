@@ -1,11 +1,11 @@
 #ifndef LAYER_H
 #define LAYER_H
 #include <vector>
+
 #include "kernel/vuh.h"
 #include "tensor.h"
 
 namespace backend {
-	static vuh::Instance* instance;
 	static char static_execution = 0;
 
 #define PROCESSKERNEL_SIZE 32

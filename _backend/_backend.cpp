@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
-
+#include <pybind11/stl.h>
 #include <vector>
 #include <numeric>
 #include "kernel/vuh.h"
@@ -50,8 +50,22 @@ void build_input_tensor(py::array_t<float> input){
 
 }
 
+void create_tensor(py::str name, py::list data, py::list shape) {
+	std::vector<float> d;
+	std::vector<uint32_t> s;
+
+	for (auto x : shape)
+		s.push_back(x.cast<uint32_t>());
+	for (auto x : data)
+		d.push_back(x.cast<float>());
+	backend::Tensor* x = new backend::Tensor(d, s);
+
+	backend::tensor_dict.insert(std::pair<std::string, backend::Tensor*>(std::string(name), x));
+}
+
 PYBIND11_MODULE(_backend, m) {
 	m.def("create_instance", &create_instance);
+	m.def("create_tensor", &create_tensor);
 	m.def("input", &build_input_tensor);
 	m.def("test", &test);
 }

@@ -1,37 +1,40 @@
-
 #ifndef TENSOR_H
 #define TENSOR_H
 #include <vector>
+#include <map>
+
 #include "kernel/vuh.h"
+
 namespace backend {
 	static vuh::Instance* instance;
 
 	class Tensor
 	{
 		vuh::Device* dev;
-		vuh::Array<float>* d_x;
-		std::vector<float> x;
+		vuh::Array<float>* d_x;		
 		std::vector<uint32_t> dims;
 
 	public:
+
+		std::string name;
+
 		Tensor() : d_x(nullptr) {
 			dev = new vuh::Device(instance->devices().at(0));
 		}
 		
-		Tensor(const std::vector<float>& d, const std::vector<uint32_t> s) : x(d), dims(s) {
+		Tensor(const std::vector<float>& d, const std::vector<uint32_t> s): dims(s) {
 			dev = new vuh::Device(instance->devices().at(0));
-			d_x = new vuh::Array<float>(*dev, x);
+			d_x = new vuh::Array<float>(*dev, d);
 		}
 		
 		Tensor(const Tensor& t) {
 			dev = t.dev;
-			d_x = t.d_x;
-			x = t.x;
+			d_x = t.d_x;			
 			dims = t.dims;
 		}
 
 		std::vector<float>& to_vector() {
-			auto t = x;
+			std::vector<float> t(std::accumulate(dims.begin(), dims.end(), 1, std::multiplies<uint32_t>()), 0.0);
 			d_x->toHost(begin(t));
 			return t;
 		}
@@ -42,19 +45,21 @@ namespace backend {
 
 		void to(int d) {			
 			auto ndev = new vuh::Device(instance->devices().at(d));
-			d_x->toHost(begin(x));
+			std::vector<float> t(std::accumulate(dims.begin(), dims.end(), 1, std::multiplies<uint32_t>()), 0.0);
+			d_x->toHost(begin(t));
 			delete d_x;
 			delete dev;
 			dev = ndev;
-			d_x = new vuh::Array<float>(*dev, x);
+			d_x = new vuh::Array<float>(*dev, t);
 		}
 
 		void to(vuh::Device* d) {
-			d_x->toHost(begin(x));
+			std::vector<float> t(std::accumulate(dims.begin(), dims.end(), 1, std::multiplies<uint32_t>()), 0.0);
+			d_x->toHost(begin(t));
 			delete d_x;
 			delete dev;
 			dev = d;
-			d_x = new vuh::Array<float>(*dev, x);
+			d_x = new vuh::Array<float>(*dev, t);
 		}
 
 		std::vector<uint32_t> shape() {
@@ -69,6 +74,8 @@ namespace backend {
 	};
 }
 
-
+namespace backend {
+	static std::map<std::string, Tensor*> tensor_dict;
+}
 
 #endif
