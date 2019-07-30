@@ -8,19 +8,20 @@ import os
 
 def graph_def_info(graph):
     nodes = {}
-    init_vals = {}
+   
     
     for data in graph['initializer']:
-        name    = data['name']
-        data_t  = [float(x) for x in data['floatData']]
+        name    = data['name']      
         dims    = [int(x) for x in data['dims']]
-        if(data['dataType'] == 1):
+        if(data['dataType'] == 7):
+            data_t = [float(x) for x in data['int64Data']]
+            backend.create_tensor(name, data_t, dims)
+        elif(data['dataType'] == 1):
+            data_t  = [float(x) for x in data['floatData']]
             backend.create_tensor(name, data_t, dims)
         else:
-            print(data['name'])
-        init_vals[data['name']] = data
-
-    print(init_vals.keys())
+            print(data['name'], data['dataType'])
+      
     for node in graph['node']:
         nodes[node['name']] = node
         for i, input in enumerate(node['input']):

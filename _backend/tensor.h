@@ -1,6 +1,7 @@
 #ifndef TENSOR_H
 #define TENSOR_H
 #include <vector>
+#include <numeric>
 #include <map>
 
 #include "kernel/vuh.h"

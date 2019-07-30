@@ -59,7 +59,6 @@ void create_tensor(py::str name, py::list data, py::list shape) {
 	for (auto x : data)
 		d.push_back(x.cast<float>());
 	backend::Tensor* x = new backend::Tensor(d, s);
-
 	backend::tensor_dict.insert(std::pair<std::string, backend::Tensor*>(std::string(name), x));
 }
 
