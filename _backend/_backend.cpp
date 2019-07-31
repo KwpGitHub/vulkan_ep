@@ -103,8 +103,8 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 		std::cout << x << " ";
 	std::cout << "]" << std::endl;
 
-	backend::Layer layer = layer_map[oT];
-
+	auto layer = backend::layer_map[oT.c_str()](n,i,o,a);
+	
 }
 
 PYBIND11_MODULE(_backend, m) {

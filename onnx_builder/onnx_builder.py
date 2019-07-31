@@ -104,15 +104,16 @@ void main(){{
             s_cpp.write(class_shader_str)
             s_cpp.close()
             layers_lst.append('#include "./layers/'+op_name.lower()+'.h"\n')
-            layer_map.append('	{{ "{0}", &{0} }}'.format(op_name))
+            layer_map.append('	{{ "{0}", &createInstance<{0}>}}'.format(op_name))
 
     
     layers.writelines(layers_lst)
     op_file.close()
     layer_map_str = """#include <map>
 #include "layers.h"
-namespace backend {{
-std::map<const char*, Layer> layer_map = {{
+namespace backend {{template<typename T> Layer* createInstance(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) {{ return new T(n, i, o, a); }}
+
+std::map<const char*, Layer*(*)(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a)> layer_map = {{
 {0}
 }};
 }}

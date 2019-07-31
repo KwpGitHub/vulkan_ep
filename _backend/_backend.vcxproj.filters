@@ -416,5 +416,8 @@
     <ClInclude Include="tensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers_map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
