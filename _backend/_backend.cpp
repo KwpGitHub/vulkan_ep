@@ -103,7 +103,9 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 		std::cout << x << " ";
 	std::cout << "]" << std::endl;
 
-	auto layer = backend::layer_map[oT.c_str()](n,i,o,a);
+	auto layer_create_func = backend::layer_map[oT];
+
+	auto layer = layer_create_func(n, i, o, a);
 	
 }
 
