@@ -22,8 +22,8 @@ void test() {
 	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
 	struct Params { uint32_t size; float a; };    // shader push-constants interface
 
-	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
-	auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
+	auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
+	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
 
 	program.grid(128/64, 1, 1).spec(64, 1, 1)({ 128, 0.1 }, d_y, d_x); 
 	d_y.toHost(begin(y));	
@@ -38,7 +38,7 @@ void test() {
 
 void create_instance() {
 	backend::instance = new vuh::Instance();
-	backend::device = new vuh::Device(backend::instance->devices().at(1));
+	backend::device = new vuh::Device(backend::instance->devices().at(0));
 }
 
 void build_input_tensor(py::array_t<float> input){
@@ -104,7 +104,6 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 	std::cout << "]" << std::endl;
 
 	auto layer_create_func = backend::layer_map[oT];
-
 	auto layer = layer_create_func(n, i, o, a);
 	
 }

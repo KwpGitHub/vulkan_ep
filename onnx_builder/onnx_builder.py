@@ -96,7 +96,7 @@ void main(){{
 
         op_file.write(op.name+'=' + ', '.join(lst) + '\n')
 
-        if(op.since_version < 8 and op.deprecated==False):
+        if(op.since_version <= 9 and op.deprecated==False):
             f = open('../_backend/layers/'+op_name.lower()+'.h', 'w')
             f.write(class_h_str)
             f.close()
