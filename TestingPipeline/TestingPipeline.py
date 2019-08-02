@@ -9,9 +9,12 @@ import os
 def graph_def_info(graph):
     nodes = {} 
     
+    init_nodes = []
     for data in graph['initializer']:
-        name    = data['name']      
+        name    = data['name']
         dims    = [int(x) for x in data['dims']]
+             
+        init_nodes.append(name)
         if(data['dataType'] == 7):
             data_t = [float(x) for x in data['int64Data']]
             backend.create_tensor(name, data_t, dims)
@@ -21,6 +24,7 @@ def graph_def_info(graph):
         else:
             print(data['name'], data['dataType'])
     
+
     print("\n\n")
     for node in graph['node']:
         nodes[node['name']] = node
@@ -38,6 +42,11 @@ def graph_def_info(graph):
                 else:
                     attribute[attr_['name']] = _x
         backend.create_layer(name, op_type, input, output, attribute)
+    unint_nodes = {}
+    for node in graph['input'] + graph['output']:
+        if(node['name'] not in init_nodes):
+            unint_nodes[node['name']] = [str(i['dimValue']) for i in  node['type']['tensorType']['shape']['dim']]
+
     return nodes
 
 

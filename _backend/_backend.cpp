@@ -22,8 +22,8 @@ void test() {
 	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
 	struct Params { uint32_t size; float a; };    // shader push-constants interface
 
-	auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
-	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
+	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
+	auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
 
 	program.grid(128/64, 1, 1).spec(64, 1, 1)({ 128, 0.1 }, d_y, d_x); 
 	d_y.toHost(begin(y));	
