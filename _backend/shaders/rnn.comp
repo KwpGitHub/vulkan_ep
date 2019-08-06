@@ -1,14 +1,32 @@
 //RNN
 #version 450
-
+struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
 layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
-layout(push_constant) uniform Parameters {
-    uint n; uint c; uint d; uint h; uint w;
+layout(push_constant) uniform Parameters {      
     
+			Shape_t X;
+			Shape_t W;
+			Shape_t R;
+			Shape_t B;
+			Shape_t sequence_lens;
+			Shape_t initial_h;
+			Shape_t Y;
+			Shape_t Y_h;
+			float* activation_alpha;
+			float* activation_beta;
+			std::vector<std::string> activations;
+			float clip;
+			int direction;
+			int hidden_size;
 } params;
+
+
+//outputs
+layout(std430, binding = 0) buffer lay0 { float Y[]; };
+layout(std430, binding = 1) buffer lay1 { float Y_h[]; };
 
 //inputs
 layout(std430, binding = 2) buffer lay2 { float X[]; };
@@ -18,16 +36,12 @@ layout(std430, binding = 5) buffer lay5 { float B[]; };
 layout(std430, binding = 6) buffer lay6 { float sequence_lens[]; };
 layout(std430, binding = 7) buffer lay7 { float initial_h[]; };
 
-//outputs
-layout(std430, binding = 0) buffer lay0 { float Y[]; };
-layout(std430, binding = 1) buffer lay1 { float Y_h[]; };
-
 
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
-    const uint size = params.n * params.c * params.d * params.h * params.w;
-    if(params.size <= id){
+    const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
+    if(size <= id){
         return;
     }
-    y[id] = x[id];
+   
 }

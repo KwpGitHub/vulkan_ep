@@ -1,27 +1,35 @@
 //Scan
 #version 450
-
+struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
 layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
-layout(push_constant) uniform Parameters {
-    uint n; uint c; uint d; uint h; uint w;
+layout(push_constant) uniform Parameters {      
     
+			Shape_t initial_state_and_scan_inputs;
+			Shape_t final_state_and_scan_outputs;
+			//graph body;
+			int num_scan_inputs;
+			int* scan_input_axes;
+			int* scan_input_directions;
+			int* scan_output_axes;
+			int* scan_output_directions;
 } params;
 
-//inputs
-layout(std430, binding = 1) buffer lay1 { float initial_state_and_scan_inputs[]; };
 
 //outputs
 layout(std430, binding = 0) buffer lay0 { float final_state_and_scan_outputs[]; };
 
+//inputs
+layout(std430, binding = 1) buffer lay1 { float initial_state_and_scan_inputs[]; };
+
 
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
-    const uint size = params.n * params.c * params.d * params.h * params.w;
-    if(params.size <= id){
+    const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
+    if(size <= id){
         return;
     }
-    y[id] = x[id];
+   
 }

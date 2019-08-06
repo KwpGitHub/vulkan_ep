@@ -1,451 +1,871 @@
 LSTM=
-		//std::vector<float> activation_alpha;, 
-		//std::vector<float> activation_beta;, 
-		std::vector<std::string> activations;, 
-		float clip;, 
-		std::string direction;, 
-		int hidden_size;, 
-		int input_forget;
+			Shape_t X;, 
+			Shape_t W;, 
+			Shape_t R;, 
+			Shape_t B;, 
+			Shape_t sequence_lens;, 
+			Shape_t initial_h;, 
+			Shape_t initial_c;, 
+			Shape_t P;, 
+			Shape_t Y;, 
+			Shape_t Y_h;, 
+			Shape_t Y_c;, 
+			float* activation_alpha;, 
+			float* activation_beta;, 
+			std::vector<std::string> activations;, 
+			float clip;, 
+			int direction;, 
+			int hidden_size;, 
+			int input_forget;
 Identity=
+			Shape_t input;, 
+			Shape_t output;
 Abs=
+			Shape_t X;, 
+			Shape_t Y;
 BatchNormalization=
-		float epsilon;, 
-		float momentum;
+			Shape_t X;, 
+			Shape_t scale;, 
+			Shape_t B;, 
+			Shape_t mean;, 
+			Shape_t var;, 
+			Shape_t Y;, 
+			Shape_t mean;, 
+			Shape_t var;, 
+			Shape_t saved_mean;, 
+			Shape_t saved_var;, 
+			float epsilon;, 
+			float momentum;
 Mean=
+			Shape_t data_0;, 
+			Shape_t mean;
 Add=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 GlobalMaxPool=
+			Shape_t X;, 
+			Shape_t Y;
 Cast=
-		int to;
+			Shape_t input;, 
+			Shape_t output;, 
+			int to;
 AveragePool=
-		std::string auto_pad;, 
-		int ceil_mode;, 
-		int count_include_pad;, 
-		std::vector<int> kernel_shape;, 
-		std::vector<int> pads;, 
-		std::vector<int> strides;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int auto_pad;, 
+			int ceil_mode;, 
+			int count_include_pad;, 
+			int* kernel_shape;, 
+			int* pads;, 
+			int* strides;
 And=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 LRN=
-		float alpha;, 
-		float beta;, 
-		float bias;, 
-		int size;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float alpha;, 
+			float beta;, 
+			float bias;, 
+			int size;
 ArgMax=
-		int axis;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int axis;, 
+			int keepdims;
 Resize=
-		std::string mode;
+			Shape_t X;, 
+			Shape_t scales;, 
+			Shape_t Y;, 
+			int mode;
 Expand=
+			Shape_t input;, 
+			Shape_t shape;, 
+			Shape_t output;
 Neg=
+			Shape_t X;, 
+			Shape_t Y;
 Mul=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 ArgMin=
-		int axis;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int axis;, 
+			int keepdims;
 CastMap=
-		std::string cast_to;, 
-		std::string map_form;, 
-		int max_map;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int cast_to;, 
+			int map_form;, 
+			int max_map;
 Exp=
+			Shape_t input;, 
+			Shape_t output;
 Div=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 ReverseSequence=
-		int batch_axis;, 
-		int time_axis;
+			Shape_t input;, 
+			Shape_t sequence_lens;, 
+			Shape_t Y;, 
+			int batch_axis;, 
+			int time_axis;
 Ceil=
+			Shape_t X;, 
+			Shape_t Y;
 DepthToSpace=
-		int blocksize;
+			Shape_t input;, 
+			Shape_t output;, 
+			int blocksize;
 Clip=
-		float max;, 
-		float min;
+			Shape_t input;, 
+			Shape_t output;, 
+			float max;, 
+			float min;
 RNN=
-		//std::vector<float> activation_alpha;, 
-		//std::vector<float> activation_beta;, 
-		std::vector<std::string> activations;, 
-		float clip;, 
-		std::string direction;, 
-		int hidden_size;
+			Shape_t X;, 
+			Shape_t W;, 
+			Shape_t R;, 
+			Shape_t B;, 
+			Shape_t sequence_lens;, 
+			Shape_t initial_h;, 
+			Shape_t Y;, 
+			Shape_t Y_h;, 
+			float* activation_alpha;, 
+			float* activation_beta;, 
+			std::vector<std::string> activations;, 
+			float clip;, 
+			int direction;, 
+			int hidden_size;
 Concat=
-		int axis;
+			Shape_t inputs;, 
+			Shape_t concat_result;, 
+			int axis;
 Constant=
-		//tensor value;
+			Shape_t output;, 
+			//tensor value;
 LpPool=
-		std::string auto_pad;, 
-		std::vector<int> kernel_shape;, 
-		int p;, 
-		std::vector<int> pads;, 
-		std::vector<int> strides;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int auto_pad;, 
+			int* kernel_shape;, 
+			int p;, 
+			int* pads;, 
+			int* strides;
 Conv=
-		std::string auto_pad;, 
-		std::vector<int> dilations;, 
-		int group;, 
-		std::vector<int> kernel_shape;, 
-		std::vector<int> pads;, 
-		std::vector<int> strides;
+			Shape_t X;, 
+			Shape_t W;, 
+			Shape_t B;, 
+			Shape_t Y;, 
+			int auto_pad;, 
+			int* dilations;, 
+			int group;, 
+			int* kernel_shape;, 
+			int* pads;, 
+			int* strides;
 Not=
+			Shape_t X;, 
+			Shape_t Y;
 Gather=
-		int axis;
+			Shape_t data;, 
+			Shape_t indices;, 
+			Shape_t output;, 
+			int axis;
 ConvTranspose=
-		std::string auto_pad;, 
-		std::vector<int> dilations;, 
-		int group;, 
-		std::vector<int> kernel_shape;, 
-		std::vector<int> output_padding;, 
-		std::vector<int> output_shape;, 
-		std::vector<int> pads;, 
-		std::vector<int> strides;
+			Shape_t X;, 
+			Shape_t W;, 
+			Shape_t B;, 
+			Shape_t Y;, 
+			int auto_pad;, 
+			int* dilations;, 
+			int group;, 
+			int* kernel_shape;, 
+			int* output_padding;, 
+			int* output_shape;, 
+			int* pads;, 
+			int* strides;
 Dropout=
-		float ratio;
+			Shape_t data;, 
+			Shape_t output;, 
+			Shape_t mask;, 
+			float ratio;
 LeakyRelu=
-		float alpha;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float alpha;
 Elu=
-		float alpha;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float alpha;
 GlobalAveragePool=
+			Shape_t X;, 
+			Shape_t Y;
 Gemm=
-		float alpha;, 
-		float beta;, 
-		int transA;, 
-		int transB;
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;, 
+			Shape_t Y;, 
+			float alpha;, 
+			float beta;, 
+			int transA;, 
+			int transB;
 MaxPool=
-		std::string auto_pad;, 
-		int ceil_mode;, 
-		std::vector<int> dilations;, 
-		std::vector<int> kernel_shape;, 
-		std::vector<int> pads;, 
-		int storage_order;, 
-		std::vector<int> strides;
+			Shape_t X;, 
+			Shape_t Y;, 
+			Shape_t Indices;, 
+			int auto_pad;, 
+			int ceil_mode;, 
+			int* dilations;, 
+			int* kernel_shape;, 
+			int* pads;, 
+			int storage_order;, 
+			int* strides;
 Equal=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 Tile=
+			Shape_t input;, 
+			Shape_t repeats;, 
+			Shape_t output;
 Flatten=
-		int axis;
+			Shape_t input;, 
+			Shape_t output;, 
+			int axis;
 Floor=
+			Shape_t X;, 
+			Shape_t Y;
 GRU=
-		//std::vector<float> activation_alpha;, 
-		//std::vector<float> activation_beta;, 
-		std::vector<std::string> activations;, 
-		float clip;, 
-		std::string direction;, 
-		int hidden_size;, 
-		int linear_before_reset;
+			Shape_t X;, 
+			Shape_t W;, 
+			Shape_t R;, 
+			Shape_t B;, 
+			Shape_t sequence_lens;, 
+			Shape_t initial_h;, 
+			Shape_t Y;, 
+			Shape_t Y_h;, 
+			float* activation_alpha;, 
+			float* activation_beta;, 
+			std::vector<std::string> activations;, 
+			float clip;, 
+			int direction;, 
+			int hidden_size;, 
+			int linear_before_reset;
 GlobalLpPool=
-		int p;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int p;
 Greater=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 HardSigmoid=
-		float alpha;, 
-		float beta;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float alpha;, 
+			float beta;
 Selu=
-		float alpha;, 
-		float gamma;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float alpha;, 
+			float gamma;
 Hardmax=
-		int axis;
+			Shape_t input;, 
+			Shape_t output;, 
+			int axis;
 If=
-		//graph else_branch;, 
-		//graph then_branch;
+			Shape_t cond;, 
+			Shape_t outputs;, 
+			//graph else_branch;, 
+			//graph then_branch;
 Min=
+			Shape_t data_0;, 
+			Shape_t min;
 InstanceNormalization=
-		float epsilon;
+			Shape_t input;, 
+			Shape_t scale;, 
+			Shape_t B;, 
+			Shape_t output;, 
+			float epsilon;
 Less=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 EyeLike=
-		int dtype;, 
-		int k;
+			Shape_t input;, 
+			Shape_t output;, 
+			int dtype;, 
+			int k;
 RandomNormal=
-		int dtype;, 
-		float mean;, 
-		float scale;, 
-		float seed;, 
-		std::vector<int> shape;
+			Shape_t output;, 
+			int dtype;, 
+			float mean;, 
+			float scale;, 
+			float seed;, 
+			int* shape;
 Slice=
+			Shape_t data;, 
+			Shape_t starts;, 
+			Shape_t ends;, 
+			Shape_t axes;, 
+			Shape_t steps;, 
+			Shape_t output;
 PRelu=
+			Shape_t X;, 
+			Shape_t slope;, 
+			Shape_t Y;
 Log=
+			Shape_t input;, 
+			Shape_t output;
 LogSoftmax=
-		int axis;
+			Shape_t input;, 
+			Shape_t output;, 
+			int axis;
 Loop=
-		//graph body;
+			Shape_t M;, 
+			Shape_t cond;, 
+			Shape_t v_initial;, 
+			Shape_t v_final_and_scan_outputs;, 
+			//graph body;
 LpNormalization=
-		int axis;, 
-		int p;
+			Shape_t input;, 
+			Shape_t output;, 
+			int axis;, 
+			int p;
 MatMul=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t Y;
 ReduceL2=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 Max=
+			Shape_t data_0;, 
+			Shape_t max;
 MaxRoiPool=
-		std::vector<int> pooled_shape;, 
-		float spatial_scale;
+			Shape_t X;, 
+			Shape_t rois;, 
+			Shape_t Y;, 
+			int* pooled_shape;, 
+			float spatial_scale;
 Or=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 Pad=
-		std::string mode;, 
-		std::vector<int> pads;, 
-		float value;
+			Shape_t data;, 
+			Shape_t output;, 
+			int mode;, 
+			int* pads;, 
+			float value;
 RandomUniformLike=
-		int dtype;, 
-		float high;, 
-		float low;, 
-		float seed;
+			Shape_t input;, 
+			Shape_t output;, 
+			int dtype;, 
+			float high;, 
+			float low;, 
+			float seed;
 Reciprocal=
+			Shape_t X;, 
+			Shape_t Y;
 Pow=
+			Shape_t X;, 
+			Shape_t Y;, 
+			Shape_t Z;
 RandomNormalLike=
-		int dtype;, 
-		float mean;, 
-		float scale;, 
-		float seed;
+			Shape_t input;, 
+			Shape_t output;, 
+			int dtype;, 
+			float mean;, 
+			float scale;, 
+			float seed;
 OneHot=
-		int axis;
+			Shape_t indices;, 
+			Shape_t depth;, 
+			Shape_t values;, 
+			Shape_t output;, 
+			int axis;
 RandomUniform=
-		int dtype;, 
-		float high;, 
-		float low;, 
-		float seed;, 
-		std::vector<int> shape;
+			Shape_t output;, 
+			int dtype;, 
+			float high;, 
+			float low;, 
+			float seed;, 
+			int* shape;
 ReduceL1=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 ReduceLogSum=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 ReduceLogSumExp=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 ReduceMax=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 OneHotEncoder=
-		std::vector<int> cats_int64s;, 
-		std::vector<std::string> cats_strings;, 
-		int zeros;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int* cats_int64s;, 
+			std::vector<std::string> cats_strings;, 
+			int zeros;
 IsNaN=
+			Shape_t X;, 
+			Shape_t Y;
 ReduceMean=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 ReduceMin=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 TreeEnsembleRegressor=
-		std::string aggregate_function;, 
-		//std::vector<float> base_values;, 
-		int n_targets;, 
-		std::vector<int> nodes_falsenodeids;, 
-		std::vector<int> nodes_featureids;, 
-		//std::vector<float> nodes_hitrates;, 
-		std::vector<int> nodes_missing_value_tracks_true;, 
-		std::vector<std::string> nodes_modes;, 
-		std::vector<int> nodes_nodeids;, 
-		std::vector<int> nodes_treeids;, 
-		std::vector<int> nodes_truenodeids;, 
-		//std::vector<float> nodes_values;, 
-		std::string post_transform;, 
-		std::vector<int> target_ids;, 
-		std::vector<int> target_nodeids;, 
-		std::vector<int> target_treeids;, 
-		//std::vector<float> target_weights;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int aggregate_function;, 
+			float* base_values;, 
+			int n_targets;, 
+			int* nodes_falsenodeids;, 
+			int* nodes_featureids;, 
+			float* nodes_hitrates;, 
+			int* nodes_missing_value_tracks_true;, 
+			std::vector<std::string> nodes_modes;, 
+			int* nodes_nodeids;, 
+			int* nodes_treeids;, 
+			int* nodes_truenodeids;, 
+			float* nodes_values;, 
+			int post_transform;, 
+			int* target_ids;, 
+			int* target_nodeids;, 
+			int* target_treeids;, 
+			float* target_weights;
 ReduceProd=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 ReduceSum=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 ReduceSumSquare=
-		std::vector<int> axes;, 
-		int keepdims;
+			Shape_t data;, 
+			Shape_t reduced;, 
+			int* axes;, 
+			int keepdims;
 Relu=
+			Shape_t X;, 
+			Shape_t Y;
 Reshape=
+			Shape_t data;, 
+			Shape_t shape;, 
+			Shape_t reshaped;
 Shape=
+			Shape_t data;, 
+			Shape_t shape;
 Sigmoid=
+			Shape_t X;, 
+			Shape_t Y;
 Size=
+			Shape_t data;, 
+			Shape_t size;
 Softmax=
-		int axis;
+			Shape_t input;, 
+			Shape_t output;, 
+			int axis;
 Softplus=
+			Shape_t X;, 
+			Shape_t Y;
 Softsign=
+			Shape_t input;, 
+			Shape_t output;
 SpaceToDepth=
-		int blocksize;
+			Shape_t input;, 
+			Shape_t output;, 
+			int blocksize;
 TfIdfVectorizer=
-		int max_gram_length;, 
-		int max_skip_count;, 
-		int min_gram_length;, 
-		std::string mode;, 
-		std::vector<int> ngram_counts;, 
-		std::vector<int> ngram_indexes;, 
-		std::vector<int> pool_int64s;, 
-		std::vector<std::string> pool_strings;, 
-		//std::vector<float> weights;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int max_gram_length;, 
+			int max_skip_count;, 
+			int min_gram_length;, 
+			int mode;, 
+			int* ngram_counts;, 
+			int* ngram_indexes;, 
+			int* pool_int64s;, 
+			std::vector<std::string> pool_strings;, 
+			float* weights;
 Split=
-		int axis;, 
-		std::vector<int> split;
+			Shape_t input;, 
+			Shape_t outputs;, 
+			int axis;, 
+			int* split;
 Imputer=
-		//std::vector<float> imputed_value_floats;, 
-		std::vector<int> imputed_value_int64s;, 
-		float replaced_value_float;, 
-		int replaced_value_int64;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float* imputed_value_floats;, 
+			int* imputed_value_int64s;, 
+			float replaced_value_float;, 
+			int replaced_value_int64;
 Sqrt=
+			Shape_t X;, 
+			Shape_t Y;
 Squeeze=
-		std::vector<int> axes;
+			Shape_t data;, 
+			Shape_t squeezed;, 
+			int* axes;
 TopK=
-		int axis;
+			Shape_t X;, 
+			Shape_t K;, 
+			Shape_t Values;, 
+			Shape_t Indices;, 
+			int axis;
 Sub=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 Sum=
+			Shape_t data_0;, 
+			Shape_t sum;
 Shrink=
-		float bias;, 
-		float lambd;
+			Shape_t input;, 
+			Shape_t output;, 
+			float bias;, 
+			float lambd;
 Tanh=
+			Shape_t input;, 
+			Shape_t output;
 Transpose=
-		std::vector<int> perm;
+			Shape_t data;, 
+			Shape_t transposed;, 
+			int* perm;
 Unsqueeze=
-		std::vector<int> axes;
+			Shape_t data;, 
+			Shape_t expanded;, 
+			int* axes;
 Upsample=
-		std::string mode;
+			Shape_t X;, 
+			Shape_t scales;, 
+			Shape_t Y;, 
+			int mode;
 SVMClassifier=
-		std::vector<int> classlabels_ints;, 
-		std::vector<std::string> classlabels_strings;, 
-		//std::vector<float> coefficients;, 
-		//std::vector<float> kernel_params;, 
-		std::string kernel_type;, 
-		std::string post_transform;, 
-		//std::vector<float> prob_a;, 
-		//std::vector<float> prob_b;, 
-		//std::vector<float> rho;, 
-		//std::vector<float> support_vectors;, 
-		std::vector<int> vectors_per_class;
+			Shape_t X;, 
+			Shape_t Y;, 
+			Shape_t Z;, 
+			int* classlabels_ints;, 
+			std::vector<std::string> classlabels_strings;, 
+			float* coefficients;, 
+			float* kernel_params;, 
+			int kernel_type;, 
+			int post_transform;, 
+			float* prob_a;, 
+			float* prob_b;, 
+			float* rho;, 
+			float* support_vectors;, 
+			int* vectors_per_class;
 Xor=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;
 Acos=
+			Shape_t input;, 
+			Shape_t output;
 Asin=
+			Shape_t input;, 
+			Shape_t output;
 Atan=
+			Shape_t input;, 
+			Shape_t output;
 Cos=
+			Shape_t input;, 
+			Shape_t output;
 Sin=
+			Shape_t input;, 
+			Shape_t output;
 Tan=
+			Shape_t input;, 
+			Shape_t output;
 Multinomial=
-		int dtype;, 
-		int sample_size;, 
-		float seed;
+			Shape_t input;, 
+			Shape_t output;, 
+			int dtype;, 
+			int sample_size;, 
+			float seed;
 Scan=
-		//graph body;, 
-		int num_scan_inputs;, 
-		std::vector<int> scan_input_axes;, 
-		std::vector<int> scan_input_directions;, 
-		std::vector<int> scan_output_axes;, 
-		std::vector<int> scan_output_directions;
+			Shape_t initial_state_and_scan_inputs;, 
+			Shape_t final_state_and_scan_outputs;, 
+			//graph body;, 
+			int num_scan_inputs;, 
+			int* scan_input_axes;, 
+			int* scan_input_directions;, 
+			int* scan_output_axes;, 
+			int* scan_output_directions;
 Compress=
-		int axis;
+			Shape_t input;, 
+			Shape_t condition;, 
+			Shape_t output;, 
+			int axis;
 ConstantOfShape=
-		//tensor value;
+			Shape_t input;, 
+			Shape_t output;, 
+			//tensor value;
 MaxUnpool=
-		std::vector<int> kernel_shape;, 
-		std::vector<int> pads;, 
-		std::vector<int> strides;
+			Shape_t X;, 
+			Shape_t I;, 
+			Shape_t output_shape;, 
+			Shape_t output;, 
+			int* kernel_shape;, 
+			int* pads;, 
+			int* strides;
 Scatter=
-		int axis;
+			Shape_t data;, 
+			Shape_t indices;, 
+			Shape_t updates;, 
+			Shape_t output;, 
+			int axis;
 Sinh=
+			Shape_t input;, 
+			Shape_t output;
 Cosh=
+			Shape_t input;, 
+			Shape_t output;
 Asinh=
+			Shape_t input;, 
+			Shape_t output;
 Acosh=
+			Shape_t input;, 
+			Shape_t output;
 NonMaxSuppression=
-		int center_point_box;
+			Shape_t boxes;, 
+			Shape_t scores;, 
+			Shape_t max_output_boxes_per_class;, 
+			Shape_t iou_threshold;, 
+			Shape_t score_threshold;, 
+			Shape_t selected_indices;, 
+			int center_point_box;
 Atanh=
+			Shape_t input;, 
+			Shape_t output;
 Sign=
+			Shape_t input;, 
+			Shape_t output;
 Erf=
+			Shape_t input;, 
+			Shape_t output;
 Where=
+			Shape_t condition;, 
+			Shape_t X;, 
+			Shape_t Y;, 
+			Shape_t output;
 NonZero=
+			Shape_t X;, 
+			Shape_t Y;
 MeanVarianceNormalization=
-		std::vector<int> axes;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int* axes;
 StringNormalizer=
-		std::string case_change_action;, 
-		int is_case_sensitive;, 
-		std::string locale;, 
-		std::vector<std::string> stopwords;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int case_change_action;, 
+			int is_case_sensitive;, 
+			int locale;, 
+			std::vector<std::string> stopwords;
 Mod=
-		int fmod;
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t C;, 
+			int fmod;
 ThresholdedRelu=
-		float alpha;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float alpha;
 MatMulInteger=
+			Shape_t A;, 
+			Shape_t B;, 
+			Shape_t a_zero_point;, 
+			Shape_t b_zero_point;, 
+			Shape_t Y;
 QLinearMatMul=
+			Shape_t a;, 
+			Shape_t a_scale;, 
+			Shape_t a_zero_point;, 
+			Shape_t b;, 
+			Shape_t b_scale;, 
+			Shape_t b_zero_point;, 
+			Shape_t y_scale;, 
+			Shape_t y_zero_point;, 
+			Shape_t y;
 ConvInteger=
-		std::string auto_pad;, 
-		std::vector<int> dilations;, 
-		int group;, 
-		std::vector<int> kernel_shape;, 
-		std::vector<int> pads;, 
-		std::vector<int> strides;
+			Shape_t x;, 
+			Shape_t w;, 
+			Shape_t x_zero_point;, 
+			Shape_t w_zero_point;, 
+			Shape_t y;, 
+			int auto_pad;, 
+			int* dilations;, 
+			int group;, 
+			int* kernel_shape;, 
+			int* pads;, 
+			int* strides;
 QLinearConv=
-		std::string auto_pad;, 
-		std::vector<int> dilations;, 
-		int group;, 
-		std::vector<int> kernel_shape;, 
-		std::vector<int> pads;, 
-		std::vector<int> strides;
+			Shape_t x;, 
+			Shape_t x_scale;, 
+			Shape_t x_zero_point;, 
+			Shape_t w;, 
+			Shape_t w_scale;, 
+			Shape_t w_zero_point;, 
+			Shape_t y_scale;, 
+			Shape_t y_zero_point;, 
+			Shape_t B;, 
+			Shape_t y;, 
+			int auto_pad;, 
+			int* dilations;, 
+			int group;, 
+			int* kernel_shape;, 
+			int* pads;, 
+			int* strides;
 QuantizeLinear=
+			Shape_t x;, 
+			Shape_t y_scale;, 
+			Shape_t y_zero_point;, 
+			Shape_t y;
 DequantizeLinear=
+			Shape_t x;, 
+			Shape_t x_scale;, 
+			Shape_t x_zero_point;, 
+			Shape_t y;
 IsInf=
-		int detect_negative;, 
-		int detect_positive;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int detect_negative;, 
+			int detect_positive;
 RoiAlign=
-		std::string mode;, 
-		int output_height;, 
-		int output_width;, 
-		int sampling_ratio;, 
-		float spatial_scale;
+			Shape_t X;, 
+			Shape_t rois;, 
+			Shape_t batch_indices;, 
+			Shape_t Y;, 
+			int mode;, 
+			int output_height;, 
+			int output_width;, 
+			int sampling_ratio;, 
+			float spatial_scale;
 ArrayFeatureExtractor=
+			Shape_t X;, 
+			Shape_t Y;, 
+			Shape_t Z;
 Binarizer=
-		float threshold;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float threshold;
 CategoryMapper=
-		std::vector<int> cats_int64s;, 
-		std::vector<std::string> cats_strings;, 
-		int default_int64;, 
-		std::string default_string;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int* cats_int64s;, 
+			std::vector<std::string> cats_strings;, 
+			int default_int64;, 
+			int default_string;
 DictVectorizer=
-		std::vector<int> int64_vocabulary;, 
-		std::vector<std::string> string_vocabulary;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int* int64_vocabulary;, 
+			std::vector<std::string> string_vocabulary;
 FeatureVectorizer=
-		std::vector<int> inputdimensions;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int* inputdimensions;
 LabelEncoder=
-		float default_float;, 
-		int default_int64;, 
-		std::string default_string;, 
-		//std::vector<float> keys_floats;, 
-		std::vector<int> keys_int64s;, 
-		std::vector<std::string> keys_strings;, 
-		//std::vector<float> values_floats;, 
-		std::vector<int> values_int64s;, 
-		std::vector<std::string> values_strings;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float default_float;, 
+			int default_int64;, 
+			int default_string;, 
+			float* keys_floats;, 
+			int* keys_int64s;, 
+			std::vector<std::string> keys_strings;, 
+			float* values_floats;, 
+			int* values_int64s;, 
+			std::vector<std::string> values_strings;
 LinearClassifier=
-		std::vector<int> classlabels_ints;, 
-		std::vector<std::string> classlabels_strings;, 
-		//std::vector<float> coefficients;, 
-		//std::vector<float> intercepts;, 
-		int multi_class;, 
-		std::string post_transform;
+			Shape_t X;, 
+			Shape_t Y;, 
+			Shape_t Z;, 
+			int* classlabels_ints;, 
+			std::vector<std::string> classlabels_strings;, 
+			float* coefficients;, 
+			float* intercepts;, 
+			int multi_class;, 
+			int post_transform;
 LinearRegressor=
-		//std::vector<float> coefficients;, 
-		//std::vector<float> intercepts;, 
-		std::string post_transform;, 
-		int targets;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float* coefficients;, 
+			float* intercepts;, 
+			int post_transform;, 
+			int targets;
 Normalizer=
-		std::string norm;
+			Shape_t X;, 
+			Shape_t Y;, 
+			int norm;
 SVMRegressor=
-		//std::vector<float> coefficients;, 
-		//std::vector<float> kernel_params;, 
-		std::string kernel_type;, 
-		int n_supports;, 
-		int one_class;, 
-		std::string post_transform;, 
-		//std::vector<float> rho;, 
-		//std::vector<float> support_vectors;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float* coefficients;, 
+			float* kernel_params;, 
+			int kernel_type;, 
+			int n_supports;, 
+			int one_class;, 
+			int post_transform;, 
+			float* rho;, 
+			float* support_vectors;
 Scaler=
-		//std::vector<float> offset;, 
-		//std::vector<float> scale;
+			Shape_t X;, 
+			Shape_t Y;, 
+			float* offset;, 
+			float* scale;
 TreeEnsembleClassifier=
-		//std::vector<float> base_values;, 
-		std::vector<int> class_ids;, 
-		std::vector<int> class_nodeids;, 
-		std::vector<int> class_treeids;, 
-		//std::vector<float> class_weights;, 
-		std::vector<int> classlabels_int64s;, 
-		std::vector<std::string> classlabels_strings;, 
-		std::vector<int> nodes_falsenodeids;, 
-		std::vector<int> nodes_featureids;, 
-		//std::vector<float> nodes_hitrates;, 
-		std::vector<int> nodes_missing_value_tracks_true;, 
-		std::vector<std::string> nodes_modes;, 
-		std::vector<int> nodes_nodeids;, 
-		std::vector<int> nodes_treeids;, 
-		std::vector<int> nodes_truenodeids;, 
-		//std::vector<float> nodes_values;, 
-		std::string post_transform;
+			Shape_t X;, 
+			Shape_t Y;, 
+			Shape_t Z;, 
+			float* base_values;, 
+			int* class_ids;, 
+			int* class_nodeids;, 
+			int* class_treeids;, 
+			float* class_weights;, 
+			int* classlabels_int64s;, 
+			std::vector<std::string> classlabels_strings;, 
+			int* nodes_falsenodeids;, 
+			int* nodes_featureids;, 
+			float* nodes_hitrates;, 
+			int* nodes_missing_value_tracks_true;, 
+			std::vector<std::string> nodes_modes;, 
+			int* nodes_nodeids;, 
+			int* nodes_treeids;, 
+			int* nodes_truenodeids;, 
+			float* nodes_values;, 
+			int post_transform;
 ZipMap=
-		std::vector<int> classlabels_int64s;, 
-		std::vector<std::string> classlabels_strings;
+			Shape_t X;, 
+			Shape_t Z;, 
+			int* classlabels_int64s;, 
+			std::vector<std::string> classlabels_strings;

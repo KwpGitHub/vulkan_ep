@@ -8,26 +8,48 @@
 namespace backend {
     class LRN : public Layer {
         struct Params{
-            uint32_t n; uint32_t c; uint32_t d; uint32_t h; uint32_t w;
+            
+			Shape_t X;
+			Shape_t Y;
+			float alpha;
+			float beta;
+			float bias;
+			int size;
         };
-    vuh::Program<Specs, Params>* program;
-    vuh::Device* _get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) {
-                return tensor_dict[t_name]->dev;
+
+        vuh::Program<Specs, Params>* program;
+
+        vuh::Device* _get_device() {
+            for(auto t_name: inputs) {
+                if(tensor_dict.end() != tensor_dict.find(t_name)) {
+                    return tensor_dict[t_name]->dev;
+                }
             }
+            return device;
         }
-        return device;
-    }
+
+        //inputs
+		std::string X;
+
+        //outputs
+		std::string Y;
+
+
     public:
         LRN(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\\shaders/bin/lrn.spv")).c_str());
+        //inputs
+			 X = i[0];
+        //outputs
+			 Y = o[0];
+
+            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/lrn.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(32,32,32);
+			program->spec(64,64,64);
+            program->bind({}, tensor_dict[Y], tensor_dict[X]);
+
         }
         
-        //vuh::Array<float>& operator()(const vuh::Array<float>& t) {
-            
+        //vuh::Array<float>& operator()(const vuh::Array<float>& t) {            
         //}
 
         void forward(){

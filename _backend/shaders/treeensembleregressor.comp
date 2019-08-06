@@ -1,27 +1,46 @@
 //TreeEnsembleRegressor
 #version 450
-
+struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
 layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
-layout(push_constant) uniform Parameters {
-    uint n; uint c; uint d; uint h; uint w;
+layout(push_constant) uniform Parameters {      
     
+			Shape_t X;
+			Shape_t Y;
+			int aggregate_function;
+			float* base_values;
+			int n_targets;
+			int* nodes_falsenodeids;
+			int* nodes_featureids;
+			float* nodes_hitrates;
+			int* nodes_missing_value_tracks_true;
+			std::vector<std::string> nodes_modes;
+			int* nodes_nodeids;
+			int* nodes_treeids;
+			int* nodes_truenodeids;
+			float* nodes_values;
+			int post_transform;
+			int* target_ids;
+			int* target_nodeids;
+			int* target_treeids;
+			float* target_weights;
 } params;
 
-//inputs
-layout(std430, binding = 1) buffer lay1 { float X[]; };
 
 //outputs
 layout(std430, binding = 0) buffer lay0 { float Y[]; };
 
+//inputs
+layout(std430, binding = 1) buffer lay1 { float X[]; };
+
 
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
-    const uint size = params.n * params.c * params.d * params.h * params.w;
-    if(params.size <= id){
+    const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
+    if(size <= id){
         return;
     }
-    y[id] = x[id];
+   
 }

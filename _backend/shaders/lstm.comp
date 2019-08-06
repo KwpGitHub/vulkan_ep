@@ -1,14 +1,37 @@
 //LSTM
 #version 450
-
+struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
 layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
-layout(push_constant) uniform Parameters {
-    uint n; uint c; uint d; uint h; uint w;
+layout(push_constant) uniform Parameters {      
     
+			Shape_t X;
+			Shape_t W;
+			Shape_t R;
+			Shape_t B;
+			Shape_t sequence_lens;
+			Shape_t initial_h;
+			Shape_t initial_c;
+			Shape_t P;
+			Shape_t Y;
+			Shape_t Y_h;
+			Shape_t Y_c;
+			float* activation_alpha;
+			float* activation_beta;
+			std::vector<std::string> activations;
+			float clip;
+			int direction;
+			int hidden_size;
+			int input_forget;
 } params;
+
+
+//outputs
+layout(std430, binding = 0) buffer lay0 { float Y[]; };
+layout(std430, binding = 1) buffer lay1 { float Y_h[]; };
+layout(std430, binding = 2) buffer lay2 { float Y_c[]; };
 
 //inputs
 layout(std430, binding = 3) buffer lay3 { float X[]; };
@@ -20,17 +43,12 @@ layout(std430, binding = 8) buffer lay8 { float initial_h[]; };
 layout(std430, binding = 9) buffer lay9 { float initial_c[]; };
 layout(std430, binding = 10) buffer lay10 { float P[]; };
 
-//outputs
-layout(std430, binding = 0) buffer lay0 { float Y[]; };
-layout(std430, binding = 1) buffer lay1 { float Y_h[]; };
-layout(std430, binding = 2) buffer lay2 { float Y_c[]; };
-
 
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
-    const uint size = params.n * params.c * params.d * params.h * params.w;
-    if(params.size <= id){
+    const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
+    if(size <= id){
         return;
     }
-    y[id] = x[id];
+   
 }
