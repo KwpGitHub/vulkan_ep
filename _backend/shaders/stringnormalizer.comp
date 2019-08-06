@@ -1,0 +1,23 @@
+//StringNormalizer
+#version 450
+struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;  
+
+layout(push_constant) uniform Parameters {      
+    Shape_t X_t; Shape_t Y_t; int case_change_action_t; int is_case_sensitive_t; int locale_t; int* stopwords_t;
+} params;
+
+layout(std430, binding = 0) buffer lay0 { float Y[]; };
+layout(std430, binding = 1) buffer lay1 { float X[]; };
+
+
+void main(){
+    const uint id = gl_GlobalInvocationID.x; 
+    const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
+    if(size <= id) {
+        return;
+    }
+   
+}

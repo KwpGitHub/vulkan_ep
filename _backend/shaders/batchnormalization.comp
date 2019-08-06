@@ -6,30 +6,14 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    
-			Shape_t X;
-			Shape_t scale;
-			Shape_t B;
-			Shape_t mean;
-			Shape_t var;
-			Shape_t Y;
-			Shape_t mean;
-			Shape_t var;
-			Shape_t saved_mean;
-			Shape_t saved_var;
-			float epsilon;
-			float momentum;
+    Shape_t X_t; Shape_t scale_t; Shape_t B_t; Shape_t mean_t; Shape_t var_t; Shape_t Y_t; Shape_t mean_t; Shape_t var_t; Shape_t saved_mean_t; Shape_t saved_var_t; float epsilon_t; float momentum_t;
 } params;
 
-
-//outputs
 layout(std430, binding = 0) buffer lay0 { float Y[]; };
 layout(std430, binding = 1) buffer lay1 { float mean[]; };
 layout(std430, binding = 2) buffer lay2 { float var[]; };
 layout(std430, binding = 3) buffer lay3 { float saved_mean[]; };
 layout(std430, binding = 4) buffer lay4 { float saved_var[]; };
-
-//inputs
 layout(std430, binding = 5) buffer lay5 { float X[]; };
 layout(std430, binding = 6) buffer lay6 { float scale[]; };
 layout(std430, binding = 7) buffer lay7 { float B[]; };
@@ -40,7 +24,7 @@ layout(std430, binding = 9) buffer lay9 { float var[]; };
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
     const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
-    if(size <= id){
+    if(size <= id) {
         return;
     }
    

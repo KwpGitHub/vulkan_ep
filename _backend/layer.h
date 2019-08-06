@@ -15,18 +15,20 @@ namespace backend {
 	class Layer
 	{
 	public:
-		Layer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : name(n), inputs(i), outputs(o), attribute(a) {}
-		//virtual Tensor& operator() (const Tensor& it)  { return ; }
+		Layer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : name(n), inputs(i), outputs(o), attribute(a), _element_wise(true) {}
+		//virtual Tensor* operator() (const Tensor* it)  { return ; }
 		virtual ~Layer() {}
 		virtual void build_pipeline() {}
 		virtual void forward() {}
 		//Shape_t output_shape() {}
 	protected:
+		virtual void parameter_proc(std::map<std::string, std::vector<std::string>> a()) {}
 		std::map<std::string, std::vector<std::string>> attribute;
 		std::vector<std::string> inputs;
 		std::vector<std::string> outputs;
 		std::string name;
 		using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
+		bool _element_wise;
 	};
 }
 

@@ -17,6 +17,32 @@ namespace backend {
 		uint32_t w;
 	};
 
+
+
+	void convert_vec_param(std::vector<std::string> s, Shape_t out) {
+		backend::Shape_t _shape = { 1,1,1,1,1 };
+		switch (s.size()) {
+		case 1: _shape = { std::stoi(s[0]), 1,1,1,1 };
+				break;
+		case 2: _shape = { std::stoi(s[0]), 1, 1, 1, std::stoi(s[1]) };
+				break;
+		case 3: _shape = { std::stoi(s[0]), 1, 1, std::stoi(s[1]), std::stoi(s[2]) };
+				break;
+		case 4: _shape = { std::stoi(s[0]), std::stoi(s[1]), 1, std::stoi(s[2]), std::stoi(s[3]) };
+				break;
+		case 5: _shape = { std::stoi(s[0]), std::stoi(s[1]), std::stoi(s[2]), std::stoi(s[3]), std::stoi(s[4]) };
+		}
+		out = _shape;
+	}
+
+	void convert_vec_param(std::vector<std::string> s, int out) {
+		out = std::stoi(s[0]);
+	}
+
+	void convert_vec_param(std::vector<std::string> s, float out) {
+		out = std::stof(s[0]);
+	}
+	
 	static vuh::Instance* instance;
 	static vuh::Device* device;
 	static std::string file_path;

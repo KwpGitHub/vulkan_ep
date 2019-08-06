@@ -110,10 +110,19 @@
     <ClInclude Include="layers.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="tensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers_map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\abs.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\acos.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\acosh.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\add.h">
@@ -134,10 +143,25 @@
     <ClInclude Include="layers\asin.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\asinh.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\atan.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\atanh.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\averagepool.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\batchnormalization.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\binarizer.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\cast.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\castmap.h">
@@ -152,10 +176,22 @@
     <ClInclude Include="layers\clip.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\compress.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\concat.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\constant.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\constantofshape.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\conv.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\convinteger.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\convtranspose.h">
@@ -164,7 +200,13 @@
     <ClInclude Include="layers\cos.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\cosh.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\depthtospace.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\dequantizelinear.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\dictvectorizer.h">
@@ -173,22 +215,40 @@
     <ClInclude Include="layers\div.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\dropout.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\elu.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\equal.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\erf.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\exp.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\expand.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\eyelike.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\featurevectorizer.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\flatten.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\floor.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\gather.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\gemm.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\globalaveragepool.h">
@@ -198,6 +258,9 @@
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\globalmaxpool.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\greater.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\gru.h">
@@ -221,10 +284,19 @@
     <ClInclude Include="layers\instancenormalization.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\isinf.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\isnan.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\labelencoder.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\leakyrelu.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\less.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\linearclassifier.h">
@@ -254,7 +326,34 @@
     <ClInclude Include="layers\lstm.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\matmul.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\matmulinteger.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\max.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\maxpool.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\maxroipool.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\maxunpool.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\mean.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\meanvariancenormalization.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\min.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\mod.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\mul.h">
@@ -266,10 +365,19 @@
     <ClInclude Include="layers\neg.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\nonmaxsuppression.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\nonzero.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\normalizer.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\not.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\onehot.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\onehotencoder.h">
@@ -282,6 +390,18 @@
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\pow.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\prelu.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\qlinearconv.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\qlinearmatmul.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\quantizelinear.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\randomnormal.h">
@@ -335,10 +455,25 @@
     <ClInclude Include="layers\reshape.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\resize.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\reversesequence.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\rnn.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\roialign.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\scaler.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\scan.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\scatter.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\selu.h">
@@ -347,13 +482,25 @@
     <ClInclude Include="layers\shape.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\shrink.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\sigmoid.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\sign.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\sin.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\sinh.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\size.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\slice.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\softmax.h">
@@ -377,7 +524,13 @@
     <ClInclude Include="layers\squeeze.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\stringnormalizer.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\sub.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\sum.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\svmclassifier.h">
@@ -392,7 +545,16 @@
     <ClInclude Include="layers\tanh.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\tfidfvectorizer.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\thresholdedrelu.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\tile.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\topk.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\transpose.h">
@@ -407,17 +569,14 @@
     <ClInclude Include="layers\unsqueeze.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\where.h">
+      <Filter>Layer Files</Filter>
+    </ClInclude>
     <ClInclude Include="layers\xor.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\zipmap.h">
       <Filter>Layer Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="layers_map.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

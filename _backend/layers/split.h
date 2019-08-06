@@ -7,52 +7,46 @@
 
 namespace backend {
     class Split : public Layer {
-        struct Params{
-            
-			Shape_t input;
-			Shape_t outputs;
-			int axis;
-			int* split;
+        struct Params{Shape_t input_t; Shape_t outputs_t; int axis_t; Shape_t split_t;
         };
-
+            
         vuh::Program<Specs, Params>* program;
 
         vuh::Device* _get_device() {
             for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) {
+                if(tensor_dict.end() != tensor_dict.find(t_name)) 
                     return tensor_dict[t_name]->dev;
-                }
             }
             return device;
         }
 
-        //inputs
-		std::string input;
-
-        //outputs
-		std::string outputs;
-
+        std::string input; std::string outputs;
+        //parameter 
+        Shape_t input_t; Shape_t outputs_t; int axis_t; Shape_t split_t;
 
     public:
         Split(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {
-        //inputs
-			 input = i[0];
-        //outputs
-			 outputs = o[0];
-
+            input = i[0];
+            outputs = o[0];
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/split.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, tensor_dict[outputs], tensor_dict[input]);
+            program->bind({input_t, outputs_t, axis_t, split_t }, tensor_dict[outputs], tensor_dict[input]);
 
         }
         
-        //vuh::Array<float>& operator()(const vuh::Array<float>& t) {            
+        void parameter_proc(std::map<std::string, std::vector<std::string>> a){
+            convert_vec_param(a["input"], input_t);
+			convert_vec_param(a["outputs"], outputs_t);
+			convert_vec_param(a["axis"], axis_t);
+			convert_vec_param(a["split"], split_t);   
+        }
+
+        //Tensor* operator()(const Tensor* t) {            
         //}
 
-        void forward(){
-            
-        }
+		void forward(){
+		}
 
        /* std::vector<uint32_t> output_shape(){
             for(auto t_name : inputs){
@@ -73,14 +67,7 @@ namespace backend {
             }
         }*/
 
-        void build_pipeline(){
-           // std::vector<Tensor> x;
-           // for(auto t_name : inputs)
-           //     x.push_back(*tensor_dict[t_name]);
-            //program->bind({}, );
-		    
-        }
-
+    
         ~Split(){}
 
     };

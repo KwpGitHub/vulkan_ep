@@ -1,0 +1,26 @@
+//ConvInteger
+#version 450
+struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;  
+
+layout(push_constant) uniform Parameters {      
+    Shape_t x_t; Shape_t w_t; Shape_t x_zero_point_t; Shape_t w_zero_point_t; Shape_t y_t; int auto_pad_t; Shape_t dilations_t; int group_t; Shape_t kernel_shape_t; Shape_t pads_t; Shape_t strides_t;
+} params;
+
+layout(std430, binding = 0) buffer lay0 { float y[]; };
+layout(std430, binding = 1) buffer lay1 { float x[]; };
+layout(std430, binding = 2) buffer lay2 { float w[]; };
+layout(std430, binding = 3) buffer lay3 { float x_zero_point[]; };
+layout(std430, binding = 4) buffer lay4 { float w_zero_point[]; };
+
+
+void main(){
+    const uint id = gl_GlobalInvocationID.x; 
+    const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
+    if(size <= id) {
+        return;
+    }
+   
+}

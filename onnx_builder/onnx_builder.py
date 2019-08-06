@@ -7,12 +7,12 @@ import os
 
 types = {  
             'AttrType.STRING'   :'int',
-            'AttrType.STRINGS'  :'std::vector<std::string>',
+            'AttrType.STRINGS'  :'int*',
             'AttrType.FLOAT'    :'float',
             'AttrType.FLOATS'   :'float*',
             'AttrType.INT'      :'int',
-            'AttrType.INTS'     :'int*',
-            'AttrType.TENSOR'   :'//tensor',
+            'AttrType.INTS'     :'Shape_t',
+            'AttrType.TENSOR'   :'Tensor*',
             'AttrType.TENSORS'  :'//std::vector<tensor>',
             'AttrType.GRAPH'    :'//graph',
             'AttrType.GRAPHS'   :'//std::vector<graph>'
@@ -44,44 +44,43 @@ class_h_str = """#ifndef {upper}_H
 
 namespace backend {{
     class {norm} : public Layer {{
-        struct Params{{
-            {param}
+        struct Params{{{param}
         }};
-
+            {attribute_t}
         vuh::Program<Specs, Params>* program;
 
         vuh::Device* _get_device() {{
             for(auto t_name: inputs) {{
-                if(tensor_dict.end() != tensor_dict.find(t_name)) {{
+                if(tensor_dict.end() != tensor_dict.find(t_name)) 
                     return tensor_dict[t_name]->dev;
-                }}
             }}
             return device;
         }}
 
-        //inputs
-{header_inputs}
-        //outputs
-{header_outputs}
+        {header_buffers}
+        //parameter 
+        {param}
 
     public:
         {norm}(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {{
-        //inputs{header_inputs_1}
-        //outputs{header_outputs_1}
-
+            {header_inputs}
+            {header_outputs}
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\\shaders/bin/{lower}.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({{}}, {header_outputs_2}, {header_inputs_2});
+            program->bind({{{param_dict} }}, {header_inputs_2});
 
         }}
         
-        //vuh::Array<float>& operator()(const vuh::Array<float>& t) {{            
+        void parameter_proc(std::map<std::string, std::vector<std::string>> a){{
+            {parameter_proc}   
+        }}
+
+        //Tensor* operator()(const Tensor* t) {{            
         //}}
 
-        void forward(){{
-            
-        }}
+		void forward(){{
+		}}
 
        /* std::vector<uint32_t> output_shape(){{
             for(auto t_name : inputs){{
@@ -102,14 +101,7 @@ namespace backend {{
             }}
         }}*/
 
-        void build_pipeline(){{
-           // std::vector<Tensor> x;
-           // for(auto t_name : inputs)
-           //     x.push_back(*tensor_dict[t_name]);
-            //program->bind({{}}, );
-		    
-        }}
-
+    
         ~{norm}(){{}}
 
     }};
@@ -131,16 +123,12 @@ layout(push_constant) uniform Parameters {{
     {param}
 }} params;
 
-
-//outputs
-{shader_outputs}
-//inputs
-{shader_inputs}
+{shader_buffers}
 
 void main(){{
     const uint id = gl_GlobalInvocationID.x; 
     const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
-    if(size <= id){{
+    if(size <= id) {{
         return;
     }}
    
@@ -156,7 +144,7 @@ def onnx_proto():
         os.mkdir('../_backend/layers')
     if(not os.path.isdir(os.path.join(os.getcwd(),'../_backend/shaders\\'))):
         os.mkdir('../_backend/shaders')
-
+    
     layers = open('../_backend/layers.h', 'w')
     layer_map_file = open("../_backend/layers_map.h", 'w')
     layers_lst = list()
@@ -168,31 +156,34 @@ def onnx_proto():
         ops[op.name] = op
         op_name = str(op.name)
         attr = op.attributes
-        shader_outputs  =   ["layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};\n".format(i, x.name) for i,x in enumerate(op.outputs)]
-        shader_inputs   =   ["layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};\n".format(i + len(shader_outputs), x.name) for i, x in enumerate(op.inputs)]
+        shader_buffers  =   ["layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};\n".format(i, x.name) for i,x in enumerate(op.outputs + op.inputs)]
         
-        attributes_t    =   [', {} {}'.format(types[str(x.type)], x.name)  for _,x in attr.items()]
-        parameters      =   ['\n\t\t\tShape_t {};'.format(x.name) for x in op.inputs] +  ['\n\t\t\tShape_t {};'.format(x.name) for x in op.outputs] + ['\n\t\t\t{} {};'.format(types[str(x.type)], x.name)  for _,x in attr.items()]
-
+        attributes_t    =   ['\n\t\t{} {};'.format('Tensor*', x.name) for _,x in attr.items() if(str(x.type) == 'AttrType.FLOATS' or str(x.type) == 'AttrType.TENSOR')]       
+        parameters      =   ['Shape_t {}_t;'.format(x.name) for x in (op.inputs + op.outputs)] +  ['{} {}_t;'.format(types[str(x.type)], x.name)  for _,x in attr.items() if(str(x.type) != 'AttrType.FLOATS' and str(x.type) != 'AttrType.TENSOR')]
+        parameter_dict  =   ['{}_t'.format(x.name) for x in (op.inputs + op.outputs)] + ['{}_t'.format(x.name)  for _,x in attr.items() if(str(x.type) != 'AttrType.FLOATS' and str(x.type) != 'AttrType.TENSOR')]
+        parameter_proc  =   ['convert_vec_param(a["{0}"], {0}_t);'.format(x.name) for x in (op.inputs + op.outputs)] + ['convert_vec_param(a["{0}"], {0}_t);'.format(x.name)  for _,x in attr.items() if(str(x.type) != 'AttrType.FLOATS' and str(x.type) != 'AttrType.TENSOR')]
         mapt = {
-                "upper"             :   op_name.upper(),
-                "norm"              :   op_name, 
-                "lower"             :   op_name.lower(), 
-                "param"             :   ''.join(parameters) , 
-                'param_t'           :   ''.join(attributes_t), 
-                'shader_inputs'     :   ''.join(shader_inputs), 
-                'shader_outputs'    :   ''.join(shader_outputs),
-                'header_inputs'     :   ''.join(["\t\tstd::string {0};\n".format(x.name) for i, x in enumerate(op.inputs)]),
-                'header_outputs'    :   ''.join(["\t\tstd::string {0};\n".format(x.name) for i, x in enumerate(op.outputs)]),
-                'header_inputs_1'   :   ''.join(["\n\t\t\t {0} = i[{1}];".format(x.name, i) for i, x in enumerate(op.inputs)]),
-                'header_outputs_1'  :   ''.join(["\n\t\t\t {0} = o[{1}];".format(x.name, i) for i, x in enumerate(op.outputs)]),
-                'header_inputs_2'   :   ','.join(["tensor_dict[{0}]".format(x.name) for i, x in enumerate(op.inputs)]),
-                'header_outputs_2'  :   ','.join(["tensor_dict[{0}]".format(x.name) for i, x in enumerate(op.outputs)]),
+                'upper'             :   op_name.upper(),
+                'norm'              :   op_name, 
+                'lower'             :   op_name.lower(), 
+                'param'             :   ' '.join(parameters) , 
+                'param_dict'        :   ', '.join(parameter_dict),
+                'parameter_proc'    :   '\n\t\t\t'.join(parameter_proc),
+                'attribute_t'       :   ''.join(attributes_t), 
+                'shader_buffers'    :   ''.join(shader_buffers),
+                'header_buffers'    :   ' '.join(["std::string {0};".format(x.name) for i, x in enumerate(op.inputs + op.outputs)]),
+                'header_inputs'     :   ' '.join(["{0} = i[{1}];".format(x.name, i) for i, x in enumerate(op.inputs)]),
+                'header_outputs'    :   ' '.join(["{0} = o[{1}];".format(x.name, i) for i, x in enumerate(op.outputs)]),
+                'header_inputs_2'   :   ', '.join(["tensor_dict[{0}]".format(x.name) for i, x in enumerate(op.outputs + op.inputs)]),
         }
         
-        op_file.write(op.name+'=' + ', '.join(parameters) + '\n')
 
-        if(op.since_version <= 9 and op.deprecated==False):
+        op_file.write(op.name+'=' + ', '.join(parameters) + '\n')
+        
+
+
+
+        if(op.since_version <= 10 and op.deprecated==False):
             f = open('../_backend/layers/'+op_name.lower()+'.h', 'w')
             f.write(class_h_str(mapt))
             f.close()
@@ -205,7 +196,6 @@ def onnx_proto():
     
     layers.writelines(layers_lst)
     op_file.close()
-
     layer_map_file.write(layer_map_str(",\n".join(layer_map)))
     layer_map_file.close()
 

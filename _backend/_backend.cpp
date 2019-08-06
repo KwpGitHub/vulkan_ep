@@ -35,7 +35,7 @@ void test() {
 			error_count++;
 	}
 
-	if (error_count != 0)
+	if (error_count == 0)
 		std::cout << ":::PIPELINE VALIDATION SUCCESS:::" << std::endl;
 	else
 		std::cout << ":::PIPELINE VALIDATION FAILURE:::" << std::endl;
@@ -52,13 +52,13 @@ void create_instance(py::str file_path) {
 
 void create_tensor_from_numpy(py::str name, py::array_t<float> input){
 	py::buffer_info buf = input.request();
-	auto s = buf.shape;
+	auto bs = buf.shape;
 	float* p = (float*)buf.ptr;
 
 	std::vector<float> data;
 	std::vector<uint32_t> s;
 
-	for (auto _s : s) 
+	for (auto _s : bs)
 		s.push_back((uint32_t)_s);
 
 	for (int i = 0; i < std::accumulate(s.begin(), s.end(), 1, std::multiplies<uint32_t>()); ++i)

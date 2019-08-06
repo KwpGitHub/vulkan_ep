@@ -6,18 +6,10 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    
-			Shape_t input;
-			Shape_t condition;
-			Shape_t output;
-			int axis;
+    Shape_t input_t; Shape_t condition_t; Shape_t output_t; int axis_t;
 } params;
 
-
-//outputs
 layout(std430, binding = 0) buffer lay0 { float output[]; };
-
-//inputs
 layout(std430, binding = 1) buffer lay1 { float input[]; };
 layout(std430, binding = 2) buffer lay2 { float condition[]; };
 
@@ -25,7 +17,7 @@ layout(std430, binding = 2) buffer lay2 { float condition[]; };
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
     const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
-    if(size <= id){
+    if(size <= id) {
         return;
     }
    

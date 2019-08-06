@@ -6,25 +6,17 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    
-			Shape_t X;
-			Shape_t Z;
-			int* classlabels_int64s;
-			std::vector<std::string> classlabels_strings;
+    Shape_t X_t; Shape_t Z_t; Shape_t classlabels_int64s_t; int* classlabels_strings_t;
 } params;
 
-
-//outputs
 layout(std430, binding = 0) buffer lay0 { float Z[]; };
-
-//inputs
 layout(std430, binding = 1) buffer lay1 { float X[]; };
 
 
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
     const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
-    if(size <= id){
+    if(size <= id) {
         return;
     }
    

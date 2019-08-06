@@ -1,0 +1,27 @@
+//NonMaxSuppression
+#version 450
+struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;  
+
+layout(push_constant) uniform Parameters {      
+    Shape_t boxes_t; Shape_t scores_t; Shape_t max_output_boxes_per_class_t; Shape_t iou_threshold_t; Shape_t score_threshold_t; Shape_t selected_indices_t; int center_point_box_t;
+} params;
+
+layout(std430, binding = 0) buffer lay0 { float selected_indices[]; };
+layout(std430, binding = 1) buffer lay1 { float boxes[]; };
+layout(std430, binding = 2) buffer lay2 { float scores[]; };
+layout(std430, binding = 3) buffer lay3 { float max_output_boxes_per_class[]; };
+layout(std430, binding = 4) buffer lay4 { float iou_threshold[]; };
+layout(std430, binding = 5) buffer lay5 { float score_threshold[]; };
+
+
+void main(){
+    const uint id = gl_GlobalInvocationID.x; 
+    const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
+    if(size <= id) {
+        return;
+    }
+   
+}

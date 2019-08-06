@@ -7,50 +7,44 @@
 
 namespace backend {
     class Mean : public Layer {
-        struct Params{
-            
-			Shape_t data_0;
-			Shape_t mean;
+        struct Params{Shape_t data_0_t; Shape_t mean_t;
         };
-
+            
         vuh::Program<Specs, Params>* program;
 
         vuh::Device* _get_device() {
             for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) {
+                if(tensor_dict.end() != tensor_dict.find(t_name)) 
                     return tensor_dict[t_name]->dev;
-                }
             }
             return device;
         }
 
-        //inputs
-		std::string data_0;
-
-        //outputs
-		std::string mean;
-
+        std::string data_0; std::string mean;
+        //parameter 
+        Shape_t data_0_t; Shape_t mean_t;
 
     public:
         Mean(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {
-        //inputs
-			 data_0 = i[0];
-        //outputs
-			 mean = o[0];
-
+            data_0 = i[0];
+            mean = o[0];
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/mean.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, tensor_dict[mean], tensor_dict[data_0]);
+            program->bind({data_0_t, mean_t }, tensor_dict[mean], tensor_dict[data_0]);
 
         }
         
-        //vuh::Array<float>& operator()(const vuh::Array<float>& t) {            
+        void parameter_proc(std::map<std::string, std::vector<std::string>> a){
+            convert_vec_param(a["data_0"], data_0_t);
+			convert_vec_param(a["mean"], mean_t);   
+        }
+
+        //Tensor* operator()(const Tensor* t) {            
         //}
 
-        void forward(){
-            
-        }
+		void forward(){
+		}
 
        /* std::vector<uint32_t> output_shape(){
             for(auto t_name : inputs){
@@ -71,14 +65,7 @@ namespace backend {
             }
         }*/
 
-        void build_pipeline(){
-           // std::vector<Tensor> x;
-           // for(auto t_name : inputs)
-           //     x.push_back(*tensor_dict[t_name]);
-            //program->bind({}, );
-		    
-        }
-
+    
         ~Mean(){}
 
     };

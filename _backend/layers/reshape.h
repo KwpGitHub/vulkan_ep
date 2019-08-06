@@ -7,53 +7,45 @@
 
 namespace backend {
     class Reshape : public Layer {
-        struct Params{
-            
-			Shape_t data;
-			Shape_t shape;
-			Shape_t reshaped;
+        struct Params{Shape_t data_t; Shape_t shape_t; Shape_t reshaped_t;
         };
-
+            
         vuh::Program<Specs, Params>* program;
 
         vuh::Device* _get_device() {
             for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) {
+                if(tensor_dict.end() != tensor_dict.find(t_name)) 
                     return tensor_dict[t_name]->dev;
-                }
             }
             return device;
         }
 
-        //inputs
-		std::string data;
-		std::string shape;
-
-        //outputs
-		std::string reshaped;
-
+        std::string data; std::string shape; std::string reshaped;
+        //parameter 
+        Shape_t data_t; Shape_t shape_t; Shape_t reshaped_t;
 
     public:
         Reshape(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {
-        //inputs
-			 data = i[0];
-			 shape = i[1];
-        //outputs
-			 reshaped = o[0];
-
+            data = i[0]; shape = i[1];
+            reshaped = o[0];
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/reshape.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, tensor_dict[reshaped], tensor_dict[data],tensor_dict[shape]);
+            program->bind({data_t, shape_t, reshaped_t }, tensor_dict[reshaped], tensor_dict[data], tensor_dict[shape]);
 
         }
         
-        //vuh::Array<float>& operator()(const vuh::Array<float>& t) {            
+        void parameter_proc(std::map<std::string, std::vector<std::string>> a){
+            convert_vec_param(a["data"], data_t);
+			convert_vec_param(a["shape"], shape_t);
+			convert_vec_param(a["reshaped"], reshaped_t);   
+        }
+
+        //Tensor* operator()(const Tensor* t) {            
         //}
 
-        void forward(){
-            
-        }
+		void forward(){
+		}
 
        /* std::vector<uint32_t> output_shape(){
             for(auto t_name : inputs){
@@ -74,14 +66,7 @@ namespace backend {
             }
         }*/
 
-        void build_pipeline(){
-           // std::vector<Tensor> x;
-           // for(auto t_name : inputs)
-           //     x.push_back(*tensor_dict[t_name]);
-            //program->bind({}, );
-		    
-        }
-
+    
         ~Reshape(){}
 
     };

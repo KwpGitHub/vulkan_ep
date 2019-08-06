@@ -6,26 +6,10 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    
-			Shape_t X;
-			Shape_t W;
-			Shape_t B;
-			Shape_t Y;
-			int auto_pad;
-			int* dilations;
-			int group;
-			int* kernel_shape;
-			int* output_padding;
-			int* output_shape;
-			int* pads;
-			int* strides;
+    Shape_t X_t; Shape_t W_t; Shape_t B_t; Shape_t Y_t; int auto_pad_t; Shape_t dilations_t; int group_t; Shape_t kernel_shape_t; Shape_t output_padding_t; Shape_t output_shape_t; Shape_t pads_t; Shape_t strides_t;
 } params;
 
-
-//outputs
 layout(std430, binding = 0) buffer lay0 { float Y[]; };
-
-//inputs
 layout(std430, binding = 1) buffer lay1 { float X[]; };
 layout(std430, binding = 2) buffer lay2 { float W[]; };
 layout(std430, binding = 3) buffer lay3 { float B[]; };
@@ -34,7 +18,7 @@ layout(std430, binding = 3) buffer lay3 { float B[]; };
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
     const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
-    if(size <= id){
+    if(size <= id) {
         return;
     }
    

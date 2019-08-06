@@ -7,52 +7,46 @@
 
 namespace backend {
     class If : public Layer {
-        struct Params{
-            
-			Shape_t cond;
-			Shape_t outputs;
-			//graph else_branch;
-			//graph then_branch;
+        struct Params{Shape_t cond_t; Shape_t outputs_t; //graph else_branch_t; //graph then_branch_t;
         };
-
+            
         vuh::Program<Specs, Params>* program;
 
         vuh::Device* _get_device() {
             for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) {
+                if(tensor_dict.end() != tensor_dict.find(t_name)) 
                     return tensor_dict[t_name]->dev;
-                }
             }
             return device;
         }
 
-        //inputs
-		std::string cond;
-
-        //outputs
-		std::string outputs;
-
+        std::string cond; std::string outputs;
+        //parameter 
+        Shape_t cond_t; Shape_t outputs_t; //graph else_branch_t; //graph then_branch_t;
 
     public:
         If(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {
-        //inputs
-			 cond = i[0];
-        //outputs
-			 outputs = o[0];
-
+            cond = i[0];
+            outputs = o[0];
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/if.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, tensor_dict[outputs], tensor_dict[cond]);
+            program->bind({cond_t, outputs_t, else_branch_t, then_branch_t }, tensor_dict[outputs], tensor_dict[cond]);
 
         }
         
-        //vuh::Array<float>& operator()(const vuh::Array<float>& t) {            
+        void parameter_proc(std::map<std::string, std::vector<std::string>> a){
+            convert_vec_param(a["cond"], cond_t);
+			convert_vec_param(a["outputs"], outputs_t);
+			convert_vec_param(a["else_branch"], else_branch_t);
+			convert_vec_param(a["then_branch"], then_branch_t);   
+        }
+
+        //Tensor* operator()(const Tensor* t) {            
         //}
 
-        void forward(){
-            
-        }
+		void forward(){
+		}
 
        /* std::vector<uint32_t> output_shape(){
             for(auto t_name : inputs){
@@ -73,14 +67,7 @@ namespace backend {
             }
         }*/
 
-        void build_pipeline(){
-           // std::vector<Tensor> x;
-           // for(auto t_name : inputs)
-           //     x.push_back(*tensor_dict[t_name]);
-            //program->bind({}, );
-		    
-        }
-
+    
         ~If(){}
 
     };

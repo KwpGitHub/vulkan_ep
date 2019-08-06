@@ -6,25 +6,17 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    
-			Shape_t cond;
-			Shape_t outputs;
-			//graph else_branch;
-			//graph then_branch;
+    Shape_t cond_t; Shape_t outputs_t; //graph else_branch_t; //graph then_branch_t;
 } params;
 
-
-//outputs
 layout(std430, binding = 0) buffer lay0 { float outputs[]; };
-
-//inputs
 layout(std430, binding = 1) buffer lay1 { float cond[]; };
 
 
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
     const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
-    if(size <= id){
+    if(size <= id) {
         return;
     }
    

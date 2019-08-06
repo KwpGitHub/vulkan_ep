@@ -6,19 +6,10 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    
-			Shape_t M;
-			Shape_t cond;
-			Shape_t v_initial;
-			Shape_t v_final_and_scan_outputs;
-			//graph body;
+    Shape_t M_t; Shape_t cond_t; Shape_t v_initial_t; Shape_t v_final_and_scan_outputs_t; //graph body_t;
 } params;
 
-
-//outputs
 layout(std430, binding = 0) buffer lay0 { float v_final_and_scan_outputs[]; };
-
-//inputs
 layout(std430, binding = 1) buffer lay1 { float M[]; };
 layout(std430, binding = 2) buffer lay2 { float cond[]; };
 layout(std430, binding = 3) buffer lay3 { float v_initial[]; };
@@ -27,7 +18,7 @@ layout(std430, binding = 3) buffer lay3 { float v_initial[]; };
 void main(){
     const uint id = gl_GlobalInvocationID.x; 
     const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
-    if(size <= id){
+    if(size <= id) {
         return;
     }
    
