@@ -1,5 +1,6 @@
 #ifndef LAYER_H
 #define LAYER_H
+
 #include <map>
 #include <vector>
 
@@ -17,14 +18,20 @@ namespace backend {
 		Layer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : name(n), inputs(i), outputs(o), attribute(a) {}
 		//virtual Tensor& operator() (const Tensor& it)  { return ; }
 		virtual ~Layer() {}
-		virtual void build_pipeline(){}
+		virtual void build_pipeline() {}
 		virtual void forward() {}
+		//Shape_t output_shape() {}
 	protected:
 		std::map<std::string, std::vector<std::string>> attribute;
 		std::vector<std::string> inputs;
 		std::vector<std::string> outputs;
 		std::string name;
+		using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 	};
+}
+
+namespace backend {
+	std::map<std::string, Layer*> layer_dict;
 }
 
 

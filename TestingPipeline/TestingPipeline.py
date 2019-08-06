@@ -6,7 +6,12 @@ import onnx
 import json
 import os
 
-def graph_def_info(graph):
+def graph_def_info(onnx_file):
+    onnx_model_str =  MessageToJson(onnx.load(onnx_file))
+    graph = json.loads(onnx_model_str)['graph']
+    backend.test()
+    backend.create_instance(os.getcwd())
+    
     nodes = {} 
     
     init_nodes = []
@@ -22,8 +27,7 @@ def graph_def_info(graph):
             data_t  = [float(x) for x in data['floatData']]
             backend.create_tensor(name, data_t, dims)
         else:
-            print(data['name'], data['dataType'])
-    
+            print(data['name'], data['dataType'])   
 
     print("\n\n")
     for node in graph['node']:
@@ -45,23 +49,10 @@ def graph_def_info(graph):
     unint_nodes = {}
     for node in graph['input'] + graph['output']:
         if(node['name'] not in init_nodes):
-            unint_nodes[node['name']] = [str(i['dimValue']) for i in  node['type']['tensorType']['shape']['dim']]
-
+            tmp = np.zeros([int(i['dimValue']) for i in  node['type']['tensorType']['shape']['dim']])
+            backend.create_tensor_from_numpy(node['name'], tmp)
     return nodes
 
 
-if(__name__=="__main__"):
-    backend.test()
-    backend.create_instance()
-    x = np.ones([1,3,128,128])
-    
-    onnx_model_str =  MessageToJson(onnx.load('mobilenetv2.onnx'))
-    graph = json.loads(onnx_model_str)
-    node_info = graph_def_info(graph['graph'])
-    backend.input(x)
-   
-    
-
-
-  
-    
+if(__name__=="__main__"):   
+    node_info = graph_def_info('mobilenetv2.onnx')
