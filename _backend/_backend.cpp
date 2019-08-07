@@ -45,7 +45,7 @@ void test() {
 
 void create_instance(py::str file_path) {
 	std::cout << file_path << std::endl;
-	backend::file_path = std::string(file_path) + std::string("..\\_backend\\");
+	backend::file_path = std::string(file_path) + std::string("\\../_backend/");
 	backend::instance = new vuh::Instance();
 	backend::device = new vuh::Device(backend::instance->devices().at(0));
 }

@@ -123,16 +123,15 @@ class_shader_str = """
 struct Shape_t {{ uint n; uint c; uint d; uint h; uint w; }};
 layout(local_size_x_id = 0) in;
 layout(local_size_y_id = 1) in;
-layout(local_size_z_id = 2) in;  
+layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {{      
-   
+   uint size;
 }} params;
-
 
 void main(){{
     const uint id = gl_GlobalInvocationID.x; 
-    const uint size = params.input.n * params.input.c * params.input.d * params.input.h * params.input.w;
+    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
     if(size <= id) {{
         return;
     }}
