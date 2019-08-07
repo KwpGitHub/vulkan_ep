@@ -1,4 +1,4 @@
-//GRU
+
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
@@ -6,17 +6,8 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    Shape_t X_t; Shape_t W_t; Shape_t R_t; Shape_t B_t; Shape_t sequence_lens_t; Shape_t initial_h_t; Shape_t Y_t; Shape_t Y_h_t; int* activations_t; float clip_t; int direction_t; int hidden_size_t; int linear_before_reset_t;
+   
 } params;
-
-layout(std430, binding = 0) buffer lay0 { float Y[]; };
-layout(std430, binding = 1) buffer lay1 { float Y_h[]; };
-layout(std430, binding = 2) buffer lay2 { float X[]; };
-layout(std430, binding = 3) buffer lay3 { float W[]; };
-layout(std430, binding = 4) buffer lay4 { float R[]; };
-layout(std430, binding = 5) buffer lay5 { float B[]; };
-layout(std430, binding = 6) buffer lay6 { float sequence_lens[]; };
-layout(std430, binding = 7) buffer lay7 { float initial_h[]; };
 
 
 void main(){

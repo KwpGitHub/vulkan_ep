@@ -1,5 +1,14 @@
 #ifndef RESHAPE_H
-#define RESHAPE_H
+#define RESHAPE_H //Reshape
+
+//INPUTS:                   data, shape
+//OPTIONAL_INPUTS:          
+//OUTPUS:                   reshaped
+//OPTIONAL_OUTPUTS:         
+//PARAMETERS:               
+//PARAMETER_TYPES:          
+//OPTIONAL_PARAMETERS:      
+//OPTIONAL_PARAMETERS_TYPE: 
 
 #include <vector>
 #include "../layer.h"
@@ -7,69 +16,39 @@
 
 namespace backend {
     class Reshape : public Layer {
-        struct Params{Shape_t data_t; Shape_t shape_t; Shape_t reshaped_t;
-        };
-            
+        
+        vuh::Device* _get_device();
+
+        struct Params{ };
         vuh::Program<Specs, Params>* program;
 
-        vuh::Device* _get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) 
-                    return tensor_dict[t_name]->dev;
-            }
-            return device;
-        }
-
-        std::string data; std::string shape; std::string reshaped;
-        //parameter 
-        Shape_t data_t; Shape_t shape_t; Shape_t reshaped_t;
-
     public:
-        Reshape(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {
-            data = i[0]; shape = i[1];
-            reshaped = o[0];
+        Reshape(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
+        void forward(){ program->run(); }
+         
+         //std::vector<uint32_t> output_shape();
+   
+        ~Reshape(){}
+    };
+}
+
+
+namespace backend {    
+    Reshape::Reshape(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/reshape.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({data_t, shape_t, reshaped_t }, tensor_dict[reshaped], tensor_dict[data], tensor_dict[shape]);
+            //program->bind({}, );
+    }
 
-        }
-        
-        void parameter_proc(std::map<std::string, std::vector<std::string>> a){
-            convert_vec_param(a["data"], data_t);
-			convert_vec_param(a["shape"], shape_t);
-			convert_vec_param(a["reshaped"], reshaped_t);   
-        }
-
-        //Tensor* operator()(const Tensor* t) {            
-        //}
-
-		void forward(){
-		}
-
-       /* std::vector<uint32_t> output_shape(){
-            for(auto t_name : inputs){
-                if(tensor_dict.end() == tensor_dict.find(t_name) && layer_dict.end() != layer_dict.find(t_name)){
-                    //need to do math
-                    return layer_dict[t_name]->output_shape();
-                }
-                else if (tensor_dict.end() != tensor_dict.find(t_name) && layer_dict.end() == layer_dict.find(t_name)){
-                    //need to do math
-                    return tensor_dict[t_name]->dims;
-                }
-
+    vuh::Device* Reshape::_get_device() {
+            for(auto t_name: inputs) {
+                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
             }
-            for(auto t_name : outputs){
-                if(tensor_dict.end() != tensor_dict.find(t_name) && layer_dict.end() == layer_dict.find(t_name)){
-                    return tensor_dict[t_name]->dims;
-                }
-            }
-        }*/
+            return device;
+    }
 
-    
-        ~Reshape(){}
 
-    };
-}
+};
 
 #endif

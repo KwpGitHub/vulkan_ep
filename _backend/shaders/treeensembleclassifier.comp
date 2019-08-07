@@ -1,4 +1,4 @@
-//TreeEnsembleClassifier
+
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
@@ -6,12 +6,8 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    Shape_t X_t; Shape_t Y_t; Shape_t Z_t; Shape_t class_ids_t; Shape_t class_nodeids_t; Shape_t class_treeids_t; Shape_t classlabels_int64s_t; int* classlabels_strings_t; Shape_t nodes_falsenodeids_t; Shape_t nodes_featureids_t; Shape_t nodes_missing_value_tracks_true_t; int* nodes_modes_t; Shape_t nodes_nodeids_t; Shape_t nodes_treeids_t; Shape_t nodes_truenodeids_t; int post_transform_t;
+   
 } params;
-
-layout(std430, binding = 0) buffer lay0 { float Y[]; };
-layout(std430, binding = 1) buffer lay1 { float Z[]; };
-layout(std430, binding = 2) buffer lay2 { float X[]; };
 
 
 void main(){

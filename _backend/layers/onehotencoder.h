@@ -1,5 +1,14 @@
 #ifndef ONEHOTENCODER_H
-#define ONEHOTENCODER_H
+#define ONEHOTENCODER_H //OneHotEncoder
+
+//INPUTS:                   X
+//OPTIONAL_INPUTS:          
+//OUTPUS:                   Y
+//OPTIONAL_OUTPUTS:         
+//PARAMETERS:               
+//PARAMETER_TYPES:          
+//OPTIONAL_PARAMETERS:      cats_int64s, cats_strings, zeros
+//OPTIONAL_PARAMETERS_TYPE: INTS, STRINGS, INT
 
 #include <vector>
 #include "../layer.h"
@@ -7,71 +16,39 @@
 
 namespace backend {
     class OneHotEncoder : public Layer {
-        struct Params{Shape_t X_t; Shape_t Y_t; Shape_t cats_int64s_t; int* cats_strings_t; int zeros_t;
-        };
-            
+        
+        vuh::Device* _get_device();
+
+        struct Params{ };
         vuh::Program<Specs, Params>* program;
 
-        vuh::Device* _get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) 
-                    return tensor_dict[t_name]->dev;
-            }
-            return device;
-        }
-
-        std::string X; std::string Y;
-        //parameter 
-        Shape_t X_t; Shape_t Y_t; Shape_t cats_int64s_t; int* cats_strings_t; int zeros_t;
-
     public:
-        OneHotEncoder(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {
-            X = i[0];
-            Y = o[0];
+        OneHotEncoder(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
+        void forward(){ program->run(); }
+         
+         //std::vector<uint32_t> output_shape();
+   
+        ~OneHotEncoder(){}
+    };
+}
+
+
+namespace backend {    
+    OneHotEncoder::OneHotEncoder(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/onehotencoder.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({X_t, Y_t, cats_int64s_t, cats_strings_t, zeros_t }, tensor_dict[Y], tensor_dict[X]);
+            //program->bind({}, );
+    }
 
-        }
-        
-        void parameter_proc(std::map<std::string, std::vector<std::string>> a){
-            convert_vec_param(a["X"], X_t);
-			convert_vec_param(a["Y"], Y_t);
-			convert_vec_param(a["cats_int64s"], cats_int64s_t);
-			convert_vec_param(a["cats_strings"], cats_strings_t);
-			convert_vec_param(a["zeros"], zeros_t);   
-        }
-
-        //Tensor* operator()(const Tensor* t) {            
-        //}
-
-		void forward(){
-		}
-
-       /* std::vector<uint32_t> output_shape(){
-            for(auto t_name : inputs){
-                if(tensor_dict.end() == tensor_dict.find(t_name) && layer_dict.end() != layer_dict.find(t_name)){
-                    //need to do math
-                    return layer_dict[t_name]->output_shape();
-                }
-                else if (tensor_dict.end() != tensor_dict.find(t_name) && layer_dict.end() == layer_dict.find(t_name)){
-                    //need to do math
-                    return tensor_dict[t_name]->dims;
-                }
-
+    vuh::Device* OneHotEncoder::_get_device() {
+            for(auto t_name: inputs) {
+                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
             }
-            for(auto t_name : outputs){
-                if(tensor_dict.end() != tensor_dict.find(t_name) && layer_dict.end() == layer_dict.find(t_name)){
-                    return tensor_dict[t_name]->dims;
-                }
-            }
-        }*/
+            return device;
+    }
 
-    
-        ~OneHotEncoder(){}
 
-    };
-}
+};
 
 #endif

@@ -1,5 +1,14 @@
 #ifndef SQUEEZE_H
-#define SQUEEZE_H
+#define SQUEEZE_H //Squeeze
+
+//INPUTS:                   data
+//OPTIONAL_INPUTS:          
+//OUTPUS:                   squeezed
+//OPTIONAL_OUTPUTS:         
+//PARAMETERS:               
+//PARAMETER_TYPES:          
+//OPTIONAL_PARAMETERS:      axes
+//OPTIONAL_PARAMETERS_TYPE: INTS
 
 #include <vector>
 #include "../layer.h"
@@ -7,69 +16,39 @@
 
 namespace backend {
     class Squeeze : public Layer {
-        struct Params{Shape_t data_t; Shape_t squeezed_t; Shape_t axes_t;
-        };
-            
+        
+        vuh::Device* _get_device();
+
+        struct Params{ };
         vuh::Program<Specs, Params>* program;
 
-        vuh::Device* _get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) 
-                    return tensor_dict[t_name]->dev;
-            }
-            return device;
-        }
-
-        std::string data; std::string squeezed;
-        //parameter 
-        Shape_t data_t; Shape_t squeezed_t; Shape_t axes_t;
-
     public:
-        Squeeze(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a): Layer(n, i, o, a) {
-            data = i[0];
-            squeezed = o[0];
+        Squeeze(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
+        void forward(){ program->run(); }
+         
+         //std::vector<uint32_t> output_shape();
+   
+        ~Squeeze(){}
+    };
+}
+
+
+namespace backend {    
+    Squeeze::Squeeze(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/squeeze.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({data_t, squeezed_t, axes_t }, tensor_dict[squeezed], tensor_dict[data]);
+            //program->bind({}, );
+    }
 
-        }
-        
-        void parameter_proc(std::map<std::string, std::vector<std::string>> a){
-            convert_vec_param(a["data"], data_t);
-			convert_vec_param(a["squeezed"], squeezed_t);
-			convert_vec_param(a["axes"], axes_t);   
-        }
-
-        //Tensor* operator()(const Tensor* t) {            
-        //}
-
-		void forward(){
-		}
-
-       /* std::vector<uint32_t> output_shape(){
-            for(auto t_name : inputs){
-                if(tensor_dict.end() == tensor_dict.find(t_name) && layer_dict.end() != layer_dict.find(t_name)){
-                    //need to do math
-                    return layer_dict[t_name]->output_shape();
-                }
-                else if (tensor_dict.end() != tensor_dict.find(t_name) && layer_dict.end() == layer_dict.find(t_name)){
-                    //need to do math
-                    return tensor_dict[t_name]->dims;
-                }
-
+    vuh::Device* Squeeze::_get_device() {
+            for(auto t_name: inputs) {
+                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
             }
-            for(auto t_name : outputs){
-                if(tensor_dict.end() != tensor_dict.find(t_name) && layer_dict.end() == layer_dict.find(t_name)){
-                    return tensor_dict[t_name]->dims;
-                }
-            }
-        }*/
+            return device;
+    }
 
-    
-        ~Squeeze(){}
 
-    };
-}
+};
 
 #endif

@@ -22,15 +22,15 @@ namespace backend {
 	void convert_vec_param(std::vector<std::string> s, Shape_t out) {
 		backend::Shape_t _shape = { 1,1,1,1,1 };
 		switch (s.size()) {
-		case 1: _shape = { std::stoi(s[0]), 1,1,1,1 };
+		case 1: _shape = { std::stoul(s[0]), 1,1,1,1 };
 				break;
-		case 2: _shape = { std::stoi(s[0]), 1, 1, 1, std::stoi(s[1]) };
+		case 2: _shape = { std::stoul(s[0]), 1, 1, 1, std::stoul(s[1]) };
 				break;
-		case 3: _shape = { std::stoi(s[0]), 1, 1, std::stoi(s[1]), std::stoi(s[2]) };
+		case 3: _shape = { std::stoul(s[0]), 1, 1, std::stoul(s[1]), std::stoul(s[2]) };
 				break;
-		case 4: _shape = { std::stoi(s[0]), std::stoi(s[1]), 1, std::stoi(s[2]), std::stoi(s[3]) };
+		case 4: _shape = { std::stoul(s[0]), std::stoul(s[1]), 1, std::stoul(s[2]), std::stoul(s[3]) };
 				break;
-		case 5: _shape = { std::stoi(s[0]), std::stoi(s[1]), std::stoi(s[2]), std::stoi(s[3]), std::stoi(s[4]) };
+		case 5: _shape = { std::stoul(s[0]), std::stoul(s[1]), std::stoul(s[2]), std::stoul(s[3]), std::stoul(s[4]) };
 		}
 		out = _shape;
 	}

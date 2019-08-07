@@ -1,4 +1,4 @@
-//RoiAlign
+
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
@@ -6,13 +6,8 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    Shape_t X_t; Shape_t rois_t; Shape_t batch_indices_t; Shape_t Y_t; int mode_t; int output_height_t; int output_width_t; int sampling_ratio_t; float spatial_scale_t;
+   
 } params;
-
-layout(std430, binding = 0) buffer lay0 { float Y[]; };
-layout(std430, binding = 1) buffer lay1 { float X[]; };
-layout(std430, binding = 2) buffer lay2 { float rois[]; };
-layout(std430, binding = 3) buffer lay3 { float batch_indices[]; };
 
 
 void main(){

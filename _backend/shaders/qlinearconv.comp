@@ -1,4 +1,4 @@
-//QLinearConv
+
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
@@ -6,19 +6,8 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    Shape_t x_t; Shape_t x_scale_t; Shape_t x_zero_point_t; Shape_t w_t; Shape_t w_scale_t; Shape_t w_zero_point_t; Shape_t y_scale_t; Shape_t y_zero_point_t; Shape_t B_t; Shape_t y_t; int auto_pad_t; Shape_t dilations_t; int group_t; Shape_t kernel_shape_t; Shape_t pads_t; Shape_t strides_t;
+   
 } params;
-
-layout(std430, binding = 0) buffer lay0 { float y[]; };
-layout(std430, binding = 1) buffer lay1 { float x[]; };
-layout(std430, binding = 2) buffer lay2 { float x_scale[]; };
-layout(std430, binding = 3) buffer lay3 { float x_zero_point[]; };
-layout(std430, binding = 4) buffer lay4 { float w[]; };
-layout(std430, binding = 5) buffer lay5 { float w_scale[]; };
-layout(std430, binding = 6) buffer lay6 { float w_zero_point[]; };
-layout(std430, binding = 7) buffer lay7 { float y_scale[]; };
-layout(std430, binding = 8) buffer lay8 { float y_zero_point[]; };
-layout(std430, binding = 9) buffer lay9 { float B[]; };
 
 
 void main(){

@@ -1,4 +1,4 @@
-//TopK
+
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 layout(local_size_x_id = 0) in;
@@ -6,13 +6,8 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;  
 
 layout(push_constant) uniform Parameters {      
-    Shape_t X_t; Shape_t K_t; Shape_t Values_t; Shape_t Indices_t; int axis_t;
+   
 } params;
-
-layout(std430, binding = 0) buffer lay0 { float Values[]; };
-layout(std430, binding = 1) buffer lay1 { float Indices[]; };
-layout(std430, binding = 2) buffer lay2 { float X[]; };
-layout(std430, binding = 3) buffer lay3 { float K[]; };
 
 
 void main(){
