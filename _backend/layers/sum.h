@@ -10,23 +10,39 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Sum : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            
+			
+            //input
+            
+            
+            //output
+            Shape_t sum;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Sum(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        
+		
+        //input
+        
+        
+        //output
+        std::string sum;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Sum(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

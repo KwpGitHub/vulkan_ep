@@ -6,27 +6,43 @@
 //OUTPUS:                   Y
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               pooled_shape
-//PARAMETER_TYPES:          INTS
+//PARAMETER_TYPES:          Shape_t
 //OPTIONAL_PARAMETERS:      spatial_scale
-//OPTIONAL_PARAMETERS_TYPE: FLOAT
+//OPTIONAL_PARAMETERS_TYPE: float
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class MaxRoiPool : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t pooled_shape; float spatial_scale;
+			
+            //input
+            Shape_t X; Shape_t rois;
+            
+            //output
+            Shape_t Y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         MaxRoiPool(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Shape_t pooled_shape; float spatial_scale;
+		
+        //input
+        std::string X; std::string rois;
+        
+        //output
+        std::string Y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~MaxRoiPool(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

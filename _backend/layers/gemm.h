@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      alpha, beta, transA, transB
-//OPTIONAL_PARAMETERS_TYPE: FLOAT, FLOAT, INT, INT
+//OPTIONAL_PARAMETERS_TYPE: float, float, int, int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Gemm : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            float alpha; float beta; int transA; int transB;
+			
+            //input
+            Shape_t A; Shape_t B; Shape_t C;
+            
+            //output
+            Shape_t Y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Gemm(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        float alpha; float beta; int transA; int transB;
+		
+        //input
+        std::string A; std::string B; std::string C;
+        
+        //output
+        std::string Y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Gemm(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

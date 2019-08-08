@@ -6,27 +6,43 @@
 //OUTPUS:                   concat_result
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               axis
-//PARAMETER_TYPES:          INT
+//PARAMETER_TYPES:          int
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Concat : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int axis;
+			
+            //input
+            
+            
+            //output
+            Shape_t concat_result;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Concat(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int axis;
+		
+        //input
+        
+        
+        //output
+        std::string concat_result;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Concat(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

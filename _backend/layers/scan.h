@@ -6,27 +6,43 @@
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               body, num_scan_inputs
-//PARAMETER_TYPES:          GRAPH, INT
+//PARAMETER_TYPES:          int, int
 //OPTIONAL_PARAMETERS:      scan_input_axes, scan_input_directions, scan_output_axes, scan_output_directions
-//OPTIONAL_PARAMETERS_TYPE: INTS, INTS, INTS, INTS
+//OPTIONAL_PARAMETERS_TYPE: Shape_t, Shape_t, Shape_t, Shape_t
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Scan : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
+			
+            //input
+            
+            
+            //output
+            
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Scan(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
+		
+        //input
+        
+        
+        //output
+        
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Scan(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

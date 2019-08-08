@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      imputed_value_floats, imputed_value_int64s, replaced_value_float, replaced_value_int64
-//OPTIONAL_PARAMETERS_TYPE: FLOATS, INTS, FLOAT, INT
+//OPTIONAL_PARAMETERS_TYPE: Tensor*, Shape_t, float, int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Imputer : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
+			Shape_t imputed_value_floats;
+            //input
+            Shape_t X;
+            
+            //output
+            Shape_t Y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Imputer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Tensor* imputed_value_floats; Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
+		Shape_t imputed_value_floats;
+        //input
+        std::string X;
+        
+        //output
+        std::string Y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Imputer(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

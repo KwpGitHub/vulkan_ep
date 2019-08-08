@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      inputdimensions
-//OPTIONAL_PARAMETERS_TYPE: INTS
+//OPTIONAL_PARAMETERS_TYPE: Shape_t
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class FeatureVectorizer : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t inputdimensions;
+			
+            //input
+            
+            
+            //output
+            Shape_t Y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         FeatureVectorizer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Shape_t inputdimensions;
+		
+        //input
+        
+        
+        //output
+        std::string Y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~FeatureVectorizer(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

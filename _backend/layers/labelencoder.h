@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      default_float, default_int64, default_string, keys_floats, keys_int64s, keys_strings, values_floats, values_int64s, values_strings
-//OPTIONAL_PARAMETERS_TYPE: FLOAT, INT, STRING, FLOATS, INTS, STRINGS, FLOATS, INTS, STRINGS
+//OPTIONAL_PARAMETERS_TYPE: float, int, int, Tensor*, Shape_t, Tensor*, Tensor*, Shape_t, Tensor*
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class LabelEncoder : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s;
+			Shape_t keys_floats; Shape_t keys_strings; Shape_t values_floats; Shape_t values_strings;
+            //input
+            Shape_t X;
+            
+            //output
+            Shape_t Y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         LabelEncoder(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        float default_float; int default_int64; int default_string; Tensor* keys_floats; Shape_t keys_int64s; Tensor* keys_strings; Tensor* values_floats; Shape_t values_int64s; Tensor* values_strings;
+		Shape_t keys_floats; Shape_t keys_strings; Shape_t values_floats; Shape_t values_strings;
+        //input
+        std::string X;
+        
+        //output
+        std::string Y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~LabelEncoder(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

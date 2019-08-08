@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axis
-//OPTIONAL_PARAMETERS_TYPE: INT
+//OPTIONAL_PARAMETERS_TYPE: int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class TopK : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int axis;
+			
+            //input
+            Shape_t X; Shape_t K;
+            
+            //output
+            Shape_t Values; Shape_t Indices;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         TopK(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int axis;
+		
+        //input
+        std::string X; std::string K;
+        
+        //output
+        std::string Values; std::string Indices;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~TopK(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

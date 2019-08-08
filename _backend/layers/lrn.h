@@ -6,27 +6,43 @@
 //OUTPUS:                   Y
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               size
-//PARAMETER_TYPES:          INT
+//PARAMETER_TYPES:          int
 //OPTIONAL_PARAMETERS:      alpha, beta, bias
-//OPTIONAL_PARAMETERS_TYPE: FLOAT, FLOAT, FLOAT
+//OPTIONAL_PARAMETERS_TYPE: float, float, float
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class LRN : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int size; float alpha; float beta; float bias;
+			
+            //input
+            Shape_t X;
+            
+            //output
+            Shape_t Y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         LRN(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int size; float alpha; float beta; float bias;
+		
+        //input
+        std::string X;
+        
+        //output
+        std::string Y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~LRN(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

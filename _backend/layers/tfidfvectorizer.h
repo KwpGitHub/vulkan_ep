@@ -6,27 +6,43 @@
 //OUTPUS:                   Y
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               max_gram_length, max_skip_count, min_gram_length, mode, ngram_counts, ngram_indexes
-//PARAMETER_TYPES:          INT, INT, INT, STRING, INTS, INTS
+//PARAMETER_TYPES:          int, int, int, int, Shape_t, Shape_t
 //OPTIONAL_PARAMETERS:      pool_int64s, pool_strings, weights
-//OPTIONAL_PARAMETERS_TYPE: INTS, STRINGS, FLOATS
+//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, Tensor*
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class TfIdfVectorizer : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s;
+			Shape_t pool_strings; Shape_t weights;
+            //input
+            Shape_t X;
+            
+            //output
+            Shape_t Y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         TfIdfVectorizer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s; Tensor* pool_strings; Tensor* weights;
+		Shape_t pool_strings; Shape_t weights;
+        //input
+        std::string X;
+        
+        //output
+        std::string Y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~TfIdfVectorizer(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

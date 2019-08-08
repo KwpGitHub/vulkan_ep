@@ -18,6 +18,18 @@ types = {
             'AttrType.GRAPHS'   :'//std::vector<graph>'
         }
 
+type_map = {
+        'STRING' :  'int',
+        'STRINGS':  'Tensor*',
+        'INT' :     'int',
+        'INTS':     'Shape_t',
+        'FLOAT':    'float',
+        'FLOATS':   'Tensor*',
+        'TENSOR':   'Tensor*',
+        'GRAPH':    'int',
+        'GRAPHS':   'int'
+    }
+
 ops = {}
 op_file = open('op_file.h','w')
 
@@ -43,14 +55,16 @@ tmpp = '''
 
 layer_map_str = """#include <map>
 #include "layers.h"
-namespace backend {{template<typename T> Layer* createInstance(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) {{ return new T(n, i, o, a); }}
+namespace backend {{
+
+    template<typename T> Layer* createInstance(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) {{ return new T(n, i, o, a); }}
 
 std::map<std::string, Layer*(*)(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a)> layer_map = {{
 {0}
 }};
 
 
- std::map<std::string, std::map<std::string, std::string> > parameter_map = {{
+std::map<std::string, std::map<std::string, std::string> > parameter_map = {{
 {1}
 }};
 
@@ -72,23 +86,37 @@ class_h_str = """#ifndef {upper}_H
 //OPTIONAL_PARAMETERS:      {optional_parameters}
 //OPTIONAL_PARAMETERS_TYPE: {optional_parameter_types}
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {{
     class {norm} : public Layer {{
         
         vuh::Device* _get_device();
 
-        struct Params{{ }};
+        struct Params{{
+            {param_param_lst}
+            //input
+            {input_param_lst}
+            {optional_input_param_lst}
+            //output
+            {output_param_lst}
+            {optional_output_param_lst}
+        }};
+
         vuh::Program<Specs, Params>* program;
 
     public:
         {norm}(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){{ program->run(); }}
-         
-         //std::vector<uint32_t> output_shape();
+        
+        {param_lst}
+        //input
+        {input_lst}
+        {optional_input_lst}
+        //output
+        {output_lst}
+        {optional_output_lst}
+        //std::vector<uint32_t> output_shape();
    
         ~{norm}(){{}}
     }};
@@ -100,7 +128,7 @@ namespace backend {{
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\\shaders/bin/{lower}.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({{}}, );
+            //program->bind({{{bind_param_lst}}}, {bind_input_lst},{bind_outptu_lst} );
     }}
 
     vuh::Device* {norm}::_get_device() {{
@@ -109,8 +137,6 @@ namespace backend {{
             }}
             return device;
     }}
-
-
 }};
 
 #endif
@@ -121,6 +147,7 @@ namespace backend {{
 class_shader_str = """
 #version 450
 struct Shape_t {{ uint n; uint c; uint d; uint h; uint w; }};
+
 layout(local_size_x_id = 0) in;
 layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
@@ -130,9 +157,11 @@ layout(push_constant) uniform Parameters {{
 }} params;
 
 void main(){{
-    const uint id = gl_GlobalInvocationID.x; 
+    const uint idx = gl_GlobalInvocationID.x;
+    const uint idy = gl_GlobalInvocationID.y;
+    const uint idz = gl_GlobalInvocationID.z;
     const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
-    if(size <= id) {{
+    if(size <= idx) {{
         return;
     }}
    
@@ -164,44 +193,62 @@ def onnx_proto():
         shader_buffers  =   ["layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};\n".format(i, x.name) for i,x in enumerate(op.outputs + op.inputs)]
         
         PARAMETERS =                [str(x.name) for _, x in op.attributes.items() if(x.required == True)]
-        PARAMETER_TYPES =           [str(x.type).replace('AttrType.','') for _, x in op.attributes.items() if(x.required == True)]
+        PARAMETER_TYPES =           [type_map[str(x.type).replace('AttrType.','')] for _, x in op.attributes.items() if(x.required == True)]
         OPTIONAL_PARAMETERS =       [str(x.name) for _, x in op.attributes.items() if(x.required == False)]        
-        OPTIONAL_PARAMETER_TYPES =  [str(x.type).replace('AttrType.','') for _, x in op.attributes.items() if(x.required == False)]
+        OPTIONAL_PARAMETER_TYPES =  [type_map[str(x.type).replace('AttrType.','')] for _, x in op.attributes.items() if(x.required == False)]
+
         INPUT_NAMES =               [str(x.name) for x in op.inputs if(str(x.option) == 'FormalParameterOption.Single')]
         OPTIONAL_INPUT_NAMES =      [str(x.name) for x in op.inputs if(str(x.option) == 'FormalParameterOption.Optional')]
         OUTPUT_NAMES =              [str(x.name) for x in op.outputs if(str(x.option) == 'FormalParameterOption.Single')]        
         OPTIONAL_OUTPUT_NAMES =     [str(x.name) for x in op.outputs if(str(x.option) == 'FormalParameterOption.Optional')]
     
-        p_map = {"inputs" :                 ", ".join(['{{"{0}", "{1}"}}'.format(x, 'inputs') for x in INPUT_NAMES] ),
-                 "optional_input" :         ", ".join(['{{"{0}", "{1}"}}'.format(x, 'optional_input')  for x in OPTIONAL_INPUT_NAMES]),
-                 "outputs" :                ", ".join(['{{"{0}", "{1}"}}'.format(x, 'outputs')  for x in OUTPUT_NAMES]),
-                 "optional_output" :        ", ".join(['{{"{0}", "{1}"}}'.format(x, 'optional_output')  for x in OPTIONAL_OUTPUT_NAMES]),
-                 "parameters" :             ", ".join(['{{"{0}", "{1}"}}'.format(x, 'parameters') for x in PARAMETERS]),
-                 "optional_parameters" :    ", ".join(['{{"{0}", "{1}"}}'.format(x, 'optional_parameters')  for x in OPTIONAL_PARAMETERS])}
+        p_map = {"inputs" :                 ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'inputs') for x in INPUT_NAMES] ),
+                 "optional_input" :         ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'optional_input')  for x in OPTIONAL_INPUT_NAMES]),
+                 "outputs" :                ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'outputs')  for x in OUTPUT_NAMES]),
+                 "optional_output" :        ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'optional_output')  for x in OPTIONAL_OUTPUT_NAMES]),
+                 "parameters" :             ", ".join(['{{"{0}", {{"{1}", "{2}"}} }}'.format(x, 'parameters', y) for x,y in zip(PARAMETERS, PARAMETER_TYPES)]),
+                 "optional_parameters" :    ", ".join(['{{"{0}", {{"{1}", "{2}"}} }}'.format(x, 'optional_parameters', y)  for x,y in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES)])}
 
-        attributes_t    =   ['\n\t\t{} {};'.format('Tensor*', x.name) for _,x in attr.items() if(str(x.type) == 'AttrType.FLOATS' or str(x.type) == 'AttrType.TENSOR' and str(x.type) == 'AttrType.GRAPH')]       
-        parameters      =   ['Shape_t {}_in_t;'.format(x.name) for x in (op.inputs)] +  ['Shape_t {}_out_t;'.format(x.name) for x in (op.outputs)]  +  ['{} {}_t;'.format(types[str(x.type)], x.name)  for _,x in attr.items() if(str(x.type) != 'AttrType.FLOATS' and str(x.type) != 'AttrType.TENSOR') and str(x.type) != 'AttrType.GRAPH']
-        parameter_dict  =   ['{}_in_t'.format(x.name) for x in (op.inputs)] + ['{}_out_t'.format(x.name) for x in (op.outputs)] + ['{}_t'.format(x.name)  for _,x in attr.items() if(str(x.type) != 'AttrType.FLOATS' and str(x.type) != 'AttrType.TENSOR' and str(x.type) != 'AttrType.GRAPH')]
-        parameter_proc  =   ['convert_vec_param(a["{0}"], {0}_in_t);'.format(x.name) for x in (op.inputs)] + ['convert_vec_param(a["{0}"], {0}_out_t);'.format(x.name) for x in (op.outputs)]  + ['convert_vec_param(a["{0}"], {0}_t);'.format(x.name)  for _,x in attr.items() if(str(x.type) != 'AttrType.FLOATS' and str(x.type) != 'AttrType.TENSOR' and str(x.type) != 'AttrType.GRAPH')]
+        layer_paramaters = ['{0} {1};'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j != 'Tensor*')] \
+            + ['{0} {1};'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES) if(j != 'Tensor*')]
         
-        
-        
+        constructor_paramaters = []
+
         mapt = {
-                'upper' :                   op_name.upper(),
-                'norm' :                    op_name, 
-                'lower' :                   op_name.lower(), 
-                'input_names' :             ', '.join(INPUT_NAMES),
-                'optional_input_names' :    ', '.join(OPTIONAL_INPUT_NAMES),
-                'output_names' :            ', '.join(OUTPUT_NAMES),
-                'optional_output_names' :   ', '.join(OPTIONAL_OUTPUT_NAMES),
-                'parameters' :              ', '.join(PARAMETERS),
-                'parameter_types' :         ', '.join(PARAMETER_TYPES),
-                'optional_parameters' :     ', '.join(OPTIONAL_PARAMETERS),
-                'optional_parameter_types' :', '.join(OPTIONAL_PARAMETER_TYPES)
-        }
-        
+                'upper' :                       op_name.upper(),
+                'norm' :                        op_name, 
+                'lower' :                       op_name.lower(), 
+                'input_names' :                 ', '.join(INPUT_NAMES),
+                'optional_input_names' :        ', '.join(OPTIONAL_INPUT_NAMES),
+                'output_names' :                ', '.join(OUTPUT_NAMES),
+                'optional_output_names' :       ', '.join(OPTIONAL_OUTPUT_NAMES),
+                'parameters' :                  ', '.join(PARAMETERS),
+                'parameter_types' :             ', '.join(PARAMETER_TYPES),
+                'optional_parameters' :         ', '.join(OPTIONAL_PARAMETERS),
+                'optional_parameter_types' :    ', '.join(OPTIONAL_PARAMETER_TYPES),
 
-        op_file.write(op.name+'=' + ', '.join(parameters) + '\n')
+
+                'param_lst' :                   ' '.join( [ '{0} {1};'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES)] + [ '{0} {1};'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES)] ) + '\n\t\t' + \
+                                                ' '.join( [ 'Shape_t {1};'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j == 'Tensor*')] + [ 'Shape_t {1};'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES) if(j == 'Tensor*')] ) ,
+                'param_param_lst' :             ' '.join(layer_paramaters)+ '\n\t\t\t' + \
+                                                ' '.join( [ 'Shape_t {1};'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j == 'Tensor*')] + [ 'Shape_t {1};'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES) if(j == 'Tensor*')] ) ,
+
+                'input_lst' :                   ' '.join( ['std::string {0};'.format(x) for x in INPUT_NAMES]),
+                'optional_input_lst' :          ' '.join( ['std::string {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
+                'output_lst' :                  ' '.join( ['std::string {0};'.format(x) for x in OUTPUT_NAMES]),
+                'optional_output_lst' :         ' '.join( ['std::string {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
+                'input_param_lst' :             ' '.join( ['Shape_t {0};'.format(x) for x in INPUT_NAMES]),
+                'optional_input_param_lst' :    ' '.join( ['Shape_t {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
+                'output_param_lst' :            ' '.join( ['Shape_t {0};'.format(x) for x in OUTPUT_NAMES]),
+                'optional_output_param_lst' :   ' '.join( ['Shape_t {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
+                
+                'bind_param_lst' :              ' ',
+                'bind_input_lst' :              ' ',
+                'bind_output_lst' :             ' '
+
+        }        
+
+        op_file.write(op.name+'=' + ', '.join(layer_paramaters) + '\n')
         
         if(op.since_version <= 10 and op.deprecated==False):
             f = open('../_backend/layers/'+op_name.lower()+'.h', 'w')

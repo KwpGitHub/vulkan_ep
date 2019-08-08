@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axis, p
-//OPTIONAL_PARAMETERS_TYPE: INT, INT
+//OPTIONAL_PARAMETERS_TYPE: int, int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class LpNormalization : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int axis; int p;
+			
+            //input
+            Shape_t input;
+            
+            //output
+            Shape_t output;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         LpNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int axis; int p;
+		
+        //input
+        std::string input;
+        
+        //output
+        std::string output;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~LpNormalization(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

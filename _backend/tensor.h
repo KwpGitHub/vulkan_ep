@@ -7,6 +7,7 @@
 #include "kernel/array.hpp"
 #include "kernel/vuh.h"
 
+
 namespace backend {
 
 	struct Shape_t {
@@ -105,6 +106,7 @@ namespace backend {
 
 	};
 }
+
 
 namespace backend {
 	static std::map<std::string, Tensor*> tensor_dict;

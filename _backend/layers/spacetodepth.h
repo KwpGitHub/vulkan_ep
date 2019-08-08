@@ -6,27 +6,43 @@
 //OUTPUS:                   output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               blocksize
-//PARAMETER_TYPES:          INT
+//PARAMETER_TYPES:          int
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class SpaceToDepth : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int blocksize;
+			
+            //input
+            Shape_t input;
+            
+            //output
+            Shape_t output;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         SpaceToDepth(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int blocksize;
+		
+        //input
+        std::string input;
+        
+        //output
+        std::string output;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~SpaceToDepth(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axes
-//OPTIONAL_PARAMETERS_TYPE: INTS
+//OPTIONAL_PARAMETERS_TYPE: Shape_t
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Squeeze : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t axes;
+			
+            //input
+            Shape_t data;
+            
+            //output
+            Shape_t squeezed;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Squeeze(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Shape_t axes;
+		
+        //input
+        std::string data;
+        
+        //output
+        std::string squeezed;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Squeeze(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

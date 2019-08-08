@@ -6,27 +6,43 @@
 //OUTPUS:                   output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               shape
-//PARAMETER_TYPES:          INTS
+//PARAMETER_TYPES:          Shape_t
 //OPTIONAL_PARAMETERS:      dtype, high, low, seed
-//OPTIONAL_PARAMETERS_TYPE: INT, FLOAT, FLOAT, FLOAT
+//OPTIONAL_PARAMETERS_TYPE: int, float, float, float
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class RandomUniform : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t shape; int dtype; float high; float low; float seed;
+			
+            //input
+            
+            
+            //output
+            Shape_t output;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         RandomUniform(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Shape_t shape; int dtype; float high; float low; float seed;
+		
+        //input
+        
+        
+        //output
+        std::string output;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~RandomUniform(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

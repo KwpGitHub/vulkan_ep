@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axis, split
-//OPTIONAL_PARAMETERS_TYPE: INT, INTS
+//OPTIONAL_PARAMETERS_TYPE: int, Shape_t
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Split : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int axis; Shape_t split;
+			
+            //input
+            Shape_t input;
+            
+            //output
+            
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Split(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int axis; Shape_t split;
+		
+        //input
+        std::string input;
+        
+        //output
+        
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Split(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

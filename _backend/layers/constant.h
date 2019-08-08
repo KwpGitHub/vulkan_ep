@@ -6,27 +6,43 @@
 //OUTPUS:                   output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               value
-//PARAMETER_TYPES:          TENSOR
+//PARAMETER_TYPES:          Tensor*
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Constant : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            
+			Shape_t value;
+            //input
+            
+            
+            //output
+            Shape_t output;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Constant(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Tensor* value;
+		Shape_t value;
+        //input
+        
+        
+        //output
+        std::string output;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Constant(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

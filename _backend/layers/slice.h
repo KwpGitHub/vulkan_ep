@@ -10,23 +10,39 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Slice : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            
+			
+            //input
+            Shape_t data; Shape_t starts; Shape_t ends;
+            Shape_t axes; Shape_t steps;
+            //output
+            Shape_t output;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Slice(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        
+		
+        //input
+        std::string data; std::string starts; std::string ends;
+        std::string axes; std::string steps;
+        //output
+        std::string output;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Slice(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

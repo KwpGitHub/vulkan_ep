@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      coefficients, intercepts, post_transform, targets
-//OPTIONAL_PARAMETERS_TYPE: FLOATS, FLOATS, STRING, INT
+//OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, int, int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class LinearRegressor : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int post_transform; int targets;
+			Shape_t coefficients; Shape_t intercepts;
+            //input
+            Shape_t X;
+            
+            //output
+            Shape_t Y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         LinearRegressor(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Tensor* coefficients; Tensor* intercepts; int post_transform; int targets;
+		Shape_t coefficients; Shape_t intercepts;
+        //input
+        std::string X;
+        
+        //output
+        std::string Y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~LinearRegressor(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

@@ -6,27 +6,43 @@
 //OUTPUS:                   Y
 //OPTIONAL_OUTPUTS:         Indices
 //PARAMETERS:               kernel_shape
-//PARAMETER_TYPES:          INTS
+//PARAMETER_TYPES:          Shape_t
 //OPTIONAL_PARAMETERS:      auto_pad, ceil_mode, dilations, pads, storage_order, strides
-//OPTIONAL_PARAMETERS_TYPE: STRING, INT, INTS, INTS, INT, INTS
+//OPTIONAL_PARAMETERS_TYPE: int, int, Shape_t, Shape_t, int, Shape_t
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class MaxPool : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t kernel_shape; int auto_pad; int ceil_mode; Shape_t dilations; Shape_t pads; int storage_order; Shape_t strides;
+			
+            //input
+            Shape_t X;
+            
+            //output
+            Shape_t Y;
+            Shape_t Indices;
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         MaxPool(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Shape_t kernel_shape; int auto_pad; int ceil_mode; Shape_t dilations; Shape_t pads; int storage_order; Shape_t strides;
+		
+        //input
+        std::string X;
+        
+        //output
+        std::string Y;
+        std::string Indices;
+        //std::vector<uint32_t> output_shape();
    
         ~MaxPool(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

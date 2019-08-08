@@ -6,27 +6,43 @@
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               body
-//PARAMETER_TYPES:          GRAPH
+//PARAMETER_TYPES:          int
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Loop : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int body;
+			
+            //input
+            
+            Shape_t M; Shape_t cond;
+            //output
+            
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Loop(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int body;
+		
+        //input
+        
+        std::string M; std::string cond;
+        //output
+        
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Loop(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

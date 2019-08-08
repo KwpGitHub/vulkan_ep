@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      center_point_box
-//OPTIONAL_PARAMETERS_TYPE: INT
+//OPTIONAL_PARAMETERS_TYPE: int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class NonMaxSuppression : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int center_point_box;
+			
+            //input
+            Shape_t boxes; Shape_t scores;
+            Shape_t max_output_boxes_per_class; Shape_t iou_threshold; Shape_t score_threshold;
+            //output
+            Shape_t selected_indices;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         NonMaxSuppression(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int center_point_box;
+		
+        //input
+        std::string boxes; std::string scores;
+        std::string max_output_boxes_per_class; std::string iou_threshold; std::string score_threshold;
+        //output
+        std::string selected_indices;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~NonMaxSuppression(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

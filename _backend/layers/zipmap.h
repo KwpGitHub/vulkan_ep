@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      classlabels_int64s, classlabels_strings
-//OPTIONAL_PARAMETERS_TYPE: INTS, STRINGS
+//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class ZipMap : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t classlabels_int64s;
+			Shape_t classlabels_strings;
+            //input
+            Shape_t X;
+            
+            //output
+            Shape_t Z;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         ZipMap(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Shape_t classlabels_int64s; Tensor* classlabels_strings;
+		Shape_t classlabels_strings;
+        //input
+        std::string X;
+        
+        //output
+        std::string Z;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~ZipMap(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

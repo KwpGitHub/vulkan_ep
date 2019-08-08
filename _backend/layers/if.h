@@ -6,27 +6,43 @@
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               else_branch, then_branch
-//PARAMETER_TYPES:          GRAPH, GRAPH
+//PARAMETER_TYPES:          int, int
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class If : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int else_branch; int then_branch;
+			
+            //input
+            Shape_t cond;
+            
+            //output
+            
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         If(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int else_branch; int then_branch;
+		
+        //input
+        std::string cond;
+        
+        //output
+        
+        
+        //std::vector<uint32_t> output_shape();
    
         ~If(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

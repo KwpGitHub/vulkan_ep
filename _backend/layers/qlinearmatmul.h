@@ -10,23 +10,39 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class QLinearMatMul : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            
+			
+            //input
+            Shape_t a; Shape_t a_scale; Shape_t a_zero_point; Shape_t b; Shape_t b_scale; Shape_t b_zero_point; Shape_t y_scale; Shape_t y_zero_point;
+            
+            //output
+            Shape_t y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         QLinearMatMul(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        
+		
+        //input
+        std::string a; std::string a_scale; std::string a_zero_point; std::string b; std::string b_scale; std::string b_zero_point; std::string y_scale; std::string y_zero_point;
+        
+        //output
+        std::string y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~QLinearMatMul(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

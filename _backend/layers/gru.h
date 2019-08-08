@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      activation_alpha, activation_beta, activations, clip, direction, hidden_size, linear_before_reset
-//OPTIONAL_PARAMETERS_TYPE: FLOATS, FLOATS, STRINGS, FLOAT, STRING, INT, INT
+//OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, Tensor*, float, int, int, int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class GRU : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            float clip; int direction; int hidden_size; int linear_before_reset;
+			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
+            //input
+            Shape_t X; Shape_t W; Shape_t R;
+            Shape_t B; Shape_t sequence_lens; Shape_t initial_h;
+            //output
+            
+            Shape_t Y; Shape_t Y_h;
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         GRU(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Tensor* activation_alpha; Tensor* activation_beta; Tensor* activations; float clip; int direction; int hidden_size; int linear_before_reset;
+		Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
+        //input
+        std::string X; std::string W; std::string R;
+        std::string B; std::string sequence_lens; std::string initial_h;
+        //output
+        
+        std::string Y; std::string Y_h;
+        //std::vector<uint32_t> output_shape();
    
         ~GRU(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

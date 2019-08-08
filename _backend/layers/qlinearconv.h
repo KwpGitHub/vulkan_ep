@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      auto_pad, dilations, group, kernel_shape, pads, strides
-//OPTIONAL_PARAMETERS_TYPE: STRING, INTS, INT, INTS, INTS, INTS
+//OPTIONAL_PARAMETERS_TYPE: int, Shape_t, int, Shape_t, Shape_t, Shape_t
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class QLinearConv : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+			
+            //input
+            Shape_t x; Shape_t x_scale; Shape_t x_zero_point; Shape_t w; Shape_t w_scale; Shape_t w_zero_point; Shape_t y_scale; Shape_t y_zero_point;
+            Shape_t B;
+            //output
+            Shape_t y;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         QLinearConv(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+		
+        //input
+        std::string x; std::string x_scale; std::string x_zero_point; std::string w; std::string w_scale; std::string w_zero_point; std::string y_scale; std::string y_zero_point;
+        std::string B;
+        //output
+        std::string y;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~QLinearConv(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

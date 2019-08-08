@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      ratio
-//OPTIONAL_PARAMETERS_TYPE: FLOAT
+//OPTIONAL_PARAMETERS_TYPE: float
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Dropout : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            float ratio;
+			
+            //input
+            Shape_t data;
+            
+            //output
+            Shape_t output;
+            Shape_t mask;
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Dropout(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        float ratio;
+		
+        //input
+        std::string data;
+        
+        //output
+        std::string output;
+        std::string mask;
+        //std::vector<uint32_t> output_shape();
    
         ~Dropout(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

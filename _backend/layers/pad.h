@@ -6,27 +6,43 @@
 //OUTPUS:                   output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               pads
-//PARAMETER_TYPES:          INTS
+//PARAMETER_TYPES:          Shape_t
 //OPTIONAL_PARAMETERS:      mode, value
-//OPTIONAL_PARAMETERS_TYPE: STRING, FLOAT
+//OPTIONAL_PARAMETERS_TYPE: int, float
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Pad : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t pads; int mode; float value;
+			
+            //input
+            Shape_t data;
+            
+            //output
+            Shape_t output;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Pad(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Shape_t pads; int mode; float value;
+		
+        //input
+        std::string data;
+        
+        //output
+        std::string output;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Pad(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

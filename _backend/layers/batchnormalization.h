@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      epsilon, momentum
-//OPTIONAL_PARAMETERS_TYPE: FLOAT, FLOAT
+//OPTIONAL_PARAMETERS_TYPE: float, float
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class BatchNormalization : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            float epsilon; float momentum;
+			
+            //input
+            Shape_t X; Shape_t scale; Shape_t B; Shape_t mean; Shape_t var;
+            
+            //output
+            Shape_t Y;
+            Shape_t mean; Shape_t var; Shape_t saved_mean; Shape_t saved_var;
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         BatchNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        float epsilon; float momentum;
+		
+        //input
+        std::string X; std::string scale; std::string B; std::string mean; std::string var;
+        
+        //output
+        std::string Y;
+        std::string mean; std::string var; std::string saved_mean; std::string saved_var;
+        //std::vector<uint32_t> output_shape();
    
         ~BatchNormalization(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

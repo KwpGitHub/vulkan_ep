@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axis, keepdims
-//OPTIONAL_PARAMETERS_TYPE: INT, INT
+//OPTIONAL_PARAMETERS_TYPE: int, int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class ArgMin : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int axis; int keepdims;
+			
+            //input
+            Shape_t data;
+            
+            //output
+            Shape_t reduced;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         ArgMin(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int axis; int keepdims;
+		
+        //input
+        std::string data;
+        
+        //output
+        std::string reduced;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~ArgMin(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

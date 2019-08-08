@@ -6,27 +6,43 @@
 //OUTPUS:                   output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               kernel_shape
-//PARAMETER_TYPES:          INTS
+//PARAMETER_TYPES:          Shape_t
 //OPTIONAL_PARAMETERS:      pads, strides
-//OPTIONAL_PARAMETERS_TYPE: INTS, INTS
+//OPTIONAL_PARAMETERS_TYPE: Shape_t, Shape_t
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class MaxUnpool : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+			
+            //input
+            Shape_t X; Shape_t I;
+            Shape_t output_shape;
+            //output
+            Shape_t output;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         MaxUnpool(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+		
+        //input
+        std::string X; std::string I;
+        std::string output_shape;
+        //output
+        std::string output;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~MaxUnpool(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

@@ -8,25 +8,41 @@
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      fmod
-//OPTIONAL_PARAMETERS_TYPE: INT
+//OPTIONAL_PARAMETERS_TYPE: int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class Mod : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            int fmod;
+			
+            //input
+            Shape_t A; Shape_t B;
+            
+            //output
+            Shape_t C;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         Mod(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        int fmod;
+		
+        //input
+        std::string A; std::string B;
+        
+        //output
+        std::string C;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~Mod(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif

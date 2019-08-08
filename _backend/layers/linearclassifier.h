@@ -6,27 +6,43 @@
 //OUTPUS:                   Y, Z
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               coefficients
-//PARAMETER_TYPES:          FLOATS
+//PARAMETER_TYPES:          Tensor*
 //OPTIONAL_PARAMETERS:      classlabels_ints, classlabels_strings, intercepts, multi_class, post_transform
-//OPTIONAL_PARAMETERS_TYPE: INTS, STRINGS, FLOATS, INT, STRING
+//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, Tensor*, int, int
 
-#include <vector>
-#include "../layer.h"
-#include "../kernel/vuh.h"
+
 
 namespace backend {
     class LinearClassifier : public Layer {
         
         vuh::Device* _get_device();
 
-        struct Params{ };
+        struct Params{
+            Shape_t classlabels_ints; int multi_class; int post_transform;
+			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
+            //input
+            Shape_t X;
+            
+            //output
+            Shape_t Y; Shape_t Z;
+            
+        };
+
         vuh::Program<Specs, Params>* program;
 
     public:
         LinearClassifier(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
         void forward(){ program->run(); }
-         
-         //std::vector<uint32_t> output_shape();
+        
+        Tensor* coefficients; Shape_t classlabels_ints; Tensor* classlabels_strings; Tensor* intercepts; int multi_class; int post_transform;
+		Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
+        //input
+        std::string X;
+        
+        //output
+        std::string Y; std::string Z;
+        
+        //std::vector<uint32_t> output_shape();
    
         ~LinearClassifier(){}
     };
@@ -47,8 +63,6 @@ namespace backend {
             }
             return device;
     }
-
-
 };
 
 #endif
