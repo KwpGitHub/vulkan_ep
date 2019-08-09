@@ -2,7 +2,7 @@
 #define LOOP_H //Loop
 
 //INPUTS:                   
-//OPTIONAL_INPUTS:          M, cond
+//OPTIONAL_INPUTS:          M_output, cond_output
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               body
@@ -22,7 +22,7 @@ namespace backend {
 			
             //input
             
-            Shape_t M; Shape_t cond;
+            Shape_t M_output; Shape_t cond_output;
             //output
             
             
@@ -38,7 +38,7 @@ namespace backend {
 		
         //input
         
-        std::string M; std::string cond;
+        std::string M_output; std::string cond_output;
         //output
         
         
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/loop.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({body}, 
+                            tensor_dict[M_output], tensor_dict[cond_output],
+                             );
     }
 
     vuh::Device* Loop::_get_device() {

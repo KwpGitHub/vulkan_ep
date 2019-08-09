@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/scan.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({body, num_scan_inputs, scan_input_axes, scan_input_directions, scan_output_axes, scan_output_directions}, 
+                            ,
+                             );
     }
 
     vuh::Device* Scan::_get_device() {

@@ -1,9 +1,9 @@
 #ifndef QUANTIZELINEAR_H
 #define QUANTIZELINEAR_H //QuantizeLinear
 
-//INPUTS:                   x, y_scale
-//OPTIONAL_INPUTS:          y_zero_point
-//OUTPUS:                   y
+//INPUTS:                   x_input, y_scale_input
+//OPTIONAL_INPUTS:          y_zero_point_output
+//OUTPUS:                   y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t x; Shape_t y_scale;
-            Shape_t y_zero_point;
+            Shape_t x_input; Shape_t y_scale_input;
+            Shape_t y_zero_point_output;
             //output
-            Shape_t y;
+            Shape_t y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string x; std::string y_scale;
-        std::string y_zero_point;
+        std::string x_input; std::string y_scale_input;
+        std::string y_zero_point_output;
         //output
-        std::string y;
+        std::string y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/quantizelinear.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[x_input], tensor_dict[y_scale_input], tensor_dict[y_zero_point_output],
+                            tensor_dict[y_input_o] );
     }
 
     vuh::Device* QuantizeLinear::_get_device() {

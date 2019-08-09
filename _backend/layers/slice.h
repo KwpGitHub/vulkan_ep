@@ -1,9 +1,9 @@
 #ifndef SLICE_H
 #define SLICE_H //Slice
 
-//INPUTS:                   data, starts, ends
-//OPTIONAL_INPUTS:          axes, steps
-//OUTPUS:                   output
+//INPUTS:                   data_input, starts_input, ends_input
+//OPTIONAL_INPUTS:          axes_output, steps_output
+//OUTPUS:                   output_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t data; Shape_t starts; Shape_t ends;
-            Shape_t axes; Shape_t steps;
+            Shape_t data_input; Shape_t starts_input; Shape_t ends_input;
+            Shape_t axes_output; Shape_t steps_output;
             //output
-            Shape_t output;
+            Shape_t output_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string data; std::string starts; std::string ends;
-        std::string axes; std::string steps;
+        std::string data_input; std::string starts_input; std::string ends_input;
+        std::string axes_output; std::string steps_output;
         //output
-        std::string output;
+        std::string output_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/slice.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[data_input], tensor_dict[starts_input], tensor_dict[ends_input], tensor_dict[axes_output], tensor_dict[steps_output],
+                            tensor_dict[output_input_o] );
     }
 
     vuh::Device* Slice::_get_device() {

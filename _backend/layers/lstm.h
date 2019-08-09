@@ -1,10 +1,10 @@
 #ifndef LSTM_H
 #define LSTM_H //LSTM
 
-//INPUTS:                   X, W, R
-//OPTIONAL_INPUTS:          B, sequence_lens, initial_h, initial_c, P
+//INPUTS:                   X_input, W_input, R_input
+//OPTIONAL_INPUTS:          B_output, sequence_lens_output, initial_h_output, initial_c_output, P_output
 //OUTPUS:                   
-//OPTIONAL_OUTPUTS:         Y, Y_h, Y_c
+//OPTIONAL_OUTPUTS:         Y_output_o, Y_h_output_o, Y_c_output_o
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      activation_alpha, activation_beta, activations, clip, direction, hidden_size, input_forget
@@ -21,11 +21,11 @@ namespace backend {
             float clip; int direction; int hidden_size; int input_forget;
 			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
             //input
-            Shape_t X; Shape_t W; Shape_t R;
-            Shape_t B; Shape_t sequence_lens; Shape_t initial_h; Shape_t initial_c; Shape_t P;
+            Shape_t X_input; Shape_t W_input; Shape_t R_input;
+            Shape_t B_output; Shape_t sequence_lens_output; Shape_t initial_h_output; Shape_t initial_c_output; Shape_t P_output;
             //output
             
-            Shape_t Y; Shape_t Y_h; Shape_t Y_c;
+            Shape_t Y_output_o; Shape_t Y_h_output_o; Shape_t Y_c_output_o;
         };
 
         vuh::Program<Specs, Params>* program;
@@ -35,13 +35,13 @@ namespace backend {
         void forward(){ program->run(); }
         
         Tensor* activation_alpha; Tensor* activation_beta; Tensor* activations; float clip; int direction; int hidden_size; int input_forget;
-		Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
+		Shape_t activation_alpha_t; Shape_t activation_beta_t; Shape_t activations_t;
         //input
-        std::string X; std::string W; std::string R;
-        std::string B; std::string sequence_lens; std::string initial_h; std::string initial_c; std::string P;
+        std::string X_input; std::string W_input; std::string R_input;
+        std::string B_output; std::string sequence_lens_output; std::string initial_h_output; std::string initial_c_output; std::string P_output;
         //output
         
-        std::string Y; std::string Y_h; std::string Y_c;
+        std::string Y_output_o; std::string Y_h_output_o; std::string Y_c_output_o;
         //std::vector<uint32_t> output_shape();
    
         ~LSTM(){}
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/lstm.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({clip, direction, hidden_size, input_forget, activation_alpha_t, activation_beta_t, activations_t}, 
+                            tensor_dict[X_input], tensor_dict[W_input], tensor_dict[R_input], tensor_dict[B_output], tensor_dict[sequence_lens_output], tensor_dict[initial_h_output], tensor_dict[initial_c_output], tensor_dict[P_output],
+                            tensor_dict[Y_output_o], tensor_dict[Y_h_output_o], tensor_dict[Y_c_output_o] );
     }
 
     vuh::Device* LSTM::_get_device() {

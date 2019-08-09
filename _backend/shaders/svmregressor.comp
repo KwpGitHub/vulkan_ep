@@ -7,7 +7,14 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-   uint size;
+    int kernel_type; int n_supports; int one_class; int post_transform;
+			Shape_t coefficients; Shape_t kernel_params; Shape_t rho; Shape_t support_vectors;
+//input
+    Shape_t X_input;
+    
+//output
+    Shape_t Y_input_o;
+    
 } params;
 
 void main(){

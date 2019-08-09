@@ -1,9 +1,9 @@
 #ifndef TILE_H
 #define TILE_H //Tile
 
-//INPUTS:                   input, repeats
+//INPUTS:                   input_input, repeats_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output
+//OUTPUS:                   output_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t input; Shape_t repeats;
+            Shape_t input_input; Shape_t repeats_input;
             
             //output
-            Shape_t output;
+            Shape_t output_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string input; std::string repeats;
+        std::string input_input; std::string repeats_input;
         
         //output
-        std::string output;
+        std::string output_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/tile.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[input_input], tensor_dict[repeats_input],
+                            tensor_dict[output_input_o] );
     }
 
     vuh::Device* Tile::_get_device() {

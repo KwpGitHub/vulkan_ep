@@ -1,9 +1,9 @@
 #ifndef LPPOOL_H
 #define LPPOOL_H //LpPool
 
-//INPUTS:                   X
+//INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               kernel_shape
 //PARAMETER_TYPES:          Shape_t
@@ -21,10 +21,10 @@ namespace backend {
             Shape_t kernel_shape; int auto_pad; int p; Shape_t pads; Shape_t strides;
 			
             //input
-            Shape_t X;
+            Shape_t X_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         Shape_t kernel_shape; int auto_pad; int p; Shape_t pads; Shape_t strides;
 		
         //input
-        std::string X;
+        std::string X_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/lppool.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({kernel_shape, auto_pad, p, pads, strides}, 
+                            tensor_dict[X_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* LpPool::_get_device() {

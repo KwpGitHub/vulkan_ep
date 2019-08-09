@@ -7,7 +7,14 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-   uint size;
+    int center_point_box;
+			
+//input
+    Shape_t boxes_input; Shape_t scores_input;
+    Shape_t max_output_boxes_per_class_output; Shape_t iou_threshold_output; Shape_t score_threshold_output;
+//output
+    Shape_t selected_indices_input_o;
+    
 } params;
 
 void main(){

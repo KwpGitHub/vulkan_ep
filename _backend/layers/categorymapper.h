@@ -1,9 +1,9 @@
 #ifndef CATEGORYMAPPER_H
 #define CATEGORYMAPPER_H //CategoryMapper
 
-//INPUTS:                   X
+//INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             Shape_t cats_int64s; int default_int64; int default_string;
 			Shape_t cats_strings;
             //input
-            Shape_t X;
+            Shape_t X_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         Shape_t cats_int64s; Tensor* cats_strings; int default_int64; int default_string;
-		Shape_t cats_strings;
+		Shape_t cats_strings_t;
         //input
-        std::string X;
+        std::string X_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/categorymapper.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({cats_int64s, default_int64, default_string, cats_strings_t}, 
+                            tensor_dict[X_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* CategoryMapper::_get_device() {

@@ -1,10 +1,10 @@
 #ifndef MAXPOOL_H
 #define MAXPOOL_H //MaxPool
 
-//INPUTS:                   X
+//INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
-//OPTIONAL_OUTPUTS:         Indices
+//OUTPUS:                   Y_input_o
+//OPTIONAL_OUTPUTS:         Indices_output_o
 //PARAMETERS:               kernel_shape
 //PARAMETER_TYPES:          Shape_t
 //OPTIONAL_PARAMETERS:      auto_pad, ceil_mode, dilations, pads, storage_order, strides
@@ -21,11 +21,11 @@ namespace backend {
             Shape_t kernel_shape; int auto_pad; int ceil_mode; Shape_t dilations; Shape_t pads; int storage_order; Shape_t strides;
 			
             //input
-            Shape_t X;
+            Shape_t X_input;
             
             //output
-            Shape_t Y;
-            Shape_t Indices;
+            Shape_t Y_input_o;
+            Shape_t Indices_output_o;
         };
 
         vuh::Program<Specs, Params>* program;
@@ -37,11 +37,11 @@ namespace backend {
         Shape_t kernel_shape; int auto_pad; int ceil_mode; Shape_t dilations; Shape_t pads; int storage_order; Shape_t strides;
 		
         //input
-        std::string X;
+        std::string X_input;
         
         //output
-        std::string Y;
-        std::string Indices;
+        std::string Y_input_o;
+        std::string Indices_output_o;
         //std::vector<uint32_t> output_shape();
    
         ~MaxPool(){}
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/maxpool.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({kernel_shape, auto_pad, ceil_mode, dilations, pads, storage_order, strides}, 
+                            tensor_dict[X_input],
+                            tensor_dict[Y_input_o], tensor_dict[Indices_output_o] );
     }
 
     vuh::Device* MaxPool::_get_device() {

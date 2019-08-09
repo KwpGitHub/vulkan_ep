@@ -1,9 +1,9 @@
 #ifndef IMPUTER_H
 #define IMPUTER_H //Imputer
 
-//INPUTS:                   X
+//INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
 			Shape_t imputed_value_floats;
             //input
-            Shape_t X;
+            Shape_t X_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         Tensor* imputed_value_floats; Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
-		Shape_t imputed_value_floats;
+		Shape_t imputed_value_floats_t;
         //input
-        std::string X;
+        std::string X_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/imputer.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({imputed_value_int64s, replaced_value_float, replaced_value_int64, imputed_value_floats_t}, 
+                            tensor_dict[X_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* Imputer::_get_device() {

@@ -1,9 +1,9 @@
 #ifndef ZIPMAP_H
 #define ZIPMAP_H //ZipMap
 
-//INPUTS:                   X
+//INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Z
+//OUTPUS:                   Z_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             Shape_t classlabels_int64s;
 			Shape_t classlabels_strings;
             //input
-            Shape_t X;
+            Shape_t X_input;
             
             //output
-            Shape_t Z;
+            Shape_t Z_input_o;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         Shape_t classlabels_int64s; Tensor* classlabels_strings;
-		Shape_t classlabels_strings;
+		Shape_t classlabels_strings_t;
         //input
-        std::string X;
+        std::string X_input;
         
         //output
-        std::string Z;
+        std::string Z_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/zipmap.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({classlabels_int64s, classlabels_strings_t}, 
+                            tensor_dict[X_input],
+                            tensor_dict[Z_input_o] );
     }
 
     vuh::Device* ZipMap::_get_device() {

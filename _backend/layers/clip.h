@@ -1,9 +1,9 @@
 #ifndef CLIP_H
 #define CLIP_H //Clip
 
-//INPUTS:                   input
+//INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output
+//OUTPUS:                   output_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             float max; float min;
 			
             //input
-            Shape_t input;
+            Shape_t input_input;
             
             //output
-            Shape_t output;
+            Shape_t output_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         float max; float min;
 		
         //input
-        std::string input;
+        std::string input_input;
         
         //output
-        std::string output;
+        std::string output_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/clip.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({max, min}, 
+                            tensor_dict[input_input],
+                            tensor_dict[output_input_o] );
     }
 
     vuh::Device* Clip::_get_device() {

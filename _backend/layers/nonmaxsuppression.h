@@ -1,9 +1,9 @@
 #ifndef NONMAXSUPPRESSION_H
 #define NONMAXSUPPRESSION_H //NonMaxSuppression
 
-//INPUTS:                   boxes, scores
-//OPTIONAL_INPUTS:          max_output_boxes_per_class, iou_threshold, score_threshold
-//OUTPUS:                   selected_indices
+//INPUTS:                   boxes_input, scores_input
+//OPTIONAL_INPUTS:          max_output_boxes_per_class_output, iou_threshold_output, score_threshold_output
+//OUTPUS:                   selected_indices_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             int center_point_box;
 			
             //input
-            Shape_t boxes; Shape_t scores;
-            Shape_t max_output_boxes_per_class; Shape_t iou_threshold; Shape_t score_threshold;
+            Shape_t boxes_input; Shape_t scores_input;
+            Shape_t max_output_boxes_per_class_output; Shape_t iou_threshold_output; Shape_t score_threshold_output;
             //output
-            Shape_t selected_indices;
+            Shape_t selected_indices_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         int center_point_box;
 		
         //input
-        std::string boxes; std::string scores;
-        std::string max_output_boxes_per_class; std::string iou_threshold; std::string score_threshold;
+        std::string boxes_input; std::string scores_input;
+        std::string max_output_boxes_per_class_output; std::string iou_threshold_output; std::string score_threshold_output;
         //output
-        std::string selected_indices;
+        std::string selected_indices_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/nonmaxsuppression.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({center_point_box}, 
+                            tensor_dict[boxes_input], tensor_dict[scores_input], tensor_dict[max_output_boxes_per_class_output], tensor_dict[iou_threshold_output], tensor_dict[score_threshold_output],
+                            tensor_dict[selected_indices_input_o] );
     }
 
     vuh::Device* NonMaxSuppression::_get_device() {

@@ -1,9 +1,9 @@
 #ifndef MATMUL_H
 #define MATMUL_H //MatMul
 
-//INPUTS:                   A, B
+//INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t A; Shape_t B;
+            Shape_t A_input; Shape_t B_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string A; std::string B;
+        std::string A_input; std::string B_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/matmul.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[A_input], tensor_dict[B_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* MatMul::_get_device() {

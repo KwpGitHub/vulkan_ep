@@ -1,9 +1,9 @@
 #ifndef ROIALIGN_H
 #define ROIALIGN_H //RoiAlign
 
-//INPUTS:                   X, rois, batch_indices
+//INPUTS:                   X_input, rois_input, batch_indices_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
 			
             //input
-            Shape_t X; Shape_t rois; Shape_t batch_indices;
+            Shape_t X_input; Shape_t rois_input; Shape_t batch_indices_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
 		
         //input
-        std::string X; std::string rois; std::string batch_indices;
+        std::string X_input; std::string rois_input; std::string batch_indices_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/roialign.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({mode, output_height, output_width, sampling_ratio, spatial_scale}, 
+                            tensor_dict[X_input], tensor_dict[rois_input], tensor_dict[batch_indices_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* RoiAlign::_get_device() {

@@ -1,9 +1,9 @@
 #ifndef QLINEARMATMUL_H
 #define QLINEARMATMUL_H //QLinearMatMul
 
-//INPUTS:                   a, a_scale, a_zero_point, b, b_scale, b_zero_point, y_scale, y_zero_point
+//INPUTS:                   a_input, a_scale_input, a_zero_point_input, b_input, b_scale_input, b_zero_point_input, y_scale_input, y_zero_point_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   y
+//OUTPUS:                   y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t a; Shape_t a_scale; Shape_t a_zero_point; Shape_t b; Shape_t b_scale; Shape_t b_zero_point; Shape_t y_scale; Shape_t y_zero_point;
+            Shape_t a_input; Shape_t a_scale_input; Shape_t a_zero_point_input; Shape_t b_input; Shape_t b_scale_input; Shape_t b_zero_point_input; Shape_t y_scale_input; Shape_t y_zero_point_input;
             
             //output
-            Shape_t y;
+            Shape_t y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string a; std::string a_scale; std::string a_zero_point; std::string b; std::string b_scale; std::string b_zero_point; std::string y_scale; std::string y_zero_point;
+        std::string a_input; std::string a_scale_input; std::string a_zero_point_input; std::string b_input; std::string b_scale_input; std::string b_zero_point_input; std::string y_scale_input; std::string y_zero_point_input;
         
         //output
-        std::string y;
+        std::string y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/qlinearmatmul.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[a_input], tensor_dict[a_scale_input], tensor_dict[a_zero_point_input], tensor_dict[b_input], tensor_dict[b_scale_input], tensor_dict[b_zero_point_input], tensor_dict[y_scale_input], tensor_dict[y_zero_point_input],
+                            tensor_dict[y_input_o] );
     }
 
     vuh::Device* QLinearMatMul::_get_device() {

@@ -1,9 +1,9 @@
 #ifndef MAXROIPOOL_H
 #define MAXROIPOOL_H //MaxRoiPool
 
-//INPUTS:                   X, rois
+//INPUTS:                   X_input, rois_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               pooled_shape
 //PARAMETER_TYPES:          Shape_t
@@ -21,10 +21,10 @@ namespace backend {
             Shape_t pooled_shape; float spatial_scale;
 			
             //input
-            Shape_t X; Shape_t rois;
+            Shape_t X_input; Shape_t rois_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         Shape_t pooled_shape; float spatial_scale;
 		
         //input
-        std::string X; std::string rois;
+        std::string X_input; std::string rois_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/maxroipool.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({pooled_shape, spatial_scale}, 
+                            tensor_dict[X_input], tensor_dict[rois_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* MaxRoiPool::_get_device() {

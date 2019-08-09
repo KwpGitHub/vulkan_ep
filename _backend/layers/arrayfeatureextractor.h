@@ -1,9 +1,9 @@
 #ifndef ARRAYFEATUREEXTRACTOR_H
 #define ARRAYFEATUREEXTRACTOR_H //ArrayFeatureExtractor
 
-//INPUTS:                   X, Y
+//INPUTS:                   X_input, Y_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Z
+//OUTPUS:                   Z_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t X; Shape_t Y;
+            Shape_t X_input; Shape_t Y_input;
             
             //output
-            Shape_t Z;
+            Shape_t Z_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string X; std::string Y;
+        std::string X_input; std::string Y_input;
         
         //output
-        std::string Z;
+        std::string Z_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/arrayfeatureextractor.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[X_input], tensor_dict[Y_input],
+                            tensor_dict[Z_input_o] );
     }
 
     vuh::Device* ArrayFeatureExtractor::_get_device() {

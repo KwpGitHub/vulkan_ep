@@ -1,9 +1,9 @@
 #ifndef ARGMIN_H
 #define ARGMIN_H //ArgMin
 
-//INPUTS:                   data
+//INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   reduced
+//OUTPUS:                   reduced_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             int axis; int keepdims;
 			
             //input
-            Shape_t data;
+            Shape_t data_input;
             
             //output
-            Shape_t reduced;
+            Shape_t reduced_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         int axis; int keepdims;
 		
         //input
-        std::string data;
+        std::string data_input;
         
         //output
-        std::string reduced;
+        std::string reduced_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/argmin.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({axis, keepdims}, 
+                            tensor_dict[data_input],
+                            tensor_dict[reduced_input_o] );
     }
 
     vuh::Device* ArgMin::_get_device() {

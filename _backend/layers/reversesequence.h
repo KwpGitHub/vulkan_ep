@@ -1,9 +1,9 @@
 #ifndef REVERSESEQUENCE_H
 #define REVERSESEQUENCE_H //ReverseSequence
 
-//INPUTS:                   input, sequence_lens
+//INPUTS:                   input_input, sequence_lens_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             int batch_axis; int time_axis;
 			
             //input
-            Shape_t input; Shape_t sequence_lens;
+            Shape_t input_input; Shape_t sequence_lens_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         int batch_axis; int time_axis;
 		
         //input
-        std::string input; std::string sequence_lens;
+        std::string input_input; std::string sequence_lens_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/reversesequence.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({batch_axis, time_axis}, 
+                            tensor_dict[input_input], tensor_dict[sequence_lens_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* ReverseSequence::_get_device() {

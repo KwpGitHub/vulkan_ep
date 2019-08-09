@@ -1,9 +1,9 @@
 #ifndef WHERE_H
 #define WHERE_H //Where
 
-//INPUTS:                   condition, X, Y
+//INPUTS:                   condition_input, X_input, Y_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output
+//OUTPUS:                   output_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t condition; Shape_t X; Shape_t Y;
+            Shape_t condition_input; Shape_t X_input; Shape_t Y_input;
             
             //output
-            Shape_t output;
+            Shape_t output_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string condition; std::string X; std::string Y;
+        std::string condition_input; std::string X_input; std::string Y_input;
         
         //output
-        std::string output;
+        std::string output_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/where.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[condition_input], tensor_dict[X_input], tensor_dict[Y_input],
+                            tensor_dict[output_input_o] );
     }
 
     vuh::Device* Where::_get_device() {

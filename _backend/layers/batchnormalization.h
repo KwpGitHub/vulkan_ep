@@ -1,10 +1,10 @@
 #ifndef BATCHNORMALIZATION_H
 #define BATCHNORMALIZATION_H //BatchNormalization
 
-//INPUTS:                   X, scale, B, mean, var
+//INPUTS:                   X_input, scale_input, B_input, mean_input, var_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
-//OPTIONAL_OUTPUTS:         mean, var, saved_mean, saved_var
+//OUTPUS:                   Y_input_o
+//OPTIONAL_OUTPUTS:         mean_output_o, var_output_o, saved_mean_output_o, saved_var_output_o
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      epsilon, momentum
@@ -21,11 +21,11 @@ namespace backend {
             float epsilon; float momentum;
 			
             //input
-            Shape_t X; Shape_t scale; Shape_t B; Shape_t mean; Shape_t var;
+            Shape_t X_input; Shape_t scale_input; Shape_t B_input; Shape_t mean_input; Shape_t var_input;
             
             //output
-            Shape_t Y;
-            Shape_t mean; Shape_t var; Shape_t saved_mean; Shape_t saved_var;
+            Shape_t Y_input_o;
+            Shape_t mean_output_o; Shape_t var_output_o; Shape_t saved_mean_output_o; Shape_t saved_var_output_o;
         };
 
         vuh::Program<Specs, Params>* program;
@@ -37,11 +37,11 @@ namespace backend {
         float epsilon; float momentum;
 		
         //input
-        std::string X; std::string scale; std::string B; std::string mean; std::string var;
+        std::string X_input; std::string scale_input; std::string B_input; std::string mean_input; std::string var_input;
         
         //output
-        std::string Y;
-        std::string mean; std::string var; std::string saved_mean; std::string saved_var;
+        std::string Y_input_o;
+        std::string mean_output_o; std::string var_output_o; std::string saved_mean_output_o; std::string saved_var_output_o;
         //std::vector<uint32_t> output_shape();
    
         ~BatchNormalization(){}
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/batchnormalization.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({epsilon, momentum}, 
+                            tensor_dict[X_input], tensor_dict[scale_input], tensor_dict[B_input], tensor_dict[mean_input], tensor_dict[var_input],
+                            tensor_dict[Y_input_o], tensor_dict[mean_output_o], tensor_dict[var_output_o], tensor_dict[saved_mean_output_o], tensor_dict[saved_var_output_o] );
     }
 
     vuh::Device* BatchNormalization::_get_device() {

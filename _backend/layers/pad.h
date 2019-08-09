@@ -1,9 +1,9 @@
 #ifndef PAD_H
 #define PAD_H //Pad
 
-//INPUTS:                   data
+//INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output
+//OUTPUS:                   output_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               pads
 //PARAMETER_TYPES:          Shape_t
@@ -21,10 +21,10 @@ namespace backend {
             Shape_t pads; int mode; float value;
 			
             //input
-            Shape_t data;
+            Shape_t data_input;
             
             //output
-            Shape_t output;
+            Shape_t output_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         Shape_t pads; int mode; float value;
 		
         //input
-        std::string data;
+        std::string data_input;
         
         //output
-        std::string output;
+        std::string output_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/pad.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({pads, mode, value}, 
+                            tensor_dict[data_input],
+                            tensor_dict[output_input_o] );
     }
 
     vuh::Device* Pad::_get_device() {

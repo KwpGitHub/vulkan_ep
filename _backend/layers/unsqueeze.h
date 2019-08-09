@@ -1,9 +1,9 @@
 #ifndef UNSQUEEZE_H
 #define UNSQUEEZE_H //Unsqueeze
 
-//INPUTS:                   data
+//INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   expanded
+//OUTPUS:                   expanded_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               axes
 //PARAMETER_TYPES:          Shape_t
@@ -21,10 +21,10 @@ namespace backend {
             Shape_t axes;
 			
             //input
-            Shape_t data;
+            Shape_t data_input;
             
             //output
-            Shape_t expanded;
+            Shape_t expanded_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         Shape_t axes;
 		
         //input
-        std::string data;
+        std::string data_input;
         
         //output
-        std::string expanded;
+        std::string expanded_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/unsqueeze.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({axes}, 
+                            tensor_dict[data_input],
+                            tensor_dict[expanded_input_o] );
     }
 
     vuh::Device* Unsqueeze::_get_device() {

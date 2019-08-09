@@ -1,7 +1,7 @@
 #ifndef SPLIT_H
 #define SPLIT_H //Split
 
-//INPUTS:                   input
+//INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
@@ -21,7 +21,7 @@ namespace backend {
             int axis; Shape_t split;
 			
             //input
-            Shape_t input;
+            Shape_t input_input;
             
             //output
             
@@ -37,7 +37,7 @@ namespace backend {
         int axis; Shape_t split;
 		
         //input
-        std::string input;
+        std::string input_input;
         
         //output
         
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/split.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({axis, split}, 
+                            tensor_dict[input_input],
+                             );
     }
 
     vuh::Device* Split::_get_device() {

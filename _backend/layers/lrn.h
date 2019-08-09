@@ -1,9 +1,9 @@
 #ifndef LRN_H
 #define LRN_H //LRN
 
-//INPUTS:                   X
+//INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               size
 //PARAMETER_TYPES:          int
@@ -21,10 +21,10 @@ namespace backend {
             int size; float alpha; float beta; float bias;
 			
             //input
-            Shape_t X;
+            Shape_t X_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         int size; float alpha; float beta; float bias;
 		
         //input
-        std::string X;
+        std::string X_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/lrn.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({size, alpha, beta, bias}, 
+                            tensor_dict[X_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* LRN::_get_device() {

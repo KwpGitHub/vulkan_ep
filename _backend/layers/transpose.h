@@ -1,9 +1,9 @@
 #ifndef TRANSPOSE_H
 #define TRANSPOSE_H //Transpose
 
-//INPUTS:                   data
+//INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   transposed
+//OUTPUS:                   transposed_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             Shape_t perm;
 			
             //input
-            Shape_t data;
+            Shape_t data_input;
             
             //output
-            Shape_t transposed;
+            Shape_t transposed_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         Shape_t perm;
 		
         //input
-        std::string data;
+        std::string data_input;
         
         //output
-        std::string transposed;
+        std::string transposed_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/transpose.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({perm}, 
+                            tensor_dict[data_input],
+                            tensor_dict[transposed_input_o] );
     }
 
     vuh::Device* Transpose::_get_device() {

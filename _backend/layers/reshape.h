@@ -1,9 +1,9 @@
 #ifndef RESHAPE_H
 #define RESHAPE_H //Reshape
 
-//INPUTS:                   data, shape
+//INPUTS:                   data_input, shape_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   reshaped
+//OUTPUS:                   reshaped_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t data; Shape_t shape;
+            Shape_t data_input; Shape_t shape_input;
             
             //output
-            Shape_t reshaped;
+            Shape_t reshaped_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string data; std::string shape;
+        std::string data_input; std::string shape_input;
         
         //output
-        std::string reshaped;
+        std::string reshaped_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/reshape.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[data_input], tensor_dict[shape_input],
+                            tensor_dict[reshaped_input_o] );
     }
 
     vuh::Device* Reshape::_get_device() {

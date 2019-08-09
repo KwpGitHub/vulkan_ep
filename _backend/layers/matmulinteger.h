@@ -1,9 +1,9 @@
 #ifndef MATMULINTEGER_H
 #define MATMULINTEGER_H //MatMulInteger
 
-//INPUTS:                   A, B
-//OPTIONAL_INPUTS:          a_zero_point, b_zero_point
-//OUTPUS:                   Y
+//INPUTS:                   A_input, B_input
+//OPTIONAL_INPUTS:          a_zero_point_output, b_zero_point_output
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             
 			
             //input
-            Shape_t A; Shape_t B;
-            Shape_t a_zero_point; Shape_t b_zero_point;
+            Shape_t A_input; Shape_t B_input;
+            Shape_t a_zero_point_output; Shape_t b_zero_point_output;
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         
 		
         //input
-        std::string A; std::string B;
-        std::string a_zero_point; std::string b_zero_point;
+        std::string A_input; std::string B_input;
+        std::string a_zero_point_output; std::string b_zero_point_output;
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/matmulinteger.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({}, 
+                            tensor_dict[A_input], tensor_dict[B_input], tensor_dict[a_zero_point_output], tensor_dict[b_zero_point_output],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* MatMulInteger::_get_device() {

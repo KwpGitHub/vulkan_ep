@@ -1,9 +1,9 @@
 #ifndef QLINEARCONV_H
 #define QLINEARCONV_H //QLinearConv
 
-//INPUTS:                   x, x_scale, x_zero_point, w, w_scale, w_zero_point, y_scale, y_zero_point
-//OPTIONAL_INPUTS:          B
-//OUTPUS:                   y
+//INPUTS:                   x_input, x_scale_input, x_zero_point_input, w_input, w_scale_input, w_zero_point_input, y_scale_input, y_zero_point_input
+//OPTIONAL_INPUTS:          B_output
+//OUTPUS:                   y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
 			
             //input
-            Shape_t x; Shape_t x_scale; Shape_t x_zero_point; Shape_t w; Shape_t w_scale; Shape_t w_zero_point; Shape_t y_scale; Shape_t y_zero_point;
-            Shape_t B;
+            Shape_t x_input; Shape_t x_scale_input; Shape_t x_zero_point_input; Shape_t w_input; Shape_t w_scale_input; Shape_t w_zero_point_input; Shape_t y_scale_input; Shape_t y_zero_point_input;
+            Shape_t B_output;
             //output
-            Shape_t y;
+            Shape_t y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
 		
         //input
-        std::string x; std::string x_scale; std::string x_zero_point; std::string w; std::string w_scale; std::string w_zero_point; std::string y_scale; std::string y_zero_point;
-        std::string B;
+        std::string x_input; std::string x_scale_input; std::string x_zero_point_input; std::string w_input; std::string w_scale_input; std::string w_zero_point_input; std::string y_scale_input; std::string y_zero_point_input;
+        std::string B_output;
         //output
-        std::string y;
+        std::string y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/qlinearconv.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({auto_pad, dilations, group, kernel_shape, pads, strides}, 
+                            tensor_dict[x_input], tensor_dict[x_scale_input], tensor_dict[x_zero_point_input], tensor_dict[w_input], tensor_dict[w_scale_input], tensor_dict[w_zero_point_input], tensor_dict[y_scale_input], tensor_dict[y_zero_point_input], tensor_dict[B_output],
+                            tensor_dict[y_input_o] );
     }
 
     vuh::Device* QLinearConv::_get_device() {

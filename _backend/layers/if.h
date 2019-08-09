@@ -1,7 +1,7 @@
 #ifndef IF_H
 #define IF_H //If
 
-//INPUTS:                   cond
+//INPUTS:                   cond_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
@@ -21,7 +21,7 @@ namespace backend {
             int else_branch; int then_branch;
 			
             //input
-            Shape_t cond;
+            Shape_t cond_input;
             
             //output
             
@@ -37,7 +37,7 @@ namespace backend {
         int else_branch; int then_branch;
 		
         //input
-        std::string cond;
+        std::string cond_input;
         
         //output
         
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/if.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({else_branch, then_branch}, 
+                            tensor_dict[cond_input],
+                             );
     }
 
     vuh::Device* If::_get_device() {

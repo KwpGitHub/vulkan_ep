@@ -7,7 +7,14 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-   uint size;
+    float clip; int direction; int hidden_size;
+			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
+//input
+    Shape_t X_input; Shape_t W_input; Shape_t R_input;
+    Shape_t B_output; Shape_t sequence_lens_output; Shape_t initial_h_output;
+//output
+    
+    Shape_t Y_output_o; Shape_t Y_h_output_o;
 } params;
 
 void main(){

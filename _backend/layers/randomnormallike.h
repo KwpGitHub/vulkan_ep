@@ -1,9 +1,9 @@
 #ifndef RANDOMNORMALLIKE_H
 #define RANDOMNORMALLIKE_H //RandomNormalLike
 
-//INPUTS:                   input
+//INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output
+//OUTPUS:                   output_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             int dtype; float mean; float scale; float seed;
 			
             //input
-            Shape_t input;
+            Shape_t input_input;
             
             //output
-            Shape_t output;
+            Shape_t output_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         int dtype; float mean; float scale; float seed;
 		
         //input
-        std::string input;
+        std::string input_input;
         
         //output
-        std::string output;
+        std::string output_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/randomnormallike.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({dtype, mean, scale, seed}, 
+                            tensor_dict[input_input],
+                            tensor_dict[output_input_o] );
     }
 
     vuh::Device* RandomNormalLike::_get_device() {

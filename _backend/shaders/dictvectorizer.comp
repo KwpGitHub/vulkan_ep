@@ -7,7 +7,14 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-   uint size;
+    Shape_t int64_vocabulary;
+			Shape_t string_vocabulary;
+//input
+    Shape_t X_input;
+    
+//output
+    Shape_t Y_input_o;
+    
 } params;
 
 void main(){

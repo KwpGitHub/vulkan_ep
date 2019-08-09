@@ -1,9 +1,9 @@
 #ifndef RESIZE_H
 #define RESIZE_H //Resize
 
-//INPUTS:                   X, scales
+//INPUTS:                   X_input, scales_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y
+//OUTPUS:                   Y_input_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -21,10 +21,10 @@ namespace backend {
             int mode;
 			
             //input
-            Shape_t X; Shape_t scales;
+            Shape_t X_input; Shape_t scales_input;
             
             //output
-            Shape_t Y;
+            Shape_t Y_input_o;
             
         };
 
@@ -37,10 +37,10 @@ namespace backend {
         int mode;
 		
         //input
-        std::string X; std::string scales;
+        std::string X_input; std::string scales_input;
         
         //output
-        std::string Y;
+        std::string Y_input_o;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,7 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/resize.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            //program->bind({}, );
+            program->bind({mode}, 
+                            tensor_dict[X_input], tensor_dict[scales_input],
+                            tensor_dict[Y_input_o] );
     }
 
     vuh::Device* Resize::_get_device() {

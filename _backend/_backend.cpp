@@ -24,7 +24,7 @@ void test() {
 	struct Params { uint32_t size; float a; };    // shader push-constants interface
 
 	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
-	auto program = vuh::Program<Specs, Params>(device, "saxpy.spv");
+	auto program = vuh::Program<Specs, Params>(device, std::string(backend::file_path + std::string("saxpy.spv")).c_str());
 
 	program.grid(128/64, 1, 1).spec(64, 1, 1).bind({ 128, 0.1f }, d_y, d_x); 
 	program.run();
