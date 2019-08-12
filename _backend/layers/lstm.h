@@ -2,7 +2,7 @@
 #define LSTM_H //LSTM
 
 //INPUTS:                   X_input, W_input, R_input
-//OPTIONAL_INPUTS:          B_output, sequence_lens_output, initial_h_output, initial_c_output, P_output
+//OPTIONAL_INPUTS:          B_input_o, sequence_lens_input_o, initial_h_input_o, initial_c_input_o, P_input_o
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         Y_output_o, Y_h_output_o, Y_c_output_o
 //PARAMETERS:               
@@ -19,10 +19,10 @@ namespace backend {
 
         struct Params{
             float clip; int direction; int hidden_size; int input_forget;
-			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
+			
             //input
             Shape_t X_input; Shape_t W_input; Shape_t R_input;
-            Shape_t B_output; Shape_t sequence_lens_output; Shape_t initial_h_output; Shape_t initial_c_output; Shape_t P_output;
+            Shape_t B_input_o; Shape_t sequence_lens_input_o; Shape_t initial_h_input_o; Shape_t initial_c_input_o; Shape_t P_input_o;
             //output
             
             Shape_t Y_output_o; Shape_t Y_h_output_o; Shape_t Y_c_output_o;
@@ -35,10 +35,10 @@ namespace backend {
         void forward(){ program->run(); }
         
         Tensor* activation_alpha; Tensor* activation_beta; Tensor* activations; float clip; int direction; int hidden_size; int input_forget;
-		Shape_t activation_alpha_t; Shape_t activation_beta_t; Shape_t activations_t;
+		
         //input
         std::string X_input; std::string W_input; std::string R_input;
-        std::string B_output; std::string sequence_lens_output; std::string initial_h_output; std::string initial_c_output; std::string P_output;
+        std::string B_input_o; std::string sequence_lens_input_o; std::string initial_h_input_o; std::string initial_c_input_o; std::string P_input_o;
         //output
         
         std::string Y_output_o; std::string Y_h_output_o; std::string Y_c_output_o;
@@ -54,8 +54,8 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/lstm.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({clip, direction, hidden_size, input_forget, activation_alpha_t, activation_beta_t, activations_t}, 
-                            tensor_dict[X_input], tensor_dict[W_input], tensor_dict[R_input], tensor_dict[B_output], tensor_dict[sequence_lens_output], tensor_dict[initial_h_output], tensor_dict[initial_c_output], tensor_dict[P_output],
+            program->bind({clip, direction, hidden_size, input_forget, tensor_dict[X_input]->shape(), tensor_dict[W_input]->shape(), tensor_dict[R_input]->shape(), tensor_dict[B_input_o]->shape(), tensor_dict[sequence_lens_input_o]->shape(), tensor_dict[initial_h_input_o]->shape(), tensor_dict[initial_c_input_o]->shape(), tensor_dict[P_input_o]->shape(), tensor_dict[Y_output_o]->shape(), tensor_dict[Y_h_output_o]->shape(), tensor_dict[Y_c_output_o]->shape()}, 
+                            tensor_dict[X_input], tensor_dict[W_input], tensor_dict[R_input], tensor_dict[B_input_o], tensor_dict[sequence_lens_input_o], tensor_dict[initial_h_input_o], tensor_dict[initial_c_input_o], tensor_dict[P_input_o],
                             tensor_dict[Y_output_o], tensor_dict[Y_h_output_o], tensor_dict[Y_c_output_o] );
     }
 

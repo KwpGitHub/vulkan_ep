@@ -3,7 +3,7 @@
 
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_input_o, Z_input_o
+//OUTPUS:                   Y_output, Z_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               coefficients
 //PARAMETER_TYPES:          Tensor*
@@ -19,12 +19,12 @@ namespace backend {
 
         struct Params{
             Shape_t classlabels_ints; int multi_class; int post_transform;
-			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
+			Shape_t coefficients;
             //input
             Shape_t X_input;
             
             //output
-            Shape_t Y_input_o; Shape_t Z_input_o;
+            Shape_t Y_output; Shape_t Z_output;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         Tensor* coefficients; Shape_t classlabels_ints; Tensor* classlabels_strings; Tensor* intercepts; int multi_class; int post_transform;
-		Shape_t coefficients_t; Shape_t classlabels_strings_t; Shape_t intercepts_t;
+		Shape_t coefficients_t;
         //input
         std::string X_input;
         
         //output
-        std::string Y_input_o; std::string Z_input_o;
+        std::string Y_output; std::string Z_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/linearclassifier.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({classlabels_ints, multi_class, post_transform, coefficients_t, classlabels_strings_t, intercepts_t}, 
-                            tensor_dict[X_input],
-                            tensor_dict[Y_input_o], tensor_dict[Z_input_o] );
+            program->bind({classlabels_ints, multi_class, post_transform, coefficients_t, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape(), tensor_dict[Z_output]->shape()}, 
+                            tensor_dict[coefficients], tensor_dict[X_input],
+                            tensor_dict[Y_output], tensor_dict[Z_output] );
     }
 
     vuh::Device* LinearClassifier::_get_device() {

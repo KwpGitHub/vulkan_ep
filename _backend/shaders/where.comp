@@ -13,15 +13,27 @@ layout(push_constant) uniform Parameters {
     Shape_t condition_input; Shape_t X_input; Shape_t Y_input;
     
 //output
-    Shape_t output_input_o;
+    Shape_t output_output;
     
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float condition_input[]; };
+layout(std430, binding = 1) buffer lay1 { float X_input[]; };
+layout(std430, binding = 2) buffer lay2 { float Y_input[]; };
+layout(std430, binding = 3) buffer lay3 { float output_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint condition_input_size = params.condition_input.n * params.condition_input.c * params.condition_input.d * params.condition_input.w * params.condition_input.h;
+	const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
+	const uint Y_input_size = params.Y_input.n * params.Y_input.c * params.Y_input.d * params.Y_input.w * params.Y_input.h;
+    
+    const uint output_output_size = params.output_output.n * params.output_output.c * params.output_output.d * params.output_output.w * params.output_output.h;
+    
+
     if(size <= idx) {
         return;
     }

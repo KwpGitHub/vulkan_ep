@@ -3,7 +3,7 @@
 
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_input_o, Z_input_o
+//OUTPUS:                   Y_output, Z_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -19,12 +19,12 @@ namespace backend {
 
         struct Params{
             Shape_t classlabels_ints; int kernel_type; int post_transform; Shape_t vectors_per_class;
-			Shape_t classlabels_strings; Shape_t coefficients; Shape_t kernel_params; Shape_t prob_a; Shape_t prob_b; Shape_t rho; Shape_t support_vectors;
+			
             //input
             Shape_t X_input;
             
             //output
-            Shape_t Y_input_o; Shape_t Z_input_o;
+            Shape_t Y_output; Shape_t Z_output;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         Shape_t classlabels_ints; Tensor* classlabels_strings; Tensor* coefficients; Tensor* kernel_params; int kernel_type; int post_transform; Tensor* prob_a; Tensor* prob_b; Tensor* rho; Tensor* support_vectors; Shape_t vectors_per_class;
-		Shape_t classlabels_strings_t; Shape_t coefficients_t; Shape_t kernel_params_t; Shape_t prob_a_t; Shape_t prob_b_t; Shape_t rho_t; Shape_t support_vectors_t;
+		
         //input
         std::string X_input;
         
         //output
-        std::string Y_input_o; std::string Z_input_o;
+        std::string Y_output; std::string Z_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/svmclassifier.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({classlabels_ints, kernel_type, post_transform, vectors_per_class, classlabels_strings_t, coefficients_t, kernel_params_t, prob_a_t, prob_b_t, rho_t, support_vectors_t}, 
+            program->bind({classlabels_ints, kernel_type, post_transform, vectors_per_class, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape(), tensor_dict[Z_output]->shape()}, 
                             tensor_dict[X_input],
-                            tensor_dict[Y_input_o], tensor_dict[Z_input_o] );
+                            tensor_dict[Y_output], tensor_dict[Z_output] );
     }
 
     vuh::Device* SVMClassifier::_get_device() {

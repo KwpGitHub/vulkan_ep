@@ -13,15 +13,25 @@ layout(push_constant) uniform Parameters {
     Shape_t input_input; Shape_t repeats_input;
     
 //output
-    Shape_t output_input_o;
+    Shape_t output_output;
     
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float input_input[]; };
+layout(std430, binding = 1) buffer lay1 { float repeats_input[]; };
+layout(std430, binding = 2) buffer lay2 { float output_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint input_input_size = params.input_input.n * params.input_input.c * params.input_input.d * params.input_input.w * params.input_input.h;
+	const uint repeats_input_size = params.repeats_input.n * params.repeats_input.c * params.repeats_input.d * params.repeats_input.w * params.repeats_input.h;
+    
+    const uint output_output_size = params.output_output.n * params.output_output.c * params.output_output.d * params.output_output.w * params.output_output.h;
+    
+
     if(size <= idx) {
         return;
     }

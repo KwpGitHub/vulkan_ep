@@ -3,7 +3,7 @@
 
 //INPUTS:                   condition_input, X_input, Y_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_input_o
+//OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t condition_input; Shape_t X_input; Shape_t Y_input;
             
             //output
-            Shape_t output_input_o;
+            Shape_t output_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string condition_input; std::string X_input; std::string Y_input;
         
         //output
-        std::string output_input_o;
+        std::string output_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/where.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, 
+            program->bind({tensor_dict[condition_input]->shape(), tensor_dict[X_input]->shape(), tensor_dict[Y_input]->shape(), tensor_dict[output_output]->shape()}, 
                             tensor_dict[condition_input], tensor_dict[X_input], tensor_dict[Y_input],
-                            tensor_dict[output_input_o] );
+                            tensor_dict[output_output] );
     }
 
     vuh::Device* Where::_get_device() {

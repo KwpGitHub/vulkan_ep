@@ -3,7 +3,7 @@
 
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_input_o
+//OUTPUS:                   Y_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -19,12 +19,12 @@ namespace backend {
 
         struct Params{
             float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s;
-			Shape_t keys_floats; Shape_t keys_strings; Shape_t values_floats; Shape_t values_strings;
+			
             //input
             Shape_t X_input;
             
             //output
-            Shape_t Y_input_o;
+            Shape_t Y_output;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         float default_float; int default_int64; int default_string; Tensor* keys_floats; Shape_t keys_int64s; Tensor* keys_strings; Tensor* values_floats; Shape_t values_int64s; Tensor* values_strings;
-		Shape_t keys_floats_t; Shape_t keys_strings_t; Shape_t values_floats_t; Shape_t values_strings_t;
+		
         //input
         std::string X_input;
         
         //output
-        std::string Y_input_o;
+        std::string Y_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/labelencoder.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({default_float, default_int64, default_string, keys_int64s, values_int64s, keys_floats_t, keys_strings_t, values_floats_t, values_strings_t}, 
+            program->bind({default_float, default_int64, default_string, keys_int64s, values_int64s, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()}, 
                             tensor_dict[X_input],
-                            tensor_dict[Y_input_o] );
+                            tensor_dict[Y_output] );
     }
 
     vuh::Device* LabelEncoder::_get_device() {

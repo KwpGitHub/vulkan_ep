@@ -54,7 +54,7 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/if.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({else_branch, then_branch}, 
+            program->bind({else_branch, then_branch, tensor_dict[cond_input]->shape()}, 
                             tensor_dict[cond_input],
                              );
     }

@@ -2,8 +2,8 @@
 #define MATMULINTEGER_H //MatMulInteger
 
 //INPUTS:                   A_input, B_input
-//OPTIONAL_INPUTS:          a_zero_point_output, b_zero_point_output
-//OUTPUS:                   Y_input_o
+//OPTIONAL_INPUTS:          a_zero_point_input_o, b_zero_point_input_o
+//OUTPUS:                   Y_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -22,9 +22,9 @@ namespace backend {
 			
             //input
             Shape_t A_input; Shape_t B_input;
-            Shape_t a_zero_point_output; Shape_t b_zero_point_output;
+            Shape_t a_zero_point_input_o; Shape_t b_zero_point_input_o;
             //output
-            Shape_t Y_input_o;
+            Shape_t Y_output;
             
         };
 
@@ -38,9 +38,9 @@ namespace backend {
 		
         //input
         std::string A_input; std::string B_input;
-        std::string a_zero_point_output; std::string b_zero_point_output;
+        std::string a_zero_point_input_o; std::string b_zero_point_input_o;
         //output
-        std::string Y_input_o;
+        std::string Y_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/matmulinteger.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, 
-                            tensor_dict[A_input], tensor_dict[B_input], tensor_dict[a_zero_point_output], tensor_dict[b_zero_point_output],
-                            tensor_dict[Y_input_o] );
+            program->bind({tensor_dict[A_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[a_zero_point_input_o]->shape(), tensor_dict[b_zero_point_input_o]->shape(), tensor_dict[Y_output]->shape()}, 
+                            tensor_dict[A_input], tensor_dict[B_input], tensor_dict[a_zero_point_input_o], tensor_dict[b_zero_point_input_o],
+                            tensor_dict[Y_output] );
     }
 
     vuh::Device* MatMulInteger::_get_device() {

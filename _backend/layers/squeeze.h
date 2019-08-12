@@ -3,7 +3,7 @@
 
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   squeezed_input_o
+//OUTPUS:                   squeezed_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t data_input;
             
             //output
-            Shape_t squeezed_input_o;
+            Shape_t squeezed_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string data_input;
         
         //output
-        std::string squeezed_input_o;
+        std::string squeezed_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/squeeze.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({axes}, 
+            program->bind({axes, tensor_dict[data_input]->shape(), tensor_dict[squeezed_output]->shape()}, 
                             tensor_dict[data_input],
-                            tensor_dict[squeezed_input_o] );
+                            tensor_dict[squeezed_output] );
     }
 
     vuh::Device* Squeeze::_get_device() {

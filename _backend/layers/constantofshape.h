@@ -3,7 +3,7 @@
 
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_input_o
+//OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -19,12 +19,12 @@ namespace backend {
 
         struct Params{
             
-			Shape_t value;
+			
             //input
             Shape_t input_input;
             
             //output
-            Shape_t output_input_o;
+            Shape_t output_output;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         Tensor* value;
-		Shape_t value_t;
+		
         //input
         std::string input_input;
         
         //output
-        std::string output_input_o;
+        std::string output_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/constantofshape.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({value_t}, 
+            program->bind({tensor_dict[input_input]->shape(), tensor_dict[output_output]->shape()}, 
                             tensor_dict[input_input],
-                            tensor_dict[output_input_o] );
+                            tensor_dict[output_output] );
     }
 
     vuh::Device* ConstantOfShape::_get_device() {

@@ -8,20 +8,28 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     
-			Shape_t value;
+			
 //input
     Shape_t input_input;
     
 //output
-    Shape_t output_input_o;
+    Shape_t output_output;
     
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float input_input[]; };
+layout(std430, binding = 1) buffer lay1 { float output_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint input_input_size = params.input_input.n * params.input_input.c * params.input_input.d * params.input_input.w * params.input_input.h;
+    
+    const uint output_output_size = params.output_output.n * params.output_output.c * params.output_output.d * params.output_output.w * params.output_output.h;
+    
+
     if(size <= idx) {
         return;
     }

@@ -164,11 +164,18 @@ layout(push_constant) uniform Parameters {{
     {optional_output_param_lst}
 }} params;
 
+{shader_layout_lst}
+
 void main(){{
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    {param_param_lst_size}
+    {input_param_lst_size}
+    {optional_input_param_lst_size}
+    {output_param_lst_size}
+    {optional_output_param_lst_size}
+
     if(size <= idx) {{
         return;
     }}
@@ -198,7 +205,6 @@ def onnx_proto():
         ops[op.name] = op
         op_name = str(op.name)
         attr = op.attributes
-        shader_buffers  =   ["layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};\n".format(i, x.name) for i,x in enumerate(op.outputs + op.inputs)]
         
         PARAMETERS =                [str(x.name) for _, x in op.attributes.items() if(x.required == True)]
         PARAMETER_TYPES =           [type_map[str(x.type).replace('AttrType.','')] for _, x in op.attributes.items() if(x.required == True)]
@@ -206,8 +212,8 @@ def onnx_proto():
         OPTIONAL_PARAMETER_TYPES =  [type_map[str(x.type).replace('AttrType.','')] for _, x in op.attributes.items() if(x.required == False)]
 
         INPUT_NAMES =               [str(x.name)+"_input" for x in op.inputs if(str(x.option) == 'FormalParameterOption.Single')]
-        OPTIONAL_INPUT_NAMES =      [str(x.name)+"_output" for x in op.inputs if(str(x.option) == 'FormalParameterOption.Optional')]
-        OUTPUT_NAMES =              [str(x.name)+"_input_o"  for x in op.outputs if(str(x.option) == 'FormalParameterOption.Single')]        
+        OPTIONAL_INPUT_NAMES =      [str(x.name)+"_input_o" for x in op.inputs if(str(x.option) == 'FormalParameterOption.Optional')]
+        OUTPUT_NAMES =              [str(x.name)+"_output"  for x in op.outputs if(str(x.option) == 'FormalParameterOption.Single')]        
         OPTIONAL_OUTPUT_NAMES =     [str(x.name)+"_output_o" for x in op.outputs if(str(x.option) == 'FormalParameterOption.Optional')]
     
         p_map = {"inputs" :                 ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'inputs') for x in INPUT_NAMES] ),
@@ -219,7 +225,7 @@ def onnx_proto():
 
         layer_paramaters = ['{0} {1};'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j != 'Tensor*')] \
             + ['{0} {1};'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES) if(j != 'Tensor*')]
-        
+        layer_parameter_tensors = [i for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j == 'Tensor*')]
         constructor_paramaters = []
 
         mapt = {
@@ -236,9 +242,11 @@ def onnx_proto():
                 'optional_parameter_types' :    ', '.join(OPTIONAL_PARAMETER_TYPES),
 
                 'param_lst' :                   ' '.join( [ '{0} {1};'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES)] + [ '{0} {1};'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES)] ) + '\n\t\t' + \
-                                                ' '.join( [ 'Shape_t {1}_t;'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j == 'Tensor*')] + [ 'Shape_t {1}_t;'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES) if(j == 'Tensor*')] ) ,
+                                                ' '.join( [ 'Shape_t {0}_t;'.format(i) for i in layer_parameter_tensors]) ,
                 'param_param_lst' :             ' '.join(layer_paramaters)+ '\n\t\t\t' + \
-                                                ' '.join( [ 'Shape_t {1};'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j == 'Tensor*')] + [ 'Shape_t {1};'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES) if(j == 'Tensor*')] ) ,
+                                                ' '.join( [ 'Shape_t {0};'.format(i) for i in layer_parameter_tensors]) ,
+                'param_param_lst_size' :        '\n\t'.join(['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in layer_parameter_tensors]),
+
 
                 'input_lst' :                   ' '.join( ['std::string {0};'.format(x) for x in INPUT_NAMES]),
                 'optional_input_lst' :          ' '.join( ['std::string {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
@@ -250,15 +258,27 @@ def onnx_proto():
                 'output_param_lst' :            ' '.join( ['Shape_t {0};'.format(x) for x in OUTPUT_NAMES]),
                 'optional_output_param_lst' :   ' '.join( ['Shape_t {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
                 
+
+                'input_param_lst_size' :             '\n\t'.join( ['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in INPUT_NAMES]),
+                'optional_input_param_lst_size' :    '\n\t'.join( ['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OPTIONAL_INPUT_NAMES]),
+                'output_param_lst_size' :            '\n\t'.join( ['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OUTPUT_NAMES]),
+                'optional_output_param_lst_size' :   '\n\t'.join( ['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),        
+                
+
+
                 'bind_param_lst' :              ', '.join(  ['{1}'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j != 'Tensor*')] + \
                                                             ['{1}'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES) if(j != 'Tensor*')] + \
-                                                            [ '{1}_t'.format(j, i) for i, j in zip(PARAMETERS, PARAMETER_TYPES) if(j == 'Tensor*')] + \
-                                                            [ '{1}_t'.format(j, i) for i, j in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES) if(j == 'Tensor*')]) ,
-                'bind_input_lst' :              ', '.join(['tensor_dict[{0}]'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES]),
+                                                            ['{0}_t'.format(i) for i in layer_parameter_tensors] + \
+                                                            ['tensor_dict[{0}]->shape()'.format(i) for i in INPUT_NAMES] + \
+                                                            ['tensor_dict[{0}]->shape()'.format(i) for i in OPTIONAL_INPUT_NAMES] + \
+                                                            ['tensor_dict[{0}]->shape()'.format(i) for i in OUTPUT_NAMES] + \
+                                                            ['tensor_dict[{0}]->shape()'.format(i) for i in OPTIONAL_OUTPUT_NAMES]  ),
+                'bind_input_lst' :              ', '.join(['tensor_dict[{0}]'.format(x) for x in layer_parameter_tensors + INPUT_NAMES + OPTIONAL_INPUT_NAMES]),
                 'bind_output_lst' :             ', '.join(['tensor_dict[{0}]'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
 
-                'shader_input_lst' :            '\n'.join(['layout(std430)'])
-        }        
+                'shader_layout_lst' :           '\n'.join(['layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};'.format(i,x) for i,x in enumerate(layer_parameter_tensors + INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)]),
+           
+                }        
 
         op_file.write(op.name+'=' + ', '.join(layer_paramaters) + '\n')
         

@@ -13,15 +13,25 @@ layout(push_constant) uniform Parameters {
     Shape_t input_input; Shape_t sequence_lens_input;
     
 //output
-    Shape_t Y_input_o;
+    Shape_t Y_output;
     
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float input_input[]; };
+layout(std430, binding = 1) buffer lay1 { float sequence_lens_input[]; };
+layout(std430, binding = 2) buffer lay2 { float Y_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint input_input_size = params.input_input.n * params.input_input.c * params.input_input.d * params.input_input.w * params.input_input.h;
+	const uint sequence_lens_input_size = params.sequence_lens_input.n * params.sequence_lens_input.c * params.sequence_lens_input.d * params.sequence_lens_input.w * params.sequence_lens_input.h;
+    
+    const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
+    
+
     if(size <= idx) {
         return;
     }

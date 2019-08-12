@@ -16,8 +16,7 @@ namespace vuh {
 		struct _CmdBuffer {
 			/// Constructor. Creates the new command buffer on a provided device and manages its resources.
 			_CmdBuffer(vuh::Device& device): device(&device){
-				auto bufferAI = vk::CommandBufferAllocateInfo(device.transferCmdPool()
-																			 , vk::CommandBufferLevel::ePrimary, 1);
+				auto bufferAI = vk::CommandBufferAllocateInfo(device.transferCmdPool(), vk::CommandBufferLevel::ePrimary, 1);
 				cmd_buffer = device.allocateCommandBuffers(bufferAI)[0];
 			}
 

@@ -8,20 +8,31 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     Shape_t classlabels_ints; int multi_class; int post_transform;
-			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
+			Shape_t coefficients;
 //input
     Shape_t X_input;
     
 //output
-    Shape_t Y_input_o; Shape_t Z_input_o;
+    Shape_t Y_output; Shape_t Z_output;
     
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float coefficients[]; };
+layout(std430, binding = 1) buffer lay1 { float X_input[]; };
+layout(std430, binding = 2) buffer lay2 { float Y_output[]; };
+layout(std430, binding = 3) buffer lay3 { float Z_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    const uint coefficients_size = params.coefficients.n * params.coefficients.c * params.coefficients.d * params.coefficients.w * params.coefficients.h;
+    const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
+    
+    const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
+	const uint Z_output_size = params.Z_output.n * params.Z_output.c * params.Z_output.d * params.Z_output.w * params.Z_output.h;
+    
+
     if(size <= idx) {
         return;
     }

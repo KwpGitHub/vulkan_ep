@@ -3,7 +3,7 @@
 
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   max_input_o
+//OUTPUS:                   max_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             
             
             //output
-            Shape_t max_input_o;
+            Shape_t max_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         
         
         //output
-        std::string max_input_o;
+        std::string max_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/max.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, 
+            program->bind({tensor_dict[max_output]->shape()}, 
                             ,
-                            tensor_dict[max_input_o] );
+                            tensor_dict[max_output] );
     }
 
     vuh::Device* Max::_get_device() {

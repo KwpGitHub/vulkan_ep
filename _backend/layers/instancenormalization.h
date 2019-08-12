@@ -3,7 +3,7 @@
 
 //INPUTS:                   input_input, scale_input, B_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_input_o
+//OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t input_input; Shape_t scale_input; Shape_t B_input;
             
             //output
-            Shape_t output_input_o;
+            Shape_t output_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string input_input; std::string scale_input; std::string B_input;
         
         //output
-        std::string output_input_o;
+        std::string output_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/instancenormalization.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({epsilon}, 
+            program->bind({epsilon, tensor_dict[input_input]->shape(), tensor_dict[scale_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[output_output]->shape()}, 
                             tensor_dict[input_input], tensor_dict[scale_input], tensor_dict[B_input],
-                            tensor_dict[output_input_o] );
+                            tensor_dict[output_output] );
     }
 
     vuh::Device* InstanceNormalization::_get_device() {

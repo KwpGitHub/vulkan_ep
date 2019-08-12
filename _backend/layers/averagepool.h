@@ -3,7 +3,7 @@
 
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_input_o
+//OUTPUS:                   Y_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               kernel_shape
 //PARAMETER_TYPES:          Shape_t
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t X_input;
             
             //output
-            Shape_t Y_input_o;
+            Shape_t Y_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string X_input;
         
         //output
-        std::string Y_input_o;
+        std::string Y_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/averagepool.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({kernel_shape, auto_pad, ceil_mode, count_include_pad, pads, strides}, 
+            program->bind({kernel_shape, auto_pad, ceil_mode, count_include_pad, pads, strides, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()}, 
                             tensor_dict[X_input],
-                            tensor_dict[Y_input_o] );
+                            tensor_dict[Y_output] );
     }
 
     vuh::Device* AveragePool::_get_device() {

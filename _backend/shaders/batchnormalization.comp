@@ -13,15 +13,38 @@ layout(push_constant) uniform Parameters {
     Shape_t X_input; Shape_t scale_input; Shape_t B_input; Shape_t mean_input; Shape_t var_input;
     
 //output
-    Shape_t Y_input_o;
+    Shape_t Y_output;
     Shape_t mean_output_o; Shape_t var_output_o; Shape_t saved_mean_output_o; Shape_t saved_var_output_o;
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float X_input[]; };
+layout(std430, binding = 1) buffer lay1 { float scale_input[]; };
+layout(std430, binding = 2) buffer lay2 { float B_input[]; };
+layout(std430, binding = 3) buffer lay3 { float mean_input[]; };
+layout(std430, binding = 4) buffer lay4 { float var_input[]; };
+layout(std430, binding = 5) buffer lay5 { float Y_output[]; };
+layout(std430, binding = 6) buffer lay6 { float mean_output_o[]; };
+layout(std430, binding = 7) buffer lay7 { float var_output_o[]; };
+layout(std430, binding = 8) buffer lay8 { float saved_mean_output_o[]; };
+layout(std430, binding = 9) buffer lay9 { float saved_var_output_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
+	const uint scale_input_size = params.scale_input.n * params.scale_input.c * params.scale_input.d * params.scale_input.w * params.scale_input.h;
+	const uint B_input_size = params.B_input.n * params.B_input.c * params.B_input.d * params.B_input.w * params.B_input.h;
+	const uint mean_input_size = params.mean_input.n * params.mean_input.c * params.mean_input.d * params.mean_input.w * params.mean_input.h;
+	const uint var_input_size = params.var_input.n * params.var_input.c * params.var_input.d * params.var_input.w * params.var_input.h;
+    
+    const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
+    const uint mean_output_o_size = params.mean_output_o.n * params.mean_output_o.c * params.mean_output_o.d * params.mean_output_o.w * params.mean_output_o.h;
+	const uint var_output_o_size = params.var_output_o.n * params.var_output_o.c * params.var_output_o.d * params.var_output_o.w * params.var_output_o.h;
+	const uint saved_mean_output_o_size = params.saved_mean_output_o.n * params.saved_mean_output_o.c * params.saved_mean_output_o.d * params.saved_mean_output_o.w * params.saved_mean_output_o.h;
+	const uint saved_var_output_o_size = params.saved_var_output_o.n * params.saved_var_output_o.c * params.saved_var_output_o.d * params.saved_var_output_o.w * params.saved_var_output_o.h;
+
     if(size <= idx) {
         return;
     }

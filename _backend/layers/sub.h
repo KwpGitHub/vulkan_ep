@@ -3,7 +3,7 @@
 
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   C_input_o
+//OUTPUS:                   C_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t A_input; Shape_t B_input;
             
             //output
-            Shape_t C_input_o;
+            Shape_t C_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string A_input; std::string B_input;
         
         //output
-        std::string C_input_o;
+        std::string C_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/sub.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, 
+            program->bind({tensor_dict[A_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[C_output]->shape()}, 
                             tensor_dict[A_input], tensor_dict[B_input],
-                            tensor_dict[C_input_o] );
+                            tensor_dict[C_output] );
     }
 
     vuh::Device* Sub::_get_device() {

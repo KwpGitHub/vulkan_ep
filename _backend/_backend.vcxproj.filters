@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Python Files">
-      <UniqueIdentifier>{a665b34b-36a4-4ea9-994c-f350467c80cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Kernel Files">
       <UniqueIdentifier>{7e5ab879-a182-4f4f-90d7-43ab75de4595}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,9 @@
     </Filter>
     <Filter Include="Layer Files">
       <UniqueIdentifier>{bd354907-0ab4-4daf-9501-3a5a2e8e551e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{5e98fdc4-5791-4e72-bc3e-fc79526d5aa5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -578,5 +578,469 @@
     <ClInclude Include="layers\zipmap.h">
       <Filter>Layer Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\abs.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\acos.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\acosh.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\add.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\and.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\argmax.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\argmin.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\arrayfeatureextractor.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\asin.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\asinh.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\atan.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\atanh.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\averagepool.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\batchnormalization.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\binarizer.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\cast.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\castmap.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\categorymapper.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\ceil.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\clip.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\compress.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\concat.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\constant.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\constantofshape.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\conv.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\convinteger.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\convtranspose.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\cos.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\cosh.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\depthtospace.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\dequantizelinear.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\dictvectorizer.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\div.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\dropout.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\elu.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\equal.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\erf.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\exp.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\expand.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\eyelike.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\featurevectorizer.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\flatten.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\floor.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\gather.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\gemm.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\globalaveragepool.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\globallppool.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\globalmaxpool.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\greater.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\gru.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\hardmax.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\hardsigmoid.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\identity.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\if.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\imputer.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\instancenormalization.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\isinf.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\isnan.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\labelencoder.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\leakyrelu.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\less.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\linearclassifier.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\linearregressor.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\log.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\logsoftmax.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\loop.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\lpnormalization.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\lppool.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\lrn.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\lstm.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\matmul.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\matmulinteger.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\max.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\maxpool.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\maxroipool.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\maxunpool.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\mean.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\meanvariancenormalization.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\min.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\mod.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\mul.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\multinomial.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\neg.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\nonmaxsuppression.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\nonzero.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\normalizer.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\not.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\onehot.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\onehotencoder.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\or.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\pad.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\pow.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\prelu.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\qlinearconv.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\qlinearmatmul.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\quantizelinear.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\randomnormal.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\randomnormallike.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\randomuniform.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\randomuniformlike.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reciprocal.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducel1.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducel2.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducelogsum.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducelogsumexp.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducemax.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducemean.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducemin.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reduceprod.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducesum.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reducesumsquare.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\relu.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reshape.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\resize.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\reversesequence.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\rnn.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\roialign.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\scaler.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\scan.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\scatter.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\selu.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\shape.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\shrink.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\sigmoid.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\sign.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\sin.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\sinh.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\size.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\slice.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\softmax.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\softplus.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\softsign.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\spacetodepth.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\split.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\sqrt.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\squeeze.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\stringnormalizer.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\sub.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\sum.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\svmclassifier.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\svmregressor.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\tan.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\tanh.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\tfidfvectorizer.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\thresholdedrelu.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\tile.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\topk.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\transpose.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\treeensembleclassifier.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\treeensembleregressor.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\unsqueeze.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\where.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\xor.comp">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\zipmap.comp">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

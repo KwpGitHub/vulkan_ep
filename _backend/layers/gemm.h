@@ -3,7 +3,7 @@
 
 //INPUTS:                   A_input, B_input, C_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_input_o
+//OUTPUS:                   Y_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t A_input; Shape_t B_input; Shape_t C_input;
             
             //output
-            Shape_t Y_input_o;
+            Shape_t Y_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string A_input; std::string B_input; std::string C_input;
         
         //output
-        std::string Y_input_o;
+        std::string Y_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/gemm.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({alpha, beta, transA, transB}, 
+            program->bind({alpha, beta, transA, transB, tensor_dict[A_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[C_input]->shape(), tensor_dict[Y_output]->shape()}, 
                             tensor_dict[A_input], tensor_dict[B_input], tensor_dict[C_input],
-                            tensor_dict[Y_input_o] );
+                            tensor_dict[Y_output] );
     }
 
     vuh::Device* Gemm::_get_device() {

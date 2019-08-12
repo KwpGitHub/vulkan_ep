@@ -3,7 +3,7 @@
 
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   reduced_input_o
+//OUTPUS:                   reduced_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t data_input;
             
             //output
-            Shape_t reduced_input_o;
+            Shape_t reduced_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string data_input;
         
         //output
-        std::string reduced_input_o;
+        std::string reduced_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/reducel2.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({axes, keepdims}, 
+            program->bind({axes, keepdims, tensor_dict[data_input]->shape(), tensor_dict[reduced_output]->shape()}, 
                             tensor_dict[data_input],
-                            tensor_dict[reduced_input_o] );
+                            tensor_dict[reduced_output] );
     }
 
     vuh::Device* ReduceL2::_get_device() {

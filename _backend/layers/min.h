@@ -3,7 +3,7 @@
 
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   min_input_o
+//OUTPUS:                   min_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             
             
             //output
-            Shape_t min_input_o;
+            Shape_t min_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         
         
         //output
-        std::string min_input_o;
+        std::string min_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/min.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, 
+            program->bind({tensor_dict[min_output]->shape()}, 
                             ,
-                            tensor_dict[min_input_o] );
+                            tensor_dict[min_output] );
     }
 
     vuh::Device* Min::_get_device() {

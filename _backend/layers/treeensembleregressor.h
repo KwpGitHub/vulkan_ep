@@ -3,7 +3,7 @@
 
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_input_o
+//OUTPUS:                   Y_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -19,12 +19,12 @@ namespace backend {
 
         struct Params{
             int aggregate_function; int n_targets; Shape_t nodes_falsenodeids; Shape_t nodes_featureids; Shape_t nodes_missing_value_tracks_true; Shape_t nodes_nodeids; Shape_t nodes_treeids; Shape_t nodes_truenodeids; int post_transform; Shape_t target_ids; Shape_t target_nodeids; Shape_t target_treeids;
-			Shape_t base_values; Shape_t nodes_hitrates; Shape_t nodes_modes; Shape_t nodes_values; Shape_t target_weights;
+			
             //input
             Shape_t X_input;
             
             //output
-            Shape_t Y_input_o;
+            Shape_t Y_output;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         int aggregate_function; Tensor* base_values; int n_targets; Shape_t nodes_falsenodeids; Shape_t nodes_featureids; Tensor* nodes_hitrates; Shape_t nodes_missing_value_tracks_true; Tensor* nodes_modes; Shape_t nodes_nodeids; Shape_t nodes_treeids; Shape_t nodes_truenodeids; Tensor* nodes_values; int post_transform; Shape_t target_ids; Shape_t target_nodeids; Shape_t target_treeids; Tensor* target_weights;
-		Shape_t base_values_t; Shape_t nodes_hitrates_t; Shape_t nodes_modes_t; Shape_t nodes_values_t; Shape_t target_weights_t;
+		
         //input
         std::string X_input;
         
         //output
-        std::string Y_input_o;
+        std::string Y_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/treeensembleregressor.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({aggregate_function, n_targets, nodes_falsenodeids, nodes_featureids, nodes_missing_value_tracks_true, nodes_nodeids, nodes_treeids, nodes_truenodeids, post_transform, target_ids, target_nodeids, target_treeids, base_values_t, nodes_hitrates_t, nodes_modes_t, nodes_values_t, target_weights_t}, 
+            program->bind({aggregate_function, n_targets, nodes_falsenodeids, nodes_featureids, nodes_missing_value_tracks_true, nodes_nodeids, nodes_treeids, nodes_truenodeids, post_transform, target_ids, target_nodeids, target_treeids, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()}, 
                             tensor_dict[X_input],
-                            tensor_dict[Y_input_o] );
+                            tensor_dict[Y_output] );
     }
 
     vuh::Device* TreeEnsembleRegressor::_get_device() {

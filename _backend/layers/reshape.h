@@ -3,7 +3,7 @@
 
 //INPUTS:                   data_input, shape_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   reshaped_input_o
+//OUTPUS:                   reshaped_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t data_input; Shape_t shape_input;
             
             //output
-            Shape_t reshaped_input_o;
+            Shape_t reshaped_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string data_input; std::string shape_input;
         
         //output
-        std::string reshaped_input_o;
+        std::string reshaped_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/reshape.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, 
+            program->bind({tensor_dict[data_input]->shape(), tensor_dict[shape_input]->shape(), tensor_dict[reshaped_output]->shape()}, 
                             tensor_dict[data_input], tensor_dict[shape_input],
-                            tensor_dict[reshaped_input_o] );
+                            tensor_dict[reshaped_output] );
     }
 
     vuh::Device* Reshape::_get_device() {

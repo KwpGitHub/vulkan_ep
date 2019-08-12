@@ -13,15 +13,27 @@ layout(push_constant) uniform Parameters {
     Shape_t indices_input; Shape_t depth_input; Shape_t values_input;
     
 //output
-    Shape_t output_input_o;
+    Shape_t output_output;
     
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float indices_input[]; };
+layout(std430, binding = 1) buffer lay1 { float depth_input[]; };
+layout(std430, binding = 2) buffer lay2 { float values_input[]; };
+layout(std430, binding = 3) buffer lay3 { float output_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint indices_input_size = params.indices_input.n * params.indices_input.c * params.indices_input.d * params.indices_input.w * params.indices_input.h;
+	const uint depth_input_size = params.depth_input.n * params.depth_input.c * params.depth_input.d * params.depth_input.w * params.depth_input.h;
+	const uint values_input_size = params.values_input.n * params.values_input.c * params.values_input.d * params.values_input.w * params.values_input.h;
+    
+    const uint output_output_size = params.output_output.n * params.output_output.c * params.output_output.d * params.output_output.w * params.output_output.h;
+    
+
     if(size <= idx) {
         return;
     }

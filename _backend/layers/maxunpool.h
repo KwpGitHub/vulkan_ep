@@ -2,8 +2,8 @@
 #define MAXUNPOOL_H //MaxUnpool
 
 //INPUTS:                   X_input, I_input
-//OPTIONAL_INPUTS:          output_shape_output
-//OUTPUS:                   output_input_o
+//OPTIONAL_INPUTS:          output_shape_input_o
+//OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               kernel_shape
 //PARAMETER_TYPES:          Shape_t
@@ -22,9 +22,9 @@ namespace backend {
 			
             //input
             Shape_t X_input; Shape_t I_input;
-            Shape_t output_shape_output;
+            Shape_t output_shape_input_o;
             //output
-            Shape_t output_input_o;
+            Shape_t output_output;
             
         };
 
@@ -38,9 +38,9 @@ namespace backend {
 		
         //input
         std::string X_input; std::string I_input;
-        std::string output_shape_output;
+        std::string output_shape_input_o;
         //output
-        std::string output_input_o;
+        std::string output_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/maxunpool.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({kernel_shape, pads, strides}, 
-                            tensor_dict[X_input], tensor_dict[I_input], tensor_dict[output_shape_output],
-                            tensor_dict[output_input_o] );
+            program->bind({kernel_shape, pads, strides, tensor_dict[X_input]->shape(), tensor_dict[I_input]->shape(), tensor_dict[output_shape_input_o]->shape(), tensor_dict[output_output]->shape()}, 
+                            tensor_dict[X_input], tensor_dict[I_input], tensor_dict[output_shape_input_o],
+                            tensor_dict[output_output] );
     }
 
     vuh::Device* MaxUnpool::_get_device() {

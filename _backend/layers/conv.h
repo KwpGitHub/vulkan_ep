@@ -2,8 +2,8 @@
 #define CONV_H //Conv
 
 //INPUTS:                   X_input, W_input
-//OPTIONAL_INPUTS:          B_output
-//OUTPUS:                   Y_input_o
+//OPTIONAL_INPUTS:          B_input_o
+//OUTPUS:                   Y_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -22,9 +22,9 @@ namespace backend {
 			
             //input
             Shape_t X_input; Shape_t W_input;
-            Shape_t B_output;
+            Shape_t B_input_o;
             //output
-            Shape_t Y_input_o;
+            Shape_t Y_output;
             
         };
 
@@ -38,9 +38,9 @@ namespace backend {
 		
         //input
         std::string X_input; std::string W_input;
-        std::string B_output;
+        std::string B_input_o;
         //output
-        std::string Y_input_o;
+        std::string Y_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/conv.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({auto_pad, dilations, group, kernel_shape, pads, strides}, 
-                            tensor_dict[X_input], tensor_dict[W_input], tensor_dict[B_output],
-                            tensor_dict[Y_input_o] );
+            program->bind({auto_pad, dilations, group, kernel_shape, pads, strides, tensor_dict[X_input]->shape(), tensor_dict[W_input]->shape(), tensor_dict[B_input_o]->shape(), tensor_dict[Y_output]->shape()}, 
+                            tensor_dict[X_input], tensor_dict[W_input], tensor_dict[B_input_o],
+                            tensor_dict[Y_output] );
     }
 
     vuh::Device* Conv::_get_device() {

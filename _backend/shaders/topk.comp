@@ -13,15 +13,27 @@ layout(push_constant) uniform Parameters {
     Shape_t X_input; Shape_t K_input;
     
 //output
-    Shape_t Values_input_o; Shape_t Indices_input_o;
+    Shape_t Values_output; Shape_t Indices_output;
     
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float X_input[]; };
+layout(std430, binding = 1) buffer lay1 { float K_input[]; };
+layout(std430, binding = 2) buffer lay2 { float Values_output[]; };
+layout(std430, binding = 3) buffer lay3 { float Indices_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
+	const uint K_input_size = params.K_input.n * params.K_input.c * params.K_input.d * params.K_input.w * params.K_input.h;
+    
+    const uint Values_output_size = params.Values_output.n * params.Values_output.c * params.Values_output.d * params.Values_output.w * params.Values_output.h;
+	const uint Indices_output_size = params.Indices_output.n * params.Indices_output.c * params.Indices_output.d * params.Indices_output.w * params.Indices_output.h;
+    
+
     if(size <= idx) {
         return;
     }

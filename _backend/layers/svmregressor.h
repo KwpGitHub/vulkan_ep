@@ -3,7 +3,7 @@
 
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_input_o
+//OUTPUS:                   Y_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -19,12 +19,12 @@ namespace backend {
 
         struct Params{
             int kernel_type; int n_supports; int one_class; int post_transform;
-			Shape_t coefficients; Shape_t kernel_params; Shape_t rho; Shape_t support_vectors;
+			
             //input
             Shape_t X_input;
             
             //output
-            Shape_t Y_input_o;
+            Shape_t Y_output;
             
         };
 
@@ -35,12 +35,12 @@ namespace backend {
         void forward(){ program->run(); }
         
         Tensor* coefficients; Tensor* kernel_params; int kernel_type; int n_supports; int one_class; int post_transform; Tensor* rho; Tensor* support_vectors;
-		Shape_t coefficients_t; Shape_t kernel_params_t; Shape_t rho_t; Shape_t support_vectors_t;
+		
         //input
         std::string X_input;
         
         //output
-        std::string Y_input_o;
+        std::string Y_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/svmregressor.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({kernel_type, n_supports, one_class, post_transform, coefficients_t, kernel_params_t, rho_t, support_vectors_t}, 
+            program->bind({kernel_type, n_supports, one_class, post_transform, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()}, 
                             tensor_dict[X_input],
-                            tensor_dict[Y_input_o] );
+                            tensor_dict[Y_output] );
     }
 
     vuh::Device* SVMRegressor::_get_device() {

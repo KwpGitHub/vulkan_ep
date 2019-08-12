@@ -3,7 +3,7 @@
 
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   mean_input_o
+//OUTPUS:                   mean_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             
             
             //output
-            Shape_t mean_input_o;
+            Shape_t mean_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         
         
         //output
-        std::string mean_input_o;
+        std::string mean_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/mean.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, 
+            program->bind({tensor_dict[mean_output]->shape()}, 
                             ,
-                            tensor_dict[mean_input_o] );
+                            tensor_dict[mean_output] );
     }
 
     vuh::Device* Mean::_get_device() {

@@ -17,11 +17,18 @@ layout(push_constant) uniform Parameters {
     
 } params;
 
+layout(std430, binding = 0) buffer lay0 { float cond_input[]; };
+
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint cond_input_size = params.cond_input.n * params.cond_input.c * params.cond_input.d * params.cond_input.w * params.cond_input.h;
+    
+    
+    
+
     if(size <= idx) {
         return;
     }

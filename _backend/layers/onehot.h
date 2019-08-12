@@ -3,7 +3,7 @@
 
 //INPUTS:                   indices_input, depth_input, values_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_input_o
+//OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t indices_input; Shape_t depth_input; Shape_t values_input;
             
             //output
-            Shape_t output_input_o;
+            Shape_t output_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string indices_input; std::string depth_input; std::string values_input;
         
         //output
-        std::string output_input_o;
+        std::string output_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/onehot.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({axis}, 
+            program->bind({axis, tensor_dict[indices_input]->shape(), tensor_dict[depth_input]->shape(), tensor_dict[values_input]->shape(), tensor_dict[output_output]->shape()}, 
                             tensor_dict[indices_input], tensor_dict[depth_input], tensor_dict[values_input],
-                            tensor_dict[output_input_o] );
+                            tensor_dict[output_output] );
     }
 
     vuh::Device* OneHot::_get_device() {

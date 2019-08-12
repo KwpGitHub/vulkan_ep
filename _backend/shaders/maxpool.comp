@@ -13,15 +13,24 @@ layout(push_constant) uniform Parameters {
     Shape_t X_input;
     
 //output
-    Shape_t Y_input_o;
+    Shape_t Y_output;
     Shape_t Indices_output_o;
 } params;
+
+layout(std430, binding = 0) buffer lay0 { float X_input[]; };
+layout(std430, binding = 1) buffer lay1 { float Y_output[]; };
+layout(std430, binding = 2) buffer lay2 { float Indices_output_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
+    
+    const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
+    const uint Indices_output_o_size = params.Indices_output_o.n * params.Indices_output_o.c * params.Indices_output_o.d * params.Indices_output_o.w * params.Indices_output_o.h;
+
     if(size <= idx) {
         return;
     }

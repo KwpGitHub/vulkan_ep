@@ -3,7 +3,7 @@
 
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_input_o
+//OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               shape
 //PARAMETER_TYPES:          Shape_t
@@ -24,7 +24,7 @@ namespace backend {
             
             
             //output
-            Shape_t output_input_o;
+            Shape_t output_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         
         
         //output
-        std::string output_input_o;
+        std::string output_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/randomuniform.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({shape, dtype, high, low, seed}, 
+            program->bind({shape, dtype, high, low, seed, tensor_dict[output_output]->shape()}, 
                             ,
-                            tensor_dict[output_input_o] );
+                            tensor_dict[output_output] );
     }
 
     vuh::Device* RandomUniform::_get_device() {

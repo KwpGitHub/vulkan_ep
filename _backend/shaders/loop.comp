@@ -11,17 +11,26 @@ layout(push_constant) uniform Parameters {
 			
 //input
     
-    Shape_t M_output; Shape_t cond_output;
+    Shape_t M_input_o; Shape_t cond_input_o;
 //output
     
     
 } params;
 
+layout(std430, binding = 0) buffer lay0 { float M_input_o[]; };
+layout(std430, binding = 1) buffer lay1 { float cond_input_o[]; };
+
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint size = params.size; // * params.input.c * params.input.d * params.input.h * params.input.w;
+    
+    
+    const uint M_input_o_size = params.M_input_o.n * params.M_input_o.c * params.M_input_o.d * params.M_input_o.w * params.M_input_o.h;
+	const uint cond_input_o_size = params.cond_input_o.n * params.cond_input_o.c * params.cond_input_o.d * params.cond_input_o.w * params.cond_input_o.h;
+    
+    
+
     if(size <= idx) {
         return;
     }

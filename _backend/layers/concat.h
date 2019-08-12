@@ -3,7 +3,7 @@
 
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   concat_result_input_o
+//OUTPUS:                   concat_result_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               axis
 //PARAMETER_TYPES:          int
@@ -24,7 +24,7 @@ namespace backend {
             
             
             //output
-            Shape_t concat_result_input_o;
+            Shape_t concat_result_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         
         
         //output
-        std::string concat_result_input_o;
+        std::string concat_result_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/concat.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({axis}, 
+            program->bind({axis, tensor_dict[concat_result_output]->shape()}, 
                             ,
-                            tensor_dict[concat_result_input_o] );
+                            tensor_dict[concat_result_output] );
     }
 
     vuh::Device* Concat::_get_device() {

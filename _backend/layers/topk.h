@@ -3,7 +3,7 @@
 
 //INPUTS:                   X_input, K_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Values_input_o, Indices_input_o
+//OUTPUS:                   Values_output, Indices_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t X_input; Shape_t K_input;
             
             //output
-            Shape_t Values_input_o; Shape_t Indices_input_o;
+            Shape_t Values_output; Shape_t Indices_output;
             
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string X_input; std::string K_input;
         
         //output
-        std::string Values_input_o; std::string Indices_input_o;
+        std::string Values_output; std::string Indices_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/topk.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({axis}, 
+            program->bind({axis, tensor_dict[X_input]->shape(), tensor_dict[K_input]->shape(), tensor_dict[Values_output]->shape(), tensor_dict[Indices_output]->shape()}, 
                             tensor_dict[X_input], tensor_dict[K_input],
-                            tensor_dict[Values_input_o], tensor_dict[Indices_input_o] );
+                            tensor_dict[Values_output], tensor_dict[Indices_output] );
     }
 
     vuh::Device* TopK::_get_device() {

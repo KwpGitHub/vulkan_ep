@@ -3,7 +3,7 @@
 
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_input_o
+//OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         mask_output_o
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -24,7 +24,7 @@ namespace backend {
             Shape_t data_input;
             
             //output
-            Shape_t output_input_o;
+            Shape_t output_output;
             Shape_t mask_output_o;
         };
 
@@ -40,7 +40,7 @@ namespace backend {
         std::string data_input;
         
         //output
-        std::string output_input_o;
+        std::string output_output;
         std::string mask_output_o;
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/dropout.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({ratio}, 
+            program->bind({ratio, tensor_dict[data_input]->shape(), tensor_dict[output_output]->shape(), tensor_dict[mask_output_o]->shape()}, 
                             tensor_dict[data_input],
-                            tensor_dict[output_input_o], tensor_dict[mask_output_o] );
+                            tensor_dict[output_output], tensor_dict[mask_output_o] );
     }
 
     vuh::Device* Dropout::_get_device() {

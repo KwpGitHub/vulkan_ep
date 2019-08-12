@@ -2,8 +2,8 @@
 #define SLICE_H //Slice
 
 //INPUTS:                   data_input, starts_input, ends_input
-//OPTIONAL_INPUTS:          axes_output, steps_output
-//OUTPUS:                   output_input_o
+//OPTIONAL_INPUTS:          axes_input_o, steps_input_o
+//OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -22,9 +22,9 @@ namespace backend {
 			
             //input
             Shape_t data_input; Shape_t starts_input; Shape_t ends_input;
-            Shape_t axes_output; Shape_t steps_output;
+            Shape_t axes_input_o; Shape_t steps_input_o;
             //output
-            Shape_t output_input_o;
+            Shape_t output_output;
             
         };
 
@@ -38,9 +38,9 @@ namespace backend {
 		
         //input
         std::string data_input; std::string starts_input; std::string ends_input;
-        std::string axes_output; std::string steps_output;
+        std::string axes_input_o; std::string steps_input_o;
         //output
-        std::string output_input_o;
+        std::string output_output;
         
         //std::vector<uint32_t> output_shape();
    
@@ -54,9 +54,9 @@ namespace backend {
             program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/slice.spv")).c_str());
             program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
 			program->spec(64,64,64);
-            program->bind({}, 
-                            tensor_dict[data_input], tensor_dict[starts_input], tensor_dict[ends_input], tensor_dict[axes_output], tensor_dict[steps_output],
-                            tensor_dict[output_input_o] );
+            program->bind({tensor_dict[data_input]->shape(), tensor_dict[starts_input]->shape(), tensor_dict[ends_input]->shape(), tensor_dict[axes_input_o]->shape(), tensor_dict[steps_input_o]->shape(), tensor_dict[output_output]->shape()}, 
+                            tensor_dict[data_input], tensor_dict[starts_input], tensor_dict[ends_input], tensor_dict[axes_input_o], tensor_dict[steps_input_o],
+                            tensor_dict[output_output] );
     }
 
     vuh::Device* Slice::_get_device() {
