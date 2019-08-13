@@ -1,6 +1,8 @@
 #ifndef LINEARCLASSIFIER_H
 #define LINEARCLASSIFIER_H //LinearClassifier
 
+#include "../layer.h"
+
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Y_output, Z_output
@@ -19,7 +21,7 @@ namespace backend {
 
         struct Params{
             Shape_t classlabels_ints; int multi_class; int post_transform;
-			Shape_t coefficients;
+			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
             //input
             Shape_t X_input;
             
@@ -32,10 +34,10 @@ namespace backend {
 
     public:
         LinearClassifier(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         Tensor* coefficients; Shape_t classlabels_ints; Tensor* classlabels_strings; Tensor* intercepts; int multi_class; int post_transform;
-		Shape_t coefficients_t;
+		Shape_t coefficients_s; Shape_t classlabels_strings_s; Shape_t intercepts_s;
         //input
         std::string X_input;
         
@@ -44,26 +46,26 @@ namespace backend {
         
         //std::vector<uint32_t> output_shape();
    
-        ~LinearClassifier(){}
+        ~LinearClassifier() {}
     };
 }
 
 
 namespace backend {    
     LinearClassifier::LinearClassifier(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/linearclassifier.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({classlabels_ints, multi_class, post_transform, coefficients_t, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape(), tensor_dict[Z_output]->shape()}, 
-                            tensor_dict[coefficients], tensor_dict[X_input],
-                            tensor_dict[Y_output], tensor_dict[Z_output] );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/linearclassifier.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({classlabels_ints, multi_class, post_transform, coefficients_s, classlabels_strings_s, intercepts_s, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape(), tensor_dict[Z_output]->shape()} 
+                        , *coefficients, *classlabels_strings, *intercepts
+                        , tensor_dict[X_input], tensor_dict[Y_output], tensor_dict[Z_output] );
     }
 
     vuh::Device* LinearClassifier::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

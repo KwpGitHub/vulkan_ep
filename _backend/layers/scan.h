@@ -1,6 +1,8 @@
 #ifndef SCAN_H
 #define SCAN_H //Scan
 
+#include "../layer.h"
+
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   
@@ -32,7 +34,7 @@ namespace backend {
 
     public:
         Scan(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
 		
@@ -44,26 +46,26 @@ namespace backend {
         
         //std::vector<uint32_t> output_shape();
    
-        ~Scan(){}
+        ~Scan() {}
     };
 }
 
 
 namespace backend {    
     Scan::Scan(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/scan.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({body, num_scan_inputs, scan_input_axes, scan_input_directions, scan_output_axes, scan_output_directions}, 
-                            ,
-                             );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/scan.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({body, num_scan_inputs, scan_input_axes, scan_input_directions, scan_output_axes, scan_output_directions} 
+                        
+                         );
     }
 
     vuh::Device* Scan::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

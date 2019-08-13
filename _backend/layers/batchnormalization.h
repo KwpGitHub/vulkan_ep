@@ -1,6 +1,8 @@
 #ifndef BATCHNORMALIZATION_H
 #define BATCHNORMALIZATION_H //BatchNormalization
 
+#include "../layer.h"
+
 //INPUTS:                   X_input, scale_input, B_input, mean_input, var_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Y_output
@@ -32,7 +34,7 @@ namespace backend {
 
     public:
         BatchNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         float epsilon; float momentum;
 		
@@ -44,26 +46,26 @@ namespace backend {
         std::string mean_output_o; std::string var_output_o; std::string saved_mean_output_o; std::string saved_var_output_o;
         //std::vector<uint32_t> output_shape();
    
-        ~BatchNormalization(){}
+        ~BatchNormalization() {}
     };
 }
 
 
 namespace backend {    
     BatchNormalization::BatchNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/batchnormalization.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({epsilon, momentum, tensor_dict[X_input]->shape(), tensor_dict[scale_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[mean_input]->shape(), tensor_dict[var_input]->shape(), tensor_dict[Y_output]->shape(), tensor_dict[mean_output_o]->shape(), tensor_dict[var_output_o]->shape(), tensor_dict[saved_mean_output_o]->shape(), tensor_dict[saved_var_output_o]->shape()}, 
-                            tensor_dict[X_input], tensor_dict[scale_input], tensor_dict[B_input], tensor_dict[mean_input], tensor_dict[var_input],
-                            tensor_dict[Y_output], tensor_dict[mean_output_o], tensor_dict[var_output_o], tensor_dict[saved_mean_output_o], tensor_dict[saved_var_output_o] );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/batchnormalization.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({epsilon, momentum, tensor_dict[X_input]->shape(), tensor_dict[scale_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[mean_input]->shape(), tensor_dict[var_input]->shape(), tensor_dict[Y_output]->shape(), tensor_dict[mean_output_o]->shape(), tensor_dict[var_output_o]->shape(), tensor_dict[saved_mean_output_o]->shape(), tensor_dict[saved_var_output_o]->shape()} 
+                        
+                        , tensor_dict[X_input], tensor_dict[scale_input], tensor_dict[B_input], tensor_dict[mean_input], tensor_dict[var_input], tensor_dict[Y_output], tensor_dict[mean_output_o], tensor_dict[var_output_o], tensor_dict[saved_mean_output_o], tensor_dict[saved_var_output_o] );
     }
 
     vuh::Device* BatchNormalization::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

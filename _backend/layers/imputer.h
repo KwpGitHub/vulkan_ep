@@ -1,6 +1,8 @@
 #ifndef IMPUTER_H
 #define IMPUTER_H //Imputer
 
+#include "../layer.h"
+
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Y_output
@@ -19,7 +21,7 @@ namespace backend {
 
         struct Params{
             Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
-			
+			Shape_t imputed_value_floats;
             //input
             Shape_t X_input;
             
@@ -32,10 +34,10 @@ namespace backend {
 
     public:
         Imputer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         Tensor* imputed_value_floats; Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
-		
+		Shape_t imputed_value_floats_s;
         //input
         std::string X_input;
         
@@ -44,26 +46,26 @@ namespace backend {
         
         //std::vector<uint32_t> output_shape();
    
-        ~Imputer(){}
+        ~Imputer() {}
     };
 }
 
 
 namespace backend {    
     Imputer::Imputer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/imputer.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({imputed_value_int64s, replaced_value_float, replaced_value_int64, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()}, 
-                            tensor_dict[X_input],
-                            tensor_dict[Y_output] );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/imputer.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({imputed_value_int64s, replaced_value_float, replaced_value_int64, imputed_value_floats_s, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()} 
+                        , *imputed_value_floats
+                        , tensor_dict[X_input], tensor_dict[Y_output] );
     }
 
     vuh::Device* Imputer::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

@@ -1,6 +1,8 @@
 #ifndef SQUEEZE_H
 #define SQUEEZE_H //Squeeze
 
+#include "../layer.h"
+
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   squeezed_output
@@ -32,7 +34,7 @@ namespace backend {
 
     public:
         Squeeze(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         Shape_t axes;
 		
@@ -44,26 +46,26 @@ namespace backend {
         
         //std::vector<uint32_t> output_shape();
    
-        ~Squeeze(){}
+        ~Squeeze() {}
     };
 }
 
 
 namespace backend {    
     Squeeze::Squeeze(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/squeeze.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({axes, tensor_dict[data_input]->shape(), tensor_dict[squeezed_output]->shape()}, 
-                            tensor_dict[data_input],
-                            tensor_dict[squeezed_output] );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/squeeze.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({axes, tensor_dict[data_input]->shape(), tensor_dict[squeezed_output]->shape()} 
+                        
+                        , tensor_dict[data_input], tensor_dict[squeezed_output] );
     }
 
     vuh::Device* Squeeze::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

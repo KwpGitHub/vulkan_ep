@@ -1,6 +1,8 @@
 #ifndef ZIPMAP_H
 #define ZIPMAP_H //ZipMap
 
+#include "../layer.h"
+
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Z_output
@@ -19,7 +21,7 @@ namespace backend {
 
         struct Params{
             Shape_t classlabels_int64s;
-			
+			Shape_t classlabels_strings;
             //input
             Shape_t X_input;
             
@@ -32,10 +34,10 @@ namespace backend {
 
     public:
         ZipMap(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         Shape_t classlabels_int64s; Tensor* classlabels_strings;
-		
+		Shape_t classlabels_strings_s;
         //input
         std::string X_input;
         
@@ -44,26 +46,26 @@ namespace backend {
         
         //std::vector<uint32_t> output_shape();
    
-        ~ZipMap(){}
+        ~ZipMap() {}
     };
 }
 
 
 namespace backend {    
     ZipMap::ZipMap(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/zipmap.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({classlabels_int64s, tensor_dict[X_input]->shape(), tensor_dict[Z_output]->shape()}, 
-                            tensor_dict[X_input],
-                            tensor_dict[Z_output] );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/zipmap.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({classlabels_int64s, classlabels_strings_s, tensor_dict[X_input]->shape(), tensor_dict[Z_output]->shape()} 
+                        , *classlabels_strings
+                        , tensor_dict[X_input], tensor_dict[Z_output] );
     }
 
     vuh::Device* ZipMap::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

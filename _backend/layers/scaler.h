@@ -1,6 +1,8 @@
 #ifndef SCALER_H
 #define SCALER_H //Scaler
 
+#include "../layer.h"
+
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Y_output
@@ -19,7 +21,7 @@ namespace backend {
 
         struct Params{
             
-			
+			Shape_t offset; Shape_t scale;
             //input
             Shape_t X_input;
             
@@ -32,10 +34,10 @@ namespace backend {
 
     public:
         Scaler(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         Tensor* offset; Tensor* scale;
-		
+		Shape_t offset_s; Shape_t scale_s;
         //input
         std::string X_input;
         
@@ -44,26 +46,26 @@ namespace backend {
         
         //std::vector<uint32_t> output_shape();
    
-        ~Scaler(){}
+        ~Scaler() {}
     };
 }
 
 
 namespace backend {    
     Scaler::Scaler(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/scaler.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()}, 
-                            tensor_dict[X_input],
-                            tensor_dict[Y_output] );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/scaler.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({offset_s, scale_s, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()} 
+                        , *offset, *scale
+                        , tensor_dict[X_input], tensor_dict[Y_output] );
     }
 
     vuh::Device* Scaler::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

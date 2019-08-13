@@ -1,6 +1,8 @@
 #ifndef CONCAT_H
 #define CONCAT_H //Concat
 
+#include "../layer.h"
+
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   concat_result_output
@@ -32,7 +34,7 @@ namespace backend {
 
     public:
         Concat(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         int axis;
 		
@@ -44,26 +46,26 @@ namespace backend {
         
         //std::vector<uint32_t> output_shape();
    
-        ~Concat(){}
+        ~Concat() {}
     };
 }
 
 
 namespace backend {    
     Concat::Concat(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/concat.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({axis, tensor_dict[concat_result_output]->shape()}, 
-                            ,
-                            tensor_dict[concat_result_output] );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/concat.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({axis, tensor_dict[concat_result_output]->shape()} 
+                        
+                        , tensor_dict[concat_result_output] );
     }
 
     vuh::Device* Concat::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

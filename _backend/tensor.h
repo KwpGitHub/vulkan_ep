@@ -17,9 +17,7 @@ namespace backend {
 		uint32_t h;
 		uint32_t w;
 	};
-
-
-
+	   
 	void convert_vec_param(std::vector<std::string> s, Shape_t out) {
 		backend::Shape_t _shape = { 1,1,1,1,1 };
 		switch (s.size()) {
@@ -47,6 +45,7 @@ namespace backend {
 	static vuh::Instance* instance;
 	static vuh::Device* device;
 	static std::string file_path;
+
 	class Tensor {		
 		
 		vuh::Array<float>* d_x;		

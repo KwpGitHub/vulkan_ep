@@ -1,6 +1,8 @@
 #ifndef IF_H
 #define IF_H //If
 
+#include "../layer.h"
+
 //INPUTS:                   cond_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   
@@ -32,7 +34,7 @@ namespace backend {
 
     public:
         If(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward(){ program->run(); }
+        void forward() { program->run(); }
         
         int else_branch; int then_branch;
 		
@@ -44,26 +46,26 @@ namespace backend {
         
         //std::vector<uint32_t> output_shape();
    
-        ~If(){}
+        ~If() {}
     };
 }
 
 
 namespace backend {    
     If::If(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-            program = new vuh::Program<Specs, Params>(*_get_device(), (file_path + std::string("\shaders/bin/if.spv")).c_str());
-            program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-			program->spec(64,64,64);
-            program->bind({else_branch, then_branch, tensor_dict[cond_input]->shape()}, 
-                            tensor_dict[cond_input],
-                             );
+        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/if.spv").c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind({else_branch, then_branch, tensor_dict[cond_input]->shape()} 
+                        
+                        , tensor_dict[cond_input] );
     }
 
     vuh::Device* If::_get_device() {
-            for(auto t_name: inputs) {
-                if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-            }
-            return device;
+        for(auto t_name: inputs) {
+            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
+        }
+        return device;
     }
 };
 

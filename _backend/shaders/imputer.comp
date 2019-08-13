@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
-			
+			Shape_t imputed_value_floats;
 //input
     Shape_t X_input;
     
@@ -17,14 +17,15 @@ layout(push_constant) uniform Parameters {
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float X_input[]; };
-layout(std430, binding = 1) buffer lay1 { float Y_output[]; };
+layout(std430, binding = 0) buffer lay0 { float imputed_value_floats[]; };
+layout(std430, binding = 1) buffer lay1 { float X_input[]; };
+layout(std430, binding = 2) buffer lay2 { float Y_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
+    const uint imputed_value_floats_size = params.imputed_value_floats.n * params.imputed_value_floats.c * params.imputed_value_floats.d * params.imputed_value_floats.w * params.imputed_value_floats.h;
     const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
     
     const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;

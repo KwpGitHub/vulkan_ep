@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     Shape_t classlabels_int64s;
-			
+			Shape_t classlabels_strings;
 //input
     Shape_t X_input;
     
@@ -17,14 +17,15 @@ layout(push_constant) uniform Parameters {
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float X_input[]; };
-layout(std430, binding = 1) buffer lay1 { float Z_output[]; };
+layout(std430, binding = 0) buffer lay0 { float classlabels_strings[]; };
+layout(std430, binding = 1) buffer lay1 { float X_input[]; };
+layout(std430, binding = 2) buffer lay2 { float Z_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
+    const uint classlabels_strings_size = params.classlabels_strings.n * params.classlabels_strings.c * params.classlabels_strings.d * params.classlabels_strings.w * params.classlabels_strings.h;
     const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
     
     const uint Z_output_size = params.Z_output.n * params.Z_output.c * params.Z_output.d * params.Z_output.w * params.Z_output.h;

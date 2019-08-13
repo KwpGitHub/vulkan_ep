@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s;
-			
+			Shape_t pool_strings; Shape_t weights;
 //input
     Shape_t X_input;
     
@@ -17,14 +17,17 @@ layout(push_constant) uniform Parameters {
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float X_input[]; };
-layout(std430, binding = 1) buffer lay1 { float Y_output[]; };
+layout(std430, binding = 0) buffer lay0 { float pool_strings[]; };
+layout(std430, binding = 1) buffer lay1 { float weights[]; };
+layout(std430, binding = 2) buffer lay2 { float X_input[]; };
+layout(std430, binding = 3) buffer lay3 { float Y_output[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
+    const uint pool_strings_size = params.pool_strings.n * params.pool_strings.c * params.pool_strings.d * params.pool_strings.w * params.pool_strings.h;
+	const uint weights_size = params.weights.n * params.weights.c * params.weights.d * params.weights.w * params.weights.h;
     const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
     
     const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
