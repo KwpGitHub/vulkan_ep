@@ -1,6 +1,6 @@
 #ifndef RANDOMNORMALLIKE_H
 #define RANDOMNORMALLIKE_H //RandomNormalLike
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      dtype, mean, scale, seed
 //OPTIONAL_PARAMETERS_TYPE: int, float, float, float
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class RandomNormalLike : public Layer {
+
+    struct RandomNormalLike_parameter_descriptor{    
+        int dtype; float mean; float scale; float seed;
+    };   
+
+    struct RandomNormalLike_input_desriptor{
+        Tensor* input_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int dtype; float mean; float scale; float seed;
-			
-            //input
-            Shape_t input_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        RandomNormalLike(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct RandomNormalLike_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct RandomNormalLike_binding_descriptor{
         int dtype; float mean; float scale; float seed;
 		
-        //input
-        std::string input_input;
+        Shape_t input_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~RandomNormalLike() {}
     };
 }
 
 
+namespace backend {
+
+    class RandomNormalLike : public Layer {
+        RandomNormalLike_parameter_descriptor parameters;
+        RandomNormalLike_input_desriptor      input;
+        RandomNormalLike_output_descriptor    output;
+        RandomNormalLike_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, RandomNormalLike_binding_descriptor>* program;
+        
+    public:
+        RandomNormalLike(std::string, RandomNormalLike_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~RandomNormalLike() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    RandomNormalLike::RandomNormalLike(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/randomnormallike.spv").c_str());
+   
+    RandomNormalLike::RandomNormalLike(std::string n, RandomNormalLike_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, RandomNormalLike_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomnormallike.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({dtype, mean, scale, seed, tensor_dict[input_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[input_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* RandomNormalLike::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<RandomNormalLike, Layer>(m, "RandomNormalLike")
+            .def("forward", &RandomNormalLike::forward);    
+    }*/
+}
 
 #endif

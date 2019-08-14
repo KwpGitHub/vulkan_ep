@@ -1,10 +1,10 @@
 #ifndef SLICE_H
 #define SLICE_H //Slice
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   data_input, starts_input, ends_input
-//OPTIONAL_INPUTS:          axes_input_o, steps_input_o
+//OPTIONAL_INPUTS:          axes_input_opt, steps_input_opt
 //OUTPUS:                   output_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Slice : public Layer {
+
+    struct Slice_parameter_descriptor{    
         
-        vuh::Device* _get_device();
+    };   
 
-        struct Params{
-            
-			
-            //input
-            Shape_t data_input; Shape_t starts_input; Shape_t ends_input;
-            Shape_t axes_input_o; Shape_t steps_input_o;
-            //output
-            Shape_t output_output;
-            
-        };
+    struct Slice_input_desriptor{
+        Tensor* data_input; Tensor* starts_input; Tensor* ends_input;
+        Tensor* axes_input_opt; Tensor* steps_input_opt;
+    };
 
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Slice(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Slice_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct Slice_binding_descriptor{
         
 		
-        //input
-        std::string data_input; std::string starts_input; std::string ends_input;
-        std::string axes_input_o; std::string steps_input_o;
-        //output
-        std::string output_output;
+        Shape_t data_input; Shape_t starts_input; Shape_t ends_input;
+        Shape_t axes_input_opt; Shape_t steps_input_opt;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Slice() {}
     };
 }
 
 
+namespace backend {
+
+    class Slice : public Layer {
+        Slice_parameter_descriptor parameters;
+        Slice_input_desriptor      input;
+        Slice_output_descriptor    output;
+        Slice_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Slice_binding_descriptor>* program;
+        
+    public:
+        Slice(std::string, Slice_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Slice() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Slice::Slice(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/slice.spv").c_str());
+   
+    Slice::Slice(std::string n, Slice_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Slice_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/slice.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({tensor_dict[data_input]->shape(), tensor_dict[starts_input]->shape(), tensor_dict[ends_input]->shape(), tensor_dict[axes_input_o]->shape(), tensor_dict[steps_input_o]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[data_input], tensor_dict[starts_input], tensor_dict[ends_input], tensor_dict[axes_input_o], tensor_dict[steps_input_o], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* Slice::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Slice, Layer>(m, "Slice")
+            .def("forward", &Slice::forward);    
+    }*/
+}
 
 #endif

@@ -1,6 +1,6 @@
 #ifndef ZIPMAP_H
 #define ZIPMAP_H //ZipMap
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   X_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      classlabels_int64s, classlabels_strings
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class ZipMap : public Layer {
-        
-        vuh::Device* _get_device();
 
-        struct Params{
-            Shape_t classlabels_int64s;
-			Shape_t classlabels_strings;
-            //input
-            Shape_t X_input;
-            
-            //output
-            Shape_t Z_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        ZipMap(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
-        
+    struct ZipMap_parameter_descriptor{    
         Shape_t classlabels_int64s; Tensor* classlabels_strings;
-		Shape_t classlabels_strings_s;
-        //input
-        std::string X_input;
+    };   
+
+    struct ZipMap_input_desriptor{
+        Tensor* X_input;
         
-        //output
-        std::string Z_output;
+    };
+
+    struct ZipMap_output_descriptor{
+        Tensor* Z_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~ZipMap() {}
+    };
+
+    struct ZipMap_binding_descriptor{
+        Shape_t classlabels_int64s;
+		Shape_t classlabels_strings;
+        Shape_t X_input;
+        
+        Shape_t Z_output;
+        
     };
 }
 
 
+namespace backend {
+
+    class ZipMap : public Layer {
+        ZipMap_parameter_descriptor parameters;
+        ZipMap_input_desriptor      input;
+        ZipMap_output_descriptor    output;
+        ZipMap_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, ZipMap_binding_descriptor>* program;
+        
+    public:
+        ZipMap(std::string, ZipMap_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~ZipMap() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    ZipMap::ZipMap(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/zipmap.spv").c_str());
+   
+    ZipMap::ZipMap(std::string n, ZipMap_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, ZipMap_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/zipmap.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({classlabels_int64s, classlabels_strings_s, tensor_dict[X_input]->shape(), tensor_dict[Z_output]->shape()} 
-                        , *classlabels_strings
-                        , tensor_dict[X_input], tensor_dict[Z_output] );
+      
     }
+
+  
 
     vuh::Device* ZipMap::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<ZipMap, Layer>(m, "ZipMap")
+            .def("forward", &ZipMap::forward);    
+    }*/
+}
 
 #endif

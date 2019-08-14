@@ -1,6 +1,6 @@
 #ifndef REDUCEMAX_H
 #define REDUCEMAX_H //ReduceMax
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   data_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      axes, keepdims
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, int
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class ReduceMax : public Layer {
+
+    struct ReduceMax_parameter_descriptor{    
+        Shape_t axes; int keepdims;
+    };   
+
+    struct ReduceMax_input_desriptor{
+        Tensor* data_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            Shape_t axes; int keepdims;
-			
-            //input
-            Shape_t data_input;
-            
-            //output
-            Shape_t reduced_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        ReduceMax(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct ReduceMax_output_descriptor{
+        Tensor* reduced_output;
         
+    };
+
+    struct ReduceMax_binding_descriptor{
         Shape_t axes; int keepdims;
 		
-        //input
-        std::string data_input;
+        Shape_t data_input;
         
-        //output
-        std::string reduced_output;
+        Shape_t reduced_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~ReduceMax() {}
     };
 }
 
 
+namespace backend {
+
+    class ReduceMax : public Layer {
+        ReduceMax_parameter_descriptor parameters;
+        ReduceMax_input_desriptor      input;
+        ReduceMax_output_descriptor    output;
+        ReduceMax_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, ReduceMax_binding_descriptor>* program;
+        
+    public:
+        ReduceMax(std::string, ReduceMax_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~ReduceMax() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    ReduceMax::ReduceMax(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/reducemax.spv").c_str());
+   
+    ReduceMax::ReduceMax(std::string n, ReduceMax_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, ReduceMax_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reducemax.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({axes, keepdims, tensor_dict[data_input]->shape(), tensor_dict[reduced_output]->shape()} 
-                        
-                        , tensor_dict[data_input], tensor_dict[reduced_output] );
+      
     }
+
+  
 
     vuh::Device* ReduceMax::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<ReduceMax, Layer>(m, "ReduceMax")
+            .def("forward", &ReduceMax::forward);    
+    }*/
+}
 
 #endif

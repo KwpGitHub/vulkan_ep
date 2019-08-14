@@ -1,6 +1,6 @@
 #ifndef CONSTANTOFSHAPE_H
 #define CONSTANTOFSHAPE_H //ConstantOfShape
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      value
 //OPTIONAL_PARAMETERS_TYPE: Tensor*
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class ConstantOfShape : public Layer {
-        
-        vuh::Device* _get_device();
 
-        struct Params{
-            
-			Shape_t value;
-            //input
-            Shape_t input_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        ConstantOfShape(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
-        
+    struct ConstantOfShape_parameter_descriptor{    
         Tensor* value;
-		Shape_t value_s;
-        //input
-        std::string input_input;
+    };   
+
+    struct ConstantOfShape_input_desriptor{
+        Tensor* input_input;
         
-        //output
-        std::string output_output;
+    };
+
+    struct ConstantOfShape_output_descriptor{
+        Tensor* output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~ConstantOfShape() {}
+    };
+
+    struct ConstantOfShape_binding_descriptor{
+        
+		Shape_t value;
+        Shape_t input_input;
+        
+        Shape_t output_output;
+        
     };
 }
 
 
+namespace backend {
+
+    class ConstantOfShape : public Layer {
+        ConstantOfShape_parameter_descriptor parameters;
+        ConstantOfShape_input_desriptor      input;
+        ConstantOfShape_output_descriptor    output;
+        ConstantOfShape_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, ConstantOfShape_binding_descriptor>* program;
+        
+    public:
+        ConstantOfShape(std::string, ConstantOfShape_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~ConstantOfShape() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    ConstantOfShape::ConstantOfShape(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/constantofshape.spv").c_str());
+   
+    ConstantOfShape::ConstantOfShape(std::string n, ConstantOfShape_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, ConstantOfShape_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/constantofshape.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({value_s, tensor_dict[input_input]->shape(), tensor_dict[output_output]->shape()} 
-                        , *value
-                        , tensor_dict[input_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* ConstantOfShape::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<ConstantOfShape, Layer>(m, "ConstantOfShape")
+            .def("forward", &ConstantOfShape::forward);    
+    }*/
+}
 
 #endif

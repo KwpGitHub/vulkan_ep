@@ -1,65 +1,80 @@
 #ifndef BATCHNORMALIZATION_H
 #define BATCHNORMALIZATION_H //BatchNormalization
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   X_input, scale_input, B_input, mean_input, var_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Y_output
-//OPTIONAL_OUTPUTS:         mean_output_o, var_output_o, saved_mean_output_o, saved_var_output_o
+//OPTIONAL_OUTPUTS:         mean_output_opt, var_output_opt, saved_mean_output_opt, saved_var_output_opt
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      epsilon, momentum
 //OPTIONAL_PARAMETERS_TYPE: float, float
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class BatchNormalization : public Layer {
+
+    struct BatchNormalization_parameter_descriptor{    
+        float epsilon; float momentum;
+    };   
+
+    struct BatchNormalization_input_desriptor{
+        Tensor* X_input; Tensor* scale_input; Tensor* B_input; Tensor* mean_input; Tensor* var_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            float epsilon; float momentum;
-			
-            //input
-            Shape_t X_input; Shape_t scale_input; Shape_t B_input; Shape_t mean_input; Shape_t var_input;
-            
-            //output
-            Shape_t Y_output;
-            Shape_t mean_output_o; Shape_t var_output_o; Shape_t saved_mean_output_o; Shape_t saved_var_output_o;
-        };
+    struct BatchNormalization_output_descriptor{
+        Tensor* Y_output;
+        Tensor* mean_output_opt; Tensor* var_output_opt; Tensor* saved_mean_output_opt; Tensor* saved_var_output_opt;
+    };
 
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        BatchNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
-        
+    struct BatchNormalization_binding_descriptor{
         float epsilon; float momentum;
 		
-        //input
-        std::string X_input; std::string scale_input; std::string B_input; std::string mean_input; std::string var_input;
+        Shape_t X_input; Shape_t scale_input; Shape_t B_input; Shape_t mean_input; Shape_t var_input;
         
-        //output
-        std::string Y_output;
-        std::string mean_output_o; std::string var_output_o; std::string saved_mean_output_o; std::string saved_var_output_o;
-        //std::vector<uint32_t> output_shape();
-   
-        ~BatchNormalization() {}
+        Shape_t Y_output;
+        Shape_t mean_output_opt; Shape_t var_output_opt; Shape_t saved_mean_output_opt; Shape_t saved_var_output_opt;
     };
 }
 
 
+namespace backend {
+
+    class BatchNormalization : public Layer {
+        BatchNormalization_parameter_descriptor parameters;
+        BatchNormalization_input_desriptor      input;
+        BatchNormalization_output_descriptor    output;
+        BatchNormalization_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, BatchNormalization_binding_descriptor>* program;
+        
+    public:
+        BatchNormalization(std::string, BatchNormalization_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~BatchNormalization() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    BatchNormalization::BatchNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/batchnormalization.spv").c_str());
+   
+    BatchNormalization::BatchNormalization(std::string n, BatchNormalization_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, BatchNormalization_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/batchnormalization.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({epsilon, momentum, tensor_dict[X_input]->shape(), tensor_dict[scale_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[mean_input]->shape(), tensor_dict[var_input]->shape(), tensor_dict[Y_output]->shape(), tensor_dict[mean_output_o]->shape(), tensor_dict[var_output_o]->shape(), tensor_dict[saved_mean_output_o]->shape(), tensor_dict[saved_var_output_o]->shape()} 
-                        
-                        , tensor_dict[X_input], tensor_dict[scale_input], tensor_dict[B_input], tensor_dict[mean_input], tensor_dict[var_input], tensor_dict[Y_output], tensor_dict[mean_output_o], tensor_dict[var_output_o], tensor_dict[saved_mean_output_o], tensor_dict[saved_var_output_o] );
+      
     }
+
+  
 
     vuh::Device* BatchNormalization::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<BatchNormalization, Layer>(m, "BatchNormalization")
+            .def("forward", &BatchNormalization::forward);    
+    }*/
+}
 
 #endif

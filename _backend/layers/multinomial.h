@@ -1,6 +1,6 @@
 #ifndef MULTINOMIAL_H
 #define MULTINOMIAL_H //Multinomial
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      dtype, sample_size, seed
 //OPTIONAL_PARAMETERS_TYPE: int, int, float
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Multinomial : public Layer {
+
+    struct Multinomial_parameter_descriptor{    
+        int dtype; int sample_size; float seed;
+    };   
+
+    struct Multinomial_input_desriptor{
+        Tensor* input_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int dtype; int sample_size; float seed;
-			
-            //input
-            Shape_t input_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Multinomial(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Multinomial_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct Multinomial_binding_descriptor{
         int dtype; int sample_size; float seed;
 		
-        //input
-        std::string input_input;
+        Shape_t input_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Multinomial() {}
     };
 }
 
 
+namespace backend {
+
+    class Multinomial : public Layer {
+        Multinomial_parameter_descriptor parameters;
+        Multinomial_input_desriptor      input;
+        Multinomial_output_descriptor    output;
+        Multinomial_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Multinomial_binding_descriptor>* program;
+        
+    public:
+        Multinomial(std::string, Multinomial_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Multinomial() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Multinomial::Multinomial(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/multinomial.spv").c_str());
+   
+    Multinomial::Multinomial(std::string n, Multinomial_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Multinomial_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/multinomial.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({dtype, sample_size, seed, tensor_dict[input_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[input_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* Multinomial::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Multinomial, Layer>(m, "Multinomial")
+            .def("forward", &Multinomial::forward);    
+    }*/
+}
 
 #endif

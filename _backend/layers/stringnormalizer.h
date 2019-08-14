@@ -1,6 +1,6 @@
 #ifndef STRINGNORMALIZER_H
 #define STRINGNORMALIZER_H //StringNormalizer
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   X_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      case_change_action, is_case_sensitive, locale, stopwords
 //OPTIONAL_PARAMETERS_TYPE: int, int, int, Tensor*
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class StringNormalizer : public Layer {
-        
-        vuh::Device* _get_device();
 
-        struct Params{
-            int case_change_action; int is_case_sensitive; int locale;
-			Shape_t stopwords;
-            //input
-            Shape_t X_input;
-            
-            //output
-            Shape_t Y_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        StringNormalizer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
-        
+    struct StringNormalizer_parameter_descriptor{    
         int case_change_action; int is_case_sensitive; int locale; Tensor* stopwords;
-		Shape_t stopwords_s;
-        //input
-        std::string X_input;
+    };   
+
+    struct StringNormalizer_input_desriptor{
+        Tensor* X_input;
         
-        //output
-        std::string Y_output;
+    };
+
+    struct StringNormalizer_output_descriptor{
+        Tensor* Y_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~StringNormalizer() {}
+    };
+
+    struct StringNormalizer_binding_descriptor{
+        int case_change_action; int is_case_sensitive; int locale;
+		Shape_t stopwords;
+        Shape_t X_input;
+        
+        Shape_t Y_output;
+        
     };
 }
 
 
+namespace backend {
+
+    class StringNormalizer : public Layer {
+        StringNormalizer_parameter_descriptor parameters;
+        StringNormalizer_input_desriptor      input;
+        StringNormalizer_output_descriptor    output;
+        StringNormalizer_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, StringNormalizer_binding_descriptor>* program;
+        
+    public:
+        StringNormalizer(std::string, StringNormalizer_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~StringNormalizer() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    StringNormalizer::StringNormalizer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/stringnormalizer.spv").c_str());
+   
+    StringNormalizer::StringNormalizer(std::string n, StringNormalizer_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, StringNormalizer_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/stringnormalizer.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({case_change_action, is_case_sensitive, locale, stopwords_s, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()} 
-                        , *stopwords
-                        , tensor_dict[X_input], tensor_dict[Y_output] );
+      
     }
+
+  
 
     vuh::Device* StringNormalizer::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<StringNormalizer, Layer>(m, "StringNormalizer")
+            .def("forward", &StringNormalizer::forward);    
+    }*/
+}
 
 #endif

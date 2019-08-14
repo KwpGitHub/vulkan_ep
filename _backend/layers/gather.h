@@ -1,6 +1,6 @@
 #ifndef GATHER_H
 #define GATHER_H //Gather
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   data_input, indices_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Gather : public Layer {
+
+    struct Gather_parameter_descriptor{    
+        int axis;
+    };   
+
+    struct Gather_input_desriptor{
+        Tensor* data_input; Tensor* indices_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int axis;
-			
-            //input
-            Shape_t data_input; Shape_t indices_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Gather(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Gather_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct Gather_binding_descriptor{
         int axis;
 		
-        //input
-        std::string data_input; std::string indices_input;
+        Shape_t data_input; Shape_t indices_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Gather() {}
     };
 }
 
 
+namespace backend {
+
+    class Gather : public Layer {
+        Gather_parameter_descriptor parameters;
+        Gather_input_desriptor      input;
+        Gather_output_descriptor    output;
+        Gather_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Gather_binding_descriptor>* program;
+        
+    public:
+        Gather(std::string, Gather_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Gather() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Gather::Gather(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/gather.spv").c_str());
+   
+    Gather::Gather(std::string n, Gather_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Gather_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/gather.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({axis, tensor_dict[data_input]->shape(), tensor_dict[indices_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[data_input], tensor_dict[indices_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* Gather::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Gather, Layer>(m, "Gather")
+            .def("forward", &Gather::forward);    
+    }*/
+}
 
 #endif

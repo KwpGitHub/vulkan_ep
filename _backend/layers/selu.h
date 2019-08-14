@@ -1,6 +1,6 @@
 #ifndef SELU_H
 #define SELU_H //Selu
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   X_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      alpha, gamma
 //OPTIONAL_PARAMETERS_TYPE: float, float
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Selu : public Layer {
+
+    struct Selu_parameter_descriptor{    
+        float alpha; float gamma;
+    };   
+
+    struct Selu_input_desriptor{
+        Tensor* X_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            float alpha; float gamma;
-			
-            //input
-            Shape_t X_input;
-            
-            //output
-            Shape_t Y_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Selu(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Selu_output_descriptor{
+        Tensor* Y_output;
         
+    };
+
+    struct Selu_binding_descriptor{
         float alpha; float gamma;
 		
-        //input
-        std::string X_input;
+        Shape_t X_input;
         
-        //output
-        std::string Y_output;
+        Shape_t Y_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Selu() {}
     };
 }
 
 
+namespace backend {
+
+    class Selu : public Layer {
+        Selu_parameter_descriptor parameters;
+        Selu_input_desriptor      input;
+        Selu_output_descriptor    output;
+        Selu_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Selu_binding_descriptor>* program;
+        
+    public:
+        Selu(std::string, Selu_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Selu() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Selu::Selu(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/selu.spv").c_str());
+   
+    Selu::Selu(std::string n, Selu_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Selu_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/selu.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({alpha, gamma, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()} 
-                        
-                        , tensor_dict[X_input], tensor_dict[Y_output] );
+      
     }
+
+  
 
     vuh::Device* Selu::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Selu, Layer>(m, "Selu")
+            .def("forward", &Selu::forward);    
+    }*/
+}
 
 #endif

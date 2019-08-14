@@ -1,6 +1,6 @@
 #ifndef SCATTER_H
 #define SCATTER_H //Scatter
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   data_input, indices_input, updates_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Scatter : public Layer {
+
+    struct Scatter_parameter_descriptor{    
+        int axis;
+    };   
+
+    struct Scatter_input_desriptor{
+        Tensor* data_input; Tensor* indices_input; Tensor* updates_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int axis;
-			
-            //input
-            Shape_t data_input; Shape_t indices_input; Shape_t updates_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Scatter(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Scatter_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct Scatter_binding_descriptor{
         int axis;
 		
-        //input
-        std::string data_input; std::string indices_input; std::string updates_input;
+        Shape_t data_input; Shape_t indices_input; Shape_t updates_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Scatter() {}
     };
 }
 
 
+namespace backend {
+
+    class Scatter : public Layer {
+        Scatter_parameter_descriptor parameters;
+        Scatter_input_desriptor      input;
+        Scatter_output_descriptor    output;
+        Scatter_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Scatter_binding_descriptor>* program;
+        
+    public:
+        Scatter(std::string, Scatter_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Scatter() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Scatter::Scatter(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/scatter.spv").c_str());
+   
+    Scatter::Scatter(std::string n, Scatter_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Scatter_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scatter.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({axis, tensor_dict[data_input]->shape(), tensor_dict[indices_input]->shape(), tensor_dict[updates_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[data_input], tensor_dict[indices_input], tensor_dict[updates_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* Scatter::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Scatter, Layer>(m, "Scatter")
+            .def("forward", &Scatter::forward);    
+    }*/
+}
 
 #endif

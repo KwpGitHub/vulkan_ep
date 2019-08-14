@@ -1,6 +1,6 @@
 #ifndef TRANSPOSE_H
 #define TRANSPOSE_H //Transpose
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   data_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      perm
 //OPTIONAL_PARAMETERS_TYPE: Shape_t
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Transpose : public Layer {
+
+    struct Transpose_parameter_descriptor{    
+        Shape_t perm;
+    };   
+
+    struct Transpose_input_desriptor{
+        Tensor* data_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            Shape_t perm;
-			
-            //input
-            Shape_t data_input;
-            
-            //output
-            Shape_t transposed_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Transpose(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Transpose_output_descriptor{
+        Tensor* transposed_output;
         
+    };
+
+    struct Transpose_binding_descriptor{
         Shape_t perm;
 		
-        //input
-        std::string data_input;
+        Shape_t data_input;
         
-        //output
-        std::string transposed_output;
+        Shape_t transposed_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Transpose() {}
     };
 }
 
 
+namespace backend {
+
+    class Transpose : public Layer {
+        Transpose_parameter_descriptor parameters;
+        Transpose_input_desriptor      input;
+        Transpose_output_descriptor    output;
+        Transpose_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Transpose_binding_descriptor>* program;
+        
+    public:
+        Transpose(std::string, Transpose_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Transpose() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Transpose::Transpose(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/transpose.spv").c_str());
+   
+    Transpose::Transpose(std::string n, Transpose_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Transpose_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/transpose.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({perm, tensor_dict[data_input]->shape(), tensor_dict[transposed_output]->shape()} 
-                        
-                        , tensor_dict[data_input], tensor_dict[transposed_output] );
+      
     }
+
+  
 
     vuh::Device* Transpose::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Transpose, Layer>(m, "Transpose")
+            .def("forward", &Transpose::forward);    
+    }*/
+}
 
 #endif

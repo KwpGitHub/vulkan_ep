@@ -1,6 +1,6 @@
 #ifndef ARRAYFEATUREEXTRACTOR_H
 #define ARRAYFEATUREEXTRACTOR_H //ArrayFeatureExtractor
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   X_input, Y_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class ArrayFeatureExtractor : public Layer {
+
+    struct ArrayFeatureExtractor_parameter_descriptor{    
         
-        vuh::Device* _get_device();
+    };   
 
-        struct Params{
-            
-			
-            //input
-            Shape_t X_input; Shape_t Y_input;
-            
-            //output
-            Shape_t Z_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        ArrayFeatureExtractor(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct ArrayFeatureExtractor_input_desriptor{
+        Tensor* X_input; Tensor* Y_input;
         
+    };
+
+    struct ArrayFeatureExtractor_output_descriptor{
+        Tensor* Z_output;
+        
+    };
+
+    struct ArrayFeatureExtractor_binding_descriptor{
         
 		
-        //input
-        std::string X_input; std::string Y_input;
+        Shape_t X_input; Shape_t Y_input;
         
-        //output
-        std::string Z_output;
+        Shape_t Z_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~ArrayFeatureExtractor() {}
     };
 }
 
 
+namespace backend {
+
+    class ArrayFeatureExtractor : public Layer {
+        ArrayFeatureExtractor_parameter_descriptor parameters;
+        ArrayFeatureExtractor_input_desriptor      input;
+        ArrayFeatureExtractor_output_descriptor    output;
+        ArrayFeatureExtractor_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, ArrayFeatureExtractor_binding_descriptor>* program;
+        
+    public:
+        ArrayFeatureExtractor(std::string, ArrayFeatureExtractor_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~ArrayFeatureExtractor() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    ArrayFeatureExtractor::ArrayFeatureExtractor(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/arrayfeatureextractor.spv").c_str());
+   
+    ArrayFeatureExtractor::ArrayFeatureExtractor(std::string n, ArrayFeatureExtractor_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, ArrayFeatureExtractor_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/arrayfeatureextractor.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({tensor_dict[X_input]->shape(), tensor_dict[Y_input]->shape(), tensor_dict[Z_output]->shape()} 
-                        
-                        , tensor_dict[X_input], tensor_dict[Y_input], tensor_dict[Z_output] );
+      
     }
+
+  
 
     vuh::Device* ArrayFeatureExtractor::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<ArrayFeatureExtractor, Layer>(m, "ArrayFeatureExtractor")
+            .def("forward", &ArrayFeatureExtractor::forward);    
+    }*/
+}
 
 #endif

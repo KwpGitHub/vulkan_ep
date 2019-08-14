@@ -8,10 +8,10 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     
-			
+		
 //input
     Shape_t x_input; Shape_t x_scale_input;
-    Shape_t x_zero_point_input_o;
+    Shape_t x_zero_point_input_opt;
 //output
     Shape_t y_output;
     
@@ -19,7 +19,7 @@ layout(push_constant) uniform Parameters {
 
 layout(std430, binding = 0) buffer lay0 { float x_input[]; };
 layout(std430, binding = 1) buffer lay1 { float x_scale_input[]; };
-layout(std430, binding = 2) buffer lay2 { float x_zero_point_input_o[]; };
+layout(std430, binding = 2) buffer lay2 { float x_zero_point_input_opt[]; };
 layout(std430, binding = 3) buffer lay3 { float y_output[]; };
 
 void main(){
@@ -29,7 +29,7 @@ void main(){
     
     const uint x_input_size = params.x_input.n * params.x_input.c * params.x_input.d * params.x_input.w * params.x_input.h;
 	const uint x_scale_input_size = params.x_scale_input.n * params.x_scale_input.c * params.x_scale_input.d * params.x_scale_input.w * params.x_scale_input.h;
-    const uint x_zero_point_input_o_size = params.x_zero_point_input_o.n * params.x_zero_point_input_o.c * params.x_zero_point_input_o.d * params.x_zero_point_input_o.w * params.x_zero_point_input_o.h;
+    const uint x_zero_point_input_opt_size = params.x_zero_point_input_opt.n * params.x_zero_point_input_opt.c * params.x_zero_point_input_opt.d * params.x_zero_point_input_opt.w * params.x_zero_point_input_opt.h;
     const uint y_output_size = params.y_output.n * params.y_output.c * params.y_output.d * params.y_output.w * params.y_output.h;
     
 

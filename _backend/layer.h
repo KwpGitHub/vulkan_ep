@@ -15,12 +15,11 @@ namespace backend {
 	class Layer
 	{
 	public:
-		Layer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : name(n), inputs(i), outputs(o), attribute(a) {}
+		Layer(std::string n) : name(n) {}
 		virtual ~Layer() {}
 		virtual void forward() {}
 	protected:
 		//virtual void parameter_proc(std::map<std::string, std::vector<std::string>> a()) {}
-		std::map<std::string, std::vector<std::string>> attribute;
 		std::vector<std::string> inputs;
 		std::vector<std::string> outputs;
 		std::string name;

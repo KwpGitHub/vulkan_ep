@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     
-			
+		
 //input
     Shape_t X_input; Shape_t slope_input;
     

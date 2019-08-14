@@ -1,6 +1,6 @@
 #ifndef LPNORMALIZATION_H
 #define LPNORMALIZATION_H //LpNormalization
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      axis, p
 //OPTIONAL_PARAMETERS_TYPE: int, int
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class LpNormalization : public Layer {
+
+    struct LpNormalization_parameter_descriptor{    
+        int axis; int p;
+    };   
+
+    struct LpNormalization_input_desriptor{
+        Tensor* input_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int axis; int p;
-			
-            //input
-            Shape_t input_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        LpNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct LpNormalization_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct LpNormalization_binding_descriptor{
         int axis; int p;
 		
-        //input
-        std::string input_input;
+        Shape_t input_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~LpNormalization() {}
     };
 }
 
 
+namespace backend {
+
+    class LpNormalization : public Layer {
+        LpNormalization_parameter_descriptor parameters;
+        LpNormalization_input_desriptor      input;
+        LpNormalization_output_descriptor    output;
+        LpNormalization_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, LpNormalization_binding_descriptor>* program;
+        
+    public:
+        LpNormalization(std::string, LpNormalization_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~LpNormalization() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    LpNormalization::LpNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/lpnormalization.spv").c_str());
+   
+    LpNormalization::LpNormalization(std::string n, LpNormalization_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, LpNormalization_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/lpnormalization.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({axis, p, tensor_dict[input_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[input_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* LpNormalization::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<LpNormalization, Layer>(m, "LpNormalization")
+            .def("forward", &LpNormalization::forward);    
+    }*/
+}
 
 #endif

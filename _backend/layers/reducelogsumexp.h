@@ -1,6 +1,6 @@
 #ifndef REDUCELOGSUMEXP_H
 #define REDUCELOGSUMEXP_H //ReduceLogSumExp
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   data_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      axes, keepdims
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, int
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class ReduceLogSumExp : public Layer {
+
+    struct ReduceLogSumExp_parameter_descriptor{    
+        Shape_t axes; int keepdims;
+    };   
+
+    struct ReduceLogSumExp_input_desriptor{
+        Tensor* data_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            Shape_t axes; int keepdims;
-			
-            //input
-            Shape_t data_input;
-            
-            //output
-            Shape_t reduced_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        ReduceLogSumExp(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct ReduceLogSumExp_output_descriptor{
+        Tensor* reduced_output;
         
+    };
+
+    struct ReduceLogSumExp_binding_descriptor{
         Shape_t axes; int keepdims;
 		
-        //input
-        std::string data_input;
+        Shape_t data_input;
         
-        //output
-        std::string reduced_output;
+        Shape_t reduced_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~ReduceLogSumExp() {}
     };
 }
 
 
+namespace backend {
+
+    class ReduceLogSumExp : public Layer {
+        ReduceLogSumExp_parameter_descriptor parameters;
+        ReduceLogSumExp_input_desriptor      input;
+        ReduceLogSumExp_output_descriptor    output;
+        ReduceLogSumExp_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, ReduceLogSumExp_binding_descriptor>* program;
+        
+    public:
+        ReduceLogSumExp(std::string, ReduceLogSumExp_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~ReduceLogSumExp() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    ReduceLogSumExp::ReduceLogSumExp(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/reducelogsumexp.spv").c_str());
+   
+    ReduceLogSumExp::ReduceLogSumExp(std::string n, ReduceLogSumExp_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, ReduceLogSumExp_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reducelogsumexp.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({axes, keepdims, tensor_dict[data_input]->shape(), tensor_dict[reduced_output]->shape()} 
-                        
-                        , tensor_dict[data_input], tensor_dict[reduced_output] );
+      
     }
+
+  
 
     vuh::Device* ReduceLogSumExp::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<ReduceLogSumExp, Layer>(m, "ReduceLogSumExp")
+            .def("forward", &ReduceLogSumExp::forward);    
+    }*/
+}
 
 #endif

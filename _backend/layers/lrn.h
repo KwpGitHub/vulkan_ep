@@ -1,6 +1,6 @@
 #ifndef LRN_H
 #define LRN_H //LRN
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   X_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      alpha, beta, bias
 //OPTIONAL_PARAMETERS_TYPE: float, float, float
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class LRN : public Layer {
+
+    struct LRN_parameter_descriptor{    
+        int size; float alpha; float beta; float bias;
+    };   
+
+    struct LRN_input_desriptor{
+        Tensor* X_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int size; float alpha; float beta; float bias;
-			
-            //input
-            Shape_t X_input;
-            
-            //output
-            Shape_t Y_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        LRN(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct LRN_output_descriptor{
+        Tensor* Y_output;
         
+    };
+
+    struct LRN_binding_descriptor{
         int size; float alpha; float beta; float bias;
 		
-        //input
-        std::string X_input;
+        Shape_t X_input;
         
-        //output
-        std::string Y_output;
+        Shape_t Y_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~LRN() {}
     };
 }
 
 
+namespace backend {
+
+    class LRN : public Layer {
+        LRN_parameter_descriptor parameters;
+        LRN_input_desriptor      input;
+        LRN_output_descriptor    output;
+        LRN_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, LRN_binding_descriptor>* program;
+        
+    public:
+        LRN(std::string, LRN_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~LRN() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    LRN::LRN(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/lrn.spv").c_str());
+   
+    LRN::LRN(std::string n, LRN_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, LRN_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/lrn.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({size, alpha, beta, bias, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()} 
-                        
-                        , tensor_dict[X_input], tensor_dict[Y_output] );
+      
     }
+
+  
 
     vuh::Device* LRN::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<LRN, Layer>(m, "LRN")
+            .def("forward", &LRN::forward);    
+    }*/
+}
 
 #endif

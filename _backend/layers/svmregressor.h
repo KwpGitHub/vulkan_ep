@@ -1,6 +1,6 @@
 #ifndef SVMREGRESSOR_H
 #define SVMREGRESSOR_H //SVMRegressor
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   X_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      coefficients, kernel_params, kernel_type, n_supports, one_class, post_transform, rho, support_vectors
 //OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, int, int, int, int, Tensor*, Tensor*
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class SVMRegressor : public Layer {
-        
-        vuh::Device* _get_device();
 
-        struct Params{
-            int kernel_type; int n_supports; int one_class; int post_transform;
-			Shape_t coefficients; Shape_t kernel_params; Shape_t rho; Shape_t support_vectors;
-            //input
-            Shape_t X_input;
-            
-            //output
-            Shape_t Y_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        SVMRegressor(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
-        
+    struct SVMRegressor_parameter_descriptor{    
         Tensor* coefficients; Tensor* kernel_params; int kernel_type; int n_supports; int one_class; int post_transform; Tensor* rho; Tensor* support_vectors;
-		Shape_t coefficients_s; Shape_t kernel_params_s; Shape_t rho_s; Shape_t support_vectors_s;
-        //input
-        std::string X_input;
+    };   
+
+    struct SVMRegressor_input_desriptor{
+        Tensor* X_input;
         
-        //output
-        std::string Y_output;
+    };
+
+    struct SVMRegressor_output_descriptor{
+        Tensor* Y_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~SVMRegressor() {}
+    };
+
+    struct SVMRegressor_binding_descriptor{
+        int kernel_type; int n_supports; int one_class; int post_transform;
+		Shape_t coefficients; Shape_t kernel_params; Shape_t rho; Shape_t support_vectors;
+        Shape_t X_input;
+        
+        Shape_t Y_output;
+        
     };
 }
 
 
+namespace backend {
+
+    class SVMRegressor : public Layer {
+        SVMRegressor_parameter_descriptor parameters;
+        SVMRegressor_input_desriptor      input;
+        SVMRegressor_output_descriptor    output;
+        SVMRegressor_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, SVMRegressor_binding_descriptor>* program;
+        
+    public:
+        SVMRegressor(std::string, SVMRegressor_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~SVMRegressor() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    SVMRegressor::SVMRegressor(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/svmregressor.spv").c_str());
+   
+    SVMRegressor::SVMRegressor(std::string n, SVMRegressor_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, SVMRegressor_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/svmregressor.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({kernel_type, n_supports, one_class, post_transform, coefficients_s, kernel_params_s, rho_s, support_vectors_s, tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()} 
-                        , *coefficients, *kernel_params, *rho, *support_vectors
-                        , tensor_dict[X_input], tensor_dict[Y_output] );
+      
     }
+
+  
 
     vuh::Device* SVMRegressor::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<SVMRegressor, Layer>(m, "SVMRegressor")
+            .def("forward", &SVMRegressor::forward);    
+    }*/
+}
 
 #endif

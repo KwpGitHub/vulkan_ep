@@ -1,6 +1,6 @@
 #ifndef MOD_H
 #define MOD_H //Mod
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   A_input, B_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      fmod
 //OPTIONAL_PARAMETERS_TYPE: int
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Mod : public Layer {
+
+    struct Mod_parameter_descriptor{    
+        int fmod;
+    };   
+
+    struct Mod_input_desriptor{
+        Tensor* A_input; Tensor* B_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int fmod;
-			
-            //input
-            Shape_t A_input; Shape_t B_input;
-            
-            //output
-            Shape_t C_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Mod(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Mod_output_descriptor{
+        Tensor* C_output;
         
+    };
+
+    struct Mod_binding_descriptor{
         int fmod;
 		
-        //input
-        std::string A_input; std::string B_input;
+        Shape_t A_input; Shape_t B_input;
         
-        //output
-        std::string C_output;
+        Shape_t C_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Mod() {}
     };
 }
 
 
+namespace backend {
+
+    class Mod : public Layer {
+        Mod_parameter_descriptor parameters;
+        Mod_input_desriptor      input;
+        Mod_output_descriptor    output;
+        Mod_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Mod_binding_descriptor>* program;
+        
+    public:
+        Mod(std::string, Mod_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Mod() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Mod::Mod(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/mod.spv").c_str());
+   
+    Mod::Mod(std::string n, Mod_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Mod_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mod.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({fmod, tensor_dict[A_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[C_output]->shape()} 
-                        
-                        , tensor_dict[A_input], tensor_dict[B_input], tensor_dict[C_output] );
+      
     }
+
+  
 
     vuh::Device* Mod::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Mod, Layer>(m, "Mod")
+            .def("forward", &Mod::forward);    
+    }*/
+}
 
 #endif

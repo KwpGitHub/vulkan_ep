@@ -1,6 +1,6 @@
 #ifndef CLIP_H
 #define CLIP_H //Clip
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      max, min
 //OPTIONAL_PARAMETERS_TYPE: float, float
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Clip : public Layer {
+
+    struct Clip_parameter_descriptor{    
+        float max; float min;
+    };   
+
+    struct Clip_input_desriptor{
+        Tensor* input_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            float max; float min;
-			
-            //input
-            Shape_t input_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Clip(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Clip_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct Clip_binding_descriptor{
         float max; float min;
 		
-        //input
-        std::string input_input;
+        Shape_t input_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Clip() {}
     };
 }
 
 
+namespace backend {
+
+    class Clip : public Layer {
+        Clip_parameter_descriptor parameters;
+        Clip_input_desriptor      input;
+        Clip_output_descriptor    output;
+        Clip_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Clip_binding_descriptor>* program;
+        
+    public:
+        Clip(std::string, Clip_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Clip() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Clip::Clip(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/clip.spv").c_str());
+   
+    Clip::Clip(std::string n, Clip_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Clip_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/clip.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({max, min, tensor_dict[input_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[input_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* Clip::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Clip, Layer>(m, "Clip")
+            .def("forward", &Clip::forward);    
+    }*/
+}
 
 #endif

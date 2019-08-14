@@ -1,6 +1,6 @@
 #ifndef SQUEEZE_H
 #define SQUEEZE_H //Squeeze
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   data_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      axes
 //OPTIONAL_PARAMETERS_TYPE: Shape_t
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Squeeze : public Layer {
+
+    struct Squeeze_parameter_descriptor{    
+        Shape_t axes;
+    };   
+
+    struct Squeeze_input_desriptor{
+        Tensor* data_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            Shape_t axes;
-			
-            //input
-            Shape_t data_input;
-            
-            //output
-            Shape_t squeezed_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Squeeze(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Squeeze_output_descriptor{
+        Tensor* squeezed_output;
         
+    };
+
+    struct Squeeze_binding_descriptor{
         Shape_t axes;
 		
-        //input
-        std::string data_input;
+        Shape_t data_input;
         
-        //output
-        std::string squeezed_output;
+        Shape_t squeezed_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Squeeze() {}
     };
 }
 
 
+namespace backend {
+
+    class Squeeze : public Layer {
+        Squeeze_parameter_descriptor parameters;
+        Squeeze_input_desriptor      input;
+        Squeeze_output_descriptor    output;
+        Squeeze_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Squeeze_binding_descriptor>* program;
+        
+    public:
+        Squeeze(std::string, Squeeze_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Squeeze() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Squeeze::Squeeze(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/squeeze.spv").c_str());
+   
+    Squeeze::Squeeze(std::string n, Squeeze_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Squeeze_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/squeeze.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({axes, tensor_dict[data_input]->shape(), tensor_dict[squeezed_output]->shape()} 
-                        
-                        , tensor_dict[data_input], tensor_dict[squeezed_output] );
+      
     }
+
+  
 
     vuh::Device* Squeeze::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Squeeze, Layer>(m, "Squeeze")
+            .def("forward", &Squeeze::forward);    
+    }*/
+}
 
 #endif

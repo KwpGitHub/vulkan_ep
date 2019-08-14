@@ -8,10 +8,10 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     
-			
+		
 //input
     Shape_t A_input; Shape_t B_input;
-    Shape_t a_zero_point_input_o; Shape_t b_zero_point_input_o;
+    Shape_t a_zero_point_input_opt; Shape_t b_zero_point_input_opt;
 //output
     Shape_t Y_output;
     
@@ -19,8 +19,8 @@ layout(push_constant) uniform Parameters {
 
 layout(std430, binding = 0) buffer lay0 { float A_input[]; };
 layout(std430, binding = 1) buffer lay1 { float B_input[]; };
-layout(std430, binding = 2) buffer lay2 { float a_zero_point_input_o[]; };
-layout(std430, binding = 3) buffer lay3 { float b_zero_point_input_o[]; };
+layout(std430, binding = 2) buffer lay2 { float a_zero_point_input_opt[]; };
+layout(std430, binding = 3) buffer lay3 { float b_zero_point_input_opt[]; };
 layout(std430, binding = 4) buffer lay4 { float Y_output[]; };
 
 void main(){
@@ -30,8 +30,8 @@ void main(){
     
     const uint A_input_size = params.A_input.n * params.A_input.c * params.A_input.d * params.A_input.w * params.A_input.h;
 	const uint B_input_size = params.B_input.n * params.B_input.c * params.B_input.d * params.B_input.w * params.B_input.h;
-    const uint a_zero_point_input_o_size = params.a_zero_point_input_o.n * params.a_zero_point_input_o.c * params.a_zero_point_input_o.d * params.a_zero_point_input_o.w * params.a_zero_point_input_o.h;
-	const uint b_zero_point_input_o_size = params.b_zero_point_input_o.n * params.b_zero_point_input_o.c * params.b_zero_point_input_o.d * params.b_zero_point_input_o.w * params.b_zero_point_input_o.h;
+    const uint a_zero_point_input_opt_size = params.a_zero_point_input_opt.n * params.a_zero_point_input_opt.c * params.a_zero_point_input_opt.d * params.a_zero_point_input_opt.w * params.a_zero_point_input_opt.h;
+	const uint b_zero_point_input_opt_size = params.b_zero_point_input_opt.n * params.b_zero_point_input_opt.c * params.b_zero_point_input_opt.d * params.b_zero_point_input_opt.w * params.b_zero_point_input_opt.h;
     const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
     
 

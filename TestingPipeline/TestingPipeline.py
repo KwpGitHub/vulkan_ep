@@ -1,16 +1,17 @@
 import numpy as np
-import _backend as backend
-
 from google.protobuf.json_format import MessageToJson
 import onnx
 import json
 import os
+import _backend as backend
+
 
 def graph_def_info(onnx_file):
     onnx_model_str =  MessageToJson(onnx.load(onnx_file))
     graph = json.loads(onnx_model_str)['graph']
-    backend.test()
+    
     backend.create_instance(os.getcwd())
+    backend.test()
     
     nodes = {} 
     

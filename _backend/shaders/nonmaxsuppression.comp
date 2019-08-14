@@ -8,10 +8,10 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     int center_point_box;
-			
+		
 //input
     Shape_t boxes_input; Shape_t scores_input;
-    Shape_t max_output_boxes_per_class_input_o; Shape_t iou_threshold_input_o; Shape_t score_threshold_input_o;
+    Shape_t max_output_boxes_per_class_input_opt; Shape_t iou_threshold_input_opt; Shape_t score_threshold_input_opt;
 //output
     Shape_t selected_indices_output;
     
@@ -19,9 +19,9 @@ layout(push_constant) uniform Parameters {
 
 layout(std430, binding = 0) buffer lay0 { float boxes_input[]; };
 layout(std430, binding = 1) buffer lay1 { float scores_input[]; };
-layout(std430, binding = 2) buffer lay2 { float max_output_boxes_per_class_input_o[]; };
-layout(std430, binding = 3) buffer lay3 { float iou_threshold_input_o[]; };
-layout(std430, binding = 4) buffer lay4 { float score_threshold_input_o[]; };
+layout(std430, binding = 2) buffer lay2 { float max_output_boxes_per_class_input_opt[]; };
+layout(std430, binding = 3) buffer lay3 { float iou_threshold_input_opt[]; };
+layout(std430, binding = 4) buffer lay4 { float score_threshold_input_opt[]; };
 layout(std430, binding = 5) buffer lay5 { float selected_indices_output[]; };
 
 void main(){
@@ -31,9 +31,9 @@ void main(){
     
     const uint boxes_input_size = params.boxes_input.n * params.boxes_input.c * params.boxes_input.d * params.boxes_input.w * params.boxes_input.h;
 	const uint scores_input_size = params.scores_input.n * params.scores_input.c * params.scores_input.d * params.scores_input.w * params.scores_input.h;
-    const uint max_output_boxes_per_class_input_o_size = params.max_output_boxes_per_class_input_o.n * params.max_output_boxes_per_class_input_o.c * params.max_output_boxes_per_class_input_o.d * params.max_output_boxes_per_class_input_o.w * params.max_output_boxes_per_class_input_o.h;
-	const uint iou_threshold_input_o_size = params.iou_threshold_input_o.n * params.iou_threshold_input_o.c * params.iou_threshold_input_o.d * params.iou_threshold_input_o.w * params.iou_threshold_input_o.h;
-	const uint score_threshold_input_o_size = params.score_threshold_input_o.n * params.score_threshold_input_o.c * params.score_threshold_input_o.d * params.score_threshold_input_o.w * params.score_threshold_input_o.h;
+    const uint max_output_boxes_per_class_input_opt_size = params.max_output_boxes_per_class_input_opt.n * params.max_output_boxes_per_class_input_opt.c * params.max_output_boxes_per_class_input_opt.d * params.max_output_boxes_per_class_input_opt.w * params.max_output_boxes_per_class_input_opt.h;
+	const uint iou_threshold_input_opt_size = params.iou_threshold_input_opt.n * params.iou_threshold_input_opt.c * params.iou_threshold_input_opt.d * params.iou_threshold_input_opt.w * params.iou_threshold_input_opt.h;
+	const uint score_threshold_input_opt_size = params.score_threshold_input_opt.n * params.score_threshold_input_opt.c * params.score_threshold_input_opt.d * params.score_threshold_input_opt.w * params.score_threshold_input_opt.h;
     const uint selected_indices_output_size = params.selected_indices_output.n * params.selected_indices_output.c * params.selected_indices_output.d * params.selected_indices_output.w * params.selected_indices_output.h;
     
 

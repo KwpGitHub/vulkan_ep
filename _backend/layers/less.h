@@ -1,6 +1,6 @@
 #ifndef LESS_H
 #define LESS_H //Less
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   A_input, B_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Less : public Layer {
+
+    struct Less_parameter_descriptor{    
         
-        vuh::Device* _get_device();
+    };   
 
-        struct Params{
-            
-			
-            //input
-            Shape_t A_input; Shape_t B_input;
-            
-            //output
-            Shape_t C_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Less(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Less_input_desriptor{
+        Tensor* A_input; Tensor* B_input;
         
+    };
+
+    struct Less_output_descriptor{
+        Tensor* C_output;
+        
+    };
+
+    struct Less_binding_descriptor{
         
 		
-        //input
-        std::string A_input; std::string B_input;
+        Shape_t A_input; Shape_t B_input;
         
-        //output
-        std::string C_output;
+        Shape_t C_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Less() {}
     };
 }
 
 
+namespace backend {
+
+    class Less : public Layer {
+        Less_parameter_descriptor parameters;
+        Less_input_desriptor      input;
+        Less_output_descriptor    output;
+        Less_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Less_binding_descriptor>* program;
+        
+    public:
+        Less(std::string, Less_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Less() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Less::Less(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/less.spv").c_str());
+   
+    Less::Less(std::string n, Less_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Less_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/less.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({tensor_dict[A_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[C_output]->shape()} 
-                        
-                        , tensor_dict[A_input], tensor_dict[B_input], tensor_dict[C_output] );
+      
     }
+
+  
 
     vuh::Device* Less::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Less, Layer>(m, "Less")
+            .def("forward", &Less::forward);    
+    }*/
+}
 
 #endif

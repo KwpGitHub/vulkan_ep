@@ -1,6 +1,6 @@
 #ifndef INSTANCENORMALIZATION_H
 #define INSTANCENORMALIZATION_H //InstanceNormalization
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input, scale_input, B_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      epsilon
 //OPTIONAL_PARAMETERS_TYPE: float
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class InstanceNormalization : public Layer {
+
+    struct InstanceNormalization_parameter_descriptor{    
+        float epsilon;
+    };   
+
+    struct InstanceNormalization_input_desriptor{
+        Tensor* input_input; Tensor* scale_input; Tensor* B_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            float epsilon;
-			
-            //input
-            Shape_t input_input; Shape_t scale_input; Shape_t B_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        InstanceNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct InstanceNormalization_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct InstanceNormalization_binding_descriptor{
         float epsilon;
 		
-        //input
-        std::string input_input; std::string scale_input; std::string B_input;
+        Shape_t input_input; Shape_t scale_input; Shape_t B_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~InstanceNormalization() {}
     };
 }
 
 
+namespace backend {
+
+    class InstanceNormalization : public Layer {
+        InstanceNormalization_parameter_descriptor parameters;
+        InstanceNormalization_input_desriptor      input;
+        InstanceNormalization_output_descriptor    output;
+        InstanceNormalization_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, InstanceNormalization_binding_descriptor>* program;
+        
+    public:
+        InstanceNormalization(std::string, InstanceNormalization_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~InstanceNormalization() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    InstanceNormalization::InstanceNormalization(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/instancenormalization.spv").c_str());
+   
+    InstanceNormalization::InstanceNormalization(std::string n, InstanceNormalization_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, InstanceNormalization_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/instancenormalization.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({epsilon, tensor_dict[input_input]->shape(), tensor_dict[scale_input]->shape(), tensor_dict[B_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[input_input], tensor_dict[scale_input], tensor_dict[B_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* InstanceNormalization::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<InstanceNormalization, Layer>(m, "InstanceNormalization")
+            .def("forward", &InstanceNormalization::forward);    
+    }*/
+}
 
 #endif

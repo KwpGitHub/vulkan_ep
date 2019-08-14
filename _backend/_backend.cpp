@@ -1,8 +1,11 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
+
 #include <vector>
 #include <numeric>
+#include <string>
+
 #include "kernel/vuh.h"
 #include "tensor.h"
 #include "layer.h"
@@ -45,7 +48,7 @@ void test() {
 
 void create_instance(py::str file_path) {
 	std::cout << file_path << std::endl;
-	backend::file_path = std::string(file_path) + std::string("\\../_backend/");
+	backend::file_path = std::string(file_path) + std::string("/../_backend/");
 	backend::instance = new vuh::Instance();
 	backend::device = new vuh::Device(backend::instance->devices().at(0));
 }
@@ -84,6 +87,7 @@ void create_tensor_from_numpy(py::str name, py::array_t<float> input){
 
 }
 
+
 void create_tensor(py::str name, py::list data, py::list shape) {
 	std::vector<float> d;
 	std::vector<uint32_t> s;
@@ -93,7 +97,6 @@ void create_tensor(py::str name, py::list data, py::list shape) {
 	for (auto x : data)
 		d.push_back(x.cast<float>());
 	
-
 	backend::Shape_t _shape = { 1,1,1,1,1 };
 
 	switch (s.size()) {
@@ -134,7 +137,7 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 
 	for (auto x : outputs)
 		o.push_back(x.cast<std::string>());
-	
+
 	std::cout << "LAYERS ::: " << name << "\n\t input:[ ";
 	for (auto x : i)
 		std::cout << x << " ";
@@ -142,17 +145,21 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 	for (auto x : o)
 		std::cout << x << " ";
 	std::cout << "]" << std::endl;
+	
+	for (auto item : attribute) {
+		std::string attribute_name = std::string(py::str(item.first));
+		
+	}
 
-	auto layer_create_func = backend::layer_map[oT];
-	auto layer = layer_create_func(n, i, o, a);
-	backend::layer_dict[n] = layer;
 
 }
+
+
 
 PYBIND11_MODULE(_backend, m) {
 	m.def("create_instance", &create_instance);
 	m.def("create_tensor", &create_tensor);
-	m.def("create_layer", &create_layer);
 	m.def("create_tensor_from_numpy", &create_tensor_from_numpy);
+	m.def("create_layer", &create_layer);
 	m.def("test", &test);
 }

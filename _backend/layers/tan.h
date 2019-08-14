@@ -1,6 +1,6 @@
 #ifndef TAN_H
 #define TAN_H //Tan
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Tan : public Layer {
+
+    struct Tan_parameter_descriptor{    
         
-        vuh::Device* _get_device();
+    };   
 
-        struct Params{
-            
-			
-            //input
-            Shape_t input_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Tan(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Tan_input_desriptor{
+        Tensor* input_input;
         
+    };
+
+    struct Tan_output_descriptor{
+        Tensor* output_output;
+        
+    };
+
+    struct Tan_binding_descriptor{
         
 		
-        //input
-        std::string input_input;
+        Shape_t input_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Tan() {}
     };
 }
 
 
+namespace backend {
+
+    class Tan : public Layer {
+        Tan_parameter_descriptor parameters;
+        Tan_input_desriptor      input;
+        Tan_output_descriptor    output;
+        Tan_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Tan_binding_descriptor>* program;
+        
+    public:
+        Tan(std::string, Tan_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Tan() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Tan::Tan(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/tan.spv").c_str());
+   
+    Tan::Tan(std::string n, Tan_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Tan_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tan.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({tensor_dict[input_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[input_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* Tan::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Tan, Layer>(m, "Tan")
+            .def("forward", &Tan::forward);    
+    }*/
+}
 
 #endif

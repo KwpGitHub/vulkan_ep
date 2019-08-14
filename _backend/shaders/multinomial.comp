@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     int dtype; int sample_size; float seed;
-			
+		
 //input
     Shape_t input_input;
     

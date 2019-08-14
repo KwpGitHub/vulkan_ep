@@ -1,6 +1,6 @@
 #ifndef NONZERO_H
 #define NONZERO_H //NonZero
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   X_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class NonZero : public Layer {
+
+    struct NonZero_parameter_descriptor{    
         
-        vuh::Device* _get_device();
+    };   
 
-        struct Params{
-            
-			
-            //input
-            Shape_t X_input;
-            
-            //output
-            Shape_t Y_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        NonZero(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct NonZero_input_desriptor{
+        Tensor* X_input;
         
+    };
+
+    struct NonZero_output_descriptor{
+        Tensor* Y_output;
+        
+    };
+
+    struct NonZero_binding_descriptor{
         
 		
-        //input
-        std::string X_input;
+        Shape_t X_input;
         
-        //output
-        std::string Y_output;
+        Shape_t Y_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~NonZero() {}
     };
 }
 
 
+namespace backend {
+
+    class NonZero : public Layer {
+        NonZero_parameter_descriptor parameters;
+        NonZero_input_desriptor      input;
+        NonZero_output_descriptor    output;
+        NonZero_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, NonZero_binding_descriptor>* program;
+        
+    public:
+        NonZero(std::string, NonZero_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~NonZero() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    NonZero::NonZero(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/nonzero.spv").c_str());
+   
+    NonZero::NonZero(std::string n, NonZero_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, NonZero_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/nonzero.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({tensor_dict[X_input]->shape(), tensor_dict[Y_output]->shape()} 
-                        
-                        , tensor_dict[X_input], tensor_dict[Y_output] );
+      
     }
+
+  
 
     vuh::Device* NonZero::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<NonZero, Layer>(m, "NonZero")
+            .def("forward", &NonZero::forward);    
+    }*/
+}
 
 #endif

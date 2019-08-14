@@ -1,6 +1,6 @@
 #ifndef DEPTHTOSPACE_H
 #define DEPTHTOSPACE_H //DepthToSpace
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class DepthToSpace : public Layer {
+
+    struct DepthToSpace_parameter_descriptor{    
+        int blocksize;
+    };   
+
+    struct DepthToSpace_input_desriptor{
+        Tensor* input_input;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int blocksize;
-			
-            //input
-            Shape_t input_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        DepthToSpace(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct DepthToSpace_output_descriptor{
+        Tensor* output_output;
         
+    };
+
+    struct DepthToSpace_binding_descriptor{
         int blocksize;
 		
-        //input
-        std::string input_input;
+        Shape_t input_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~DepthToSpace() {}
     };
 }
 
 
+namespace backend {
+
+    class DepthToSpace : public Layer {
+        DepthToSpace_parameter_descriptor parameters;
+        DepthToSpace_input_desriptor      input;
+        DepthToSpace_output_descriptor    output;
+        DepthToSpace_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, DepthToSpace_binding_descriptor>* program;
+        
+    public:
+        DepthToSpace(std::string, DepthToSpace_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~DepthToSpace() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    DepthToSpace::DepthToSpace(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/depthtospace.spv").c_str());
+   
+    DepthToSpace::DepthToSpace(std::string n, DepthToSpace_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, DepthToSpace_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/depthtospace.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({blocksize, tensor_dict[input_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[input_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* DepthToSpace::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<DepthToSpace, Layer>(m, "DepthToSpace")
+            .def("forward", &DepthToSpace::forward);    
+    }*/
+}
 
 #endif

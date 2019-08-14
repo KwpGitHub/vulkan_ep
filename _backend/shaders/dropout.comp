@@ -8,18 +8,18 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     float ratio;
-			
+		
 //input
     Shape_t data_input;
     
 //output
     Shape_t output_output;
-    Shape_t mask_output_o;
+    Shape_t mask_output_opt;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { float data_input[]; };
 layout(std430, binding = 1) buffer lay1 { float output_output[]; };
-layout(std430, binding = 2) buffer lay2 { float mask_output_o[]; };
+layout(std430, binding = 2) buffer lay2 { float mask_output_opt[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -29,7 +29,7 @@ void main(){
     const uint data_input_size = params.data_input.n * params.data_input.c * params.data_input.d * params.data_input.w * params.data_input.h;
     
     const uint output_output_size = params.output_output.n * params.output_output.c * params.output_output.d * params.output_output.w * params.output_output.h;
-    const uint mask_output_o_size = params.mask_output_o.n * params.mask_output_o.c * params.mask_output_o.d * params.mask_output_o.w * params.mask_output_o.h;
+    const uint mask_output_opt_size = params.mask_output_opt.n * params.mask_output_opt.c * params.mask_output_opt.d * params.mask_output_opt.w * params.mask_output_opt.h;
 
     if(size <= idx) {
         return;

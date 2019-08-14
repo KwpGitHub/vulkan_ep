@@ -1,10 +1,10 @@
 #ifndef QLINEARCONV_H
 #define QLINEARCONV_H //QLinearConv
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   x_input, x_scale_input, x_zero_point_input, w_input, w_scale_input, w_zero_point_input, y_scale_input, y_zero_point_input
-//OPTIONAL_INPUTS:          B_input_o
+//OPTIONAL_INPUTS:          B_input_opt
 //OUTPUS:                   y_output
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      auto_pad, dilations, group, kernel_shape, pads, strides
 //OPTIONAL_PARAMETERS_TYPE: int, Shape_t, int, Shape_t, Shape_t, Shape_t
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class QLinearConv : public Layer {
+
+    struct QLinearConv_parameter_descriptor{    
+        int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+    };   
+
+    struct QLinearConv_input_desriptor{
+        Tensor* x_input; Tensor* x_scale_input; Tensor* x_zero_point_input; Tensor* w_input; Tensor* w_scale_input; Tensor* w_zero_point_input; Tensor* y_scale_input; Tensor* y_zero_point_input;
+        Tensor* B_input_opt;
+    };
+
+    struct QLinearConv_output_descriptor{
+        Tensor* y_output;
         
-        vuh::Device* _get_device();
+    };
 
-        struct Params{
-            int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-			
-            //input
-            Shape_t x_input; Shape_t x_scale_input; Shape_t x_zero_point_input; Shape_t w_input; Shape_t w_scale_input; Shape_t w_zero_point_input; Shape_t y_scale_input; Shape_t y_zero_point_input;
-            Shape_t B_input_o;
-            //output
-            Shape_t y_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        QLinearConv(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
-        
+    struct QLinearConv_binding_descriptor{
         int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
 		
-        //input
-        std::string x_input; std::string x_scale_input; std::string x_zero_point_input; std::string w_input; std::string w_scale_input; std::string w_zero_point_input; std::string y_scale_input; std::string y_zero_point_input;
-        std::string B_input_o;
-        //output
-        std::string y_output;
+        Shape_t x_input; Shape_t x_scale_input; Shape_t x_zero_point_input; Shape_t w_input; Shape_t w_scale_input; Shape_t w_zero_point_input; Shape_t y_scale_input; Shape_t y_zero_point_input;
+        Shape_t B_input_opt;
+        Shape_t y_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~QLinearConv() {}
     };
 }
 
 
+namespace backend {
+
+    class QLinearConv : public Layer {
+        QLinearConv_parameter_descriptor parameters;
+        QLinearConv_input_desriptor      input;
+        QLinearConv_output_descriptor    output;
+        QLinearConv_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, QLinearConv_binding_descriptor>* program;
+        
+    public:
+        QLinearConv(std::string, QLinearConv_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~QLinearConv() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    QLinearConv::QLinearConv(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/qlinearconv.spv").c_str());
+   
+    QLinearConv::QLinearConv(std::string n, QLinearConv_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, QLinearConv_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/qlinearconv.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({auto_pad, dilations, group, kernel_shape, pads, strides, tensor_dict[x_input]->shape(), tensor_dict[x_scale_input]->shape(), tensor_dict[x_zero_point_input]->shape(), tensor_dict[w_input]->shape(), tensor_dict[w_scale_input]->shape(), tensor_dict[w_zero_point_input]->shape(), tensor_dict[y_scale_input]->shape(), tensor_dict[y_zero_point_input]->shape(), tensor_dict[B_input_o]->shape(), tensor_dict[y_output]->shape()} 
-                        
-                        , tensor_dict[x_input], tensor_dict[x_scale_input], tensor_dict[x_zero_point_input], tensor_dict[w_input], tensor_dict[w_scale_input], tensor_dict[w_zero_point_input], tensor_dict[y_scale_input], tensor_dict[y_zero_point_input], tensor_dict[B_input_o], tensor_dict[y_output] );
+      
     }
+
+  
 
     vuh::Device* QLinearConv::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<QLinearConv, Layer>(m, "QLinearConv")
+            .def("forward", &QLinearConv::forward);    
+    }*/
+}
 
 #endif

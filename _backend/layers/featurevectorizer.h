@@ -1,6 +1,6 @@
 #ifndef FEATUREVECTORIZER_H
 #define FEATUREVECTORIZER_H //FeatureVectorizer
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      inputdimensions
 //OPTIONAL_PARAMETERS_TYPE: Shape_t
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class FeatureVectorizer : public Layer {
+
+    struct FeatureVectorizer_parameter_descriptor{    
+        Shape_t inputdimensions;
+    };   
+
+    struct FeatureVectorizer_input_desriptor{
         
-        vuh::Device* _get_device();
-
-        struct Params{
-            Shape_t inputdimensions;
-			
-            //input
-            
-            
-            //output
-            Shape_t Y_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        FeatureVectorizer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
         
+    };
+
+    struct FeatureVectorizer_output_descriptor{
+        Tensor* Y_output;
+        
+    };
+
+    struct FeatureVectorizer_binding_descriptor{
         Shape_t inputdimensions;
 		
-        //input
         
         
-        //output
-        std::string Y_output;
+        Shape_t Y_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~FeatureVectorizer() {}
     };
 }
 
 
+namespace backend {
+
+    class FeatureVectorizer : public Layer {
+        FeatureVectorizer_parameter_descriptor parameters;
+        FeatureVectorizer_input_desriptor      input;
+        FeatureVectorizer_output_descriptor    output;
+        FeatureVectorizer_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, FeatureVectorizer_binding_descriptor>* program;
+        
+    public:
+        FeatureVectorizer(std::string, FeatureVectorizer_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~FeatureVectorizer() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    FeatureVectorizer::FeatureVectorizer(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/featurevectorizer.spv").c_str());
+   
+    FeatureVectorizer::FeatureVectorizer(std::string n, FeatureVectorizer_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, FeatureVectorizer_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/featurevectorizer.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({inputdimensions, tensor_dict[Y_output]->shape()} 
-                        
-                        , tensor_dict[Y_output] );
+      
     }
+
+  
 
     vuh::Device* FeatureVectorizer::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<FeatureVectorizer, Layer>(m, "FeatureVectorizer")
+            .def("forward", &FeatureVectorizer::forward);    
+    }*/
+}
 
 #endif

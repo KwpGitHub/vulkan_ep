@@ -1,6 +1,6 @@
 #ifndef EXPAND_H
 #define EXPAND_H //Expand
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   input_input, shape_input
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Expand : public Layer {
+
+    struct Expand_parameter_descriptor{    
         
-        vuh::Device* _get_device();
+    };   
 
-        struct Params{
-            
-			
-            //input
-            Shape_t input_input; Shape_t shape_input;
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Expand(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
+    struct Expand_input_desriptor{
+        Tensor* input_input; Tensor* shape_input;
         
+    };
+
+    struct Expand_output_descriptor{
+        Tensor* output_output;
+        
+    };
+
+    struct Expand_binding_descriptor{
         
 		
-        //input
-        std::string input_input; std::string shape_input;
+        Shape_t input_input; Shape_t shape_input;
         
-        //output
-        std::string output_output;
+        Shape_t output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Expand() {}
     };
 }
 
 
+namespace backend {
+
+    class Expand : public Layer {
+        Expand_parameter_descriptor parameters;
+        Expand_input_desriptor      input;
+        Expand_output_descriptor    output;
+        Expand_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Expand_binding_descriptor>* program;
+        
+    public:
+        Expand(std::string, Expand_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Expand() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Expand::Expand(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/expand.spv").c_str());
+   
+    Expand::Expand(std::string n, Expand_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Expand_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/expand.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({tensor_dict[input_input]->shape(), tensor_dict[shape_input]->shape(), tensor_dict[output_output]->shape()} 
-                        
-                        , tensor_dict[input_input], tensor_dict[shape_input], tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* Expand::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Expand, Layer>(m, "Expand")
+            .def("forward", &Expand::forward);    
+    }*/
+}
 
 #endif

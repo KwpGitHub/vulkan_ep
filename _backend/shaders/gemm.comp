@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     float alpha; float beta; int transA; int transB;
-			
+		
 //input
     Shape_t A_input; Shape_t B_input; Shape_t C_input;
     

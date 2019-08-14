@@ -1,6 +1,6 @@
 #ifndef CONSTANT_H
 #define CONSTANT_H //Constant
-
+#include <pybind11/pybind11.h>
 #include "../layer.h"
 
 //INPUTS:                   
@@ -12,54 +12,69 @@
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+namespace py = pybind11;
 
-
+//descriptor stuff;
 namespace backend {
-    class Constant : public Layer {
-        
-        vuh::Device* _get_device();
 
-        struct Params{
-            
-			Shape_t value;
-            //input
-            
-            
-            //output
-            Shape_t output_output;
-            
-        };
-
-        vuh::Program<Specs, Params>* program;
-
-    public:
-        Constant(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a);
-        void forward() { program->run(); }
-        
+    struct Constant_parameter_descriptor{    
         Tensor* value;
-		Shape_t value_s;
-        //input
+    };   
+
+    struct Constant_input_desriptor{
         
         
-        //output
-        std::string output_output;
+    };
+
+    struct Constant_output_descriptor{
+        Tensor* output_output;
         
-        //std::vector<uint32_t> output_shape();
-   
-        ~Constant() {}
+    };
+
+    struct Constant_binding_descriptor{
+        
+		Shape_t value;
+        
+        
+        Shape_t output_output;
+        
     };
 }
 
 
+namespace backend {
+
+    class Constant : public Layer {
+        Constant_parameter_descriptor parameters;
+        Constant_input_desriptor      input;
+        Constant_output_descriptor    output;
+        Constant_binding_descriptor   binding;
+
+        vuh::Device* _get_device();
+        vuh::Program<Specs, Constant_binding_descriptor>* program;
+        
+    public:
+        Constant(std::string, Constant_parameter_descriptor _parameter_descriptor);
+    
+        void forward() { program->run(); }
+        void call() { program->bind(parameters); }
+        ~Constant() {}
+
+    };
+}
+
+//cpp stuff
 namespace backend {    
-    Constant::Constant(std::string n, std::vector<std::string> i, std::vector<std::string> o, std::map<std::string, std::vector<std::string>> a) : Layer(n, i, o, a) {            
-        program = new vuh::Program<Specs, Params>(*_get_device(), std::string(file_path + "/shaders/bin/constant.spv").c_str());
+   
+    Constant::Constant(std::string n, Constant_parameter_descriptor _parameter_descriptor) : Layer(n) {
+        parameters = _parameter_descriptor;
+        program = new vuh::Program<Specs, Constant_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/constant.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
-        program->bind({value_s, tensor_dict[output_output]->shape()} 
-                        , *value
-                        , tensor_dict[output_output] );
+      
     }
+
+  
 
     vuh::Device* Constant::_get_device() {
         for(auto t_name: inputs) {
@@ -67,6 +82,16 @@ namespace backend {
         }
         return device;
     }
+    
 };
+
+
+//python stuff
+namespace backend{
+    /*PYBIND11_MODULE(_backend, m) {
+        py::class_<Constant, Layer>(m, "Constant")
+            .def("forward", &Constant::forward);    
+    }*/
+}
 
 #endif
