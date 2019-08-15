@@ -14,8 +14,7 @@ TensorProto message and be valid as an output type.
 
 input: Input tensor to copy shape and optionally type information from.
 output: Output tensor of random values drawn from uniform distribution
-
-*/
+//*/
 //RandomUniformLike
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -32,44 +31,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class RandomUniformLike : public Layer {
-        typedef struct {    
-            int dtype; float high; float low; float seed;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int dtype; float high; float low; float seed;
-		
+			
             Shape_t input_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int dtype; float high; float low; float seed;
+        std::string input_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomUniformLike(std::string, parameter_descriptor _parameter_descriptor);
+        RandomUniformLike(std::string n, int dtype, float high, float low, float seed);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string output_output); 
 
         ~RandomUniformLike() {}
 
@@ -81,14 +69,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    RandomUniformLike::RandomUniformLike(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomuniformlike.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    RandomUniformLike::RandomUniformLike(std::string n, int dtype, float high, float low, float seed) : Layer(n) { }
+       
     vuh::Device* RandomUniformLike::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -96,21 +78,24 @@ namespace backend {
         return device;
     }
     
-    void RandomUniformLike::init() {
-		binding.input_input = input.input_input->shape();
+    void RandomUniformLike::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.dtype = parameters.dtype;
-  		binding.high = parameters.high;
-  		binding.low = parameters.low;
-  		binding.seed = parameters.seed;
+		binding.dtype = dtype;
+  		binding.high = high;
+  		binding.low = low;
+  		binding.seed = seed;
  
-        program->bind(binding, *input.input_input->data(), *output.output_output->data());
     }
     
-    void RandomUniformLike::call(){
-       
+    void RandomUniformLike::call(std::string input_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomuniformlike.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -119,11 +104,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<RandomUniformLike, Layer>(m, "RandomUniformLike")
-            .def("forward", &RandomUniformLike::forward);    
+            .def(py::init<std::string, int, float, float, float> ())
+            .def("forward", &RandomUniformLike::forward)
+            .def("init", &RandomUniformLike::init)
+            .def("call", (void (RandomUniformLike::*) (std::string, std::string)) &RandomUniformLike::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

@@ -25,6 +25,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="layers.py" />
     <Compile Include="TestingPipeline.py" />
   </ItemGroup>
   <ItemGroup>

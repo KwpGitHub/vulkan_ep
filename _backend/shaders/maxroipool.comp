@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     Shape_t pooled_shape; float spatial_scale;
-		
+			
 //input
     Shape_t X_input; Shape_t rois_input;
     

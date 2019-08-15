@@ -11,8 +11,7 @@
 
 input: The input values
 output: The output map
-
-*/
+//*/
 //ZipMap
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -29,44 +28,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class ZipMap : public Layer {
-        typedef struct {    
-            Shape_t classlabels_int64s; Tensor* classlabels_strings;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Z_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t classlabels_int64s;
-		Shape_t classlabels_strings;
+			Shape_t classlabels_strings;
             Shape_t X_input;
             
             Shape_t Z_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t classlabels_int64s; std::string classlabels_strings;
+        std::string X_input;
+        
+        std::string Z_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ZipMap(std::string, parameter_descriptor _parameter_descriptor);
+        ZipMap(std::string n, Shape_t classlabels_int64s);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string classlabels_strings, std::string X_input, std::string Z_output); 
 
         ~ZipMap() {}
 
@@ -78,14 +66,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    ZipMap::ZipMap(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/zipmap.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    ZipMap::ZipMap(std::string n, Shape_t classlabels_int64s) : Layer(n) { }
+       
     vuh::Device* ZipMap::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -93,19 +75,22 @@ namespace backend {
         return device;
     }
     
-    void ZipMap::init() {
-		binding.X_input = input.X_input->shape();
+    void ZipMap::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Z_output = output.Z_output->shape();
+		binding.Z_output = tensor_dict[Z_output]->shape();
  
-		binding.classlabels_int64s = parameters.classlabels_int64s;
-  		binding.classlabels_strings = parameters.classlabels_strings->shape();
+		binding.classlabels_int64s = classlabels_int64s;
+  		binding.classlabels_strings = tensor_dict[classlabels_strings]->shape();
  
-        program->bind(binding, *parameters.classlabels_strings->data(), *input.X_input->data(), *output.Z_output->data());
     }
     
-    void ZipMap::call(){
-       
+    void ZipMap::call(std::string classlabels_strings, std::string X_input, std::string Z_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/zipmap.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Z_output]->data());
     }
 
 
@@ -114,11 +99,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<ZipMap, Layer>(m, "ZipMap")
-            .def("forward", &ZipMap::forward);    
+            .def(py::init<std::string, Shape_t> ())
+            .def("forward", &ZipMap::forward)
+            .def("init", &ZipMap::init)
+            .def("call", (void (ZipMap::*) (std::string, std::string, std::string)) &ZipMap::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

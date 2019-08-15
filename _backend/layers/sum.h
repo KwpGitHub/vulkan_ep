@@ -10,8 +10,7 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 
 input: List of tensors for sum.
 output: Output tensor.
-
-*/
+//*/
 //Sum
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -28,44 +27,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Sum : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
         typedef struct {
             
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* sum_output;
-            
-        } output_descriptor;
-
-        typedef struct {
-            
-		
+			
             
             
             Shape_t sum_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        
+        
+        std::string sum_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sum(std::string, parameter_descriptor _parameter_descriptor);
+        Sum(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string sum_output); 
 
         ~Sum() {}
 
@@ -77,14 +65,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Sum::Sum(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/sum.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Sum::Sum(std::string n) : Layer(n) { }
+       
     vuh::Device* Sum::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -92,16 +74,19 @@ namespace backend {
         return device;
     }
     
-    void Sum::init() {
+    void Sum::init() {      
+    
 
-		binding.sum_output = output.sum_output->shape();
+		binding.sum_output = tensor_dict[sum_output]->shape();
  
 
-        program->bind(binding, *output.sum_output->data());
     }
     
-    void Sum::call(){
-       
+    void Sum::call(std::string sum_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/sum.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[sum_output]->data());
     }
 
 
@@ -110,11 +95,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Sum, Layer>(m, "Sum")
-            .def("forward", &Sum::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Sum::forward)
+            .def("init", &Sum::init)
+            .def("call", (void (Sum::*) (std::string)) &Sum::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

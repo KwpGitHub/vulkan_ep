@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     Shape_t classlabels_ints; int multi_class; int post_transform;
-		Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
+			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
 //input
     Shape_t X_input;
     

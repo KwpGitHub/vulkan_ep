@@ -11,8 +11,7 @@ If x > lambd, y = x - bias; Otherwise, y = 0.
 
 input: The input data as Tensor.
 output: The output.
-
-*/
+//*/
 //Shrink
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -29,44 +28,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Shrink : public Layer {
-        typedef struct {    
-            float bias; float lambd;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             float bias; float lambd;
-		
+			
             Shape_t input_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        float bias; float lambd;
+        std::string input_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Shrink(std::string, parameter_descriptor _parameter_descriptor);
+        Shrink(std::string n, float bias, float lambd);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string output_output); 
 
         ~Shrink() {}
 
@@ -78,14 +66,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Shrink::Shrink(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/shrink.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Shrink::Shrink(std::string n, float bias, float lambd) : Layer(n) { }
+       
     vuh::Device* Shrink::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -93,19 +75,22 @@ namespace backend {
         return device;
     }
     
-    void Shrink::init() {
-		binding.input_input = input.input_input->shape();
+    void Shrink::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.bias = parameters.bias;
-  		binding.lambd = parameters.lambd;
+		binding.bias = bias;
+  		binding.lambd = lambd;
  
-        program->bind(binding, *input.input_input->data(), *output.output_output->data());
     }
     
-    void Shrink::call(){
-       
+    void Shrink::call(std::string input_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/shrink.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -114,11 +99,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Shrink, Layer>(m, "Shrink")
-            .def("forward", &Shrink::forward);    
+            .def(py::init<std::string, float, float> ())
+            .def("forward", &Shrink::forward)
+            .def("init", &Shrink::init)
+            .def("call", (void (Shrink::*) (std::string, std::string)) &Shrink::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

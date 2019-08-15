@@ -12,8 +12,7 @@ Dimension indices in `axes` are as seen in the output tensor. For example:
 
 input: Original tensor
 output: Reshaped tensor with same data as input.
-
-*/
+//*/
 //Unsqueeze
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -30,44 +29,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Unsqueeze : public Layer {
-        typedef struct {    
-            Shape_t axes;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* data_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* expanded_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t axes;
-		
+			
             Shape_t data_input;
             
             Shape_t expanded_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t axes;
+        std::string data_input;
+        
+        std::string expanded_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Unsqueeze(std::string, parameter_descriptor _parameter_descriptor);
+        Unsqueeze(std::string n, Shape_t axes);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string data_input, std::string expanded_output); 
 
         ~Unsqueeze() {}
 
@@ -79,14 +67,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Unsqueeze::Unsqueeze(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/unsqueeze.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Unsqueeze::Unsqueeze(std::string n, Shape_t axes) : Layer(n) { }
+       
     vuh::Device* Unsqueeze::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -94,18 +76,21 @@ namespace backend {
         return device;
     }
     
-    void Unsqueeze::init() {
-		binding.data_input = input.data_input->shape();
+    void Unsqueeze::init() {      
+    
+		binding.data_input = tensor_dict[data_input]->shape();
  
-		binding.expanded_output = output.expanded_output->shape();
+		binding.expanded_output = tensor_dict[expanded_output]->shape();
  
-		binding.axes = parameters.axes;
+		binding.axes = axes;
  
-        program->bind(binding, *input.data_input->data(), *output.expanded_output->data());
     }
     
-    void Unsqueeze::call(){
-       
+    void Unsqueeze::call(std::string data_input, std::string expanded_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/unsqueeze.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[expanded_output]->data());
     }
 
 
@@ -114,11 +99,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Unsqueeze, Layer>(m, "Unsqueeze")
-            .def("forward", &Unsqueeze::forward);    
+            .def(py::init<std::string, Shape_t> ())
+            .def("forward", &Unsqueeze::forward)
+            .def("init", &Unsqueeze::init)
+            .def("call", (void (Unsqueeze::*) (std::string, std::string)) &Unsqueeze::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

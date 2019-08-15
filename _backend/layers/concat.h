@@ -6,8 +6,7 @@
 Concatenate a list of tensors into a single tensor
 input: List of tensors for concatenation
 output: Concatenated tensor
-
-*/
+//*/
 //Concat
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -24,44 +23,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Concat : public Layer {
-        typedef struct {    
-            int axis;
-        } parameter_descriptor;  
-
-        typedef struct {
-            
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* concat_result_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int axis;
-		
+			
             
             
             Shape_t concat_result_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int axis;
+        
+        
+        std::string concat_result_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Concat(std::string, parameter_descriptor _parameter_descriptor);
+        Concat(std::string n, int axis);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string concat_result_output); 
 
         ~Concat() {}
 
@@ -73,14 +61,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Concat::Concat(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/concat.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Concat::Concat(std::string n, int axis) : Layer(n) { }
+       
     vuh::Device* Concat::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -88,17 +70,20 @@ namespace backend {
         return device;
     }
     
-    void Concat::init() {
+    void Concat::init() {      
+    
 
-		binding.concat_result_output = output.concat_result_output->shape();
+		binding.concat_result_output = tensor_dict[concat_result_output]->shape();
  
-		binding.axis = parameters.axis;
+		binding.axis = axis;
  
-        program->bind(binding, *output.concat_result_output->data());
     }
     
-    void Concat::call(){
-       
+    void Concat::call(std::string concat_result_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/concat.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[concat_result_output]->data());
     }
 
 
@@ -107,11 +92,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Concat, Layer>(m, "Concat")
-            .def("forward", &Concat::forward);    
+            .def(py::init<std::string, int> ())
+            .def("forward", &Concat::forward)
+            .def("init", &Concat::init)
+            .def("call", (void (Concat::*) (std::string)) &Concat::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

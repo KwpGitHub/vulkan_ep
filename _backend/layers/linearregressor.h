@@ -13,8 +13,7 @@
 
 input: Data to be regressed.
 output: Regression outputs (one per target, per example).
-
-*/
+//*/
 //LinearRegressor
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -31,44 +30,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class LinearRegressor : public Layer {
-        typedef struct {    
-            Tensor* coefficients; Tensor* intercepts; int post_transform; int targets;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int post_transform; int targets;
-		Shape_t coefficients; Shape_t intercepts;
+			Shape_t coefficients; Shape_t intercepts;
             Shape_t X_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int post_transform; int targets; std::string coefficients; std::string intercepts;
+        std::string X_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LinearRegressor(std::string, parameter_descriptor _parameter_descriptor);
+        LinearRegressor(std::string n, int post_transform, int targets);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string coefficients, std::string intercepts, std::string X_input, std::string Y_output); 
 
         ~LinearRegressor() {}
 
@@ -80,14 +68,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    LinearRegressor::LinearRegressor(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearregressor.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    LinearRegressor::LinearRegressor(std::string n, int post_transform, int targets) : Layer(n) { }
+       
     vuh::Device* LinearRegressor::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -95,21 +77,24 @@ namespace backend {
         return device;
     }
     
-    void LinearRegressor::init() {
-		binding.X_input = input.X_input->shape();
+    void LinearRegressor::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
-		binding.post_transform = parameters.post_transform;
-  		binding.targets = parameters.targets;
-  		binding.coefficients = parameters.coefficients->shape();
-  		binding.intercepts = parameters.intercepts->shape();
+		binding.post_transform = post_transform;
+  		binding.targets = targets;
+  		binding.coefficients = tensor_dict[coefficients]->shape();
+  		binding.intercepts = tensor_dict[intercepts]->shape();
  
-        program->bind(binding, *parameters.coefficients->data(), *parameters.intercepts->data(), *input.X_input->data(), *output.Y_output->data());
     }
     
-    void LinearRegressor::call(){
-       
+    void LinearRegressor::call(std::string coefficients, std::string intercepts, std::string X_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearregressor.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -118,11 +103,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<LinearRegressor, Layer>(m, "LinearRegressor")
-            .def("forward", &LinearRegressor::forward);    
+            .def(py::init<std::string, int, int> ())
+            .def("forward", &LinearRegressor::forward)
+            .def("init", &LinearRegressor::init)
+            .def("call", (void (LinearRegressor::*) (std::string, std::string, std::string, std::string)) &LinearRegressor::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

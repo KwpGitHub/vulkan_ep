@@ -11,8 +11,7 @@
 
 input: An ordered collection of tensors, all with the same element type.
 output: The output array, elements ordered as the inputs.
-
-*/
+//*/
 //FeatureVectorizer
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -29,44 +28,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class FeatureVectorizer : public Layer {
-        typedef struct {    
-            Shape_t inputdimensions;
-        } parameter_descriptor;  
-
-        typedef struct {
-            
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t inputdimensions;
-		
+			
             
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t inputdimensions;
+        
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        FeatureVectorizer(std::string, parameter_descriptor _parameter_descriptor);
+        FeatureVectorizer(std::string n, Shape_t inputdimensions);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string Y_output); 
 
         ~FeatureVectorizer() {}
 
@@ -78,14 +66,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    FeatureVectorizer::FeatureVectorizer(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/featurevectorizer.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    FeatureVectorizer::FeatureVectorizer(std::string n, Shape_t inputdimensions) : Layer(n) { }
+       
     vuh::Device* FeatureVectorizer::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -93,17 +75,20 @@ namespace backend {
         return device;
     }
     
-    void FeatureVectorizer::init() {
+    void FeatureVectorizer::init() {      
+    
 
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
-		binding.inputdimensions = parameters.inputdimensions;
+		binding.inputdimensions = inputdimensions;
  
-        program->bind(binding, *output.Y_output->data());
     }
     
-    void FeatureVectorizer::call(){
-       
+    void FeatureVectorizer::call(std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/featurevectorizer.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[Y_output]->data());
     }
 
 
@@ -112,11 +97,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<FeatureVectorizer, Layer>(m, "FeatureVectorizer")
-            .def("forward", &FeatureVectorizer::forward);    
+            .def(py::init<std::string, Shape_t> ())
+            .def("forward", &FeatureVectorizer::forward)
+            .def("init", &FeatureVectorizer::init)
+            .def("call", (void (FeatureVectorizer::*) (std::string)) &FeatureVectorizer::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

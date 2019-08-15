@@ -11,8 +11,7 @@
 input: Tensor of rank r >= 1.
 input: Rank 1 tensor of booleans to indicate which slices or data elements to be selected. Its length can be less than the input length alone the axis or the flattened input size if axis is not specified. In such cases data slices or elements exceeding the condition length are discarded.
 output: Tensor of rank r if axis is specified. Otherwise output is a Tensor of rank 1.
-
-*/
+//*/
 //Compress
 //INPUTS:                   input_input, condition_input
 //OPTIONAL_INPUTS:          
@@ -29,44 +28,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Compress : public Layer {
-        typedef struct {    
-            int axis;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input; Tensor* condition_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int axis;
-		
+			
             Shape_t input_input; Shape_t condition_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int axis;
+        std::string input_input; std::string condition_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Compress(std::string, parameter_descriptor _parameter_descriptor);
+        Compress(std::string n, int axis);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string condition_input, std::string output_output); 
 
         ~Compress() {}
 
@@ -78,14 +66,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Compress::Compress(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/compress.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Compress::Compress(std::string n, int axis) : Layer(n) { }
+       
     vuh::Device* Compress::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -93,19 +75,22 @@ namespace backend {
         return device;
     }
     
-    void Compress::init() {
-		binding.input_input = input.input_input->shape();
-  		binding.condition_input = input.condition_input->shape();
+    void Compress::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
+  		binding.condition_input = tensor_dict[condition_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.axis = parameters.axis;
+		binding.axis = axis;
  
-        program->bind(binding, *input.input_input->data(), *input.condition_input->data(), *output.output_output->data());
     }
     
-    void Compress::call(){
-       
+    void Compress::call(std::string input_input, std::string condition_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/compress.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[condition_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -114,11 +99,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Compress, Layer>(m, "Compress")
-            .def("forward", &Compress::forward);    
+            .def(py::init<std::string, int> ())
+            .def("forward", &Compress::forward)
+            .def("init", &Compress::init)
+            .def("call", (void (Compress::*) (std::string, std::string, std::string)) &Compress::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

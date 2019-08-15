@@ -10,8 +10,7 @@ the tensor elementwise.
 
 input: Input tensor
 output: Output tensor
-
-*/
+//*/
 //Relu
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -28,44 +27,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Relu : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t X_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string X_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Relu(std::string, parameter_descriptor _parameter_descriptor);
+        Relu(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string X_input, std::string Y_output); 
 
         ~Relu() {}
 
@@ -77,14 +65,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Relu::Relu(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/relu.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Relu::Relu(std::string n) : Layer(n) { }
+       
     vuh::Device* Relu::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -92,17 +74,20 @@ namespace backend {
         return device;
     }
     
-    void Relu::init() {
-		binding.X_input = input.X_input->shape();
+    void Relu::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
 
-        program->bind(binding, *input.X_input->data(), *output.Y_output->data());
     }
     
-    void Relu::call(){
-       
+    void Relu::call(std::string X_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/relu.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -111,11 +96,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Relu, Layer>(m, "Relu")
-            .def("forward", &Relu::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Relu::forward)
+            .def("init", &Relu::init)
+            .def("call", (void (Relu::*) (std::string, std::string)) &Relu::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

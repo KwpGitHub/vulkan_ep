@@ -19,8 +19,7 @@ input: Integer representing the maximum number of boxes to be selected per batch
 input: Float representing the threshold for deciding whether boxes overlap too much with respect to IOU. It is scalar. Value range [0, 1].
 input: Float representing the threshold for deciding when to remove boxes based on score. It is a scalar
 output: selected indices from the boxes tensor. [num_selected_indices, 3], the selected index format is [batch_index, class_index, box_index].
-
-*/
+//*/
 //NonMaxSuppression
 //INPUTS:                   boxes_input, scores_input
 //OPTIONAL_INPUTS:          max_output_boxes_per_class_input_opt, iou_threshold_input_opt, score_threshold_input_opt
@@ -37,44 +36,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class NonMaxSuppression : public Layer {
-        typedef struct {    
-            int center_point_box;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* boxes_input; Tensor* scores_input;
-            Tensor* max_output_boxes_per_class_input_opt; Tensor* iou_threshold_input_opt; Tensor* score_threshold_input_opt;
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* selected_indices_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int center_point_box;
-		
+			
             Shape_t boxes_input; Shape_t scores_input;
             Shape_t max_output_boxes_per_class_input_opt; Shape_t iou_threshold_input_opt; Shape_t score_threshold_input_opt;
             Shape_t selected_indices_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int center_point_box;
+        std::string boxes_input; std::string scores_input;
+        std::string max_output_boxes_per_class_input_opt; std::string iou_threshold_input_opt; std::string score_threshold_input_opt;
+        std::string selected_indices_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        NonMaxSuppression(std::string, parameter_descriptor _parameter_descriptor);
+        NonMaxSuppression(std::string n, int center_point_box);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string boxes_input, std::string scores_input, std::string max_output_boxes_per_class_input_opt, std::string iou_threshold_input_opt, std::string score_threshold_input_opt, std::string selected_indices_output); 
 
         ~NonMaxSuppression() {}
 
@@ -86,14 +74,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    NonMaxSuppression::NonMaxSuppression(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/nonmaxsuppression.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    NonMaxSuppression::NonMaxSuppression(std::string n, int center_point_box) : Layer(n) { }
+       
     vuh::Device* NonMaxSuppression::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -101,22 +83,25 @@ namespace backend {
         return device;
     }
     
-    void NonMaxSuppression::init() {
-		binding.boxes_input = input.boxes_input->shape();
-  		binding.scores_input = input.scores_input->shape();
-  		binding.max_output_boxes_per_class_input_opt = input.max_output_boxes_per_class_input_opt->shape();
-  		binding.iou_threshold_input_opt = input.iou_threshold_input_opt->shape();
-  		binding.score_threshold_input_opt = input.score_threshold_input_opt->shape();
+    void NonMaxSuppression::init() {      
+    
+		binding.boxes_input = tensor_dict[boxes_input]->shape();
+  		binding.scores_input = tensor_dict[scores_input]->shape();
+  		binding.max_output_boxes_per_class_input_opt = tensor_dict[max_output_boxes_per_class_input_opt]->shape();
+  		binding.iou_threshold_input_opt = tensor_dict[iou_threshold_input_opt]->shape();
+  		binding.score_threshold_input_opt = tensor_dict[score_threshold_input_opt]->shape();
  
-		binding.selected_indices_output = output.selected_indices_output->shape();
+		binding.selected_indices_output = tensor_dict[selected_indices_output]->shape();
  
-		binding.center_point_box = parameters.center_point_box;
+		binding.center_point_box = center_point_box;
  
-        program->bind(binding, *input.boxes_input->data(), *input.scores_input->data(), *input.max_output_boxes_per_class_input_opt->data(), *input.iou_threshold_input_opt->data(), *input.score_threshold_input_opt->data(), *output.selected_indices_output->data());
     }
     
-    void NonMaxSuppression::call(){
-       
+    void NonMaxSuppression::call(std::string boxes_input, std::string scores_input, std::string max_output_boxes_per_class_input_opt, std::string iou_threshold_input_opt, std::string score_threshold_input_opt, std::string selected_indices_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/nonmaxsuppression.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[boxes_input]->data(), *tensor_dict[scores_input]->data(), *tensor_dict[max_output_boxes_per_class_input_opt]->data(), *tensor_dict[iou_threshold_input_opt]->data(), *tensor_dict[score_threshold_input_opt]->data(), *tensor_dict[selected_indices_output]->data());
     }
 
 
@@ -125,11 +110,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<NonMaxSuppression, Layer>(m, "NonMaxSuppression")
-            .def("forward", &NonMaxSuppression::forward);    
+            .def(py::init<std::string, int> ())
+            .def("forward", &NonMaxSuppression::forward)
+            .def("init", &NonMaxSuppression::init)
+            .def("call", (void (NonMaxSuppression::*) (std::string, std::string, std::string, std::string, std::string, std::string)) &NonMaxSuppression::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

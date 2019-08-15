@@ -14,8 +14,7 @@ TensorProto message and be valid as an output type.
 
 input: 2D input tensor to copy shape, and optionally, type information from.
 output: Output tensor, same shape as input tensor T1.
-
-*/
+//*/
 //EyeLike
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -32,44 +31,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class EyeLike : public Layer {
-        typedef struct {    
-            int dtype; int k;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int dtype; int k;
-		
+			
             Shape_t input_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int dtype; int k;
+        std::string input_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        EyeLike(std::string, parameter_descriptor _parameter_descriptor);
+        EyeLike(std::string n, int dtype, int k);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string output_output); 
 
         ~EyeLike() {}
 
@@ -81,14 +69,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    EyeLike::EyeLike(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/eyelike.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    EyeLike::EyeLike(std::string n, int dtype, int k) : Layer(n) { }
+       
     vuh::Device* EyeLike::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -96,19 +78,22 @@ namespace backend {
         return device;
     }
     
-    void EyeLike::init() {
-		binding.input_input = input.input_input->shape();
+    void EyeLike::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.dtype = parameters.dtype;
-  		binding.k = parameters.k;
+		binding.dtype = dtype;
+  		binding.k = k;
  
-        program->bind(binding, *input.input_input->data(), *output.output_output->data());
     }
     
-    void EyeLike::call(){
-       
+    void EyeLike::call(std::string input_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/eyelike.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -117,11 +102,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<EyeLike, Layer>(m, "EyeLike")
-            .def("forward", &EyeLike::forward);    
+            .def(py::init<std::string, int, int> ())
+            .def("forward", &EyeLike::forward)
+            .def("init", &EyeLike::init)
+            .def("call", (void (EyeLike::*) (std::string, std::string)) &EyeLike::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

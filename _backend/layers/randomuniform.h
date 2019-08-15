@@ -13,8 +13,7 @@ TensorProto message.
 
 
 output: Output tensor of random values drawn from uniform distribution
-
-*/
+//*/
 //RandomUniform
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -31,44 +30,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class RandomUniform : public Layer {
-        typedef struct {    
-            Shape_t shape; int dtype; float high; float low; float seed;
-        } parameter_descriptor;  
-
-        typedef struct {
-            
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t shape; int dtype; float high; float low; float seed;
-		
+			
             
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t shape; int dtype; float high; float low; float seed;
+        
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomUniform(std::string, parameter_descriptor _parameter_descriptor);
+        RandomUniform(std::string n, Shape_t shape, int dtype, float high, float low, float seed);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string output_output); 
 
         ~RandomUniform() {}
 
@@ -80,14 +68,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    RandomUniform::RandomUniform(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomuniform.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    RandomUniform::RandomUniform(std::string n, Shape_t shape, int dtype, float high, float low, float seed) : Layer(n) { }
+       
     vuh::Device* RandomUniform::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -95,21 +77,24 @@ namespace backend {
         return device;
     }
     
-    void RandomUniform::init() {
+    void RandomUniform::init() {      
+    
 
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.shape = parameters.shape;
-  		binding.dtype = parameters.dtype;
-  		binding.high = parameters.high;
-  		binding.low = parameters.low;
-  		binding.seed = parameters.seed;
+		binding.shape = shape;
+  		binding.dtype = dtype;
+  		binding.high = high;
+  		binding.low = low;
+  		binding.seed = seed;
  
-        program->bind(binding, *output.output_output->data());
     }
     
-    void RandomUniform::call(){
-       
+    void RandomUniform::call(std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomuniform.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[output_output]->data());
     }
 
 
@@ -118,11 +103,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<RandomUniform, Layer>(m, "RandomUniform")
-            .def("forward", &RandomUniform::forward);    
+            .def(py::init<std::string, Shape_t, int, float, float, float> ())
+            .def("forward", &RandomUniform::forward)
+            .def("init", &RandomUniform::init)
+            .def("call", (void (RandomUniform::*) (std::string)) &RandomUniform::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

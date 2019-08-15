@@ -12,8 +12,7 @@ The above behavior is similar to numpy, with the exception that numpy default ke
 False instead of True.
 input: An input tensor.
 output: Reduced output tensor.
-
-*/
+//*/
 //ReduceProd
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -30,44 +29,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class ReduceProd : public Layer {
-        typedef struct {    
-            Shape_t axes; int keepdims;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* data_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* reduced_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t axes; int keepdims;
-		
+			
             Shape_t data_input;
             
             Shape_t reduced_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t axes; int keepdims;
+        std::string data_input;
+        
+        std::string reduced_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceProd(std::string, parameter_descriptor _parameter_descriptor);
+        ReduceProd(std::string n, Shape_t axes, int keepdims);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string data_input, std::string reduced_output); 
 
         ~ReduceProd() {}
 
@@ -79,14 +67,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    ReduceProd::ReduceProd(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reduceprod.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    ReduceProd::ReduceProd(std::string n, Shape_t axes, int keepdims) : Layer(n) { }
+       
     vuh::Device* ReduceProd::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -94,19 +76,22 @@ namespace backend {
         return device;
     }
     
-    void ReduceProd::init() {
-		binding.data_input = input.data_input->shape();
+    void ReduceProd::init() {      
+    
+		binding.data_input = tensor_dict[data_input]->shape();
  
-		binding.reduced_output = output.reduced_output->shape();
+		binding.reduced_output = tensor_dict[reduced_output]->shape();
  
-		binding.axes = parameters.axes;
-  		binding.keepdims = parameters.keepdims;
+		binding.axes = axes;
+  		binding.keepdims = keepdims;
  
-        program->bind(binding, *input.data_input->data(), *output.reduced_output->data());
     }
     
-    void ReduceProd::call(){
-       
+    void ReduceProd::call(std::string data_input, std::string reduced_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reduceprod.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[reduced_output]->data());
     }
 
 
@@ -115,11 +100,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<ReduceProd, Layer>(m, "ReduceProd")
-            .def("forward", &ReduceProd::forward);    
+            .def(py::init<std::string, Shape_t, int> ())
+            .def("forward", &ReduceProd::forward)
+            .def("init", &ReduceProd::init)
+            .def("call", (void (ReduceProd::*) (std::string, std::string)) &ReduceProd::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

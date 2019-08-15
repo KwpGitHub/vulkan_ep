@@ -9,8 +9,7 @@ are moved to the depth dimension.
 
 input: Input tensor of [N,C,H,W], where N is the batch axis, C is the channel or depth, H is the height and W is the width.
 output: Output tensor of [N, C * blocksize * blocksize, H/blocksize, W/blocksize].
-
-*/
+//*/
 //SpaceToDepth
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -27,44 +26,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class SpaceToDepth : public Layer {
-        typedef struct {    
-            int blocksize;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int blocksize;
-		
+			
             Shape_t input_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int blocksize;
+        std::string input_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SpaceToDepth(std::string, parameter_descriptor _parameter_descriptor);
+        SpaceToDepth(std::string n, int blocksize);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string output_output); 
 
         ~SpaceToDepth() {}
 
@@ -76,14 +64,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    SpaceToDepth::SpaceToDepth(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/spacetodepth.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    SpaceToDepth::SpaceToDepth(std::string n, int blocksize) : Layer(n) { }
+       
     vuh::Device* SpaceToDepth::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -91,18 +73,21 @@ namespace backend {
         return device;
     }
     
-    void SpaceToDepth::init() {
-		binding.input_input = input.input_input->shape();
+    void SpaceToDepth::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.blocksize = parameters.blocksize;
+		binding.blocksize = blocksize;
  
-        program->bind(binding, *input.input_input->data(), *output.output_output->data());
     }
     
-    void SpaceToDepth::call(){
-       
+    void SpaceToDepth::call(std::string input_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/spacetodepth.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -111,11 +96,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<SpaceToDepth, Layer>(m, "SpaceToDepth")
-            .def("forward", &SpaceToDepth::forward);    
+            .def(py::init<std::string, int> ())
+            .def("forward", &SpaceToDepth::forward)
+            .def("init", &SpaceToDepth::init)
+            .def("call", (void (SpaceToDepth::*) (std::string, std::string)) &SpaceToDepth::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     int axis; int keepdims;
-		
+			
 //input
     Shape_t data_input;
     

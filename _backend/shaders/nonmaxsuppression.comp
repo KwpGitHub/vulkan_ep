@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     int center_point_box;
-		
+			
 //input
     Shape_t boxes_input; Shape_t scores_input;
     Shape_t max_output_boxes_per_class_input_opt; Shape_t iou_threshold_input_opt; Shape_t score_threshold_input_opt;

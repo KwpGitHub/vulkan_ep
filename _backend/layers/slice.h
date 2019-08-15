@@ -45,8 +45,7 @@ input: 1-D tensor of ending indices (exclusive) of corresponding axis in `axes`
 input: 1-D tensor of axes that `starts` and `ends` apply to.
 input: 1-D tensor of slice step of corresponding axis in `axes`. Default to 1. 
 output: Sliced data tensor.
-
-*/
+//*/
 //Slice
 //INPUTS:                   data_input, starts_input, ends_input
 //OPTIONAL_INPUTS:          axes_input_opt, steps_input_opt
@@ -63,44 +62,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Slice : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* data_input; Tensor* starts_input; Tensor* ends_input;
-            Tensor* axes_input_opt; Tensor* steps_input_opt;
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t data_input; Shape_t starts_input; Shape_t ends_input;
             Shape_t axes_input_opt; Shape_t steps_input_opt;
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string data_input; std::string starts_input; std::string ends_input;
+        std::string axes_input_opt; std::string steps_input_opt;
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Slice(std::string, parameter_descriptor _parameter_descriptor);
+        Slice(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string data_input, std::string starts_input, std::string ends_input, std::string axes_input_opt, std::string steps_input_opt, std::string output_output); 
 
         ~Slice() {}
 
@@ -112,14 +100,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Slice::Slice(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/slice.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Slice::Slice(std::string n) : Layer(n) { }
+       
     vuh::Device* Slice::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -127,21 +109,24 @@ namespace backend {
         return device;
     }
     
-    void Slice::init() {
-		binding.data_input = input.data_input->shape();
-  		binding.starts_input = input.starts_input->shape();
-  		binding.ends_input = input.ends_input->shape();
-  		binding.axes_input_opt = input.axes_input_opt->shape();
-  		binding.steps_input_opt = input.steps_input_opt->shape();
+    void Slice::init() {      
+    
+		binding.data_input = tensor_dict[data_input]->shape();
+  		binding.starts_input = tensor_dict[starts_input]->shape();
+  		binding.ends_input = tensor_dict[ends_input]->shape();
+  		binding.axes_input_opt = tensor_dict[axes_input_opt]->shape();
+  		binding.steps_input_opt = tensor_dict[steps_input_opt]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
 
-        program->bind(binding, *input.data_input->data(), *input.starts_input->data(), *input.ends_input->data(), *input.axes_input_opt->data(), *input.steps_input_opt->data(), *output.output_output->data());
     }
     
-    void Slice::call(){
-       
+    void Slice::call(std::string data_input, std::string starts_input, std::string ends_input, std::string axes_input_opt, std::string steps_input_opt, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/slice.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[starts_input]->data(), *tensor_dict[ends_input]->data(), *tensor_dict[axes_input_opt]->data(), *tensor_dict[steps_input_opt]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -150,11 +135,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Slice, Layer>(m, "Slice")
-            .def("forward", &Slice::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Slice::forward)
+            .def("init", &Slice::init)
+            .def("call", (void (Slice::*) (std::string, std::string, std::string, std::string, std::string, std::string)) &Slice::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

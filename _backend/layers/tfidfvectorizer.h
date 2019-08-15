@@ -34,8 +34,7 @@ If pool_strings is set, the input must be a string tensor.
 
 input: Input for n-gram extraction
 output: Ngram results
-
-*/
+//*/
 //TfIdfVectorizer
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -52,44 +51,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class TfIdfVectorizer : public Layer {
-        typedef struct {    
-            int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s; Tensor* pool_strings; Tensor* weights;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s;
-		Shape_t pool_strings; Shape_t weights;
+			Shape_t pool_strings; Shape_t weights;
             Shape_t X_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s; std::string pool_strings; std::string weights;
+        std::string X_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TfIdfVectorizer(std::string, parameter_descriptor _parameter_descriptor);
+        TfIdfVectorizer(std::string n, int max_gram_length, int max_skip_count, int min_gram_length, int mode, Shape_t ngram_counts, Shape_t ngram_indexes, Shape_t pool_int64s);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string pool_strings, std::string weights, std::string X_input, std::string Y_output); 
 
         ~TfIdfVectorizer() {}
 
@@ -101,14 +89,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    TfIdfVectorizer::TfIdfVectorizer(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tfidfvectorizer.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    TfIdfVectorizer::TfIdfVectorizer(std::string n, int max_gram_length, int max_skip_count, int min_gram_length, int mode, Shape_t ngram_counts, Shape_t ngram_indexes, Shape_t pool_int64s) : Layer(n) { }
+       
     vuh::Device* TfIdfVectorizer::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -116,26 +98,29 @@ namespace backend {
         return device;
     }
     
-    void TfIdfVectorizer::init() {
-		binding.X_input = input.X_input->shape();
+    void TfIdfVectorizer::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
-		binding.max_gram_length = parameters.max_gram_length;
-  		binding.max_skip_count = parameters.max_skip_count;
-  		binding.min_gram_length = parameters.min_gram_length;
-  		binding.mode = parameters.mode;
-  		binding.ngram_counts = parameters.ngram_counts;
-  		binding.ngram_indexes = parameters.ngram_indexes;
-  		binding.pool_int64s = parameters.pool_int64s;
-  		binding.pool_strings = parameters.pool_strings->shape();
-  		binding.weights = parameters.weights->shape();
+		binding.max_gram_length = max_gram_length;
+  		binding.max_skip_count = max_skip_count;
+  		binding.min_gram_length = min_gram_length;
+  		binding.mode = mode;
+  		binding.ngram_counts = ngram_counts;
+  		binding.ngram_indexes = ngram_indexes;
+  		binding.pool_int64s = pool_int64s;
+  		binding.pool_strings = tensor_dict[pool_strings]->shape();
+  		binding.weights = tensor_dict[weights]->shape();
  
-        program->bind(binding, *parameters.pool_strings->data(), *parameters.weights->data(), *input.X_input->data(), *output.Y_output->data());
     }
     
-    void TfIdfVectorizer::call(){
-       
+    void TfIdfVectorizer::call(std::string pool_strings, std::string weights, std::string X_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tfidfvectorizer.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[pool_strings]->data(), *tensor_dict[weights]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -144,11 +129,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<TfIdfVectorizer, Layer>(m, "TfIdfVectorizer")
-            .def("forward", &TfIdfVectorizer::forward);    
+            .def(py::init<std::string, int, int, int, int, Shape_t, Shape_t, Shape_t> ())
+            .def("forward", &TfIdfVectorizer::forward)
+            .def("init", &TfIdfVectorizer::init)
+            .def("call", (void (TfIdfVectorizer::*) (std::string, std::string, std::string, std::string)) &TfIdfVectorizer::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

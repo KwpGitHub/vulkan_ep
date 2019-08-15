@@ -27,8 +27,7 @@ input: Input data tensor that has to be unpooled. This tensor is typically the f
 input: Input data tensor containing the indices corresponding to elements in the first input tensor X.This tensor is typically the second output of the MaxPool op.Dimensions must be the same as input tensor X. The indices are linear, i.e. computed considering the tensor as flattened 1-D tensor, assuming row-major storage. Also, the linear indices should not consider padding. So the values in indices are in the range [0, N x C x D1 x ... x Dn).
 input: The shape of the output can be explicitly set which will cause pads values to be auto generated. If 'output_shape' is specified, 'pads' values are ignored.
 output: Output data tensor that contains the result of the unpooling.
-
-*/
+//*/
 //MaxUnpool
 //INPUTS:                   X_input, I_input
 //OPTIONAL_INPUTS:          output_shape_input_opt
@@ -45,44 +44,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class MaxUnpool : public Layer {
-        typedef struct {    
-            Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input; Tensor* I_input;
-            Tensor* output_shape_input_opt;
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-		
+			
             Shape_t X_input; Shape_t I_input;
             Shape_t output_shape_input_opt;
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+        std::string X_input; std::string I_input;
+        std::string output_shape_input_opt;
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxUnpool(std::string, parameter_descriptor _parameter_descriptor);
+        MaxUnpool(std::string n, Shape_t kernel_shape, Shape_t pads, Shape_t strides);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string X_input, std::string I_input, std::string output_shape_input_opt, std::string output_output); 
 
         ~MaxUnpool() {}
 
@@ -94,14 +82,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    MaxUnpool::MaxUnpool(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxunpool.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    MaxUnpool::MaxUnpool(std::string n, Shape_t kernel_shape, Shape_t pads, Shape_t strides) : Layer(n) { }
+       
     vuh::Device* MaxUnpool::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -109,22 +91,25 @@ namespace backend {
         return device;
     }
     
-    void MaxUnpool::init() {
-		binding.X_input = input.X_input->shape();
-  		binding.I_input = input.I_input->shape();
-  		binding.output_shape_input_opt = input.output_shape_input_opt->shape();
+    void MaxUnpool::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
+  		binding.I_input = tensor_dict[I_input]->shape();
+  		binding.output_shape_input_opt = tensor_dict[output_shape_input_opt]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.kernel_shape = parameters.kernel_shape;
-  		binding.pads = parameters.pads;
-  		binding.strides = parameters.strides;
+		binding.kernel_shape = kernel_shape;
+  		binding.pads = pads;
+  		binding.strides = strides;
  
-        program->bind(binding, *input.X_input->data(), *input.I_input->data(), *input.output_shape_input_opt->data(), *output.output_output->data());
     }
     
-    void MaxUnpool::call(){
-       
+    void MaxUnpool::call(std::string X_input, std::string I_input, std::string output_shape_input_opt, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxunpool.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[I_input]->data(), *tensor_dict[output_shape_input_opt]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -133,11 +118,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<MaxUnpool, Layer>(m, "MaxUnpool")
-            .def("forward", &MaxUnpool::forward);    
+            .def(py::init<std::string, Shape_t, Shape_t, Shape_t> ())
+            .def("forward", &MaxUnpool::forward)
+            .def("init", &MaxUnpool::init)
+            .def("call", (void (MaxUnpool::*) (std::string, std::string, std::string, std::string)) &MaxUnpool::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

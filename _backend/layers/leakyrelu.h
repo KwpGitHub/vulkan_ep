@@ -10,8 +10,7 @@ output data (Tensor<T>) where the function `f(x) = alpha * x for x < 0`,
 
 input: Input tensor
 output: Output tensor
-
-*/
+//*/
 //LeakyRelu
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -28,44 +27,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class LeakyRelu : public Layer {
-        typedef struct {    
-            float alpha;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             float alpha;
-		
+			
             Shape_t X_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        float alpha;
+        std::string X_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LeakyRelu(std::string, parameter_descriptor _parameter_descriptor);
+        LeakyRelu(std::string n, float alpha);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string X_input, std::string Y_output); 
 
         ~LeakyRelu() {}
 
@@ -77,14 +65,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    LeakyRelu::LeakyRelu(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/leakyrelu.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    LeakyRelu::LeakyRelu(std::string n, float alpha) : Layer(n) { }
+       
     vuh::Device* LeakyRelu::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -92,18 +74,21 @@ namespace backend {
         return device;
     }
     
-    void LeakyRelu::init() {
-		binding.X_input = input.X_input->shape();
+    void LeakyRelu::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
-		binding.alpha = parameters.alpha;
+		binding.alpha = alpha;
  
-        program->bind(binding, *input.X_input->data(), *output.Y_output->data());
     }
     
-    void LeakyRelu::call(){
-       
+    void LeakyRelu::call(std::string X_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/leakyrelu.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -112,11 +97,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<LeakyRelu, Layer>(m, "LeakyRelu")
-            .def("forward", &LeakyRelu::forward);    
+            .def(py::init<std::string, float> ())
+            .def("forward", &LeakyRelu::forward)
+            .def("init", &LeakyRelu::init)
+            .def("call", (void (LeakyRelu::*) (std::string, std::string)) &LeakyRelu::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

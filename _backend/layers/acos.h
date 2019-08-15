@@ -8,8 +8,7 @@ Calculates the arccosine (inverse of cosine) of the given input tensor, element-
 
 input: Input tensor
 output: The arccosine of the input tensor computed element-wise
-
-*/
+//*/
 //Acos
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -26,44 +25,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Acos : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t input_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string input_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Acos(std::string, parameter_descriptor _parameter_descriptor);
+        Acos(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string output_output); 
 
         ~Acos() {}
 
@@ -75,14 +63,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Acos::Acos(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/acos.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Acos::Acos(std::string n) : Layer(n) { }
+       
     vuh::Device* Acos::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -90,17 +72,20 @@ namespace backend {
         return device;
     }
     
-    void Acos::init() {
-		binding.input_input = input.input_input->shape();
+    void Acos::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
 
-        program->bind(binding, *input.input_input->data(), *output.output_output->data());
     }
     
-    void Acos::call(){
-       
+    void Acos::call(std::string input_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/acos.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -109,11 +94,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Acos, Layer>(m, "Acos")
-            .def("forward", &Acos::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Acos::forward)
+            .def("init", &Acos::init)
+            .def("call", (void (Acos::*) (std::string, std::string)) &Acos::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

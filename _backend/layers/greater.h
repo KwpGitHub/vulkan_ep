@@ -12,8 +12,7 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 input: First input operand for the logical operator.
 input: Second input operand for the logical operator.
 output: Result tensor.
-
-*/
+//*/
 //Greater
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -30,44 +29,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Greater : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* A_input; Tensor* B_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* C_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t A_input; Shape_t B_input;
             
             Shape_t C_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string A_input; std::string B_input;
+        
+        std::string C_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Greater(std::string, parameter_descriptor _parameter_descriptor);
+        Greater(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string A_input, std::string B_input, std::string C_output); 
 
         ~Greater() {}
 
@@ -79,14 +67,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Greater::Greater(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/greater.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Greater::Greater(std::string n) : Layer(n) { }
+       
     vuh::Device* Greater::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -94,18 +76,21 @@ namespace backend {
         return device;
     }
     
-    void Greater::init() {
-		binding.A_input = input.A_input->shape();
-  		binding.B_input = input.B_input->shape();
+    void Greater::init() {      
+    
+		binding.A_input = tensor_dict[A_input]->shape();
+  		binding.B_input = tensor_dict[B_input]->shape();
  
-		binding.C_output = output.C_output->shape();
+		binding.C_output = tensor_dict[C_output]->shape();
  
 
-        program->bind(binding, *input.A_input->data(), *input.B_input->data(), *output.C_output->data());
     }
     
-    void Greater::call(){
-       
+    void Greater::call(std::string A_input, std::string B_input, std::string C_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/greater.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
     }
 
 
@@ -114,11 +99,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Greater, Layer>(m, "Greater")
-            .def("forward", &Greater::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Greater::forward)
+            .def("init", &Greater::init)
+            .def("call", (void (Greater::*) (std::string, std::string, std::string)) &Greater::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

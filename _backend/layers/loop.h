@@ -77,22 +77,22 @@ C-style code:
 *Sample equivalent C code*
 
     {
-      /* User-defined code (enclosing scope) */
+      // User-defined code (enclosing scope) //
       int a = 3, b = 6;
       bool keepgoing = true; // Analogous to input cond
-      /* End user-defined code */
+      // End user-defined code //
 
-      /* Implicitly-defined code */
+      // Implicitly-defined code //
       const int max_trip_count = 10; // Analogous to input M
       int user_defined_vals[]; // Imagine this is resizable
-      /* End implicitly-defined code */
+      // End implicitly-defined code //
       for (int i=0; i < max_trip_count && keepgoing; ++i) {
-        /* User-defined code (loop body) */
+        // User-defined code (loop body) //
         int my_local = a + b; // Reading values in the enclosing scope is fine
         b = a - b; // writes fine if we specify b as a loop-carried dependency
         keepgoing = my_local > b; // keepgoing is a loop-carried dependency
         user_defined_vals[i] = b + b;
-        /* End user-defined code */
+        // End user-defined code //
       }
       // my_local = 123; // Can't do this. my_local was defined in the the body
 
@@ -122,8 +122,7 @@ input: A maximum trip-count for the loop specified at runtime. Optional. Pass em
 input: A boolean termination condition. Optional. Pass empty string to skip.
 input: The initial values of any loop-carried dependencies (values that change across loop iterations)
 output: Final N loop carried dependency values then K scan_outputs
-
-*/
+//*/
 //Loop
 //INPUTS:                   
 //OPTIONAL_INPUTS:          M_input_opt, cond_input_opt
@@ -140,44 +139,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Loop : public Layer {
-        typedef struct {    
-            int body;
-        } parameter_descriptor;  
-
-        typedef struct {
-            
-            Tensor* M_input_opt; Tensor* cond_input_opt;
-        } input_desriptor;
-
-        typedef struct {
-            
-            
-        } output_descriptor;
-
         typedef struct {
             int body;
-		
+			
             
             Shape_t M_input_opt; Shape_t cond_input_opt;
             
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int body;
+        
+        std::string M_input_opt; std::string cond_input_opt;
+        
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Loop(std::string, parameter_descriptor _parameter_descriptor);
+        Loop(std::string n, int body);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string M_input_opt, std::string cond_input_opt); 
 
         ~Loop() {}
 
@@ -189,14 +177,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Loop::Loop(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/loop.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Loop::Loop(std::string n, int body) : Layer(n) { }
+       
     vuh::Device* Loop::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -204,18 +186,21 @@ namespace backend {
         return device;
     }
     
-    void Loop::init() {
-		binding.M_input_opt = input.M_input_opt->shape();
-  		binding.cond_input_opt = input.cond_input_opt->shape();
+    void Loop::init() {      
+    
+		binding.M_input_opt = tensor_dict[M_input_opt]->shape();
+  		binding.cond_input_opt = tensor_dict[cond_input_opt]->shape();
  
 
-		binding.body = parameters.body;
+		binding.body = body;
  
-        program->bind(binding, *input.M_input_opt->data(), *input.cond_input_opt->data());
     }
     
-    void Loop::call(){
-       
+    void Loop::call(std::string M_input_opt, std::string cond_input_opt){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/loop.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[M_input_opt]->data(), *tensor_dict[cond_input_opt]->data());
     }
 
 
@@ -224,11 +209,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Loop, Layer>(m, "Loop")
-            .def("forward", &Loop::forward);    
+            .def(py::init<std::string, int> ())
+            .def("forward", &Loop::forward)
+            .def("init", &Loop::init)
+            .def("call", (void (Loop::*) (std::string, std::string)) &Loop::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

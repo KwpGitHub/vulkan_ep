@@ -10,8 +10,7 @@ numeric_limits::lowest() and numeric_limits::max() respectively.
 
 input: Input tensor whose elements to be clipped
 output: Output tensor with clipped input elements
-
-*/
+//*/
 //Clip
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -28,44 +27,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Clip : public Layer {
-        typedef struct {    
-            float max; float min;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             float max; float min;
-		
+			
             Shape_t input_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        float max; float min;
+        std::string input_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Clip(std::string, parameter_descriptor _parameter_descriptor);
+        Clip(std::string n, float max, float min);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string output_output); 
 
         ~Clip() {}
 
@@ -77,14 +65,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Clip::Clip(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/clip.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Clip::Clip(std::string n, float max, float min) : Layer(n) { }
+       
     vuh::Device* Clip::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -92,19 +74,22 @@ namespace backend {
         return device;
     }
     
-    void Clip::init() {
-		binding.input_input = input.input_input->shape();
+    void Clip::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.max = parameters.max;
-  		binding.min = parameters.min;
+		binding.max = max;
+  		binding.min = min;
  
-        program->bind(binding, *input.input_input->data(), *output.output_output->data());
     }
     
-    void Clip::call(){
-       
+    void Clip::call(std::string input_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/clip.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -113,11 +98,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Clip, Layer>(m, "Clip")
-            .def("forward", &Clip::forward);    
+            .def(py::init<std::string, float, float> ())
+            .def("forward", &Clip::forward)
+            .def("init", &Clip::init)
+            .def("call", (void (Clip::*) (std::string, std::string)) &Clip::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

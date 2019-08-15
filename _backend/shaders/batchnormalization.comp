@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     float epsilon; float momentum;
-		
+			
 //input
     Shape_t X_input; Shape_t scale_input; Shape_t B_input; Shape_t mean_input; Shape_t var_input;
     

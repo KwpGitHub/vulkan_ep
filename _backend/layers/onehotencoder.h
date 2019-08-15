@@ -15,8 +15,7 @@
 
 input: Data to be encoded.
 output: Encoded output data, having one more dimension than X.
-
-*/
+//*/
 //OneHotEncoder
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -33,44 +32,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class OneHotEncoder : public Layer {
-        typedef struct {    
-            Shape_t cats_int64s; Tensor* cats_strings; int zeros;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t cats_int64s; int zeros;
-		Shape_t cats_strings;
+			Shape_t cats_strings;
             Shape_t X_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t cats_int64s; int zeros; std::string cats_strings;
+        std::string X_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        OneHotEncoder(std::string, parameter_descriptor _parameter_descriptor);
+        OneHotEncoder(std::string n, Shape_t cats_int64s, int zeros);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string cats_strings, std::string X_input, std::string Y_output); 
 
         ~OneHotEncoder() {}
 
@@ -82,14 +70,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    OneHotEncoder::OneHotEncoder(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/onehotencoder.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    OneHotEncoder::OneHotEncoder(std::string n, Shape_t cats_int64s, int zeros) : Layer(n) { }
+       
     vuh::Device* OneHotEncoder::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -97,20 +79,23 @@ namespace backend {
         return device;
     }
     
-    void OneHotEncoder::init() {
-		binding.X_input = input.X_input->shape();
+    void OneHotEncoder::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
-		binding.cats_int64s = parameters.cats_int64s;
-  		binding.zeros = parameters.zeros;
-  		binding.cats_strings = parameters.cats_strings->shape();
+		binding.cats_int64s = cats_int64s;
+  		binding.zeros = zeros;
+  		binding.cats_strings = tensor_dict[cats_strings]->shape();
  
-        program->bind(binding, *parameters.cats_strings->data(), *input.X_input->data(), *output.Y_output->data());
     }
     
-    void OneHotEncoder::call(){
-       
+    void OneHotEncoder::call(std::string cats_strings, std::string X_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/onehotencoder.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[cats_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -119,11 +104,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<OneHotEncoder, Layer>(m, "OneHotEncoder")
-            .def("forward", &OneHotEncoder::forward);    
+            .def(py::init<std::string, Shape_t, int> ())
+            .def("forward", &OneHotEncoder::forward)
+            .def("init", &OneHotEncoder::init)
+            .def("call", (void (OneHotEncoder::*) (std::string, std::string, std::string)) &OneHotEncoder::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

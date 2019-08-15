@@ -13,8 +13,7 @@ from the input tensor).
 input: An input tensor.
 input: Specified shape for output.
 output: Reshaped data.
-
-*/
+//*/
 //Reshape
 //INPUTS:                   data_input, shape_input
 //OPTIONAL_INPUTS:          
@@ -31,44 +30,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Reshape : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* data_input; Tensor* shape_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* reshaped_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t data_input; Shape_t shape_input;
             
             Shape_t reshaped_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string data_input; std::string shape_input;
+        
+        std::string reshaped_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Reshape(std::string, parameter_descriptor _parameter_descriptor);
+        Reshape(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string data_input, std::string shape_input, std::string reshaped_output); 
 
         ~Reshape() {}
 
@@ -80,14 +68,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Reshape::Reshape(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reshape.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Reshape::Reshape(std::string n) : Layer(n) { }
+       
     vuh::Device* Reshape::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -95,18 +77,21 @@ namespace backend {
         return device;
     }
     
-    void Reshape::init() {
-		binding.data_input = input.data_input->shape();
-  		binding.shape_input = input.shape_input->shape();
+    void Reshape::init() {      
+    
+		binding.data_input = tensor_dict[data_input]->shape();
+  		binding.shape_input = tensor_dict[shape_input]->shape();
  
-		binding.reshaped_output = output.reshaped_output->shape();
+		binding.reshaped_output = tensor_dict[reshaped_output]->shape();
  
 
-        program->bind(binding, *input.data_input->data(), *input.shape_input->data(), *output.reshaped_output->data());
     }
     
-    void Reshape::call(){
-       
+    void Reshape::call(std::string data_input, std::string shape_input, std::string reshaped_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reshape.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[shape_input]->data(), *tensor_dict[reshaped_output]->data());
     }
 
 
@@ -115,11 +100,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Reshape, Layer>(m, "Reshape")
-            .def("forward", &Reshape::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Reshape::forward)
+            .def("init", &Reshape::init)
+            .def("call", (void (Reshape::*) (std::string, std::string, std::string)) &Reshape::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

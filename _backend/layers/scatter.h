@@ -42,8 +42,7 @@ input: Tensor of rank r >= 1.
 input: Tensor of int32/int64 indices, of r >= 1 (same rank as input).
 input: Tensor of rank r >=1 (same rank and shape as indices)
 output: Tensor of rank r >= 1 (same rank as input).
-
-*/
+//*/
 //Scatter
 //INPUTS:                   data_input, indices_input, updates_input
 //OPTIONAL_INPUTS:          
@@ -60,44 +59,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Scatter : public Layer {
-        typedef struct {    
-            int axis;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* data_input; Tensor* indices_input; Tensor* updates_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int axis;
-		
+			
             Shape_t data_input; Shape_t indices_input; Shape_t updates_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int axis;
+        std::string data_input; std::string indices_input; std::string updates_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scatter(std::string, parameter_descriptor _parameter_descriptor);
+        Scatter(std::string n, int axis);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string data_input, std::string indices_input, std::string updates_input, std::string output_output); 
 
         ~Scatter() {}
 
@@ -109,14 +97,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Scatter::Scatter(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scatter.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Scatter::Scatter(std::string n, int axis) : Layer(n) { }
+       
     vuh::Device* Scatter::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -124,20 +106,23 @@ namespace backend {
         return device;
     }
     
-    void Scatter::init() {
-		binding.data_input = input.data_input->shape();
-  		binding.indices_input = input.indices_input->shape();
-  		binding.updates_input = input.updates_input->shape();
+    void Scatter::init() {      
+    
+		binding.data_input = tensor_dict[data_input]->shape();
+  		binding.indices_input = tensor_dict[indices_input]->shape();
+  		binding.updates_input = tensor_dict[updates_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.axis = parameters.axis;
+		binding.axis = axis;
  
-        program->bind(binding, *input.data_input->data(), *input.indices_input->data(), *input.updates_input->data(), *output.output_output->data());
     }
     
-    void Scatter::call(){
-       
+    void Scatter::call(std::string data_input, std::string indices_input, std::string updates_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scatter.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[indices_input]->data(), *tensor_dict[updates_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -146,11 +131,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Scatter, Layer>(m, "Scatter")
-            .def("forward", &Scatter::forward);    
+            .def(py::init<std::string, int> ())
+            .def("forward", &Scatter::forward)
+            .def("init", &Scatter::init)
+            .def("call", (void (Scatter::*) (std::string, std::string, std::string, std::string)) &Scatter::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

@@ -22,8 +22,7 @@ will throw errors.
 
 input: The input tensor that's coerced into a 2D matrix of size (NxD) as described above.
 output: The output values with the same shape as input tensor (the original size without coercion).
-
-*/
+//*/
 //Hardmax
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -40,44 +39,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Hardmax : public Layer {
-        typedef struct {    
-            int axis;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int axis;
-		
+			
             Shape_t input_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int axis;
+        std::string input_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Hardmax(std::string, parameter_descriptor _parameter_descriptor);
+        Hardmax(std::string n, int axis);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string output_output); 
 
         ~Hardmax() {}
 
@@ -89,14 +77,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Hardmax::Hardmax(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/hardmax.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Hardmax::Hardmax(std::string n, int axis) : Layer(n) { }
+       
     vuh::Device* Hardmax::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -104,18 +86,21 @@ namespace backend {
         return device;
     }
     
-    void Hardmax::init() {
-		binding.input_input = input.input_input->shape();
+    void Hardmax::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.axis = parameters.axis;
+		binding.axis = axis;
  
-        program->bind(binding, *input.input_input->data(), *output.output_output->data());
     }
     
-    void Hardmax::call(){
-       
+    void Hardmax::call(std::string input_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/hardmax.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -124,11 +109,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Hardmax, Layer>(m, "Hardmax")
-            .def("forward", &Hardmax::forward);    
+            .def(py::init<std::string, int> ())
+            .def("forward", &Hardmax::forward)
+            .def("init", &Hardmax::init)
+            .def("call", (void (Hardmax::*) (std::string, std::string)) &Hardmax::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

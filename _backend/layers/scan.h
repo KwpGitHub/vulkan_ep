@@ -128,8 +128,7 @@ values are computed in the outer graph, they need to be passed in as extra state
 
 input: Initial values of the loop's N state variables followed by M scan_inputs
 output: Final values of the loop's N state variables followed by K scan_outputs
-
-*/
+//*/
 //Scan
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -146,44 +145,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Scan : public Layer {
-        typedef struct {    
-            int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
-        } parameter_descriptor;  
-
-        typedef struct {
-            
-            
-        } input_desriptor;
-
-        typedef struct {
-            
-            
-        } output_descriptor;
-
         typedef struct {
             int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
-		
+			
             
             
             
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
+        
+        
+        
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scan(std::string, parameter_descriptor _parameter_descriptor);
+        Scan(std::string n, int body, int num_scan_inputs, Shape_t scan_input_axes, Shape_t scan_input_directions, Shape_t scan_output_axes, Shape_t scan_output_directions);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(); 
 
         ~Scan() {}
 
@@ -195,14 +183,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Scan::Scan(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scan.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Scan::Scan(std::string n, int body, int num_scan_inputs, Shape_t scan_input_axes, Shape_t scan_input_directions, Shape_t scan_output_axes, Shape_t scan_output_directions) : Layer(n) { }
+       
     vuh::Device* Scan::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -210,21 +192,24 @@ namespace backend {
         return device;
     }
     
-    void Scan::init() {
+    void Scan::init() {      
+    
 
 
-		binding.body = parameters.body;
-  		binding.num_scan_inputs = parameters.num_scan_inputs;
-  		binding.scan_input_axes = parameters.scan_input_axes;
-  		binding.scan_input_directions = parameters.scan_input_directions;
-  		binding.scan_output_axes = parameters.scan_output_axes;
-  		binding.scan_output_directions = parameters.scan_output_directions;
+		binding.body = body;
+  		binding.num_scan_inputs = num_scan_inputs;
+  		binding.scan_input_axes = scan_input_axes;
+  		binding.scan_input_directions = scan_input_directions;
+  		binding.scan_output_axes = scan_output_axes;
+  		binding.scan_output_directions = scan_output_directions;
  
-        program->bind(binding);
     }
     
-    void Scan::call(){
-       
+    void Scan::call(){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scan.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding);
     }
 
 
@@ -233,11 +218,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Scan, Layer>(m, "Scan")
-            .def("forward", &Scan::forward);    
+            .def(py::init<std::string, int, int, Shape_t, Shape_t, Shape_t, Shape_t> ())
+            .def("forward", &Scan::forward)
+            .def("init", &Scan::init)
+            .def("call", (void (Scan::*) ()) &Scan::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

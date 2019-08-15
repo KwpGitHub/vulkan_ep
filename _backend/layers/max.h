@@ -10,8 +10,7 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 
 input: List of tensors for max.
 output: Output tensor.
-
-*/
+//*/
 //Max
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -28,44 +27,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Max : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
         typedef struct {
             
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* max_output;
-            
-        } output_descriptor;
-
-        typedef struct {
-            
-		
+			
             
             
             Shape_t max_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        
+        
+        std::string max_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Max(std::string, parameter_descriptor _parameter_descriptor);
+        Max(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string max_output); 
 
         ~Max() {}
 
@@ -77,14 +65,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Max::Max(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/max.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Max::Max(std::string n) : Layer(n) { }
+       
     vuh::Device* Max::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -92,16 +74,19 @@ namespace backend {
         return device;
     }
     
-    void Max::init() {
+    void Max::init() {      
+    
 
-		binding.max_output = output.max_output->shape();
+		binding.max_output = tensor_dict[max_output]->shape();
  
 
-        program->bind(binding, *output.max_output->data());
     }
     
-    void Max::call(){
-       
+    void Max::call(std::string max_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/max.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[max_output]->data());
     }
 
 
@@ -110,11 +95,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Max, Layer>(m, "Max")
-            .def("forward", &Max::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Max::forward)
+            .def("init", &Max::init)
+            .def("call", (void (Max::*) (std::string)) &Max::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

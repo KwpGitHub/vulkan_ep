@@ -9,7 +9,7 @@
 #include "kernel/vuh.h"
 #include "tensor.h"
 #include "layer.h"
-#include "layers_map.h"
+//#include "layers_map.h"
 
 namespace py = pybind11;
 

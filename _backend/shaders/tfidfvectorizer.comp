@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s;
-		Shape_t pool_strings; Shape_t weights;
+			Shape_t pool_strings; Shape_t weights;
 //input
     Shape_t X_input;
     

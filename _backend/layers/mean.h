@@ -10,8 +10,7 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 
 input: List of tensors for mean.
 output: Output tensor.
-
-*/
+//*/
 //Mean
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -28,44 +27,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Mean : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
         typedef struct {
             
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* mean_output;
-            
-        } output_descriptor;
-
-        typedef struct {
-            
-		
+			
             
             
             Shape_t mean_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        
+        
+        std::string mean_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Mean(std::string, parameter_descriptor _parameter_descriptor);
+        Mean(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string mean_output); 
 
         ~Mean() {}
 
@@ -77,14 +65,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Mean::Mean(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mean.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Mean::Mean(std::string n) : Layer(n) { }
+       
     vuh::Device* Mean::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -92,16 +74,19 @@ namespace backend {
         return device;
     }
     
-    void Mean::init() {
+    void Mean::init() {      
+    
 
-		binding.mean_output = output.mean_output->shape();
+		binding.mean_output = tensor_dict[mean_output]->shape();
  
 
-        program->bind(binding, *output.mean_output->data());
     }
     
-    void Mean::call(){
-       
+    void Mean::call(std::string mean_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mean.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[mean_output]->data());
     }
 
 
@@ -110,11 +95,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Mean, Layer>(m, "Mean")
-            .def("forward", &Mean::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Mean::forward)
+            .def("init", &Mean::init)
+            .def("call", (void (Mean::*) (std::string)) &Mean::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

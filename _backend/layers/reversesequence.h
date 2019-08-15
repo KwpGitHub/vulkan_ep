@@ -41,8 +41,7 @@ Example 2:
 input: Tensor of rank r >= 2.
 input: Tensor specifying lengths of the sequences in a batch. It has shape `[batch_size]`.
 output: Tensor with same shape of input.
-
-*/
+//*/
 //ReverseSequence
 //INPUTS:                   input_input, sequence_lens_input
 //OPTIONAL_INPUTS:          
@@ -59,44 +58,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class ReverseSequence : public Layer {
-        typedef struct {    
-            int batch_axis; int time_axis;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input; Tensor* sequence_lens_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int batch_axis; int time_axis;
-		
+			
             Shape_t input_input; Shape_t sequence_lens_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int batch_axis; int time_axis;
+        std::string input_input; std::string sequence_lens_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReverseSequence(std::string, parameter_descriptor _parameter_descriptor);
+        ReverseSequence(std::string n, int batch_axis, int time_axis);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string sequence_lens_input, std::string Y_output); 
 
         ~ReverseSequence() {}
 
@@ -108,14 +96,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    ReverseSequence::ReverseSequence(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reversesequence.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    ReverseSequence::ReverseSequence(std::string n, int batch_axis, int time_axis) : Layer(n) { }
+       
     vuh::Device* ReverseSequence::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -123,20 +105,23 @@ namespace backend {
         return device;
     }
     
-    void ReverseSequence::init() {
-		binding.input_input = input.input_input->shape();
-  		binding.sequence_lens_input = input.sequence_lens_input->shape();
+    void ReverseSequence::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
+  		binding.sequence_lens_input = tensor_dict[sequence_lens_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
-		binding.batch_axis = parameters.batch_axis;
-  		binding.time_axis = parameters.time_axis;
+		binding.batch_axis = batch_axis;
+  		binding.time_axis = time_axis;
  
-        program->bind(binding, *input.input_input->data(), *input.sequence_lens_input->data(), *output.Y_output->data());
     }
     
-    void ReverseSequence::call(){
-       
+    void ReverseSequence::call(std::string input_input, std::string sequence_lens_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reversesequence.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[sequence_lens_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -145,11 +130,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<ReverseSequence, Layer>(m, "ReverseSequence")
-            .def("forward", &ReverseSequence::forward);    
+            .def(py::init<std::string, int, int> ())
+            .def("forward", &ReverseSequence::forward)
+            .def("init", &ReverseSequence::init)
+            .def("call", (void (ReverseSequence::*) (std::string, std::string, std::string)) &ReverseSequence::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

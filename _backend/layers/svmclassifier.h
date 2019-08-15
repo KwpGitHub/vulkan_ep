@@ -9,8 +9,7 @@
 input: Data to be classified.
 output: Classification outputs (one class per example).
 output: Class scores (one per class per example), if prob_a and prob_b are provided they are probabilities for each class, otherwise they are raw scores.
-
-*/
+//*/
 //SVMClassifier
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -27,44 +26,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class SVMClassifier : public Layer {
-        typedef struct {    
-            Shape_t classlabels_ints; Tensor* classlabels_strings; Tensor* coefficients; Tensor* kernel_params; int kernel_type; int post_transform; Tensor* prob_a; Tensor* prob_b; Tensor* rho; Tensor* support_vectors; Shape_t vectors_per_class;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output; Tensor* Z_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t classlabels_ints; int kernel_type; int post_transform; Shape_t vectors_per_class;
-		Shape_t classlabels_strings; Shape_t coefficients; Shape_t kernel_params; Shape_t prob_a; Shape_t prob_b; Shape_t rho; Shape_t support_vectors;
+			Shape_t classlabels_strings; Shape_t coefficients; Shape_t kernel_params; Shape_t prob_a; Shape_t prob_b; Shape_t rho; Shape_t support_vectors;
             Shape_t X_input;
             
             Shape_t Y_output; Shape_t Z_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t classlabels_ints; int kernel_type; int post_transform; Shape_t vectors_per_class; std::string classlabels_strings; std::string coefficients; std::string kernel_params; std::string prob_a; std::string prob_b; std::string rho; std::string support_vectors;
+        std::string X_input;
+        
+        std::string Y_output; std::string Z_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMClassifier(std::string, parameter_descriptor _parameter_descriptor);
+        SVMClassifier(std::string n, Shape_t classlabels_ints, int kernel_type, int post_transform, Shape_t vectors_per_class);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string classlabels_strings, std::string coefficients, std::string kernel_params, std::string prob_a, std::string prob_b, std::string rho, std::string support_vectors, std::string X_input, std::string Y_output, std::string Z_output); 
 
         ~SVMClassifier() {}
 
@@ -76,14 +64,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    SVMClassifier::SVMClassifier(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/svmclassifier.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    SVMClassifier::SVMClassifier(std::string n, Shape_t classlabels_ints, int kernel_type, int post_transform, Shape_t vectors_per_class) : Layer(n) { }
+       
     vuh::Device* SVMClassifier::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -91,29 +73,32 @@ namespace backend {
         return device;
     }
     
-    void SVMClassifier::init() {
-		binding.X_input = input.X_input->shape();
+    void SVMClassifier::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
-  		binding.Z_output = output.Z_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
+  		binding.Z_output = tensor_dict[Z_output]->shape();
  
-		binding.classlabels_ints = parameters.classlabels_ints;
-  		binding.kernel_type = parameters.kernel_type;
-  		binding.post_transform = parameters.post_transform;
-  		binding.vectors_per_class = parameters.vectors_per_class;
-  		binding.classlabels_strings = parameters.classlabels_strings->shape();
-  		binding.coefficients = parameters.coefficients->shape();
-  		binding.kernel_params = parameters.kernel_params->shape();
-  		binding.prob_a = parameters.prob_a->shape();
-  		binding.prob_b = parameters.prob_b->shape();
-  		binding.rho = parameters.rho->shape();
-  		binding.support_vectors = parameters.support_vectors->shape();
+		binding.classlabels_ints = classlabels_ints;
+  		binding.kernel_type = kernel_type;
+  		binding.post_transform = post_transform;
+  		binding.vectors_per_class = vectors_per_class;
+  		binding.classlabels_strings = tensor_dict[classlabels_strings]->shape();
+  		binding.coefficients = tensor_dict[coefficients]->shape();
+  		binding.kernel_params = tensor_dict[kernel_params]->shape();
+  		binding.prob_a = tensor_dict[prob_a]->shape();
+  		binding.prob_b = tensor_dict[prob_b]->shape();
+  		binding.rho = tensor_dict[rho]->shape();
+  		binding.support_vectors = tensor_dict[support_vectors]->shape();
  
-        program->bind(binding, *parameters.classlabels_strings->data(), *parameters.coefficients->data(), *parameters.kernel_params->data(), *parameters.prob_a->data(), *parameters.prob_b->data(), *parameters.rho->data(), *parameters.support_vectors->data(), *input.X_input->data(), *output.Y_output->data(), *output.Z_output->data());
     }
     
-    void SVMClassifier::call(){
-       
+    void SVMClassifier::call(std::string classlabels_strings, std::string coefficients, std::string kernel_params, std::string prob_a, std::string prob_b, std::string rho, std::string support_vectors, std::string X_input, std::string Y_output, std::string Z_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/svmclassifier.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[coefficients]->data(), *tensor_dict[kernel_params]->data(), *tensor_dict[prob_a]->data(), *tensor_dict[prob_b]->data(), *tensor_dict[rho]->data(), *tensor_dict[support_vectors]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data(), *tensor_dict[Z_output]->data());
     }
 
 
@@ -122,11 +107,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<SVMClassifier, Layer>(m, "SVMClassifier")
-            .def("forward", &SVMClassifier::forward);    
+            .def(py::init<std::string, Shape_t, int, int, Shape_t> ())
+            .def("forward", &SVMClassifier::forward)
+            .def("init", &SVMClassifier::init)
+            .def("call", (void (SVMClassifier::*) (std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string)) &SVMClassifier::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

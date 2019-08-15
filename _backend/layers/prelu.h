@@ -11,8 +11,7 @@ This operator supports **unidirectional broadcasting** (tensor slope should be u
 input: Input tensor
 input: Slope tensor. The shape of slope can be smaller then first input X; if so, its shape must be unidirectional broadcastable to X
 output: Output tensor (same size as X)
-
-*/
+//*/
 //PRelu
 //INPUTS:                   X_input, slope_input
 //OPTIONAL_INPUTS:          
@@ -29,44 +28,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class PRelu : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input; Tensor* slope_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t X_input; Shape_t slope_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string X_input; std::string slope_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        PRelu(std::string, parameter_descriptor _parameter_descriptor);
+        PRelu(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string X_input, std::string slope_input, std::string Y_output); 
 
         ~PRelu() {}
 
@@ -78,14 +66,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    PRelu::PRelu(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/prelu.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    PRelu::PRelu(std::string n) : Layer(n) { }
+       
     vuh::Device* PRelu::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -93,18 +75,21 @@ namespace backend {
         return device;
     }
     
-    void PRelu::init() {
-		binding.X_input = input.X_input->shape();
-  		binding.slope_input = input.slope_input->shape();
+    void PRelu::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
+  		binding.slope_input = tensor_dict[slope_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
 
-        program->bind(binding, *input.X_input->data(), *input.slope_input->data(), *output.Y_output->data());
     }
     
-    void PRelu::call(){
-       
+    void PRelu::call(std::string X_input, std::string slope_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/prelu.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[slope_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -113,11 +98,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<PRelu, Layer>(m, "PRelu")
-            .def("forward", &PRelu::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &PRelu::forward)
+            .def("init", &PRelu::init)
+            .def("call", (void (PRelu::*) (std::string, std::string, std::string)) &PRelu::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

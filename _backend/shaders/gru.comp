@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     float clip; int direction; int hidden_size; int linear_before_reset;
-		Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
+			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
 //input
     Shape_t X_input; Shape_t W_input; Shape_t R_input;
     Shape_t B_input_opt; Shape_t sequence_lens_input_opt; Shape_t initial_h_input_opt;

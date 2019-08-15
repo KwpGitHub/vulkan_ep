@@ -9,8 +9,7 @@
 input: Data to be classified.
 output: Classification outputs (one class per example).
 output: Classification scores ([N,E] - one score for each class and example
-
-*/
+//*/
 //LinearClassifier
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -27,44 +26,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class LinearClassifier : public Layer {
-        typedef struct {    
-            Tensor* coefficients; Shape_t classlabels_ints; Tensor* classlabels_strings; Tensor* intercepts; int multi_class; int post_transform;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output; Tensor* Z_output;
-            
-        } output_descriptor;
-
         typedef struct {
             Shape_t classlabels_ints; int multi_class; int post_transform;
-		Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
+			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
             Shape_t X_input;
             
             Shape_t Y_output; Shape_t Z_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        Shape_t classlabels_ints; int multi_class; int post_transform; std::string coefficients; std::string classlabels_strings; std::string intercepts;
+        std::string X_input;
+        
+        std::string Y_output; std::string Z_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LinearClassifier(std::string, parameter_descriptor _parameter_descriptor);
+        LinearClassifier(std::string n, Shape_t classlabels_ints, int multi_class, int post_transform);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string coefficients, std::string classlabels_strings, std::string intercepts, std::string X_input, std::string Y_output, std::string Z_output); 
 
         ~LinearClassifier() {}
 
@@ -76,14 +64,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    LinearClassifier::LinearClassifier(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearclassifier.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    LinearClassifier::LinearClassifier(std::string n, Shape_t classlabels_ints, int multi_class, int post_transform) : Layer(n) { }
+       
     vuh::Device* LinearClassifier::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -91,24 +73,27 @@ namespace backend {
         return device;
     }
     
-    void LinearClassifier::init() {
-		binding.X_input = input.X_input->shape();
+    void LinearClassifier::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
-  		binding.Z_output = output.Z_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
+  		binding.Z_output = tensor_dict[Z_output]->shape();
  
-		binding.classlabels_ints = parameters.classlabels_ints;
-  		binding.multi_class = parameters.multi_class;
-  		binding.post_transform = parameters.post_transform;
-  		binding.coefficients = parameters.coefficients->shape();
-  		binding.classlabels_strings = parameters.classlabels_strings->shape();
-  		binding.intercepts = parameters.intercepts->shape();
+		binding.classlabels_ints = classlabels_ints;
+  		binding.multi_class = multi_class;
+  		binding.post_transform = post_transform;
+  		binding.coefficients = tensor_dict[coefficients]->shape();
+  		binding.classlabels_strings = tensor_dict[classlabels_strings]->shape();
+  		binding.intercepts = tensor_dict[intercepts]->shape();
  
-        program->bind(binding, *parameters.coefficients->data(), *parameters.classlabels_strings->data(), *parameters.intercepts->data(), *input.X_input->data(), *output.Y_output->data(), *output.Z_output->data());
     }
     
-    void LinearClassifier::call(){
-       
+    void LinearClassifier::call(std::string coefficients, std::string classlabels_strings, std::string intercepts, std::string X_input, std::string Y_output, std::string Z_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearclassifier.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[classlabels_strings]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data(), *tensor_dict[Z_output]->data());
     }
 
 
@@ -117,11 +102,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<LinearClassifier, Layer>(m, "LinearClassifier")
-            .def("forward", &LinearClassifier::forward);    
+            .def(py::init<std::string, Shape_t, int, int> ())
+            .def("forward", &LinearClassifier::forward)
+            .def("init", &LinearClassifier::init)
+            .def("call", (void (LinearClassifier::*) (std::string, std::string, std::string, std::string, std::string, std::string)) &LinearClassifier::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

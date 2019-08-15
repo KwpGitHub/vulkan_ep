@@ -6,8 +6,7 @@
 A constant tensor.
 
 output: Output tensor containing the same value of the provided tensor.
-
-*/
+//*/
 //Constant
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -24,44 +23,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Constant : public Layer {
-        typedef struct {    
-            Tensor* value;
-        } parameter_descriptor;  
-
         typedef struct {
             
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
-        typedef struct {
-            
-		Shape_t value;
+			Shape_t value;
             
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        std::string value;
+        
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Constant(std::string, parameter_descriptor _parameter_descriptor);
+        Constant(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string value, std::string output_output); 
 
         ~Constant() {}
 
@@ -73,14 +61,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Constant::Constant(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/constant.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Constant::Constant(std::string n) : Layer(n) { }
+       
     vuh::Device* Constant::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -88,17 +70,20 @@ namespace backend {
         return device;
     }
     
-    void Constant::init() {
+    void Constant::init() {      
+    
 
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
-		binding.value = parameters.value->shape();
+		binding.value = tensor_dict[value]->shape();
  
-        program->bind(binding, *parameters.value->data(), *output.output_output->data());
     }
     
-    void Constant::call(){
-       
+    void Constant::call(std::string value, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/constant.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[value]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -107,11 +92,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Constant, Layer>(m, "Constant")
-            .def("forward", &Constant::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Constant::forward)
+            .def("init", &Constant::init)
+            .def("call", (void (Constant::*) (std::string, std::string)) &Constant::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

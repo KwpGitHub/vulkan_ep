@@ -8,8 +8,7 @@ Calculates the arctangent (inverse of tangent) of the given input tensor, elemen
 
 input: Input tensor
 output: The arctangent of the input tensor computed element-wise
-
-*/
+//*/
 //Atan
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -26,44 +25,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Atan : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* input_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* output_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t input_input;
             
             Shape_t output_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string input_input;
+        
+        std::string output_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Atan(std::string, parameter_descriptor _parameter_descriptor);
+        Atan(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string input_input, std::string output_output); 
 
         ~Atan() {}
 
@@ -75,14 +63,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Atan::Atan(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/atan.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Atan::Atan(std::string n) : Layer(n) { }
+       
     vuh::Device* Atan::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -90,17 +72,20 @@ namespace backend {
         return device;
     }
     
-    void Atan::init() {
-		binding.input_input = input.input_input->shape();
+    void Atan::init() {      
+    
+		binding.input_input = tensor_dict[input_input]->shape();
  
-		binding.output_output = output.output_output->shape();
+		binding.output_output = tensor_dict[output_output]->shape();
  
 
-        program->bind(binding, *input.input_input->data(), *output.output_output->data());
     }
     
-    void Atan::call(){
-       
+    void Atan::call(std::string input_input, std::string output_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/atan.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
 
@@ -109,11 +94,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Atan, Layer>(m, "Atan")
-            .def("forward", &Atan::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Atan::forward)
+            .def("init", &Atan::init)
+            .def("call", (void (Atan::*) (std::string, std::string)) &Atan::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

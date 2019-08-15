@@ -12,8 +12,7 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 input: First input operand for the logical operator.
 input: Second input operand for the logical operator.
 output: Result tensor.
-
-*/
+//*/
 //Or
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -30,44 +29,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Or : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* A_input; Tensor* B_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* C_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t A_input; Shape_t B_input;
             
             Shape_t C_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string A_input; std::string B_input;
+        
+        std::string C_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Or(std::string, parameter_descriptor _parameter_descriptor);
+        Or(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string A_input, std::string B_input, std::string C_output); 
 
         ~Or() {}
 
@@ -79,14 +67,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Or::Or(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/or.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Or::Or(std::string n) : Layer(n) { }
+       
     vuh::Device* Or::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -94,18 +76,21 @@ namespace backend {
         return device;
     }
     
-    void Or::init() {
-		binding.A_input = input.A_input->shape();
-  		binding.B_input = input.B_input->shape();
+    void Or::init() {      
+    
+		binding.A_input = tensor_dict[A_input]->shape();
+  		binding.B_input = tensor_dict[B_input]->shape();
  
-		binding.C_output = output.C_output->shape();
+		binding.C_output = tensor_dict[C_output]->shape();
  
 
-        program->bind(binding, *input.A_input->data(), *input.B_input->data(), *output.C_output->data());
     }
     
-    void Or::call(){
-       
+    void Or::call(std::string A_input, std::string B_input, std::string C_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/or.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
     }
 
 
@@ -114,11 +99,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Or, Layer>(m, "Or")
-            .def("forward", &Or::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Or::forward)
+            .def("init", &Or::init)
+            .def("call", (void (Or::*) (std::string, std::string, std::string)) &Or::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

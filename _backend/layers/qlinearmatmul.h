@@ -22,8 +22,7 @@ input: zero point of quantized input b
 input: scale of quantized output y
 input: zero point of quantized output y
 output: Quantized matrix multiply results from a * b
-
-*/
+//*/
 //QLinearMatMul
 //INPUTS:                   a_input, a_scale_input, a_zero_point_input, b_input, b_scale_input, b_zero_point_input, y_scale_input, y_zero_point_input
 //OPTIONAL_INPUTS:          
@@ -40,44 +39,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class QLinearMatMul : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* a_input; Tensor* a_scale_input; Tensor* a_zero_point_input; Tensor* b_input; Tensor* b_scale_input; Tensor* b_zero_point_input; Tensor* y_scale_input; Tensor* y_zero_point_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t a_input; Shape_t a_scale_input; Shape_t a_zero_point_input; Shape_t b_input; Shape_t b_scale_input; Shape_t b_zero_point_input; Shape_t y_scale_input; Shape_t y_zero_point_input;
             
             Shape_t y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string a_input; std::string a_scale_input; std::string a_zero_point_input; std::string b_input; std::string b_scale_input; std::string b_zero_point_input; std::string y_scale_input; std::string y_zero_point_input;
+        
+        std::string y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        QLinearMatMul(std::string, parameter_descriptor _parameter_descriptor);
+        QLinearMatMul(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string a_input, std::string a_scale_input, std::string a_zero_point_input, std::string b_input, std::string b_scale_input, std::string b_zero_point_input, std::string y_scale_input, std::string y_zero_point_input, std::string y_output); 
 
         ~QLinearMatMul() {}
 
@@ -89,14 +77,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    QLinearMatMul::QLinearMatMul(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/qlinearmatmul.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    QLinearMatMul::QLinearMatMul(std::string n) : Layer(n) { }
+       
     vuh::Device* QLinearMatMul::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -104,24 +86,27 @@ namespace backend {
         return device;
     }
     
-    void QLinearMatMul::init() {
-		binding.a_input = input.a_input->shape();
-  		binding.a_scale_input = input.a_scale_input->shape();
-  		binding.a_zero_point_input = input.a_zero_point_input->shape();
-  		binding.b_input = input.b_input->shape();
-  		binding.b_scale_input = input.b_scale_input->shape();
-  		binding.b_zero_point_input = input.b_zero_point_input->shape();
-  		binding.y_scale_input = input.y_scale_input->shape();
-  		binding.y_zero_point_input = input.y_zero_point_input->shape();
+    void QLinearMatMul::init() {      
+    
+		binding.a_input = tensor_dict[a_input]->shape();
+  		binding.a_scale_input = tensor_dict[a_scale_input]->shape();
+  		binding.a_zero_point_input = tensor_dict[a_zero_point_input]->shape();
+  		binding.b_input = tensor_dict[b_input]->shape();
+  		binding.b_scale_input = tensor_dict[b_scale_input]->shape();
+  		binding.b_zero_point_input = tensor_dict[b_zero_point_input]->shape();
+  		binding.y_scale_input = tensor_dict[y_scale_input]->shape();
+  		binding.y_zero_point_input = tensor_dict[y_zero_point_input]->shape();
  
-		binding.y_output = output.y_output->shape();
+		binding.y_output = tensor_dict[y_output]->shape();
  
 
-        program->bind(binding, *input.a_input->data(), *input.a_scale_input->data(), *input.a_zero_point_input->data(), *input.b_input->data(), *input.b_scale_input->data(), *input.b_zero_point_input->data(), *input.y_scale_input->data(), *input.y_zero_point_input->data(), *output.y_output->data());
     }
     
-    void QLinearMatMul::call(){
-       
+    void QLinearMatMul::call(std::string a_input, std::string a_scale_input, std::string a_zero_point_input, std::string b_input, std::string b_scale_input, std::string b_zero_point_input, std::string y_scale_input, std::string y_zero_point_input, std::string y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/qlinearmatmul.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[a_input]->data(), *tensor_dict[a_scale_input]->data(), *tensor_dict[a_zero_point_input]->data(), *tensor_dict[b_input]->data(), *tensor_dict[b_scale_input]->data(), *tensor_dict[b_zero_point_input]->data(), *tensor_dict[y_scale_input]->data(), *tensor_dict[y_zero_point_input]->data(), *tensor_dict[y_output]->data());
     }
 
 
@@ -130,11 +115,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<QLinearMatMul, Layer>(m, "QLinearMatMul")
-            .def("forward", &QLinearMatMul::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &QLinearMatMul::forward)
+            .def("init", &QLinearMatMul::init)
+            .def("call", (void (QLinearMatMul::*) (std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string)) &QLinearMatMul::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

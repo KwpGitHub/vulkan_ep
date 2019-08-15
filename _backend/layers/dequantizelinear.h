@@ -13,8 +13,7 @@ input: N-D quantized input tensor to be de-quantized.
 input: Scale for input 'x'. It's a scalar, which means a per-tensor/layer quantization.
 input: Zero point for input 'x'. It's a scalar, which means a per-tensor/layer quantization. It's optional. 0 is the default value when it's not specified.
 output: N-D full precision output tensor. It has same shape as input 'x'.
-
-*/
+//*/
 //DequantizeLinear
 //INPUTS:                   x_input, x_scale_input
 //OPTIONAL_INPUTS:          x_zero_point_input_opt
@@ -31,44 +30,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class DequantizeLinear : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* x_input; Tensor* x_scale_input;
-            Tensor* x_zero_point_input_opt;
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t x_input; Shape_t x_scale_input;
             Shape_t x_zero_point_input_opt;
             Shape_t y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string x_input; std::string x_scale_input;
+        std::string x_zero_point_input_opt;
+        std::string y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DequantizeLinear(std::string, parameter_descriptor _parameter_descriptor);
+        DequantizeLinear(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string x_input, std::string x_scale_input, std::string x_zero_point_input_opt, std::string y_output); 
 
         ~DequantizeLinear() {}
 
@@ -80,14 +68,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    DequantizeLinear::DequantizeLinear(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/dequantizelinear.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    DequantizeLinear::DequantizeLinear(std::string n) : Layer(n) { }
+       
     vuh::Device* DequantizeLinear::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -95,19 +77,22 @@ namespace backend {
         return device;
     }
     
-    void DequantizeLinear::init() {
-		binding.x_input = input.x_input->shape();
-  		binding.x_scale_input = input.x_scale_input->shape();
-  		binding.x_zero_point_input_opt = input.x_zero_point_input_opt->shape();
+    void DequantizeLinear::init() {      
+    
+		binding.x_input = tensor_dict[x_input]->shape();
+  		binding.x_scale_input = tensor_dict[x_scale_input]->shape();
+  		binding.x_zero_point_input_opt = tensor_dict[x_zero_point_input_opt]->shape();
  
-		binding.y_output = output.y_output->shape();
+		binding.y_output = tensor_dict[y_output]->shape();
  
 
-        program->bind(binding, *input.x_input->data(), *input.x_scale_input->data(), *input.x_zero_point_input_opt->data(), *output.y_output->data());
     }
     
-    void DequantizeLinear::call(){
-       
+    void DequantizeLinear::call(std::string x_input, std::string x_scale_input, std::string x_zero_point_input_opt, std::string y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/dequantizelinear.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[x_input]->data(), *tensor_dict[x_scale_input]->data(), *tensor_dict[x_zero_point_input_opt]->data(), *tensor_dict[y_output]->data());
     }
 
 
@@ -116,11 +101,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<DequantizeLinear, Layer>(m, "DequantizeLinear")
-            .def("forward", &DequantizeLinear::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &DequantizeLinear::forward)
+            .def("init", &DequantizeLinear::init)
+            .def("call", (void (DequantizeLinear::*) (std::string, std::string, std::string, std::string)) &DequantizeLinear::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

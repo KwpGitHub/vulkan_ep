@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
-		
+			
 //input
     
     

@@ -6,8 +6,7 @@
 Map infinity to true and other values to false.
 input: input
 output: output
-
-*/
+//*/
 //IsInf
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -24,44 +23,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class IsInf : public Layer {
-        typedef struct {    
-            int detect_negative; int detect_positive;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int detect_negative; int detect_positive;
-		
+			
             Shape_t X_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int detect_negative; int detect_positive;
+        std::string X_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        IsInf(std::string, parameter_descriptor _parameter_descriptor);
+        IsInf(std::string n, int detect_negative, int detect_positive);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string X_input, std::string Y_output); 
 
         ~IsInf() {}
 
@@ -73,14 +61,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    IsInf::IsInf(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/isinf.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    IsInf::IsInf(std::string n, int detect_negative, int detect_positive) : Layer(n) { }
+       
     vuh::Device* IsInf::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -88,19 +70,22 @@ namespace backend {
         return device;
     }
     
-    void IsInf::init() {
-		binding.X_input = input.X_input->shape();
+    void IsInf::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
-		binding.detect_negative = parameters.detect_negative;
-  		binding.detect_positive = parameters.detect_positive;
+		binding.detect_negative = detect_negative;
+  		binding.detect_positive = detect_positive;
  
-        program->bind(binding, *input.X_input->data(), *output.Y_output->data());
     }
     
-    void IsInf::call(){
-       
+    void IsInf::call(std::string X_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/isinf.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -109,11 +94,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<IsInf, Layer>(m, "IsInf")
-            .def("forward", &IsInf::forward);    
+            .def(py::init<std::string, int, int> ())
+            .def("forward", &IsInf::forward)
+            .def("init", &IsInf::init)
+            .def("call", (void (IsInf::*) (std::string, std::string)) &IsInf::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

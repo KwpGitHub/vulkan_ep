@@ -74,8 +74,7 @@ input: Optional tensor specifying lengths of the sequences in a batch. If not sp
 input: Optional initial value of the hidden. If not specified - assumed to be 0. It has shape `[num_directions, batch_size, hidden_size]`.
 output: A tensor that concats all the intermediate output values of the hidden. It has shape `[seq_length, num_directions, batch_size, hidden_size]`. 
 output: The last output value of the hidden. It has shape `[num_directions, batch_size, hidden_size]`.
-
-*/
+//*/
 //RNN
 //INPUTS:                   X_input, W_input, R_input
 //OPTIONAL_INPUTS:          B_input_opt, sequence_lens_input_opt, initial_h_input_opt
@@ -92,44 +91,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class RNN : public Layer {
-        typedef struct {    
-            Tensor* activation_alpha; Tensor* activation_beta; Tensor* activations; float clip; int direction; int hidden_size;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input; Tensor* W_input; Tensor* R_input;
-            Tensor* B_input_opt; Tensor* sequence_lens_input_opt; Tensor* initial_h_input_opt;
-        } input_desriptor;
-
-        typedef struct {
-            
-            Tensor* Y_output_opt; Tensor* Y_h_output_opt;
-        } output_descriptor;
-
         typedef struct {
             float clip; int direction; int hidden_size;
-		Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
+			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
             Shape_t X_input; Shape_t W_input; Shape_t R_input;
             Shape_t B_input_opt; Shape_t sequence_lens_input_opt; Shape_t initial_h_input_opt;
             
             Shape_t Y_output_opt; Shape_t Y_h_output_opt;
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        float clip; int direction; int hidden_size; std::string activation_alpha; std::string activation_beta; std::string activations;
+        std::string X_input; std::string W_input; std::string R_input;
+        std::string B_input_opt; std::string sequence_lens_input_opt; std::string initial_h_input_opt;
+        
+        std::string Y_output_opt; std::string Y_h_output_opt;
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RNN(std::string, parameter_descriptor _parameter_descriptor);
+        RNN(std::string n, float clip, int direction, int hidden_size);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string activation_alpha, std::string activation_beta, std::string activations, std::string X_input, std::string W_input, std::string R_input, std::string B_input_opt, std::string sequence_lens_input_opt, std::string initial_h_input_opt, std::string Y_output_opt, std::string Y_h_output_opt); 
 
         ~RNN() {}
 
@@ -141,14 +129,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    RNN::RNN(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/rnn.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    RNN::RNN(std::string n, float clip, int direction, int hidden_size) : Layer(n) { }
+       
     vuh::Device* RNN::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -156,29 +138,32 @@ namespace backend {
         return device;
     }
     
-    void RNN::init() {
-		binding.X_input = input.X_input->shape();
-  		binding.W_input = input.W_input->shape();
-  		binding.R_input = input.R_input->shape();
-  		binding.B_input_opt = input.B_input_opt->shape();
-  		binding.sequence_lens_input_opt = input.sequence_lens_input_opt->shape();
-  		binding.initial_h_input_opt = input.initial_h_input_opt->shape();
+    void RNN::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
+  		binding.W_input = tensor_dict[W_input]->shape();
+  		binding.R_input = tensor_dict[R_input]->shape();
+  		binding.B_input_opt = tensor_dict[B_input_opt]->shape();
+  		binding.sequence_lens_input_opt = tensor_dict[sequence_lens_input_opt]->shape();
+  		binding.initial_h_input_opt = tensor_dict[initial_h_input_opt]->shape();
  
-		binding.Y_output_opt = output.Y_output_opt->shape();
-  		binding.Y_h_output_opt = output.Y_h_output_opt->shape();
+		binding.Y_output_opt = tensor_dict[Y_output_opt]->shape();
+  		binding.Y_h_output_opt = tensor_dict[Y_h_output_opt]->shape();
  
-		binding.clip = parameters.clip;
-  		binding.direction = parameters.direction;
-  		binding.hidden_size = parameters.hidden_size;
-  		binding.activation_alpha = parameters.activation_alpha->shape();
-  		binding.activation_beta = parameters.activation_beta->shape();
-  		binding.activations = parameters.activations->shape();
+		binding.clip = clip;
+  		binding.direction = direction;
+  		binding.hidden_size = hidden_size;
+  		binding.activation_alpha = tensor_dict[activation_alpha]->shape();
+  		binding.activation_beta = tensor_dict[activation_beta]->shape();
+  		binding.activations = tensor_dict[activations]->shape();
  
-        program->bind(binding, *parameters.activation_alpha->data(), *parameters.activation_beta->data(), *parameters.activations->data(), *input.X_input->data(), *input.W_input->data(), *input.R_input->data(), *input.B_input_opt->data(), *input.sequence_lens_input_opt->data(), *input.initial_h_input_opt->data(), *output.Y_output_opt->data(), *output.Y_h_output_opt->data());
     }
     
-    void RNN::call(){
-       
+    void RNN::call(std::string activation_alpha, std::string activation_beta, std::string activations, std::string X_input, std::string W_input, std::string R_input, std::string B_input_opt, std::string sequence_lens_input_opt, std::string initial_h_input_opt, std::string Y_output_opt, std::string Y_h_output_opt){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/rnn.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[activation_alpha]->data(), *tensor_dict[activation_beta]->data(), *tensor_dict[activations]->data(), *tensor_dict[X_input]->data(), *tensor_dict[W_input]->data(), *tensor_dict[R_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[sequence_lens_input_opt]->data(), *tensor_dict[initial_h_input_opt]->data(), *tensor_dict[Y_output_opt]->data(), *tensor_dict[Y_h_output_opt]->data());
     }
 
 
@@ -187,11 +172,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<RNN, Layer>(m, "RNN")
-            .def("forward", &RNN::forward);    
+            .def(py::init<std::string, float, int, int> ())
+            .def("forward", &RNN::forward)
+            .def("init", &RNN::init)
+            .def("call", (void (RNN::*) (std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string)) &RNN::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

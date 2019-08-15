@@ -24,8 +24,7 @@
 
 input: Input data. It can be either tensor or scalar.
 output: Output data.
-
-*/
+//*/
 //LabelEncoder
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -42,44 +41,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class LabelEncoder : public Layer {
-        typedef struct {    
-            float default_float; int default_int64; int default_string; Tensor* keys_floats; Shape_t keys_int64s; Tensor* keys_strings; Tensor* values_floats; Shape_t values_int64s; Tensor* values_strings;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* X_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s;
-		Shape_t keys_floats; Shape_t keys_strings; Shape_t values_floats; Shape_t values_strings;
+			Shape_t keys_floats; Shape_t keys_strings; Shape_t values_floats; Shape_t values_strings;
             Shape_t X_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s; std::string keys_floats; std::string keys_strings; std::string values_floats; std::string values_strings;
+        std::string X_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LabelEncoder(std::string, parameter_descriptor _parameter_descriptor);
+        LabelEncoder(std::string n, float default_float, int default_int64, int default_string, Shape_t keys_int64s, Shape_t values_int64s);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string keys_floats, std::string keys_strings, std::string values_floats, std::string values_strings, std::string X_input, std::string Y_output); 
 
         ~LabelEncoder() {}
 
@@ -91,14 +79,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    LabelEncoder::LabelEncoder(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/labelencoder.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    LabelEncoder::LabelEncoder(std::string n, float default_float, int default_int64, int default_string, Shape_t keys_int64s, Shape_t values_int64s) : Layer(n) { }
+       
     vuh::Device* LabelEncoder::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -106,26 +88,29 @@ namespace backend {
         return device;
     }
     
-    void LabelEncoder::init() {
-		binding.X_input = input.X_input->shape();
+    void LabelEncoder::init() {      
+    
+		binding.X_input = tensor_dict[X_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
-		binding.default_float = parameters.default_float;
-  		binding.default_int64 = parameters.default_int64;
-  		binding.default_string = parameters.default_string;
-  		binding.keys_int64s = parameters.keys_int64s;
-  		binding.values_int64s = parameters.values_int64s;
-  		binding.keys_floats = parameters.keys_floats->shape();
-  		binding.keys_strings = parameters.keys_strings->shape();
-  		binding.values_floats = parameters.values_floats->shape();
-  		binding.values_strings = parameters.values_strings->shape();
+		binding.default_float = default_float;
+  		binding.default_int64 = default_int64;
+  		binding.default_string = default_string;
+  		binding.keys_int64s = keys_int64s;
+  		binding.values_int64s = values_int64s;
+  		binding.keys_floats = tensor_dict[keys_floats]->shape();
+  		binding.keys_strings = tensor_dict[keys_strings]->shape();
+  		binding.values_floats = tensor_dict[values_floats]->shape();
+  		binding.values_strings = tensor_dict[values_strings]->shape();
  
-        program->bind(binding, *parameters.keys_floats->data(), *parameters.keys_strings->data(), *parameters.values_floats->data(), *parameters.values_strings->data(), *input.X_input->data(), *output.Y_output->data());
     }
     
-    void LabelEncoder::call(){
-       
+    void LabelEncoder::call(std::string keys_floats, std::string keys_strings, std::string values_floats, std::string values_strings, std::string X_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/labelencoder.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[keys_floats]->data(), *tensor_dict[keys_strings]->data(), *tensor_dict[values_floats]->data(), *tensor_dict[values_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -134,11 +119,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<LabelEncoder, Layer>(m, "LabelEncoder")
-            .def("forward", &LabelEncoder::forward);    
+            .def(py::init<std::string, float, int, int, Shape_t, Shape_t> ())
+            .def("forward", &LabelEncoder::forward)
+            .def("init", &LabelEncoder::init)
+            .def("call", (void (LabelEncoder::*) (std::string, std::string, std::string, std::string, std::string, std::string)) &LabelEncoder::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

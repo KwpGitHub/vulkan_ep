@@ -8,7 +8,7 @@ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
     Shape_t kernel_shape; int auto_pad; int p; Shape_t pads; Shape_t strides;
-		
+			
 //input
     Shape_t X_input;
     

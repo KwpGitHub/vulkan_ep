@@ -12,8 +12,7 @@ input: The weight tensor that will be used in the convolutions; has size (M x C/
 input: Zero point tensor for input 'x'. It's optional and default value is 0. It's a scalar, which means a per-tensor/layer quantization.
 input: Scale tensor for input 'w'. It's optional and default value is 0.  It could be a scalar or a 1-D tensor, which means a per-tensor/layer or per output channel quantization. If it's a 1-D tensor, its number of elements should be equal to the number of output channels (M)
 output: Output data tensor that contains the result of the convolution. The output dimensions are functions of the kernel size, stride size, and pad lengths.
-
-*/
+//*/
 //ConvInteger
 //INPUTS:                   x_input, w_input
 //OPTIONAL_INPUTS:          x_zero_point_input_opt, w_zero_point_input_opt
@@ -30,44 +29,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class ConvInteger : public Layer {
-        typedef struct {    
-            int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* x_input; Tensor* w_input;
-            Tensor* x_zero_point_input_opt; Tensor* w_zero_point_input_opt;
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-		
+			
             Shape_t x_input; Shape_t w_input;
             Shape_t x_zero_point_input_opt; Shape_t w_zero_point_input_opt;
             Shape_t y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+        std::string x_input; std::string w_input;
+        std::string x_zero_point_input_opt; std::string w_zero_point_input_opt;
+        std::string y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ConvInteger(std::string, parameter_descriptor _parameter_descriptor);
+        ConvInteger(std::string n, int auto_pad, Shape_t dilations, int group, Shape_t kernel_shape, Shape_t pads, Shape_t strides);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string x_input, std::string w_input, std::string x_zero_point_input_opt, std::string w_zero_point_input_opt, std::string y_output); 
 
         ~ConvInteger() {}
 
@@ -79,14 +67,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    ConvInteger::ConvInteger(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/convinteger.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    ConvInteger::ConvInteger(std::string n, int auto_pad, Shape_t dilations, int group, Shape_t kernel_shape, Shape_t pads, Shape_t strides) : Layer(n) { }
+       
     vuh::Device* ConvInteger::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -94,26 +76,29 @@ namespace backend {
         return device;
     }
     
-    void ConvInteger::init() {
-		binding.x_input = input.x_input->shape();
-  		binding.w_input = input.w_input->shape();
-  		binding.x_zero_point_input_opt = input.x_zero_point_input_opt->shape();
-  		binding.w_zero_point_input_opt = input.w_zero_point_input_opt->shape();
+    void ConvInteger::init() {      
+    
+		binding.x_input = tensor_dict[x_input]->shape();
+  		binding.w_input = tensor_dict[w_input]->shape();
+  		binding.x_zero_point_input_opt = tensor_dict[x_zero_point_input_opt]->shape();
+  		binding.w_zero_point_input_opt = tensor_dict[w_zero_point_input_opt]->shape();
  
-		binding.y_output = output.y_output->shape();
+		binding.y_output = tensor_dict[y_output]->shape();
  
-		binding.auto_pad = parameters.auto_pad;
-  		binding.dilations = parameters.dilations;
-  		binding.group = parameters.group;
-  		binding.kernel_shape = parameters.kernel_shape;
-  		binding.pads = parameters.pads;
-  		binding.strides = parameters.strides;
+		binding.auto_pad = auto_pad;
+  		binding.dilations = dilations;
+  		binding.group = group;
+  		binding.kernel_shape = kernel_shape;
+  		binding.pads = pads;
+  		binding.strides = strides;
  
-        program->bind(binding, *input.x_input->data(), *input.w_input->data(), *input.x_zero_point_input_opt->data(), *input.w_zero_point_input_opt->data(), *output.y_output->data());
     }
     
-    void ConvInteger::call(){
-       
+    void ConvInteger::call(std::string x_input, std::string w_input, std::string x_zero_point_input_opt, std::string w_zero_point_input_opt, std::string y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/convinteger.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[x_input]->data(), *tensor_dict[w_input]->data(), *tensor_dict[x_zero_point_input_opt]->data(), *tensor_dict[w_zero_point_input_opt]->data(), *tensor_dict[y_output]->data());
     }
 
 
@@ -122,11 +107,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<ConvInteger, Layer>(m, "ConvInteger")
-            .def("forward", &ConvInteger::forward);    
+            .def(py::init<std::string, int, Shape_t, int, Shape_t, Shape_t, Shape_t> ())
+            .def("forward", &ConvInteger::forward)
+            .def("init", &ConvInteger::init)
+            .def("call", (void (ConvInteger::*) (std::string, std::string, std::string, std::string, std::string)) &ConvInteger::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

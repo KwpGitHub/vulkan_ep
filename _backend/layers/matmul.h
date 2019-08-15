@@ -9,8 +9,7 @@ Matrix product that behaves like numpy.matmul: https://docs.scipy.org/doc/numpy-
 input: N-dimensional matrix A
 input: N-dimensional matrix B
 output: Matrix multiply results from A * B
-
-*/
+//*/
 //MatMul
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -27,44 +26,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class MatMul : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* A_input; Tensor* B_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* Y_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t A_input; Shape_t B_input;
             
             Shape_t Y_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string A_input; std::string B_input;
+        
+        std::string Y_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MatMul(std::string, parameter_descriptor _parameter_descriptor);
+        MatMul(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string A_input, std::string B_input, std::string Y_output); 
 
         ~MatMul() {}
 
@@ -76,14 +64,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    MatMul::MatMul(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/matmul.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    MatMul::MatMul(std::string n) : Layer(n) { }
+       
     vuh::Device* MatMul::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -91,18 +73,21 @@ namespace backend {
         return device;
     }
     
-    void MatMul::init() {
-		binding.A_input = input.A_input->shape();
-  		binding.B_input = input.B_input->shape();
+    void MatMul::init() {      
+    
+		binding.A_input = tensor_dict[A_input]->shape();
+  		binding.B_input = tensor_dict[B_input]->shape();
  
-		binding.Y_output = output.Y_output->shape();
+		binding.Y_output = tensor_dict[Y_output]->shape();
  
 
-        program->bind(binding, *input.A_input->data(), *input.B_input->data(), *output.Y_output->data());
     }
     
-    void MatMul::call(){
-       
+    void MatMul::call(std::string A_input, std::string B_input, std::string Y_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/matmul.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[Y_output]->data());
     }
 
 
@@ -111,11 +96,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<MatMul, Layer>(m, "MatMul")
-            .def("forward", &MatMul::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &MatMul::forward)
+            .def("init", &MatMul::init)
+            .def("call", (void (MatMul::*) (std::string, std::string, std::string)) &MatMul::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+

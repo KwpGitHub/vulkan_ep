@@ -8,8 +8,7 @@ Takes a tensor as input and outputs an 1D int64 tensor containing the shape of t
 
 input: An input tensor.
 output: Shape of the input tensor
-
-*/
+//*/
 //Shape
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -26,44 +25,33 @@ namespace py = pybind11;
 namespace backend {   
 
     class Shape : public Layer {
-        typedef struct {    
-            
-        } parameter_descriptor;  
-
-        typedef struct {
-            Tensor* data_input;
-            
-        } input_desriptor;
-
-        typedef struct {
-            Tensor* shape_output;
-            
-        } output_descriptor;
-
         typedef struct {
             
-		
+			
             Shape_t data_input;
             
             Shape_t shape_output;
             
         } binding_descriptor;
 
-        parameter_descriptor parameters;
-        input_desriptor      input;
-        output_descriptor    output;
+        
+        std::string data_input;
+        
+        std::string shape_output;
+        
+
         binding_descriptor   binding;
 
         vuh::Device* _get_device();
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Shape(std::string, parameter_descriptor _parameter_descriptor);
+        Shape(std::string n);
     
         void forward() { program->run(); }
         
-        void call(); 
         void init(); 
+        void call(std::string data_input, std::string shape_output); 
 
         ~Shape() {}
 
@@ -75,14 +63,8 @@ namespace backend {
 //cpp stuff
 namespace backend {    
    
-    Shape::Shape(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
-        parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/shape.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-      
-    }  
-
+    Shape::Shape(std::string n) : Layer(n) { }
+       
     vuh::Device* Shape::_get_device() {
         for(auto t_name: inputs) {
             if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
@@ -90,17 +72,20 @@ namespace backend {
         return device;
     }
     
-    void Shape::init() {
-		binding.data_input = input.data_input->shape();
+    void Shape::init() {      
+    
+		binding.data_input = tensor_dict[data_input]->shape();
  
-		binding.shape_output = output.shape_output->shape();
+		binding.shape_output = tensor_dict[shape_output]->shape();
  
 
-        program->bind(binding, *input.data_input->data(), *output.shape_output->data());
     }
     
-    void Shape::call(){
-       
+    void Shape::call(std::string data_input, std::string shape_output){       
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/shape.spv")).c_str());
+        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
+        program->spec(64,64,64);
+        program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[shape_output]->data());
     }
 
 
@@ -109,11 +94,19 @@ namespace backend {
 
 
 //python stuff
-/*namespace backend {
+namespace backend {
     PYBIND11_MODULE(_backend, m) {
         py::class_<Shape, Layer>(m, "Shape")
-            .def("forward", &Shape::forward);    
+            .def(py::init<std::string> ())
+            .def("forward", &Shape::forward)
+            .def("init", &Shape::init)
+            .def("call", (void (Shape::*) (std::string, std::string)) &Shape::call);
     }
-}*/
+}
 
 #endif
+
+/* PYTHON STUFF
+
+*/
+
