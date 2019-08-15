@@ -1,8 +1,16 @@
 #ifndef EXP_H
-#define EXP_H //Exp
+#define EXP_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Calculates the exponential of the given input tensor, element-wise.
+
+input: Input tensor
+output: The exponential of the input tensor computed element-wise
+
+*/
+//Exp
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   output_output
@@ -14,67 +22,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct Exp_parameter_descriptor{    
-        
-    };   
-
-    struct Exp_input_desriptor{
-        Tensor* input_input;
-        
-    };
-
-    struct Exp_output_descriptor{
-        Tensor* output_output;
-        
-    };
-
-    struct Exp_binding_descriptor{
-        
-		
-        Shape_t input_input;
-        
-        Shape_t output_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class Exp : public Layer {
-        Exp_parameter_descriptor parameters;
-        Exp_input_desriptor      input;
-        Exp_output_descriptor    output;
-        Exp_binding_descriptor   binding;
+        typedef struct {    
+            
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* input_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* output_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            
+		
+            Shape_t input_input;
+            
+            Shape_t output_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, Exp_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        Exp(std::string, Exp_parameter_descriptor _parameter_descriptor);
+        Exp(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~Exp() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    Exp::Exp(std::string n, Exp_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    Exp::Exp(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, Exp_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/exp.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/exp.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* Exp::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +90,30 @@ namespace backend {
         return device;
     }
     
-};
+    void Exp::init() {
+		binding.input_input = input.input_input->shape();
+ 
+		binding.output_output = output.output_output->shape();
+ 
+
+        program->bind(binding, *input.input_input->data(), *output.output_output->data());
+    }
+    
+    void Exp::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<Exp, Layer>(m, "Exp")
             .def("forward", &Exp::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

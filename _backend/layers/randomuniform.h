@@ -1,8 +1,21 @@
 #ifndef RANDOMUNIFORM_H
-#define RANDOMUNIFORM_H //RandomUniform
+#define RANDOMUNIFORM_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Generate a tensor with random values drawn from a uniform distribution. The shape
+of the tensor is specified by the `shape` argument and the range by `low` and `high`.
+
+The data type is specified by the 'dtype' argument. The 'dtype' argument must
+be one of the data types specified in the 'DataType' enum field in the
+TensorProto message.
+
+
+output: Output tensor of random values drawn from uniform distribution
+
+*/
+//RandomUniform
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   output_output
@@ -14,67 +27,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct RandomUniform_parameter_descriptor{    
-        Shape_t shape; int dtype; float high; float low; float seed;
-    };   
-
-    struct RandomUniform_input_desriptor{
-        
-        
-    };
-
-    struct RandomUniform_output_descriptor{
-        Tensor* output_output;
-        
-    };
-
-    struct RandomUniform_binding_descriptor{
-        Shape_t shape; int dtype; float high; float low; float seed;
-		
-        
-        
-        Shape_t output_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class RandomUniform : public Layer {
-        RandomUniform_parameter_descriptor parameters;
-        RandomUniform_input_desriptor      input;
-        RandomUniform_output_descriptor    output;
-        RandomUniform_binding_descriptor   binding;
+        typedef struct {    
+            Shape_t shape; int dtype; float high; float low; float seed;
+        } parameter_descriptor;  
+
+        typedef struct {
+            
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* output_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            Shape_t shape; int dtype; float high; float low; float seed;
+		
+            
+            
+            Shape_t output_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, RandomUniform_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        RandomUniform(std::string, RandomUniform_parameter_descriptor _parameter_descriptor);
+        RandomUniform(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~RandomUniform() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    RandomUniform::RandomUniform(std::string n, RandomUniform_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    RandomUniform::RandomUniform(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, RandomUniform_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomuniform.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomuniform.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* RandomUniform::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +95,34 @@ namespace backend {
         return device;
     }
     
-};
+    void RandomUniform::init() {
+
+		binding.output_output = output.output_output->shape();
+ 
+		binding.shape = parameters.shape;
+  		binding.dtype = parameters.dtype;
+  		binding.high = parameters.high;
+  		binding.low = parameters.low;
+  		binding.seed = parameters.seed;
+ 
+        program->bind(binding, *output.output_output->data());
+    }
+    
+    void RandomUniform::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<RandomUniform, Layer>(m, "RandomUniform")
             .def("forward", &RandomUniform::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

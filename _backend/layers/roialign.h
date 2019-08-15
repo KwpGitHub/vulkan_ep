@@ -1,8 +1,28 @@
 #ifndef ROIALIGN_H
-#define ROIALIGN_H //RoiAlign
+#define ROIALIGN_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Region of Interest (RoI) align operation described in the
+[Mask R-CNN paper](https://arxiv.org/abs/1703.06870).
+RoiAlign consumes an input tensor X and region of interests (rois)
+to apply pooling across each RoI; it produces a 4-D tensor of shape
+(num_rois, C, output_height, output_width).
+
+RoiAlign is proposed to avoid the misalignment by removing
+quantizations while converting from original image into feature
+map and from feature map into RoI feature; in each ROI bin,
+the value of the sampled locations are computed directly
+through bilinear interpolation.
+
+input: Input data tensor from the previous operator; 4-D feature map of shape (N, C, H, W), where N is the batch size, C is the number of channels, and H and W are the height and the width of the data.
+input: RoIs (Regions of Interest) to pool over; rois is 2-D input of shape (num_rois, 4) given as [[x1, y1, x2, y2], ...]. The RoIs' coordinates are in the coordinate system of the input image. Each coordinate set has a 1:1 correspondence with the 'batch_indices' input.
+input: 1-D tensor of shape (num_rois,) with each element denoting the index of the corresponding image in the batch.
+output: RoI pooled output, 4-D tensor of shape (num_rois, C, output_height, output_width). The r-th batch element Y[r-1] is a pooled feature map corresponding to the r-th RoI X[r-1].
+
+*/
+//RoiAlign
 //INPUTS:                   X_input, rois_input, batch_indices_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Y_output
@@ -14,67 +34,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct RoiAlign_parameter_descriptor{    
-        int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
-    };   
-
-    struct RoiAlign_input_desriptor{
-        Tensor* X_input; Tensor* rois_input; Tensor* batch_indices_input;
-        
-    };
-
-    struct RoiAlign_output_descriptor{
-        Tensor* Y_output;
-        
-    };
-
-    struct RoiAlign_binding_descriptor{
-        int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
-		
-        Shape_t X_input; Shape_t rois_input; Shape_t batch_indices_input;
-        
-        Shape_t Y_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class RoiAlign : public Layer {
-        RoiAlign_parameter_descriptor parameters;
-        RoiAlign_input_desriptor      input;
-        RoiAlign_output_descriptor    output;
-        RoiAlign_binding_descriptor   binding;
+        typedef struct {    
+            int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* X_input; Tensor* rois_input; Tensor* batch_indices_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* Y_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
+		
+            Shape_t X_input; Shape_t rois_input; Shape_t batch_indices_input;
+            
+            Shape_t Y_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, RoiAlign_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        RoiAlign(std::string, RoiAlign_parameter_descriptor _parameter_descriptor);
+        RoiAlign(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~RoiAlign() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    RoiAlign::RoiAlign(std::string n, RoiAlign_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    RoiAlign::RoiAlign(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, RoiAlign_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/roialign.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/roialign.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* RoiAlign::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +102,37 @@ namespace backend {
         return device;
     }
     
-};
+    void RoiAlign::init() {
+		binding.X_input = input.X_input->shape();
+  		binding.rois_input = input.rois_input->shape();
+  		binding.batch_indices_input = input.batch_indices_input->shape();
+ 
+		binding.Y_output = output.Y_output->shape();
+ 
+		binding.mode = parameters.mode;
+  		binding.output_height = parameters.output_height;
+  		binding.output_width = parameters.output_width;
+  		binding.sampling_ratio = parameters.sampling_ratio;
+  		binding.spatial_scale = parameters.spatial_scale;
+ 
+        program->bind(binding, *input.X_input->data(), *input.rois_input->data(), *input.batch_indices_input->data(), *output.Y_output->data());
+    }
+    
+    void RoiAlign::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<RoiAlign, Layer>(m, "RoiAlign")
             .def("forward", &RoiAlign::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

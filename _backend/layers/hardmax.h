@@ -1,8 +1,30 @@
 #ifndef HARDMAX_H
-#define HARDMAX_H //Hardmax
+#define HARDMAX_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+The operator computes the hardmax (1 for the first maximum value, and 0 for all others) values for each layer in the batch
+ of the given input. The input is a 2-D tensor (Tensor<float>) of size
+(batch_size x input_feature_dimensions). The output tensor has the same shape
+and contains the hardmax values of the corresponding input.
+
+Input does not need to explicitly be a 2D vector; rather, it will be
+coerced into one. For an arbitrary n-dimensional tensor
+input \in [a_0, a_1, ..., a_{k-1}, a_k, ..., a_{n-1}] and k is
+the axis provided, then input will be coerced into a 2-dimensional tensor with
+dimensions [a_0 * ... * a_{k-1}, a_k * ... * a_{n-1}]. For the default
+case where axis=1, this means the input tensor will be coerced into a 2D tensor
+of dimensions [a_0, a_1 * ... * a_{n-1}], where a_0 is often the batch size.
+In this situation, we must have a_0 = N and a_1 * ... * a_{n-1} = D.
+Each of these dimensions must be matched correctly, or else the operator
+will throw errors.
+
+input: The input tensor that's coerced into a 2D matrix of size (NxD) as described above.
+output: The output values with the same shape as input tensor (the original size without coercion).
+
+*/
+//Hardmax
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   output_output
@@ -14,67 +36,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct Hardmax_parameter_descriptor{    
-        int axis;
-    };   
-
-    struct Hardmax_input_desriptor{
-        Tensor* input_input;
-        
-    };
-
-    struct Hardmax_output_descriptor{
-        Tensor* output_output;
-        
-    };
-
-    struct Hardmax_binding_descriptor{
-        int axis;
-		
-        Shape_t input_input;
-        
-        Shape_t output_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class Hardmax : public Layer {
-        Hardmax_parameter_descriptor parameters;
-        Hardmax_input_desriptor      input;
-        Hardmax_output_descriptor    output;
-        Hardmax_binding_descriptor   binding;
+        typedef struct {    
+            int axis;
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* input_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* output_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            int axis;
+		
+            Shape_t input_input;
+            
+            Shape_t output_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, Hardmax_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        Hardmax(std::string, Hardmax_parameter_descriptor _parameter_descriptor);
+        Hardmax(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~Hardmax() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    Hardmax::Hardmax(std::string n, Hardmax_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    Hardmax::Hardmax(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, Hardmax_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/hardmax.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/hardmax.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* Hardmax::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +104,31 @@ namespace backend {
         return device;
     }
     
-};
+    void Hardmax::init() {
+		binding.input_input = input.input_input->shape();
+ 
+		binding.output_output = output.output_output->shape();
+ 
+		binding.axis = parameters.axis;
+ 
+        program->bind(binding, *input.input_input->data(), *output.output_output->data());
+    }
+    
+    void Hardmax::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<Hardmax, Layer>(m, "Hardmax")
             .def("forward", &Hardmax::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

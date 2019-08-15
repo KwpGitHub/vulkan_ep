@@ -1,8 +1,18 @@
 #ifndef TILE_H
-#define TILE_H //Tile
+#define TILE_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
+Constructs a tensor by tiling a given tensor.
+This is the same as function `tile` in Numpy, but no broadcast.
+For example A = [[1, 2], [3, 4]], B = [1, 2], tile(A, B) = [[1, 2, 1, 2], [3, 4, 3, 4]]
 
+input: Input tensor of any shape.
+input: 1D int64 tensor of the same length as input's dimension number, includes numbers of repeated copies along input's dimensions.
+output: Output tensor of the same dimension and type as tensor input. output_dim[i] = input_dim[i] * repeats[i]
+
+*/
+//Tile
 //INPUTS:                   input_input, repeats_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   output_output
@@ -14,67 +24,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct Tile_parameter_descriptor{    
-        
-    };   
-
-    struct Tile_input_desriptor{
-        Tensor* input_input; Tensor* repeats_input;
-        
-    };
-
-    struct Tile_output_descriptor{
-        Tensor* output_output;
-        
-    };
-
-    struct Tile_binding_descriptor{
-        
-		
-        Shape_t input_input; Shape_t repeats_input;
-        
-        Shape_t output_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class Tile : public Layer {
-        Tile_parameter_descriptor parameters;
-        Tile_input_desriptor      input;
-        Tile_output_descriptor    output;
-        Tile_binding_descriptor   binding;
+        typedef struct {    
+            
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* input_input; Tensor* repeats_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* output_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            
+		
+            Shape_t input_input; Shape_t repeats_input;
+            
+            Shape_t output_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, Tile_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        Tile(std::string, Tile_parameter_descriptor _parameter_descriptor);
+        Tile(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~Tile() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    Tile::Tile(std::string n, Tile_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    Tile::Tile(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, Tile_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tile.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tile.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* Tile::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +92,31 @@ namespace backend {
         return device;
     }
     
-};
+    void Tile::init() {
+		binding.input_input = input.input_input->shape();
+  		binding.repeats_input = input.repeats_input->shape();
+ 
+		binding.output_output = output.output_output->shape();
+ 
+
+        program->bind(binding, *input.input_input->data(), *input.repeats_input->data(), *output.output_output->data());
+    }
+    
+    void Tile::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<Tile, Layer>(m, "Tile")
             .def("forward", &Tile::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

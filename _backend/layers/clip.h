@@ -1,8 +1,18 @@
 #ifndef CLIP_H
-#define CLIP_H //Clip
+#define CLIP_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Clip operator limits the given input within an interval. The interval is
+specified with arguments 'min' and 'max'. They default to
+numeric_limits::lowest() and numeric_limits::max() respectively.
+
+input: Input tensor whose elements to be clipped
+output: Output tensor with clipped input elements
+
+*/
+//Clip
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   output_output
@@ -14,67 +24,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct Clip_parameter_descriptor{    
-        float max; float min;
-    };   
-
-    struct Clip_input_desriptor{
-        Tensor* input_input;
-        
-    };
-
-    struct Clip_output_descriptor{
-        Tensor* output_output;
-        
-    };
-
-    struct Clip_binding_descriptor{
-        float max; float min;
-		
-        Shape_t input_input;
-        
-        Shape_t output_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class Clip : public Layer {
-        Clip_parameter_descriptor parameters;
-        Clip_input_desriptor      input;
-        Clip_output_descriptor    output;
-        Clip_binding_descriptor   binding;
+        typedef struct {    
+            float max; float min;
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* input_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* output_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            float max; float min;
+		
+            Shape_t input_input;
+            
+            Shape_t output_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, Clip_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        Clip(std::string, Clip_parameter_descriptor _parameter_descriptor);
+        Clip(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~Clip() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    Clip::Clip(std::string n, Clip_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    Clip::Clip(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, Clip_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/clip.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/clip.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* Clip::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +92,32 @@ namespace backend {
         return device;
     }
     
-};
+    void Clip::init() {
+		binding.input_input = input.input_input->shape();
+ 
+		binding.output_output = output.output_output->shape();
+ 
+		binding.max = parameters.max;
+  		binding.min = parameters.min;
+ 
+        program->bind(binding, *input.input_input->data(), *output.output_output->data());
+    }
+    
+    void Clip::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<Clip, Layer>(m, "Clip")
             .def("forward", &Clip::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

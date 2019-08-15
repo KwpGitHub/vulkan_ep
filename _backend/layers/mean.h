@@ -1,8 +1,18 @@
 #ifndef MEAN_H
-#define MEAN_H //Mean
+#define MEAN_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Element-wise mean of each of the input tensors (with Numpy-style broadcasting support).
+All inputs and outputs must have the same data type.
+This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; for more details please check [the doc](Broadcasting.md).
+
+input: List of tensors for mean.
+output: Output tensor.
+
+*/
+//Mean
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   mean_output
@@ -14,67 +24,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct Mean_parameter_descriptor{    
-        
-    };   
-
-    struct Mean_input_desriptor{
-        
-        
-    };
-
-    struct Mean_output_descriptor{
-        Tensor* mean_output;
-        
-    };
-
-    struct Mean_binding_descriptor{
-        
-		
-        
-        
-        Shape_t mean_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class Mean : public Layer {
-        Mean_parameter_descriptor parameters;
-        Mean_input_desriptor      input;
-        Mean_output_descriptor    output;
-        Mean_binding_descriptor   binding;
+        typedef struct {    
+            
+        } parameter_descriptor;  
+
+        typedef struct {
+            
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* mean_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            
+		
+            
+            
+            Shape_t mean_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, Mean_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        Mean(std::string, Mean_parameter_descriptor _parameter_descriptor);
+        Mean(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~Mean() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    Mean::Mean(std::string n, Mean_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    Mean::Mean(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, Mean_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mean.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mean.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* Mean::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +92,29 @@ namespace backend {
         return device;
     }
     
-};
+    void Mean::init() {
+
+		binding.mean_output = output.mean_output->shape();
+ 
+
+        program->bind(binding, *output.mean_output->data());
+    }
+    
+    void Mean::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<Mean, Layer>(m, "Mean")
             .def("forward", &Mean::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

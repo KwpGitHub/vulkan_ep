@@ -1,8 +1,16 @@
 #ifndef TANH_H
-#define TANH_H //Tanh
+#define TANH_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Calculates the hyperbolic tangent of the given input tensor element-wise.
+
+input: Input tensor
+output: The hyperbolic tangent values of the input tensor computed element-wise
+
+*/
+//Tanh
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   output_output
@@ -14,67 +22,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct Tanh_parameter_descriptor{    
-        
-    };   
-
-    struct Tanh_input_desriptor{
-        Tensor* input_input;
-        
-    };
-
-    struct Tanh_output_descriptor{
-        Tensor* output_output;
-        
-    };
-
-    struct Tanh_binding_descriptor{
-        
-		
-        Shape_t input_input;
-        
-        Shape_t output_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class Tanh : public Layer {
-        Tanh_parameter_descriptor parameters;
-        Tanh_input_desriptor      input;
-        Tanh_output_descriptor    output;
-        Tanh_binding_descriptor   binding;
+        typedef struct {    
+            
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* input_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* output_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            
+		
+            Shape_t input_input;
+            
+            Shape_t output_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, Tanh_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        Tanh(std::string, Tanh_parameter_descriptor _parameter_descriptor);
+        Tanh(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~Tanh() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    Tanh::Tanh(std::string n, Tanh_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    Tanh::Tanh(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, Tanh_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tanh.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tanh.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* Tanh::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +90,30 @@ namespace backend {
         return device;
     }
     
-};
+    void Tanh::init() {
+		binding.input_input = input.input_input->shape();
+ 
+		binding.output_output = output.output_output->shape();
+ 
+
+        program->bind(binding, *input.input_input->data(), *output.output_output->data());
+    }
+    
+    void Tanh::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<Tanh, Layer>(m, "Tanh")
             .def("forward", &Tanh::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

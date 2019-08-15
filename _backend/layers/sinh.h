@@ -1,8 +1,16 @@
 #ifndef SINH_H
-#define SINH_H //Sinh
+#define SINH_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Calculates the hyperbolic sine of the given input tensor element-wise.
+
+input: Input tensor
+output: The hyperbolic sine values of the input tensor computed element-wise
+
+*/
+//Sinh
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   output_output
@@ -14,67 +22,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct Sinh_parameter_descriptor{    
-        
-    };   
-
-    struct Sinh_input_desriptor{
-        Tensor* input_input;
-        
-    };
-
-    struct Sinh_output_descriptor{
-        Tensor* output_output;
-        
-    };
-
-    struct Sinh_binding_descriptor{
-        
-		
-        Shape_t input_input;
-        
-        Shape_t output_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class Sinh : public Layer {
-        Sinh_parameter_descriptor parameters;
-        Sinh_input_desriptor      input;
-        Sinh_output_descriptor    output;
-        Sinh_binding_descriptor   binding;
+        typedef struct {    
+            
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* input_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* output_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            
+		
+            Shape_t input_input;
+            
+            Shape_t output_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, Sinh_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        Sinh(std::string, Sinh_parameter_descriptor _parameter_descriptor);
+        Sinh(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~Sinh() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    Sinh::Sinh(std::string n, Sinh_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    Sinh::Sinh(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, Sinh_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/sinh.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/sinh.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* Sinh::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +90,30 @@ namespace backend {
         return device;
     }
     
-};
+    void Sinh::init() {
+		binding.input_input = input.input_input->shape();
+ 
+		binding.output_output = output.output_output->shape();
+ 
+
+        program->bind(binding, *input.input_input->data(), *output.output_output->data());
+    }
+    
+    void Sinh::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<Sinh, Layer>(m, "Sinh")
             .def("forward", &Sinh::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

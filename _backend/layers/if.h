@@ -1,8 +1,14 @@
 #ifndef IF_H
-#define IF_H //If
+#define IF_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
+If conditional
+input: Condition for the if
+output: Values that are live-out to the enclosing scope. The return values in the `then_branch` and `else_branch` must be of the same shape and same data type.
 
+*/
+//If
 //INPUTS:                   cond_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   
@@ -14,67 +20,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct If_parameter_descriptor{    
-        int else_branch; int then_branch;
-    };   
-
-    struct If_input_desriptor{
-        Tensor* cond_input;
-        
-    };
-
-    struct If_output_descriptor{
-        
-        
-    };
-
-    struct If_binding_descriptor{
-        int else_branch; int then_branch;
-		
-        Shape_t cond_input;
-        
-        
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class If : public Layer {
-        If_parameter_descriptor parameters;
-        If_input_desriptor      input;
-        If_output_descriptor    output;
-        If_binding_descriptor   binding;
+        typedef struct {    
+            int else_branch; int then_branch;
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* cond_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            
+            
+        } output_descriptor;
+
+        typedef struct {
+            int else_branch; int then_branch;
+		
+            Shape_t cond_input;
+            
+            
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, If_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        If(std::string, If_parameter_descriptor _parameter_descriptor);
+        If(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~If() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    If::If(std::string n, If_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    If::If(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, If_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/if.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/if.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* If::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +88,31 @@ namespace backend {
         return device;
     }
     
-};
+    void If::init() {
+		binding.cond_input = input.cond_input->shape();
+ 
+
+		binding.else_branch = parameters.else_branch;
+  		binding.then_branch = parameters.then_branch;
+ 
+        program->bind(binding, *input.cond_input->data());
+    }
+    
+    void If::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<If, Layer>(m, "If")
             .def("forward", &If::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

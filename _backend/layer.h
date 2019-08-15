@@ -18,12 +18,14 @@ namespace backend {
 		Layer(std::string n) : name(n) {}
 		virtual ~Layer() {}
 		virtual void forward() {}
+		virtual void init() {}
 	protected:
 		//virtual void parameter_proc(std::map<std::string, std::vector<std::string>> a()) {}
 		std::vector<std::string> inputs;
 		std::vector<std::string> outputs;
 		std::string name;
 		using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
+		
 	};
 }
 

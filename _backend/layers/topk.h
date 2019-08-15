@@ -1,8 +1,27 @@
 #ifndef TOPK_H
-#define TOPK_H //TopK
+#define TOPK_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Retrieve the top-K elements along a specified axis. Given an input tensor of
+shape [a_1, a_2, ..., a_n, r] and integer argument k, return two outputs:
+  -Value tensor of shape [a_1, a_2, ..., a_{axis-1}, k, a_{axis+1}, ... a_n]
+    which contains the values of the top k elements along the specified axis
+  -Index tensor of shape [a_1, a_2, ..., a_{axis-1}, k, a_{axis+1}, ... a_n] which
+   contains the indices of the top k elements (original indices from the input
+   tensor).
+   
+Given two equivalent values, this operator uses the indices along the axis  as
+ a tiebreaker. That is, the element with the lower index will appear first.
+
+input: Tensor of shape [a_1, a_2, ..., a_n, r]
+input: A 1-D tensor containing a single positive value corresponding to the number of top elements to retrieve
+output: Tensor of shape [a_1, a_2, ..., a_{axis-1}, k, a_{axis+1}, ... a_n] containing top K values from the input tensor
+output: Tensor of shape [a_1, a_2, ..., a_{axis-1}, k, a_{axis+1}, ... a_n] containing the corresponding input tensor indices for the top K values.
+
+*/
+//TopK
 //INPUTS:                   X_input, K_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Values_output, Indices_output
@@ -14,67 +33,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct TopK_parameter_descriptor{    
-        int axis;
-    };   
-
-    struct TopK_input_desriptor{
-        Tensor* X_input; Tensor* K_input;
-        
-    };
-
-    struct TopK_output_descriptor{
-        Tensor* Values_output; Tensor* Indices_output;
-        
-    };
-
-    struct TopK_binding_descriptor{
-        int axis;
-		
-        Shape_t X_input; Shape_t K_input;
-        
-        Shape_t Values_output; Shape_t Indices_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class TopK : public Layer {
-        TopK_parameter_descriptor parameters;
-        TopK_input_desriptor      input;
-        TopK_output_descriptor    output;
-        TopK_binding_descriptor   binding;
+        typedef struct {    
+            int axis;
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* X_input; Tensor* K_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* Values_output; Tensor* Indices_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            int axis;
+		
+            Shape_t X_input; Shape_t K_input;
+            
+            Shape_t Values_output; Shape_t Indices_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, TopK_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        TopK(std::string, TopK_parameter_descriptor _parameter_descriptor);
+        TopK(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~TopK() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    TopK::TopK(std::string n, TopK_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    TopK::TopK(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, TopK_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/topk.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/topk.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* TopK::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +101,33 @@ namespace backend {
         return device;
     }
     
-};
+    void TopK::init() {
+		binding.X_input = input.X_input->shape();
+  		binding.K_input = input.K_input->shape();
+ 
+		binding.Values_output = output.Values_output->shape();
+  		binding.Indices_output = output.Indices_output->shape();
+ 
+		binding.axis = parameters.axis;
+ 
+        program->bind(binding, *input.X_input->data(), *input.K_input->data(), *output.Values_output->data(), *output.Indices_output->data());
+    }
+    
+    void TopK::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<TopK, Layer>(m, "TopK")
             .def("forward", &TopK::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

@@ -1,8 +1,18 @@
 #ifndef THRESHOLDEDRELU_H
-#define THRESHOLDEDRELU_H //ThresholdedRelu
+#define THRESHOLDEDRELU_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+ThresholdedRelu takes one input data (Tensor<T>) and produces one output data
+(Tensor<T>) where the rectified linear function, y = x for x > alpha, y = 0 otherwise,
+is applied to the tensor elementwise.
+
+input: Input tensor
+output: Output tensor
+
+*/
+//ThresholdedRelu
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   Y_output
@@ -14,67 +24,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct ThresholdedRelu_parameter_descriptor{    
-        float alpha;
-    };   
-
-    struct ThresholdedRelu_input_desriptor{
-        Tensor* X_input;
-        
-    };
-
-    struct ThresholdedRelu_output_descriptor{
-        Tensor* Y_output;
-        
-    };
-
-    struct ThresholdedRelu_binding_descriptor{
-        float alpha;
-		
-        Shape_t X_input;
-        
-        Shape_t Y_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class ThresholdedRelu : public Layer {
-        ThresholdedRelu_parameter_descriptor parameters;
-        ThresholdedRelu_input_desriptor      input;
-        ThresholdedRelu_output_descriptor    output;
-        ThresholdedRelu_binding_descriptor   binding;
+        typedef struct {    
+            float alpha;
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* X_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* Y_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            float alpha;
+		
+            Shape_t X_input;
+            
+            Shape_t Y_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, ThresholdedRelu_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        ThresholdedRelu(std::string, ThresholdedRelu_parameter_descriptor _parameter_descriptor);
+        ThresholdedRelu(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~ThresholdedRelu() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    ThresholdedRelu::ThresholdedRelu(std::string n, ThresholdedRelu_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    ThresholdedRelu::ThresholdedRelu(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, ThresholdedRelu_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/thresholdedrelu.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/thresholdedrelu.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* ThresholdedRelu::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +92,31 @@ namespace backend {
         return device;
     }
     
-};
+    void ThresholdedRelu::init() {
+		binding.X_input = input.X_input->shape();
+ 
+		binding.Y_output = output.Y_output->shape();
+ 
+		binding.alpha = parameters.alpha;
+ 
+        program->bind(binding, *input.X_input->data(), *output.Y_output->data());
+    }
+    
+    void ThresholdedRelu::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<ThresholdedRelu, Layer>(m, "ThresholdedRelu")
             .def("forward", &ThresholdedRelu::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif

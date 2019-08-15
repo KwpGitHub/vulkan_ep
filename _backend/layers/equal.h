@@ -1,8 +1,20 @@
 #ifndef EQUAL_H
-#define EQUAL_H //Equal
+#define EQUAL_H 
 #include <pybind11/pybind11.h>
 #include "../layer.h"
+/*
 
+Returns the tensor resulted from performing the `equal` logical operation
+elementwise on the input tensors `A` and `B` (with Numpy-style broadcasting support).
+
+This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; for more details please check [the doc](Broadcasting.md).
+
+input: First input operand for the logical operator.
+input: Second input operand for the logical operator.
+output: Result tensor.
+
+*/
+//Equal
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   C_output
@@ -14,67 +26,66 @@
 
 namespace py = pybind11;
 
-//descriptor stuff;
-namespace backend {
-
-    struct Equal_parameter_descriptor{    
-        
-    };   
-
-    struct Equal_input_desriptor{
-        Tensor* A_input; Tensor* B_input;
-        
-    };
-
-    struct Equal_output_descriptor{
-        Tensor* C_output;
-        
-    };
-
-    struct Equal_binding_descriptor{
-        
-		
-        Shape_t A_input; Shape_t B_input;
-        
-        Shape_t C_output;
-        
-    };
-}
-
-
-namespace backend {
+//class stuff
+namespace backend {   
 
     class Equal : public Layer {
-        Equal_parameter_descriptor parameters;
-        Equal_input_desriptor      input;
-        Equal_output_descriptor    output;
-        Equal_binding_descriptor   binding;
+        typedef struct {    
+            
+        } parameter_descriptor;  
+
+        typedef struct {
+            Tensor* A_input; Tensor* B_input;
+            
+        } input_desriptor;
+
+        typedef struct {
+            Tensor* C_output;
+            
+        } output_descriptor;
+
+        typedef struct {
+            
+		
+            Shape_t A_input; Shape_t B_input;
+            
+            Shape_t C_output;
+            
+        } binding_descriptor;
+
+        parameter_descriptor parameters;
+        input_desriptor      input;
+        output_descriptor    output;
+        binding_descriptor   binding;
 
         vuh::Device* _get_device();
-        vuh::Program<Specs, Equal_binding_descriptor>* program;
-        
+        vuh::Program<Specs, binding_descriptor>* program;        
+
     public:
-        Equal(std::string, Equal_parameter_descriptor _parameter_descriptor);
+        Equal(std::string, parameter_descriptor _parameter_descriptor);
     
         void forward() { program->run(); }
-        void call() { program->bind(parameters); }
+        
+        void call(); 
+        void init(); 
+
         ~Equal() {}
 
     };
+    
 }
+
 
 //cpp stuff
 namespace backend {    
    
-    Equal::Equal(std::string n, Equal_parameter_descriptor _parameter_descriptor) : Layer(n) {
+    Equal::Equal(std::string n, parameter_descriptor _parameter_descriptor) : Layer(n) {
         parameters = _parameter_descriptor;
-        program = new vuh::Program<Specs, Equal_binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/equal.spv")).c_str());
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/equal.spv")).c_str());
         program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
         program->spec(64,64,64);
       
-    }
-
-  
+    }  
 
     vuh::Device* Equal::_get_device() {
         for(auto t_name: inputs) {
@@ -83,15 +94,31 @@ namespace backend {
         return device;
     }
     
-};
+    void Equal::init() {
+		binding.A_input = input.A_input->shape();
+  		binding.B_input = input.B_input->shape();
+ 
+		binding.C_output = output.C_output->shape();
+ 
+
+        program->bind(binding, *input.A_input->data(), *input.B_input->data(), *output.C_output->data());
+    }
+    
+    void Equal::call(){
+       
+    }
+
+
+}
+
 
 
 //python stuff
-namespace backend{
-    /*PYBIND11_MODULE(_backend, m) {
+/*namespace backend {
+    PYBIND11_MODULE(_backend, m) {
         py::class_<Equal, Layer>(m, "Equal")
             .def("forward", &Equal::forward);    
-    }*/
-}
+    }
+}*/
 
 #endif
