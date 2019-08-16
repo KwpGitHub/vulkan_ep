@@ -3,7 +3,7 @@
 //cpp stuff
 namespace backend {    
    
-    Mod::Mod(std::string n, int fmod) : Layer(n) { }
+    Mod::Mod(std::string n) : Layer(n) { }
        
     vuh::Device* Mod::_get_device() {
         for(auto t_name: inputs) {
@@ -12,8 +12,13 @@ namespace backend {
         return device;
     }
     
-    void Mod::init() {      
+    void Mod::init( int _fmod) {      
+		 fmod = _fmod; 
+  
+    }
     
+    void Mod::bind(std::string _A_input, std::string _B_input, std::string _C_output){
+        A_input = _A_input; B_input = _B_input; C_output = _C_output;
 		binding.A_input = tensor_dict[A_input]->shape();
   		binding.B_input = tensor_dict[B_input]->shape();
  
@@ -21,18 +26,16 @@ namespace backend {
  
 		binding.fmod = fmod;
  
-    }
-    
-    void Mod::call(std::string A_input, std::string B_input, std::string C_output){       
+
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mod.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
     }
     
 }
 
-    py::module m("_backend.nn", "nn MOD");
+    //backend::nn;
 
 //python stuff
 

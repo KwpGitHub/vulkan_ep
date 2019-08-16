@@ -44,12 +44,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MeanVarianceNormalization(std::string n, Shape_t axes);
+        MeanVarianceNormalization(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( Shape_t _axes); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~MeanVarianceNormalization() {}
 

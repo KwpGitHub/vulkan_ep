@@ -3,7 +3,7 @@
 //cpp stuff
 namespace backend {    
    
-    FeatureVectorizer::FeatureVectorizer(std::string n, Shape_t inputdimensions) : Layer(n) { }
+    FeatureVectorizer::FeatureVectorizer(std::string n) : Layer(n) { }
        
     vuh::Device* FeatureVectorizer::_get_device() {
         for(auto t_name: inputs) {
@@ -12,25 +12,28 @@ namespace backend {
         return device;
     }
     
-    void FeatureVectorizer::init() {      
+    void FeatureVectorizer::init( Shape_t _inputdimensions) {      
+		 inputdimensions = _inputdimensions; 
+  
+    }
     
+    void FeatureVectorizer::bind(std::string _Y_output){
+        Y_output = _Y_output;
 
 		binding.Y_output = tensor_dict[Y_output]->shape();
  
 		binding.inputdimensions = inputdimensions;
  
-    }
-    
-    void FeatureVectorizer::call(std::string Y_output){       
+
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/featurevectorizer.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[Y_output]->data());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[Y_output]->data());
     }
     
 }
 
-    py::module m("_backend.nn", "nn MOD");
+    //backend::nn;
 
 //python stuff
 

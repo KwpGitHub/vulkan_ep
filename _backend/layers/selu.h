@@ -46,12 +46,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Selu(std::string n, float alpha, float gamma);
+        Selu(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( float _alpha,  float _gamma); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~Selu() {}
 

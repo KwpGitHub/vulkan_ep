@@ -49,7 +49,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string A_input, std::string B_input, std::string Y_output); 
+        void bind(std::string _A_input, std::string _B_input, std::string _Y_output); 
 
         ~MatMul() {}
 

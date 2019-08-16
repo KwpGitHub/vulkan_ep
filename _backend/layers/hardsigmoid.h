@@ -45,12 +45,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        HardSigmoid(std::string n, float alpha, float beta);
+        HardSigmoid(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( float _alpha,  float _beta); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~HardSigmoid() {}
 

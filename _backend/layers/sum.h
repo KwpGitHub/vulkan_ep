@@ -50,7 +50,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string sum_output); 
+        void bind(std::string _sum_output); 
 
         ~Sum() {}
 

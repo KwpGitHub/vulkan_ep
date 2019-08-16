@@ -52,12 +52,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LRN(std::string n, int size, float alpha, float beta, float bias);
+        LRN(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( int _size,  float _alpha,  float _beta,  float _bias); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~LRN() {}
 

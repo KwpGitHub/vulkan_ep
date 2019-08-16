@@ -46,12 +46,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Shrink(std::string n, float bias, float lambd);
+        Shrink(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string output_output); 
+        void init( float _bias,  float _lambd); 
+        void bind(std::string _input_input, std::string _output_output); 
 
         ~Shrink() {}
 

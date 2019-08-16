@@ -44,12 +44,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LinearClassifier(std::string n, Shape_t classlabels_ints, int multi_class, int post_transform);
+        LinearClassifier(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string coefficients, std::string classlabels_strings, std::string intercepts, std::string X_input, std::string Y_output, std::string Z_output); 
+        void init( Shape_t _classlabels_ints,  int _multi_class,  int _post_transform); 
+        void bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_input, std::string _Y_output, std::string _Z_output); 
 
         ~LinearClassifier() {}
 

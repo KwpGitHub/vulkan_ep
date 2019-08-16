@@ -83,12 +83,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Gather(std::string n, int axis);
+        Gather(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string data_input, std::string indices_input, std::string output_output); 
+        void init( int _axis); 
+        void bind(std::string _data_input, std::string _indices_input, std::string _output_output); 
 
         ~Gather() {}
 

@@ -49,12 +49,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomNormalLike(std::string n, int dtype, float mean, float scale, float seed);
+        RandomNormalLike(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string output_output); 
+        void init( int _dtype,  float _mean,  float _scale,  float _seed); 
+        void bind(std::string _input_input, std::string _output_output); 
 
         ~RandomNormalLike() {}
 

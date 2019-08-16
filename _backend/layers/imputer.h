@@ -50,12 +50,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Imputer(std::string n, Shape_t imputed_value_int64s, float replaced_value_float, int replaced_value_int64);
+        Imputer(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string imputed_value_floats, std::string X_input, std::string Y_output); 
+        void init( Shape_t _imputed_value_int64s,  float _replaced_value_float,  int _replaced_value_int64); 
+        void bind(std::string _imputed_value_floats, std::string _X_input, std::string _Y_output); 
 
         ~Imputer() {}
 

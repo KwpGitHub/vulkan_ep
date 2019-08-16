@@ -132,12 +132,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LSTM(std::string n, float clip, int direction, int hidden_size, int input_forget);
+        LSTM(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string activation_alpha, std::string activation_beta, std::string activations, std::string X_input, std::string W_input, std::string R_input, std::string B_input_opt, std::string sequence_lens_input_opt, std::string initial_h_input_opt, std::string initial_c_input_opt, std::string P_input_opt, std::string Y_output_opt, std::string Y_h_output_opt, std::string Y_c_output_opt); 
+        void init( float _clip,  int _direction,  int _hidden_size,  int _input_forget); 
+        void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_input, std::string _W_input, std::string _R_input, std::string _B_input_opt, std::string _sequence_lens_input_opt, std::string _initial_h_input_opt, std::string _initial_c_input_opt, std::string _P_input_opt, std::string _Y_output_opt, std::string _Y_h_output_opt, std::string _Y_c_output_opt); 
 
         ~LSTM() {}
 

@@ -41,12 +41,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        IsInf(std::string n, int detect_negative, int detect_positive);
+        IsInf(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( int _detect_negative,  int _detect_positive); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~IsInf() {}
 

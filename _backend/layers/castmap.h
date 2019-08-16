@@ -45,12 +45,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        CastMap(std::string n, int cast_to, int map_form, int max_map);
+        CastMap(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( int _cast_to,  int _map_form,  int _max_map); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~CastMap() {}
 

@@ -53,7 +53,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string data_input, std::string shape_input, std::string reshaped_output); 
+        void bind(std::string _data_input, std::string _shape_input, std::string _reshaped_output); 
 
         ~Reshape() {}
 

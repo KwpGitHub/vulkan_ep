@@ -46,7 +46,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string value, std::string output_output); 
+        void bind(std::string _value, std::string _output_output); 
 
         ~Constant() {}
 

@@ -49,12 +49,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomUniformLike(std::string n, int dtype, float high, float low, float seed);
+        RandomUniformLike(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string output_output); 
+        void init( int _dtype,  float _high,  float _low,  float _seed); 
+        void bind(std::string _input_input, std::string _output_output); 
 
         ~RandomUniformLike() {}
 

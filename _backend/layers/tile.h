@@ -50,7 +50,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string input_input, std::string repeats_input, std::string output_output); 
+        void bind(std::string _input_input, std::string _repeats_input, std::string _output_output); 
 
         ~Tile() {}
 

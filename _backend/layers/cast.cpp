@@ -3,7 +3,7 @@
 //cpp stuff
 namespace backend {    
    
-    Cast::Cast(std::string n, int to) : Layer(n) { }
+    Cast::Cast(std::string n) : Layer(n) { }
        
     vuh::Device* Cast::_get_device() {
         for(auto t_name: inputs) {
@@ -12,26 +12,29 @@ namespace backend {
         return device;
     }
     
-    void Cast::init() {      
+    void Cast::init( int _to) {      
+		 to = _to; 
+  
+    }
     
+    void Cast::bind(std::string _input_input, std::string _output_output){
+        input_input = _input_input; output_output = _output_output;
 		binding.input_input = tensor_dict[input_input]->shape();
  
 		binding.output_output = tensor_dict[output_output]->shape();
  
 		binding.to = to;
  
-    }
-    
-    void Cast::call(std::string input_input, std::string output_output){       
+
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/cast.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
     
 }
 
-    py::module m("_backend.nn", "nn MOD");
+    //backend::nn;
 
 //python stuff
 

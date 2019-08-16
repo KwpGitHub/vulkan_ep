@@ -163,12 +163,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scan(std::string n, int body, int num_scan_inputs, Shape_t scan_input_axes, Shape_t scan_input_directions, Shape_t scan_output_axes, Shape_t scan_output_directions);
+        Scan(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(); 
+        void init( int _body,  int _num_scan_inputs,  Shape_t _scan_input_axes,  Shape_t _scan_input_directions,  Shape_t _scan_output_axes,  Shape_t _scan_output_directions); 
+        void bind(); 
 
         ~Scan() {}
 

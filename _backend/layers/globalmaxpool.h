@@ -49,7 +49,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~GlobalMaxPool() {}
 

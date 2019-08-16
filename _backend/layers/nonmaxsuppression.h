@@ -54,12 +54,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        NonMaxSuppression(std::string n, int center_point_box);
+        NonMaxSuppression(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string boxes_input, std::string scores_input, std::string max_output_boxes_per_class_input_opt, std::string iou_threshold_input_opt, std::string score_threshold_input_opt, std::string selected_indices_output); 
+        void init( int _center_point_box); 
+        void bind(std::string _boxes_input, std::string _scores_input, std::string _max_output_boxes_per_class_input_opt, std::string _iou_threshold_input_opt, std::string _score_threshold_input_opt, std::string _selected_indices_output); 
 
         ~NonMaxSuppression() {}
 

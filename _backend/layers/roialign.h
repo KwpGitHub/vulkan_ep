@@ -55,12 +55,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RoiAlign(std::string n, int mode, int output_height, int output_width, int sampling_ratio, float spatial_scale);
+        RoiAlign(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string rois_input, std::string batch_indices_input, std::string Y_output); 
+        void init( int _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale); 
+        void bind(std::string _X_input, std::string _rois_input, std::string _batch_indices_input, std::string _Y_output); 
 
         ~RoiAlign() {}
 

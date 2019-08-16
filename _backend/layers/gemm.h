@@ -54,12 +54,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Gemm(std::string n, float alpha, float beta, int transA, int transB);
+        Gemm(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string A_input, std::string B_input, std::string C_input, std::string Y_output); 
+        void init( float _alpha,  float _beta,  int _transA,  int _transB); 
+        void bind(std::string _A_input, std::string _B_input, std::string _C_input, std::string _Y_output); 
 
         ~Gemm() {}
 

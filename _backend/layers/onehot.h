@@ -56,12 +56,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        OneHot(std::string n, int axis);
+        OneHot(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string indices_input, std::string depth_input, std::string values_input, std::string output_output); 
+        void init( int _axis); 
+        void bind(std::string _indices_input, std::string _depth_input, std::string _values_input, std::string _output_output); 
 
         ~OneHot() {}
 

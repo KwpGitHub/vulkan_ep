@@ -3,7 +3,7 @@
 //cpp stuff
 namespace backend {    
    
-    Compress::Compress(std::string n, int axis) : Layer(n) { }
+    Compress::Compress(std::string n) : Layer(n) { }
        
     vuh::Device* Compress::_get_device() {
         for(auto t_name: inputs) {
@@ -12,8 +12,13 @@ namespace backend {
         return device;
     }
     
-    void Compress::init() {      
+    void Compress::init( int _axis) {      
+		 axis = _axis; 
+  
+    }
     
+    void Compress::bind(std::string _input_input, std::string _condition_input, std::string _output_output){
+        input_input = _input_input; condition_input = _condition_input; output_output = _output_output;
 		binding.input_input = tensor_dict[input_input]->shape();
   		binding.condition_input = tensor_dict[condition_input]->shape();
  
@@ -21,18 +26,16 @@ namespace backend {
  
 		binding.axis = axis;
  
-    }
-    
-    void Compress::call(std::string input_input, std::string condition_input, std::string output_output){       
+
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/compress.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[condition_input]->data(), *tensor_dict[output_output]->data());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[condition_input]->data(), *tensor_dict[output_output]->data());
     }
     
 }
 
-    py::module m("_backend.nn", "nn MOD");
+    //backend::nn;
 
 //python stuff
 

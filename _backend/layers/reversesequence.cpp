@@ -3,7 +3,7 @@
 //cpp stuff
 namespace backend {    
    
-    ReverseSequence::ReverseSequence(std::string n, int batch_axis, int time_axis) : Layer(n) { }
+    ReverseSequence::ReverseSequence(std::string n) : Layer(n) { }
        
     vuh::Device* ReverseSequence::_get_device() {
         for(auto t_name: inputs) {
@@ -12,8 +12,14 @@ namespace backend {
         return device;
     }
     
-    void ReverseSequence::init() {      
+    void ReverseSequence::init( int _batch_axis,  int _time_axis) {      
+		 batch_axis = _batch_axis; 
+ 		 time_axis = _time_axis; 
+  
+    }
     
+    void ReverseSequence::bind(std::string _input_input, std::string _sequence_lens_input, std::string _Y_output){
+        input_input = _input_input; sequence_lens_input = _sequence_lens_input; Y_output = _Y_output;
 		binding.input_input = tensor_dict[input_input]->shape();
   		binding.sequence_lens_input = tensor_dict[sequence_lens_input]->shape();
  
@@ -22,18 +28,16 @@ namespace backend {
 		binding.batch_axis = batch_axis;
   		binding.time_axis = time_axis;
  
-    }
-    
-    void ReverseSequence::call(std::string input_input, std::string sequence_lens_input, std::string Y_output){       
+
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reversesequence.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[sequence_lens_input]->data(), *tensor_dict[Y_output]->data());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[sequence_lens_input]->data(), *tensor_dict[Y_output]->data());
     }
     
 }
 
-    py::module m("_backend.nn", "nn MOD");
+    //backend::nn;
 
 //python stuff
 

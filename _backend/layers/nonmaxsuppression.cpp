@@ -3,7 +3,7 @@
 //cpp stuff
 namespace backend {    
    
-    NonMaxSuppression::NonMaxSuppression(std::string n, int center_point_box) : Layer(n) { }
+    NonMaxSuppression::NonMaxSuppression(std::string n) : Layer(n) { }
        
     vuh::Device* NonMaxSuppression::_get_device() {
         for(auto t_name: inputs) {
@@ -12,8 +12,13 @@ namespace backend {
         return device;
     }
     
-    void NonMaxSuppression::init() {      
+    void NonMaxSuppression::init( int _center_point_box) {      
+		 center_point_box = _center_point_box; 
+  
+    }
     
+    void NonMaxSuppression::bind(std::string _boxes_input, std::string _scores_input, std::string _max_output_boxes_per_class_input_opt, std::string _iou_threshold_input_opt, std::string _score_threshold_input_opt, std::string _selected_indices_output){
+        boxes_input = _boxes_input; scores_input = _scores_input; max_output_boxes_per_class_input_opt = _max_output_boxes_per_class_input_opt; iou_threshold_input_opt = _iou_threshold_input_opt; score_threshold_input_opt = _score_threshold_input_opt; selected_indices_output = _selected_indices_output;
 		binding.boxes_input = tensor_dict[boxes_input]->shape();
   		binding.scores_input = tensor_dict[scores_input]->shape();
   		binding.max_output_boxes_per_class_input_opt = tensor_dict[max_output_boxes_per_class_input_opt]->shape();
@@ -24,18 +29,16 @@ namespace backend {
  
 		binding.center_point_box = center_point_box;
  
-    }
-    
-    void NonMaxSuppression::call(std::string boxes_input, std::string scores_input, std::string max_output_boxes_per_class_input_opt, std::string iou_threshold_input_opt, std::string score_threshold_input_opt, std::string selected_indices_output){       
+
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/nonmaxsuppression.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[boxes_input]->data(), *tensor_dict[scores_input]->data(), *tensor_dict[max_output_boxes_per_class_input_opt]->data(), *tensor_dict[iou_threshold_input_opt]->data(), *tensor_dict[score_threshold_input_opt]->data(), *tensor_dict[selected_indices_output]->data());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[boxes_input]->data(), *tensor_dict[scores_input]->data(), *tensor_dict[max_output_boxes_per_class_input_opt]->data(), *tensor_dict[iou_threshold_input_opt]->data(), *tensor_dict[score_threshold_input_opt]->data(), *tensor_dict[selected_indices_output]->data());
     }
     
 }
 
-    py::module m("_backend.nn", "nn MOD");
+    //backend::nn;
 
 //python stuff
 

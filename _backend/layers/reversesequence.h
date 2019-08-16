@@ -76,12 +76,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReverseSequence(std::string n, int batch_axis, int time_axis);
+        ReverseSequence(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string sequence_lens_input, std::string Y_output); 
+        void init( int _batch_axis,  int _time_axis); 
+        void bind(std::string _input_input, std::string _sequence_lens_input, std::string _Y_output); 
 
         ~ReverseSequence() {}
 

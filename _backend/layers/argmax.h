@@ -45,12 +45,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ArgMax(std::string n, int axis, int keepdims);
+        ArgMax(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string data_input, std::string reduced_output); 
+        void init( int _axis,  int _keepdims); 
+        void bind(std::string _data_input, std::string _reduced_output); 
 
         ~ArgMax() {}
 

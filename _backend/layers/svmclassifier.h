@@ -44,12 +44,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMClassifier(std::string n, Shape_t classlabels_ints, int kernel_type, int post_transform, Shape_t vectors_per_class);
+        SVMClassifier(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string classlabels_strings, std::string coefficients, std::string kernel_params, std::string prob_a, std::string prob_b, std::string rho, std::string support_vectors, std::string X_input, std::string Y_output, std::string Z_output); 
+        void init( Shape_t _classlabels_ints,  int _kernel_type,  int _post_transform,  Shape_t _vectors_per_class); 
+        void bind(std::string _classlabels_strings, std::string _coefficients, std::string _kernel_params, std::string _prob_a, std::string _prob_b, std::string _rho, std::string _support_vectors, std::string _X_input, std::string _Y_output, std::string _Z_output); 
 
         ~SVMClassifier() {}
 

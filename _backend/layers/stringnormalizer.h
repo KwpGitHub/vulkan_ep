@@ -51,12 +51,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        StringNormalizer(std::string n, int case_change_action, int is_case_sensitive, int locale);
+        StringNormalizer(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string stopwords, std::string X_input, std::string Y_output); 
+        void init( int _case_change_action,  int _is_case_sensitive,  int _locale); 
+        void bind(std::string _stopwords, std::string _X_input, std::string _Y_output); 
 
         ~StringNormalizer() {}
 

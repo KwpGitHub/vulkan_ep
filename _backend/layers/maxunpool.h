@@ -62,12 +62,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxUnpool(std::string n, Shape_t kernel_shape, Shape_t pads, Shape_t strides);
+        MaxUnpool(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string I_input, std::string output_shape_input_opt, std::string output_output); 
+        void init( Shape_t _kernel_shape,  Shape_t _pads,  Shape_t _strides); 
+        void bind(std::string _X_input, std::string _I_input, std::string _output_shape_input_opt, std::string _output_output); 
 
         ~MaxUnpool() {}
 

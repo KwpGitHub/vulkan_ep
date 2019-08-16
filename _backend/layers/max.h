@@ -50,7 +50,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string max_output); 
+        void bind(std::string _max_output); 
 
         ~Max() {}
 

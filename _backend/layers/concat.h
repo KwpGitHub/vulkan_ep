@@ -41,12 +41,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Concat(std::string n, int axis);
+        Concat(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string concat_result_output); 
+        void init( int _axis); 
+        void bind(std::string _concat_result_output); 
 
         ~Concat() {}
 

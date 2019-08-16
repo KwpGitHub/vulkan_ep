@@ -12,8 +12,7 @@ namespace py = pybind11;
 #include "kernel/vuh.h"
 #include "tensor.h"
 #include "layer.h"
-#include "layers.h"
-//#include "layers_map.h"
+#include "layers_map.h"
 
 namespace backend {
 	std::map<std::string, Layer*> layer_dict;
@@ -154,7 +153,6 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 	
 	for (auto item : attribute) {
 		std::string attribute_name = std::string(py::str(item.first));
-		
 	}
 
 

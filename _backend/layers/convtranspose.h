@@ -57,12 +57,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ConvTranspose(std::string n, int auto_pad, Shape_t dilations, int group, Shape_t kernel_shape, Shape_t output_padding, Shape_t output_shape, Shape_t pads, Shape_t strides);
+        ConvTranspose(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string W_input, std::string B_input_opt, std::string Y_output); 
+        void init( int _auto_pad,  Shape_t _dilations,  int _group,  Shape_t _kernel_shape,  Shape_t _output_padding,  Shape_t _output_shape,  Shape_t _pads,  Shape_t _strides); 
+        void bind(std::string _X_input, std::string _W_input, std::string _B_input_opt, std::string _Y_output); 
 
         ~ConvTranspose() {}
 

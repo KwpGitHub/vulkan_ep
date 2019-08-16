@@ -52,12 +52,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TreeEnsembleClassifier(std::string n, Shape_t class_ids, Shape_t class_nodeids, Shape_t class_treeids, Shape_t classlabels_int64s, Shape_t nodes_falsenodeids, Shape_t nodes_featureids, Shape_t nodes_missing_value_tracks_true, Shape_t nodes_nodeids, Shape_t nodes_treeids, Shape_t nodes_truenodeids, int post_transform);
+        TreeEnsembleClassifier(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string base_values, std::string class_weights, std::string classlabels_strings, std::string nodes_hitrates, std::string nodes_modes, std::string nodes_values, std::string X_input, std::string Y_output, std::string Z_output); 
+        void init( Shape_t _class_ids,  Shape_t _class_nodeids,  Shape_t _class_treeids,  Shape_t _classlabels_int64s,  Shape_t _nodes_falsenodeids,  Shape_t _nodes_featureids,  Shape_t _nodes_missing_value_tracks_true,  Shape_t _nodes_nodeids,  Shape_t _nodes_treeids,  Shape_t _nodes_truenodeids,  int _post_transform); 
+        void bind(std::string _base_values, std::string _class_weights, std::string _classlabels_strings, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _X_input, std::string _Y_output, std::string _Z_output); 
 
         ~TreeEnsembleClassifier() {}
 

@@ -43,12 +43,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMRegressor(std::string n, int kernel_type, int n_supports, int one_class, int post_transform);
+        SVMRegressor(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string coefficients, std::string kernel_params, std::string rho, std::string support_vectors, std::string X_input, std::string Y_output); 
+        void init( int _kernel_type,  int _n_supports,  int _one_class,  int _post_transform); 
+        void bind(std::string _coefficients, std::string _kernel_params, std::string _rho, std::string _support_vectors, std::string _X_input, std::string _Y_output); 
 
         ~SVMRegressor() {}
 

@@ -71,12 +71,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxPool(std::string n, Shape_t kernel_shape, int auto_pad, int ceil_mode, Shape_t dilations, Shape_t pads, int storage_order, Shape_t strides);
+        MaxPool(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output, std::string Indices_output_opt); 
+        void init( Shape_t _kernel_shape,  int _auto_pad,  int _ceil_mode,  Shape_t _dilations,  Shape_t _pads,  int _storage_order,  Shape_t _strides); 
+        void bind(std::string _X_input, std::string _Y_output, std::string _Indices_output_opt); 
 
         ~MaxPool() {}
 

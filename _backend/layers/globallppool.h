@@ -44,12 +44,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        GlobalLpPool(std::string n, int p);
+        GlobalLpPool(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( int _p); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~GlobalLpPool() {}
 

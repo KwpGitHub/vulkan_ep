@@ -45,12 +45,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Clip(std::string n, float max, float min);
+        Clip(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string output_output); 
+        void init( float _max,  float _min); 
+        void bind(std::string _input_input, std::string _output_output); 
 
         ~Clip() {}
 

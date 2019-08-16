@@ -54,12 +54,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TopK(std::string n, int axis);
+        TopK(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string K_input, std::string Values_output, std::string Indices_output); 
+        void init( int _axis); 
+        void bind(std::string _X_input, std::string _K_input, std::string _Values_output, std::string _Indices_output); 
 
         ~TopK() {}
 

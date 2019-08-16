@@ -52,12 +52,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Normalizer(std::string n, int norm);
+        Normalizer(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( int _norm); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~Normalizer() {}
 

@@ -50,12 +50,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        InstanceNormalization(std::string n, float epsilon);
+        InstanceNormalization(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string scale_input, std::string B_input, std::string output_output); 
+        void init( float _epsilon); 
+        void bind(std::string _input_input, std::string _scale_input, std::string _B_input, std::string _output_output); 
 
         ~InstanceNormalization() {}
 

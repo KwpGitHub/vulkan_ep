@@ -46,12 +46,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Resize(std::string n, int mode);
+        Resize(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string scales_input, std::string Y_output); 
+        void init( int _mode); 
+        void bind(std::string _X_input, std::string _scales_input, std::string _Y_output); 
 
         ~Resize() {}
 

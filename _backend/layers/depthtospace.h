@@ -45,12 +45,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DepthToSpace(std::string n, int blocksize);
+        DepthToSpace(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string output_output); 
+        void init( int _blocksize); 
+        void bind(std::string _input_input, std::string _output_output); 
 
         ~DepthToSpace() {}
 

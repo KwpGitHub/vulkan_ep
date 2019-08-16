@@ -62,7 +62,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string a_input, std::string a_scale_input, std::string a_zero_point_input, std::string b_input, std::string b_scale_input, std::string b_zero_point_input, std::string y_scale_input, std::string y_zero_point_input, std::string y_output); 
+        void bind(std::string _a_input, std::string _a_scale_input, std::string _a_zero_point_input, std::string _b_input, std::string _b_scale_input, std::string _b_zero_point_input, std::string _y_scale_input, std::string _y_zero_point_input, std::string _y_output); 
 
         ~QLinearMatMul() {}
 

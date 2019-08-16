@@ -44,12 +44,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Multinomial(std::string n, int dtype, int sample_size, float seed);
+        Multinomial(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string output_output); 
+        void init( int _dtype,  int _sample_size,  float _seed); 
+        void bind(std::string _input_input, std::string _output_output); 
 
         ~Multinomial() {}
 

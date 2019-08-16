@@ -46,12 +46,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ZipMap(std::string n, Shape_t classlabels_int64s);
+        ZipMap(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string classlabels_strings, std::string X_input, std::string Z_output); 
+        void init( Shape_t _classlabels_int64s); 
+        void bind(std::string _classlabels_strings, std::string _X_input, std::string _Z_output); 
 
         ~ZipMap() {}
 

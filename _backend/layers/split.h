@@ -44,12 +44,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Split(std::string n, int axis, Shape_t split);
+        Split(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input); 
+        void init( int _axis,  Shape_t _split); 
+        void bind(std::string _input_input); 
 
         ~Split() {}
 

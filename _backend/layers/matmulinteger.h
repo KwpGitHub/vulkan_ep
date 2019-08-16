@@ -52,7 +52,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string A_input, std::string B_input, std::string a_zero_point_input_opt, std::string b_zero_point_input_opt, std::string Y_output); 
+        void bind(std::string _A_input, std::string _B_input, std::string _a_zero_point_input_opt, std::string _b_zero_point_input_opt, std::string _Y_output); 
 
         ~MatMulInteger() {}
 

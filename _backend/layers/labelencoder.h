@@ -59,12 +59,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LabelEncoder(std::string n, float default_float, int default_int64, int default_string, Shape_t keys_int64s, Shape_t values_int64s);
+        LabelEncoder(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string keys_floats, std::string keys_strings, std::string values_floats, std::string values_strings, std::string X_input, std::string Y_output); 
+        void init( float _default_float,  int _default_int64,  int _default_string,  Shape_t _keys_int64s,  Shape_t _values_int64s); 
+        void bind(std::string _keys_floats, std::string _keys_strings, std::string _values_floats, std::string _values_strings, std::string _X_input, std::string _Y_output); 
 
         ~LabelEncoder() {}
 

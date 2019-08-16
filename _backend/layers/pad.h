@@ -58,12 +58,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Pad(std::string n, Shape_t pads, int mode, float value);
+        Pad(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string data_input, std::string output_output); 
+        void init( Shape_t _pads,  int _mode,  float _value); 
+        void bind(std::string _data_input, std::string _output_output); 
 
         ~Pad() {}
 

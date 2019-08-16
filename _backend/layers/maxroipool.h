@@ -45,12 +45,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxRoiPool(std::string n, Shape_t pooled_shape, float spatial_scale);
+        MaxRoiPool(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string rois_input, std::string Y_output); 
+        void init( Shape_t _pooled_shape,  float _spatial_scale); 
+        void bind(std::string _X_input, std::string _rois_input, std::string _Y_output); 
 
         ~MaxRoiPool() {}
 

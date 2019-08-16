@@ -70,12 +70,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        AveragePool(std::string n, Shape_t kernel_shape, int auto_pad, int ceil_mode, int count_include_pad, Shape_t pads, Shape_t strides);
+        AveragePool(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string Y_output); 
+        void init( Shape_t _kernel_shape,  int _auto_pad,  int _ceil_mode,  int _count_include_pad,  Shape_t _pads,  Shape_t _strides); 
+        void bind(std::string _X_input, std::string _Y_output); 
 
         ~AveragePool() {}
 

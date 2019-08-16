@@ -50,7 +50,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string min_output); 
+        void bind(std::string _min_output); 
 
         ~Min() {}
 

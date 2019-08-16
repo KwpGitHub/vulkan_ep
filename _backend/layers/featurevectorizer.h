@@ -46,12 +46,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        FeatureVectorizer(std::string n, Shape_t inputdimensions);
+        FeatureVectorizer(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string Y_output); 
+        void init( Shape_t _inputdimensions); 
+        void bind(std::string _Y_output); 
 
         ~FeatureVectorizer() {}
 

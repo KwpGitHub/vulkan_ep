@@ -47,12 +47,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceLogSum(std::string n, Shape_t axes, int keepdims);
+        ReduceLogSum(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string data_input, std::string reduced_output); 
+        void init( Shape_t _axes,  int _keepdims); 
+        void bind(std::string _data_input, std::string _reduced_output); 
 
         ~ReduceLogSum() {}
 

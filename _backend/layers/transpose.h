@@ -45,12 +45,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Transpose(std::string n, Shape_t perm);
+        Transpose(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string data_input, std::string transposed_output); 
+        void init( Shape_t _perm); 
+        void bind(std::string _data_input, std::string _transposed_output); 
 
         ~Transpose() {}
 

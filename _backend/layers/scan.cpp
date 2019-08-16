@@ -3,7 +3,7 @@
 //cpp stuff
 namespace backend {    
    
-    Scan::Scan(std::string n, int body, int num_scan_inputs, Shape_t scan_input_axes, Shape_t scan_input_directions, Shape_t scan_output_axes, Shape_t scan_output_directions) : Layer(n) { }
+    Scan::Scan(std::string n) : Layer(n) { }
        
     vuh::Device* Scan::_get_device() {
         for(auto t_name: inputs) {
@@ -12,8 +12,18 @@ namespace backend {
         return device;
     }
     
-    void Scan::init() {      
+    void Scan::init( int _body,  int _num_scan_inputs,  Shape_t _scan_input_axes,  Shape_t _scan_input_directions,  Shape_t _scan_output_axes,  Shape_t _scan_output_directions) {      
+		 body = _body; 
+ 		 num_scan_inputs = _num_scan_inputs; 
+ 		 scan_input_axes = _scan_input_axes; 
+ 		 scan_input_directions = _scan_input_directions; 
+ 		 scan_output_axes = _scan_output_axes; 
+ 		 scan_output_directions = _scan_output_directions; 
+  
+    }
     
+    void Scan::bind(){
+        
 
 
 		binding.body = body;
@@ -23,18 +33,16 @@ namespace backend {
   		binding.scan_output_axes = scan_output_axes;
   		binding.scan_output_directions = scan_output_directions;
  
-    }
-    
-    void Scan::call(){       
+
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scan.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding);
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(64, 64, 64);
+        //program->bind(binding);
     }
     
 }
 
-    py::module m("_backend.nn", "nn MOD");
+    //backend::nn;
 
 //python stuff
 

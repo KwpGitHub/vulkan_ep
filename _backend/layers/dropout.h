@@ -49,12 +49,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Dropout(std::string n, float ratio);
+        Dropout(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string data_input, std::string output_output, std::string mask_output_opt); 
+        void init( float _ratio); 
+        void bind(std::string _data_input, std::string _output_output, std::string _mask_output_opt); 
 
         ~Dropout() {}
 

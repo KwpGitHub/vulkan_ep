@@ -53,7 +53,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string condition_input, std::string X_input, std::string Y_input, std::string output_output); 
+        void bind(std::string _condition_input, std::string _X_input, std::string _Y_input, std::string _output_output); 
 
         ~Where() {}
 

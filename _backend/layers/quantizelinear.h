@@ -52,7 +52,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string x_input, std::string y_scale_input, std::string y_zero_point_input_opt, std::string y_output); 
+        void bind(std::string _x_input, std::string _y_scale_input, std::string _y_zero_point_input_opt, std::string _y_output); 
 
         ~QuantizeLinear() {}
 

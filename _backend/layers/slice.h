@@ -85,7 +85,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void call(std::string data_input, std::string starts_input, std::string ends_input, std::string axes_input_opt, std::string steps_input_opt, std::string output_output); 
+        void bind(std::string _data_input, std::string _starts_input, std::string _ends_input, std::string _axes_input_opt, std::string _steps_input_opt, std::string _output_output); 
 
         ~Slice() {}
 

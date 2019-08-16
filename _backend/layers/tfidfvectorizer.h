@@ -69,12 +69,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TfIdfVectorizer(std::string n, int max_gram_length, int max_skip_count, int min_gram_length, int mode, Shape_t ngram_counts, Shape_t ngram_indexes, Shape_t pool_int64s);
+        TfIdfVectorizer(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string pool_strings, std::string weights, std::string X_input, std::string Y_output); 
+        void init( int _max_gram_length,  int _max_skip_count,  int _min_gram_length,  int _mode,  Shape_t _ngram_counts,  Shape_t _ngram_indexes,  Shape_t _pool_int64s); 
+        void bind(std::string _pool_strings, std::string _weights, std::string _X_input, std::string _Y_output); 
 
         ~TfIdfVectorizer() {}
 

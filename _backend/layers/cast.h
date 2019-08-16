@@ -61,12 +61,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Cast(std::string n, int to);
+        Cast(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string input_input, std::string output_output); 
+        void init( int _to); 
+        void bind(std::string _input_input, std::string _output_output); 
 
         ~Cast() {}
 

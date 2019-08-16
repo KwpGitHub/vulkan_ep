@@ -56,12 +56,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Mod(std::string n, int fmod);
+        Mod(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string A_input, std::string B_input, std::string C_output); 
+        void init( int _fmod); 
+        void bind(std::string _A_input, std::string _B_input, std::string _C_output); 
 
         ~Mod() {}
 

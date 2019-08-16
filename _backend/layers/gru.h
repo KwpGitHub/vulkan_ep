@@ -121,12 +121,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        GRU(std::string n, float clip, int direction, int hidden_size, int linear_before_reset);
+        GRU(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string activation_alpha, std::string activation_beta, std::string activations, std::string X_input, std::string W_input, std::string R_input, std::string B_input_opt, std::string sequence_lens_input_opt, std::string initial_h_input_opt, std::string Y_output_opt, std::string Y_h_output_opt); 
+        void init( float _clip,  int _direction,  int _hidden_size,  int _linear_before_reset); 
+        void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_input, std::string _W_input, std::string _R_input, std::string _B_input_opt, std::string _sequence_lens_input_opt, std::string _initial_h_input_opt, std::string _Y_output_opt, std::string _Y_h_output_opt); 
 
         ~GRU() {}
 

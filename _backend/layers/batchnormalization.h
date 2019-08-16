@@ -60,12 +60,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        BatchNormalization(std::string n, float epsilon, float momentum);
+        BatchNormalization(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string X_input, std::string scale_input, std::string B_input, std::string mean_input, std::string var_input, std::string Y_output, std::string mean_output_opt, std::string var_output_opt, std::string saved_mean_output_opt, std::string saved_var_output_opt); 
+        void init( float _epsilon,  float _momentum); 
+        void bind(std::string _X_input, std::string _scale_input, std::string _B_input, std::string _mean_input, std::string _var_input, std::string _Y_output, std::string _mean_output_opt, std::string _var_output_opt, std::string _saved_mean_output_opt, std::string _saved_var_output_opt); 
 
         ~BatchNormalization() {}
 

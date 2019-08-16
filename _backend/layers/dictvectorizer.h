@@ -53,12 +53,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DictVectorizer(std::string n, Shape_t int64_vocabulary);
+        DictVectorizer(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string string_vocabulary, std::string X_input, std::string Y_output); 
+        void init( Shape_t _int64_vocabulary); 
+        void bind(std::string _string_vocabulary, std::string _X_input, std::string _Y_output); 
 
         ~DictVectorizer() {}
 

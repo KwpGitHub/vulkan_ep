@@ -1,1548 +1,5042 @@
-
-from _backend.nn import LSTM as c_LSTM
+layer_map = {}
+#from _backend.nn import LSTM as c_LSTM
 class LSTM:
-    def __init__(self):
+    name = None
+    activation_alpha = None
+    activation_beta = None
+    activations = None
+    X_input = None
+    W_input = None
+    R_input = None
+    B_input_opt = None
+    sequence_lens_input_opt = None
+    initial_h_input_opt = None
+    initial_c_input_opt = None
+    P_input_opt = None
+    Y_output_opt = None
+    Y_h_output_opt = None
+    Y_c_output_opt = None
+
+    #parameters
+    clip = None
+    direction = None
+    hidden_size = None
+    input_forget = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "W_input", "R_input", "B_input_opt", "sequence_lens_input_opt", "initial_h_input_opt", "initial_c_input_opt", "P_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output_opt", "Y_h_output_opt", "Y_c_output_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['lstm'] = LSTM
 
 
 
 
-from _backend.nn import Identity as c_Identity
+#from _backend.nn import Identity as c_Identity
 class Identity:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['identity'] = Identity
 
 
 
 
-from _backend.nn import Abs as c_Abs
+#from _backend.nn import Abs as c_Abs
 class Abs:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['abs'] = Abs
 
 
 
 
-from _backend.nn import BatchNormalization as c_BatchNormalization
+#from _backend.nn import BatchNormalization as c_BatchNormalization
 class BatchNormalization:
-    def __init__(self):
+    name = None
+    X_input = None
+    scale_input = None
+    B_input = None
+    mean_input = None
+    var_input = None
+    Y_output = None
+    mean_output_opt = None
+    var_output_opt = None
+    saved_mean_output_opt = None
+    saved_var_output_opt = None
+
+    #parameters
+    epsilon = None
+    momentum = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "scale_input", "B_input", "mean_input", "var_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output", "mean_output_opt", "var_output_opt", "saved_mean_output_opt", "saved_var_output_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['batchnormalization'] = BatchNormalization
 
 
 
 
-from _backend.nn import Mean as c_Mean
+#from _backend.nn import Mean as c_Mean
 class Mean:
-    def __init__(self):
+    name = None
+    mean_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["mean_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['mean'] = Mean
 
 
 
 
-from _backend.nn import Add as c_Add
+#from _backend.nn import Add as c_Add
 class Add:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['add'] = Add
 
 
 
 
-from _backend.nn import GlobalMaxPool as c_GlobalMaxPool
+#from _backend.nn import GlobalMaxPool as c_GlobalMaxPool
 class GlobalMaxPool:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['globalmaxpool'] = GlobalMaxPool
 
 
 
 
-from _backend.nn import Cast as c_Cast
+#from _backend.nn import Cast as c_Cast
 class Cast:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    to = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['cast'] = Cast
 
 
 
 
-from _backend.nn import AveragePool as c_AveragePool
+#from _backend.nn import AveragePool as c_AveragePool
 class AveragePool:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    kernel_shape = None
+    auto_pad = None
+    ceil_mode = None
+    count_include_pad = None
+    pads = None
+    strides = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['averagepool'] = AveragePool
 
 
 
 
-from _backend.nn import And as c_And
+#from _backend.nn import And as c_And
 class And:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['and'] = And
 
 
 
 
-from _backend.nn import LRN as c_LRN
+#from _backend.nn import LRN as c_LRN
 class LRN:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    size = None
+    alpha = None
+    beta = None
+    bias = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['lrn'] = LRN
 
 
 
 
-from _backend.nn import ArgMax as c_ArgMax
+#from _backend.nn import ArgMax as c_ArgMax
 class ArgMax:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axis = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['argmax'] = ArgMax
 
 
 
 
-from _backend.nn import Resize as c_Resize
+#from _backend.nn import Resize as c_Resize
 class Resize:
-    def __init__(self):
+    name = None
+    X_input = None
+    scales_input = None
+    Y_output = None
+
+    #parameters
+    mode = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "scales_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['resize'] = Resize
 
 
 
 
-from _backend.nn import Expand as c_Expand
+#from _backend.nn import Expand as c_Expand
 class Expand:
-    def __init__(self):
+    name = None
+    input_input = None
+    shape_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input", "shape_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['expand'] = Expand
 
 
 
 
-from _backend.nn import Neg as c_Neg
+#from _backend.nn import Neg as c_Neg
 class Neg:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['neg'] = Neg
 
 
 
 
-from _backend.nn import Mul as c_Mul
+#from _backend.nn import Mul as c_Mul
 class Mul:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['mul'] = Mul
 
 
 
 
-from _backend.nn import ArgMin as c_ArgMin
+#from _backend.nn import ArgMin as c_ArgMin
 class ArgMin:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axis = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['argmin'] = ArgMin
 
 
 
 
-from _backend.nn import CastMap as c_CastMap
+#from _backend.nn import CastMap as c_CastMap
 class CastMap:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    cast_to = None
+    map_form = None
+    max_map = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['castmap'] = CastMap
 
 
 
 
-from _backend.nn import Exp as c_Exp
+#from _backend.nn import Exp as c_Exp
 class Exp:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['exp'] = Exp
 
 
 
 
-from _backend.nn import Div as c_Div
+#from _backend.nn import Div as c_Div
 class Div:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['div'] = Div
 
 
 
 
-from _backend.nn import ReverseSequence as c_ReverseSequence
+#from _backend.nn import ReverseSequence as c_ReverseSequence
 class ReverseSequence:
-    def __init__(self):
+    name = None
+    input_input = None
+    sequence_lens_input = None
+    Y_output = None
+
+    #parameters
+    batch_axis = None
+    time_axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input", "sequence_lens_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reversesequence'] = ReverseSequence
 
 
 
 
-from _backend.nn import Ceil as c_Ceil
+#from _backend.nn import Ceil as c_Ceil
 class Ceil:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['ceil'] = Ceil
 
 
 
 
-from _backend.nn import DepthToSpace as c_DepthToSpace
+#from _backend.nn import DepthToSpace as c_DepthToSpace
 class DepthToSpace:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    blocksize = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['depthtospace'] = DepthToSpace
 
 
 
 
-from _backend.nn import Clip as c_Clip
+#from _backend.nn import Clip as c_Clip
 class Clip:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    max = None
+    min = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['clip'] = Clip
 
 
 
 
-from _backend.nn import RNN as c_RNN
+#from _backend.nn import RNN as c_RNN
 class RNN:
-    def __init__(self):
+    name = None
+    activation_alpha = None
+    activation_beta = None
+    activations = None
+    X_input = None
+    W_input = None
+    R_input = None
+    B_input_opt = None
+    sequence_lens_input_opt = None
+    initial_h_input_opt = None
+    Y_output_opt = None
+    Y_h_output_opt = None
+
+    #parameters
+    clip = None
+    direction = None
+    hidden_size = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "W_input", "R_input", "B_input_opt", "sequence_lens_input_opt", "initial_h_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output_opt", "Y_h_output_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['rnn'] = RNN
 
 
 
 
-from _backend.nn import Concat as c_Concat
+#from _backend.nn import Concat as c_Concat
 class Concat:
-    def __init__(self):
+    name = None
+    concat_result_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["concat_result_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['concat'] = Concat
 
 
 
 
-from _backend.nn import Constant as c_Constant
+#from _backend.nn import Constant as c_Constant
 class Constant:
-    def __init__(self):
+    name = None
+    value = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['constant'] = Constant
 
 
 
 
-from _backend.nn import LpPool as c_LpPool
+#from _backend.nn import LpPool as c_LpPool
 class LpPool:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    kernel_shape = None
+    auto_pad = None
+    p = None
+    pads = None
+    strides = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['lppool'] = LpPool
 
 
 
 
-from _backend.nn import Conv as c_Conv
+#from _backend.nn import Conv as c_Conv
 class Conv:
-    def __init__(self):
+    name = None
+    X_input = None
+    W_input = None
+    B_input_opt = None
+    Y_output = None
+
+    #parameters
+    auto_pad = None
+    dilations = None
+    group = None
+    kernel_shape = None
+    pads = None
+    strides = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "W_input", "B_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['conv'] = Conv
 
 
 
 
-from _backend.nn import Not as c_Not
+#from _backend.nn import Not as c_Not
 class Not:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['not'] = Not
 
 
 
 
-from _backend.nn import Gather as c_Gather
+#from _backend.nn import Gather as c_Gather
 class Gather:
-    def __init__(self):
+    name = None
+    data_input = None
+    indices_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input", "indices_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['gather'] = Gather
 
 
 
 
-from _backend.nn import ConvTranspose as c_ConvTranspose
+#from _backend.nn import ConvTranspose as c_ConvTranspose
 class ConvTranspose:
-    def __init__(self):
+    name = None
+    X_input = None
+    W_input = None
+    B_input_opt = None
+    Y_output = None
+
+    #parameters
+    auto_pad = None
+    dilations = None
+    group = None
+    kernel_shape = None
+    output_padding = None
+    output_shape = None
+    pads = None
+    strides = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "W_input", "B_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['convtranspose'] = ConvTranspose
 
 
 
 
-from _backend.nn import Dropout as c_Dropout
+#from _backend.nn import Dropout as c_Dropout
 class Dropout:
-    def __init__(self):
+    name = None
+    data_input = None
+    output_output = None
+    mask_output_opt = None
+
+    #parameters
+    ratio = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output", "mask_output_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['dropout'] = Dropout
 
 
 
 
-from _backend.nn import LeakyRelu as c_LeakyRelu
+#from _backend.nn import LeakyRelu as c_LeakyRelu
 class LeakyRelu:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    alpha = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['leakyrelu'] = LeakyRelu
 
 
 
 
-from _backend.nn import Elu as c_Elu
+#from _backend.nn import Elu as c_Elu
 class Elu:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    alpha = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['elu'] = Elu
 
 
 
 
-from _backend.nn import GlobalAveragePool as c_GlobalAveragePool
+#from _backend.nn import GlobalAveragePool as c_GlobalAveragePool
 class GlobalAveragePool:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['globalaveragepool'] = GlobalAveragePool
 
 
 
 
-from _backend.nn import Gemm as c_Gemm
+#from _backend.nn import Gemm as c_Gemm
 class Gemm:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_input = None
+    Y_output = None
+
+    #parameters
+    alpha = None
+    beta = None
+    transA = None
+    transB = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input", "C_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['gemm'] = Gemm
 
 
 
 
-from _backend.nn import MaxPool as c_MaxPool
+#from _backend.nn import MaxPool as c_MaxPool
 class MaxPool:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+    Indices_output_opt = None
+
+    #parameters
+    kernel_shape = None
+    auto_pad = None
+    ceil_mode = None
+    dilations = None
+    pads = None
+    storage_order = None
+    strides = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output", "Indices_output_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['maxpool'] = MaxPool
 
 
 
 
-from _backend.nn import Equal as c_Equal
+#from _backend.nn import Equal as c_Equal
 class Equal:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['equal'] = Equal
 
 
 
 
-from _backend.nn import Tile as c_Tile
+#from _backend.nn import Tile as c_Tile
 class Tile:
-    def __init__(self):
+    name = None
+    input_input = None
+    repeats_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input", "repeats_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['tile'] = Tile
 
 
 
 
-from _backend.nn import Flatten as c_Flatten
+#from _backend.nn import Flatten as c_Flatten
 class Flatten:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['flatten'] = Flatten
 
 
 
 
-from _backend.nn import Floor as c_Floor
+#from _backend.nn import Floor as c_Floor
 class Floor:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['floor'] = Floor
 
 
 
 
-from _backend.nn import GRU as c_GRU
+#from _backend.nn import GRU as c_GRU
 class GRU:
-    def __init__(self):
+    name = None
+    activation_alpha = None
+    activation_beta = None
+    activations = None
+    X_input = None
+    W_input = None
+    R_input = None
+    B_input_opt = None
+    sequence_lens_input_opt = None
+    initial_h_input_opt = None
+    Y_output_opt = None
+    Y_h_output_opt = None
+
+    #parameters
+    clip = None
+    direction = None
+    hidden_size = None
+    linear_before_reset = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "W_input", "R_input", "B_input_opt", "sequence_lens_input_opt", "initial_h_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output_opt", "Y_h_output_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['gru'] = GRU
 
 
 
 
-from _backend.nn import GlobalLpPool as c_GlobalLpPool
+#from _backend.nn import GlobalLpPool as c_GlobalLpPool
 class GlobalLpPool:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    p = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['globallppool'] = GlobalLpPool
 
 
 
 
-from _backend.nn import Greater as c_Greater
+#from _backend.nn import Greater as c_Greater
 class Greater:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['greater'] = Greater
 
 
 
 
-from _backend.nn import HardSigmoid as c_HardSigmoid
+#from _backend.nn import HardSigmoid as c_HardSigmoid
 class HardSigmoid:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    alpha = None
+    beta = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['hardsigmoid'] = HardSigmoid
 
 
 
 
-from _backend.nn import Selu as c_Selu
+#from _backend.nn import Selu as c_Selu
 class Selu:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    alpha = None
+    gamma = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['selu'] = Selu
 
 
 
 
-from _backend.nn import Hardmax as c_Hardmax
+#from _backend.nn import Hardmax as c_Hardmax
 class Hardmax:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['hardmax'] = Hardmax
 
 
 
 
-from _backend.nn import If as c_If
+#from _backend.nn import If as c_If
 class If:
-    def __init__(self):
+    name = None
+    cond_input = None
+
+    #parameters
+    else_branch = None
+    then_branch = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["cond_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = []
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['if'] = If
 
 
 
 
-from _backend.nn import Min as c_Min
+#from _backend.nn import Min as c_Min
 class Min:
-    def __init__(self):
+    name = None
+    min_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["min_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['min'] = Min
 
 
 
 
-from _backend.nn import InstanceNormalization as c_InstanceNormalization
+#from _backend.nn import InstanceNormalization as c_InstanceNormalization
 class InstanceNormalization:
-    def __init__(self):
+    name = None
+    input_input = None
+    scale_input = None
+    B_input = None
+    output_output = None
+
+    #parameters
+    epsilon = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input", "scale_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['instancenormalization'] = InstanceNormalization
 
 
 
 
-from _backend.nn import Less as c_Less
+#from _backend.nn import Less as c_Less
 class Less:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['less'] = Less
 
 
 
 
-from _backend.nn import EyeLike as c_EyeLike
+#from _backend.nn import EyeLike as c_EyeLike
 class EyeLike:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    dtype = None
+    k = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['eyelike'] = EyeLike
 
 
 
 
-from _backend.nn import RandomNormal as c_RandomNormal
+#from _backend.nn import RandomNormal as c_RandomNormal
 class RandomNormal:
-    def __init__(self):
+    name = None
+    output_output = None
+
+    #parameters
+    shape = None
+    dtype = None
+    mean = None
+    scale = None
+    seed = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['randomnormal'] = RandomNormal
 
 
 
 
-from _backend.nn import Slice as c_Slice
+#from _backend.nn import Slice as c_Slice
 class Slice:
-    def __init__(self):
+    name = None
+    data_input = None
+    starts_input = None
+    ends_input = None
+    axes_input_opt = None
+    steps_input_opt = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input", "starts_input", "ends_input", "axes_input_opt", "steps_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['slice'] = Slice
 
 
 
 
-from _backend.nn import PRelu as c_PRelu
+#from _backend.nn import PRelu as c_PRelu
 class PRelu:
-    def __init__(self):
+    name = None
+    X_input = None
+    slope_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "slope_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['prelu'] = PRelu
 
 
 
 
-from _backend.nn import Log as c_Log
+#from _backend.nn import Log as c_Log
 class Log:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['log'] = Log
 
 
 
 
-from _backend.nn import LogSoftmax as c_LogSoftmax
+#from _backend.nn import LogSoftmax as c_LogSoftmax
 class LogSoftmax:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['logsoftmax'] = LogSoftmax
 
 
 
 
-from _backend.nn import Loop as c_Loop
+#from _backend.nn import Loop as c_Loop
 class Loop:
-    def __init__(self):
+    name = None
+    M_input_opt = None
+    cond_input_opt = None
+
+    #parameters
+    body = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["M_input_opt", "cond_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = []
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['loop'] = Loop
 
 
 
 
-from _backend.nn import LpNormalization as c_LpNormalization
+#from _backend.nn import LpNormalization as c_LpNormalization
 class LpNormalization:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+    p = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['lpnormalization'] = LpNormalization
 
 
 
 
-from _backend.nn import MatMul as c_MatMul
+#from _backend.nn import MatMul as c_MatMul
 class MatMul:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['matmul'] = MatMul
 
 
 
 
-from _backend.nn import ReduceL2 as c_ReduceL2
+#from _backend.nn import ReduceL2 as c_ReduceL2
 class ReduceL2:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducel2'] = ReduceL2
 
 
 
 
-from _backend.nn import Max as c_Max
+#from _backend.nn import Max as c_Max
 class Max:
-    def __init__(self):
+    name = None
+    max_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["max_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['max'] = Max
 
 
 
 
-from _backend.nn import MaxRoiPool as c_MaxRoiPool
+#from _backend.nn import MaxRoiPool as c_MaxRoiPool
 class MaxRoiPool:
-    def __init__(self):
+    name = None
+    X_input = None
+    rois_input = None
+    Y_output = None
+
+    #parameters
+    pooled_shape = None
+    spatial_scale = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "rois_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['maxroipool'] = MaxRoiPool
 
 
 
 
-from _backend.nn import Or as c_Or
+#from _backend.nn import Or as c_Or
 class Or:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['or'] = Or
 
 
 
 
-from _backend.nn import Pad as c_Pad
+#from _backend.nn import Pad as c_Pad
 class Pad:
-    def __init__(self):
+    name = None
+    data_input = None
+    output_output = None
+
+    #parameters
+    pads = None
+    mode = None
+    value = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['pad'] = Pad
 
 
 
 
-from _backend.nn import RandomUniformLike as c_RandomUniformLike
+#from _backend.nn import RandomUniformLike as c_RandomUniformLike
 class RandomUniformLike:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    dtype = None
+    high = None
+    low = None
+    seed = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['randomuniformlike'] = RandomUniformLike
 
 
 
 
-from _backend.nn import Reciprocal as c_Reciprocal
+#from _backend.nn import Reciprocal as c_Reciprocal
 class Reciprocal:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reciprocal'] = Reciprocal
 
 
 
 
-from _backend.nn import Pow as c_Pow
+#from _backend.nn import Pow as c_Pow
 class Pow:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_input = None
+    Z_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "Y_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Z_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['pow'] = Pow
 
 
 
 
-from _backend.nn import RandomNormalLike as c_RandomNormalLike
+#from _backend.nn import RandomNormalLike as c_RandomNormalLike
 class RandomNormalLike:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    dtype = None
+    mean = None
+    scale = None
+    seed = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['randomnormallike'] = RandomNormalLike
 
 
 
 
-from _backend.nn import OneHot as c_OneHot
+#from _backend.nn import OneHot as c_OneHot
 class OneHot:
-    def __init__(self):
+    name = None
+    indices_input = None
+    depth_input = None
+    values_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["indices_input", "depth_input", "values_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['onehot'] = OneHot
 
 
 
 
-from _backend.nn import RandomUniform as c_RandomUniform
+#from _backend.nn import RandomUniform as c_RandomUniform
 class RandomUniform:
-    def __init__(self):
+    name = None
+    output_output = None
+
+    #parameters
+    shape = None
+    dtype = None
+    high = None
+    low = None
+    seed = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['randomuniform'] = RandomUniform
 
 
 
 
-from _backend.nn import ReduceL1 as c_ReduceL1
+#from _backend.nn import ReduceL1 as c_ReduceL1
 class ReduceL1:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducel1'] = ReduceL1
 
 
 
 
-from _backend.nn import ReduceLogSum as c_ReduceLogSum
+#from _backend.nn import ReduceLogSum as c_ReduceLogSum
 class ReduceLogSum:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducelogsum'] = ReduceLogSum
 
 
 
 
-from _backend.nn import ReduceLogSumExp as c_ReduceLogSumExp
+#from _backend.nn import ReduceLogSumExp as c_ReduceLogSumExp
 class ReduceLogSumExp:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducelogsumexp'] = ReduceLogSumExp
 
 
 
 
-from _backend.nn import ReduceMax as c_ReduceMax
+#from _backend.nn import ReduceMax as c_ReduceMax
 class ReduceMax:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducemax'] = ReduceMax
 
 
 
 
-from _backend.nn import OneHotEncoder as c_OneHotEncoder
+#from _backend.nn import OneHotEncoder as c_OneHotEncoder
 class OneHotEncoder:
-    def __init__(self):
+    name = None
+    cats_strings = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    cats_int64s = None
+    zeros = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['onehotencoder'] = OneHotEncoder
 
 
 
 
-from _backend.nn import IsNaN as c_IsNaN
+#from _backend.nn import IsNaN as c_IsNaN
 class IsNaN:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['isnan'] = IsNaN
 
 
 
 
-from _backend.nn import ReduceMean as c_ReduceMean
+#from _backend.nn import ReduceMean as c_ReduceMean
 class ReduceMean:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducemean'] = ReduceMean
 
 
 
 
-from _backend.nn import ReduceMin as c_ReduceMin
+#from _backend.nn import ReduceMin as c_ReduceMin
 class ReduceMin:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducemin'] = ReduceMin
 
 
 
 
-from _backend.nn import TreeEnsembleRegressor as c_TreeEnsembleRegressor
+#from _backend.nn import TreeEnsembleRegressor as c_TreeEnsembleRegressor
 class TreeEnsembleRegressor:
-    def __init__(self):
+    name = None
+    base_values = None
+    nodes_hitrates = None
+    nodes_modes = None
+    nodes_values = None
+    target_weights = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    aggregate_function = None
+    n_targets = None
+    nodes_falsenodeids = None
+    nodes_featureids = None
+    nodes_missing_value_tracks_true = None
+    nodes_nodeids = None
+    nodes_treeids = None
+    nodes_truenodeids = None
+    post_transform = None
+    target_ids = None
+    target_nodeids = None
+    target_treeids = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['treeensembleregressor'] = TreeEnsembleRegressor
 
 
 
 
-from _backend.nn import ReduceProd as c_ReduceProd
+#from _backend.nn import ReduceProd as c_ReduceProd
 class ReduceProd:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reduceprod'] = ReduceProd
 
 
 
 
-from _backend.nn import ReduceSum as c_ReduceSum
+#from _backend.nn import ReduceSum as c_ReduceSum
 class ReduceSum:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducesum'] = ReduceSum
 
 
 
 
-from _backend.nn import ReduceSumSquare as c_ReduceSumSquare
+#from _backend.nn import ReduceSumSquare as c_ReduceSumSquare
 class ReduceSumSquare:
-    def __init__(self):
+    name = None
+    data_input = None
+    reduced_output = None
+
+    #parameters
+    axes = None
+    keepdims = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reduced_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reducesumsquare'] = ReduceSumSquare
 
 
 
 
-from _backend.nn import Relu as c_Relu
+#from _backend.nn import Relu as c_Relu
 class Relu:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['relu'] = Relu
 
 
 
 
-from _backend.nn import Reshape as c_Reshape
+#from _backend.nn import Reshape as c_Reshape
 class Reshape:
-    def __init__(self):
+    name = None
+    data_input = None
+    shape_input = None
+    reshaped_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input", "shape_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["reshaped_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['reshape'] = Reshape
 
 
 
 
-from _backend.nn import Shape as c_Shape
+#from _backend.nn import Shape as c_Shape
 class Shape:
-    def __init__(self):
+    name = None
+    data_input = None
+    shape_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["shape_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['shape'] = Shape
 
 
 
 
-from _backend.nn import Sigmoid as c_Sigmoid
+#from _backend.nn import Sigmoid as c_Sigmoid
 class Sigmoid:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['sigmoid'] = Sigmoid
 
 
 
 
-from _backend.nn import Size as c_Size
+#from _backend.nn import Size as c_Size
 class Size:
-    def __init__(self):
+    name = None
+    data_input = None
+    size_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["size_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['size'] = Size
 
 
 
 
-from _backend.nn import Softmax as c_Softmax
+#from _backend.nn import Softmax as c_Softmax
 class Softmax:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['softmax'] = Softmax
 
 
 
 
-from _backend.nn import Softplus as c_Softplus
+#from _backend.nn import Softplus as c_Softplus
 class Softplus:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['softplus'] = Softplus
 
 
 
 
-from _backend.nn import Softsign as c_Softsign
+#from _backend.nn import Softsign as c_Softsign
 class Softsign:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['softsign'] = Softsign
 
 
 
 
-from _backend.nn import SpaceToDepth as c_SpaceToDepth
+#from _backend.nn import SpaceToDepth as c_SpaceToDepth
 class SpaceToDepth:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    blocksize = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['spacetodepth'] = SpaceToDepth
 
 
 
 
-from _backend.nn import TfIdfVectorizer as c_TfIdfVectorizer
+#from _backend.nn import TfIdfVectorizer as c_TfIdfVectorizer
 class TfIdfVectorizer:
-    def __init__(self):
+    name = None
+    pool_strings = None
+    weights = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    max_gram_length = None
+    max_skip_count = None
+    min_gram_length = None
+    mode = None
+    ngram_counts = None
+    ngram_indexes = None
+    pool_int64s = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['tfidfvectorizer'] = TfIdfVectorizer
 
 
 
 
-from _backend.nn import Split as c_Split
+#from _backend.nn import Split as c_Split
 class Split:
-    def __init__(self):
+    name = None
+    input_input = None
+
+    #parameters
+    axis = None
+    split = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = []
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['split'] = Split
 
 
 
 
-from _backend.nn import Imputer as c_Imputer
+#from _backend.nn import Imputer as c_Imputer
 class Imputer:
-    def __init__(self):
+    name = None
+    imputed_value_floats = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    imputed_value_int64s = None
+    replaced_value_float = None
+    replaced_value_int64 = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['imputer'] = Imputer
 
 
 
 
-from _backend.nn import Sqrt as c_Sqrt
+#from _backend.nn import Sqrt as c_Sqrt
 class Sqrt:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['sqrt'] = Sqrt
 
 
 
 
-from _backend.nn import Squeeze as c_Squeeze
+#from _backend.nn import Squeeze as c_Squeeze
 class Squeeze:
-    def __init__(self):
+    name = None
+    data_input = None
+    squeezed_output = None
+
+    #parameters
+    axes = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["squeezed_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['squeeze'] = Squeeze
 
 
 
 
-from _backend.nn import TopK as c_TopK
+#from _backend.nn import TopK as c_TopK
 class TopK:
-    def __init__(self):
+    name = None
+    X_input = None
+    K_input = None
+    Values_output = None
+    Indices_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "K_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Values_output", "Indices_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['topk'] = TopK
 
 
 
 
-from _backend.nn import Sub as c_Sub
+#from _backend.nn import Sub as c_Sub
 class Sub:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['sub'] = Sub
 
 
 
 
-from _backend.nn import Sum as c_Sum
+#from _backend.nn import Sum as c_Sum
 class Sum:
-    def __init__(self):
+    name = None
+    sum_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["sum_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['sum'] = Sum
 
 
 
 
-from _backend.nn import Shrink as c_Shrink
+#from _backend.nn import Shrink as c_Shrink
 class Shrink:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    bias = None
+    lambd = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['shrink'] = Shrink
 
 
 
 
-from _backend.nn import Tanh as c_Tanh
+#from _backend.nn import Tanh as c_Tanh
 class Tanh:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['tanh'] = Tanh
 
 
 
 
-from _backend.nn import Transpose as c_Transpose
+#from _backend.nn import Transpose as c_Transpose
 class Transpose:
-    def __init__(self):
+    name = None
+    data_input = None
+    transposed_output = None
+
+    #parameters
+    perm = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["transposed_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['transpose'] = Transpose
 
 
 
 
-from _backend.nn import Unsqueeze as c_Unsqueeze
+#from _backend.nn import Unsqueeze as c_Unsqueeze
 class Unsqueeze:
-    def __init__(self):
+    name = None
+    data_input = None
+    expanded_output = None
+
+    #parameters
+    axes = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["expanded_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['unsqueeze'] = Unsqueeze
 
 
 
 
-from _backend.nn import Upsample as c_Upsample
+#from _backend.nn import Upsample as c_Upsample
 class Upsample:
-    def __init__(self):
+    name = None
+    X_input = None
+    scales_input = None
+    Y_output = None
+
+    #parameters
+    mode = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "scales_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['upsample'] = Upsample
 
 
 
 
-from _backend.nn import SVMClassifier as c_SVMClassifier
+#from _backend.nn import SVMClassifier as c_SVMClassifier
 class SVMClassifier:
-    def __init__(self):
+    name = None
+    classlabels_strings = None
+    coefficients = None
+    kernel_params = None
+    prob_a = None
+    prob_b = None
+    rho = None
+    support_vectors = None
+    X_input = None
+    Y_output = None
+    Z_output = None
+
+    #parameters
+    classlabels_ints = None
+    kernel_type = None
+    post_transform = None
+    vectors_per_class = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output", "Z_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['svmclassifier'] = SVMClassifier
 
 
 
 
-from _backend.nn import Xor as c_Xor
+#from _backend.nn import Xor as c_Xor
 class Xor:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['xor'] = Xor
 
 
 
 
-from _backend.nn import Acos as c_Acos
+#from _backend.nn import Acos as c_Acos
 class Acos:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['acos'] = Acos
 
 
 
 
-from _backend.nn import Asin as c_Asin
+#from _backend.nn import Asin as c_Asin
 class Asin:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['asin'] = Asin
 
 
 
 
-from _backend.nn import Atan as c_Atan
+#from _backend.nn import Atan as c_Atan
 class Atan:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['atan'] = Atan
 
 
 
 
-from _backend.nn import Cos as c_Cos
+#from _backend.nn import Cos as c_Cos
 class Cos:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['cos'] = Cos
 
 
 
 
-from _backend.nn import Sin as c_Sin
+#from _backend.nn import Sin as c_Sin
 class Sin:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['sin'] = Sin
 
 
 
 
-from _backend.nn import Tan as c_Tan
+#from _backend.nn import Tan as c_Tan
 class Tan:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['tan'] = Tan
 
 
 
 
-from _backend.nn import Multinomial as c_Multinomial
+#from _backend.nn import Multinomial as c_Multinomial
 class Multinomial:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+    dtype = None
+    sample_size = None
+    seed = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['multinomial'] = Multinomial
 
 
 
 
-from _backend.nn import Scan as c_Scan
+#from _backend.nn import Scan as c_Scan
 class Scan:
-    def __init__(self):
+    name = None
+
+    #parameters
+    body = None
+    num_scan_inputs = None
+    scan_input_axes = None
+    scan_input_directions = None
+    scan_output_axes = None
+    scan_output_directions = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = []
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['scan'] = Scan
 
 
 
 
-from _backend.nn import Compress as c_Compress
+#from _backend.nn import Compress as c_Compress
 class Compress:
-    def __init__(self):
+    name = None
+    input_input = None
+    condition_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input", "condition_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['compress'] = Compress
 
 
 
 
-from _backend.nn import ConstantOfShape as c_ConstantOfShape
+#from _backend.nn import ConstantOfShape as c_ConstantOfShape
 class ConstantOfShape:
-    def __init__(self):
+    name = None
+    value = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['constantofshape'] = ConstantOfShape
 
 
 
 
-from _backend.nn import MaxUnpool as c_MaxUnpool
+#from _backend.nn import MaxUnpool as c_MaxUnpool
 class MaxUnpool:
-    def __init__(self):
+    name = None
+    X_input = None
+    I_input = None
+    output_shape_input_opt = None
+    output_output = None
+
+    #parameters
+    kernel_shape = None
+    pads = None
+    strides = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "I_input", "output_shape_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['maxunpool'] = MaxUnpool
 
 
 
 
-from _backend.nn import Scatter as c_Scatter
+#from _backend.nn import Scatter as c_Scatter
 class Scatter:
-    def __init__(self):
+    name = None
+    data_input = None
+    indices_input = None
+    updates_input = None
+    output_output = None
+
+    #parameters
+    axis = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["data_input", "indices_input", "updates_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['scatter'] = Scatter
 
 
 
 
-from _backend.nn import Sinh as c_Sinh
+#from _backend.nn import Sinh as c_Sinh
 class Sinh:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['sinh'] = Sinh
 
 
 
 
-from _backend.nn import Cosh as c_Cosh
+#from _backend.nn import Cosh as c_Cosh
 class Cosh:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['cosh'] = Cosh
 
 
 
 
-from _backend.nn import Asinh as c_Asinh
+#from _backend.nn import Asinh as c_Asinh
 class Asinh:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['asinh'] = Asinh
 
 
 
 
-from _backend.nn import Acosh as c_Acosh
+#from _backend.nn import Acosh as c_Acosh
 class Acosh:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['acosh'] = Acosh
 
 
 
 
-from _backend.nn import NonMaxSuppression as c_NonMaxSuppression
+#from _backend.nn import NonMaxSuppression as c_NonMaxSuppression
 class NonMaxSuppression:
-    def __init__(self):
+    name = None
+    boxes_input = None
+    scores_input = None
+    max_output_boxes_per_class_input_opt = None
+    iou_threshold_input_opt = None
+    score_threshold_input_opt = None
+    selected_indices_output = None
+
+    #parameters
+    center_point_box = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["boxes_input", "scores_input", "max_output_boxes_per_class_input_opt", "iou_threshold_input_opt", "score_threshold_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["selected_indices_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['nonmaxsuppression'] = NonMaxSuppression
 
 
 
 
-from _backend.nn import Atanh as c_Atanh
+#from _backend.nn import Atanh as c_Atanh
 class Atanh:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['atanh'] = Atanh
 
 
 
 
-from _backend.nn import Sign as c_Sign
+#from _backend.nn import Sign as c_Sign
 class Sign:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['sign'] = Sign
 
 
 
 
-from _backend.nn import Erf as c_Erf
+#from _backend.nn import Erf as c_Erf
 class Erf:
-    def __init__(self):
+    name = None
+    input_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["input_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['erf'] = Erf
 
 
 
 
-from _backend.nn import Where as c_Where
+#from _backend.nn import Where as c_Where
 class Where:
-    def __init__(self):
+    name = None
+    condition_input = None
+    X_input = None
+    Y_input = None
+    output_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["condition_input", "X_input", "Y_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["output_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['where'] = Where
 
 
 
 
-from _backend.nn import NonZero as c_NonZero
+#from _backend.nn import NonZero as c_NonZero
 class NonZero:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['nonzero'] = NonZero
 
 
 
 
-from _backend.nn import MeanVarianceNormalization as c_MeanVarianceNormalization
+#from _backend.nn import MeanVarianceNormalization as c_MeanVarianceNormalization
 class MeanVarianceNormalization:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    axes = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['meanvariancenormalization'] = MeanVarianceNormalization
 
 
 
 
-from _backend.nn import StringNormalizer as c_StringNormalizer
+#from _backend.nn import StringNormalizer as c_StringNormalizer
 class StringNormalizer:
-    def __init__(self):
+    name = None
+    stopwords = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    case_change_action = None
+    is_case_sensitive = None
+    locale = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['stringnormalizer'] = StringNormalizer
 
 
 
 
-from _backend.nn import Mod as c_Mod
+#from _backend.nn import Mod as c_Mod
 class Mod:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    C_output = None
+
+    #parameters
+    fmod = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["C_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['mod'] = Mod
 
 
 
 
-from _backend.nn import ThresholdedRelu as c_ThresholdedRelu
+#from _backend.nn import ThresholdedRelu as c_ThresholdedRelu
 class ThresholdedRelu:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    alpha = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['thresholdedrelu'] = ThresholdedRelu
 
 
 
 
-from _backend.nn import MatMulInteger as c_MatMulInteger
+#from _backend.nn import MatMulInteger as c_MatMulInteger
 class MatMulInteger:
-    def __init__(self):
+    name = None
+    A_input = None
+    B_input = None
+    a_zero_point_input_opt = None
+    b_zero_point_input_opt = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["A_input", "B_input", "a_zero_point_input_opt", "b_zero_point_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['matmulinteger'] = MatMulInteger
 
 
 
 
-from _backend.nn import QLinearMatMul as c_QLinearMatMul
+#from _backend.nn import QLinearMatMul as c_QLinearMatMul
 class QLinearMatMul:
-    def __init__(self):
+    name = None
+    a_input = None
+    a_scale_input = None
+    a_zero_point_input = None
+    b_input = None
+    b_scale_input = None
+    b_zero_point_input = None
+    y_scale_input = None
+    y_zero_point_input = None
+    y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["a_input", "a_scale_input", "a_zero_point_input", "b_input", "b_scale_input", "b_zero_point_input", "y_scale_input", "y_zero_point_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['qlinearmatmul'] = QLinearMatMul
 
 
 
 
-from _backend.nn import ConvInteger as c_ConvInteger
+#from _backend.nn import ConvInteger as c_ConvInteger
 class ConvInteger:
-    def __init__(self):
+    name = None
+    x_input = None
+    w_input = None
+    x_zero_point_input_opt = None
+    w_zero_point_input_opt = None
+    y_output = None
+
+    #parameters
+    auto_pad = None
+    dilations = None
+    group = None
+    kernel_shape = None
+    pads = None
+    strides = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["x_input", "w_input", "x_zero_point_input_opt", "w_zero_point_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['convinteger'] = ConvInteger
 
 
 
 
-from _backend.nn import QLinearConv as c_QLinearConv
+#from _backend.nn import QLinearConv as c_QLinearConv
 class QLinearConv:
-    def __init__(self):
+    name = None
+    x_input = None
+    x_scale_input = None
+    x_zero_point_input = None
+    w_input = None
+    w_scale_input = None
+    w_zero_point_input = None
+    y_scale_input = None
+    y_zero_point_input = None
+    B_input_opt = None
+    y_output = None
+
+    #parameters
+    auto_pad = None
+    dilations = None
+    group = None
+    kernel_shape = None
+    pads = None
+    strides = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["x_input", "x_scale_input", "x_zero_point_input", "w_input", "w_scale_input", "w_zero_point_input", "y_scale_input", "y_zero_point_input", "B_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['qlinearconv'] = QLinearConv
 
 
 
 
-from _backend.nn import QuantizeLinear as c_QuantizeLinear
+#from _backend.nn import QuantizeLinear as c_QuantizeLinear
 class QuantizeLinear:
-    def __init__(self):
+    name = None
+    x_input = None
+    y_scale_input = None
+    y_zero_point_input_opt = None
+    y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["x_input", "y_scale_input", "y_zero_point_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['quantizelinear'] = QuantizeLinear
 
 
 
 
-from _backend.nn import DequantizeLinear as c_DequantizeLinear
+#from _backend.nn import DequantizeLinear as c_DequantizeLinear
 class DequantizeLinear:
-    def __init__(self):
+    name = None
+    x_input = None
+    x_scale_input = None
+    x_zero_point_input_opt = None
+    y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["x_input", "x_scale_input", "x_zero_point_input_opt"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['dequantizelinear'] = DequantizeLinear
 
 
 
 
-from _backend.nn import IsInf as c_IsInf
+#from _backend.nn import IsInf as c_IsInf
 class IsInf:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    detect_negative = None
+    detect_positive = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['isinf'] = IsInf
 
 
 
 
-from _backend.nn import RoiAlign as c_RoiAlign
+#from _backend.nn import RoiAlign as c_RoiAlign
 class RoiAlign:
-    def __init__(self):
+    name = None
+    X_input = None
+    rois_input = None
+    batch_indices_input = None
+    Y_output = None
+
+    #parameters
+    mode = None
+    output_height = None
+    output_width = None
+    sampling_ratio = None
+    spatial_scale = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "rois_input", "batch_indices_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['roialign'] = RoiAlign
 
 
 
 
-from _backend.nn import ArrayFeatureExtractor as c_ArrayFeatureExtractor
+#from _backend.nn import ArrayFeatureExtractor as c_ArrayFeatureExtractor
 class ArrayFeatureExtractor:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_input = None
+    Z_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input", "Y_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Z_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['arrayfeatureextractor'] = ArrayFeatureExtractor
 
 
 
 
-from _backend.nn import Binarizer as c_Binarizer
+#from _backend.nn import Binarizer as c_Binarizer
 class Binarizer:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    threshold = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['binarizer'] = Binarizer
 
 
 
 
-from _backend.nn import CategoryMapper as c_CategoryMapper
+#from _backend.nn import CategoryMapper as c_CategoryMapper
 class CategoryMapper:
-    def __init__(self):
+    name = None
+    cats_strings = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    cats_int64s = None
+    default_int64 = None
+    default_string = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['categorymapper'] = CategoryMapper
 
 
 
 
-from _backend.nn import DictVectorizer as c_DictVectorizer
+#from _backend.nn import DictVectorizer as c_DictVectorizer
 class DictVectorizer:
-    def __init__(self):
+    name = None
+    string_vocabulary = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    int64_vocabulary = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['dictvectorizer'] = DictVectorizer
 
 
 
 
-from _backend.nn import FeatureVectorizer as c_FeatureVectorizer
+#from _backend.nn import FeatureVectorizer as c_FeatureVectorizer
 class FeatureVectorizer:
-    def __init__(self):
+    name = None
+    Y_output = None
+
+    #parameters
+    inputdimensions = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = []
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['featurevectorizer'] = FeatureVectorizer
 
 
 
 
-from _backend.nn import LabelEncoder as c_LabelEncoder
+#from _backend.nn import LabelEncoder as c_LabelEncoder
 class LabelEncoder:
-    def __init__(self):
+    name = None
+    keys_floats = None
+    keys_strings = None
+    values_floats = None
+    values_strings = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    default_float = None
+    default_int64 = None
+    default_string = None
+    keys_int64s = None
+    values_int64s = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['labelencoder'] = LabelEncoder
 
 
 
 
-from _backend.nn import LinearClassifier as c_LinearClassifier
+#from _backend.nn import LinearClassifier as c_LinearClassifier
 class LinearClassifier:
-    def __init__(self):
+    name = None
+    coefficients = None
+    classlabels_strings = None
+    intercepts = None
+    X_input = None
+    Y_output = None
+    Z_output = None
+
+    #parameters
+    classlabels_ints = None
+    multi_class = None
+    post_transform = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output", "Z_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['linearclassifier'] = LinearClassifier
 
 
 
 
-from _backend.nn import LinearRegressor as c_LinearRegressor
+#from _backend.nn import LinearRegressor as c_LinearRegressor
 class LinearRegressor:
-    def __init__(self):
+    name = None
+    coefficients = None
+    intercepts = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    post_transform = None
+    targets = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['linearregressor'] = LinearRegressor
 
 
 
 
-from _backend.nn import Normalizer as c_Normalizer
+#from _backend.nn import Normalizer as c_Normalizer
 class Normalizer:
-    def __init__(self):
+    name = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    norm = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['normalizer'] = Normalizer
 
 
 
 
-from _backend.nn import SVMRegressor as c_SVMRegressor
+#from _backend.nn import SVMRegressor as c_SVMRegressor
 class SVMRegressor:
-    def __init__(self):
+    name = None
+    coefficients = None
+    kernel_params = None
+    rho = None
+    support_vectors = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+    kernel_type = None
+    n_supports = None
+    one_class = None
+    post_transform = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['svmregressor'] = SVMRegressor
 
 
 
 
-from _backend.nn import Scaler as c_Scaler
+#from _backend.nn import Scaler as c_Scaler
 class Scaler:
-    def __init__(self):
+    name = None
+    offset = None
+    scale = None
+    X_input = None
+    Y_output = None
+
+    #parameters
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['scaler'] = Scaler
 
 
 
 
-from _backend.nn import TreeEnsembleClassifier as c_TreeEnsembleClassifier
+#from _backend.nn import TreeEnsembleClassifier as c_TreeEnsembleClassifier
 class TreeEnsembleClassifier:
-    def __init__(self):
+    name = None
+    base_values = None
+    class_weights = None
+    classlabels_strings = None
+    nodes_hitrates = None
+    nodes_modes = None
+    nodes_values = None
+    X_input = None
+    Y_output = None
+    Z_output = None
+
+    #parameters
+    class_ids = None
+    class_nodeids = None
+    class_treeids = None
+    classlabels_int64s = None
+    nodes_falsenodeids = None
+    nodes_featureids = None
+    nodes_missing_value_tracks_true = None
+    nodes_nodeids = None
+    nodes_treeids = None
+    nodes_truenodeids = None
+    post_transform = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Y_output", "Z_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['treeensembleclassifier'] = TreeEnsembleClassifier
 
 
 
 
-from _backend.nn import ZipMap as c_ZipMap
+#from _backend.nn import ZipMap as c_ZipMap
 class ZipMap:
-    def __init__(self):
+    name = None
+    classlabels_strings = None
+    X_input = None
+    Z_output = None
+
+    #parameters
+    classlabels_int64s = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def input(self, *args):
+        inpts = ["X_input"]
+        for i, x in enumerate(args):
+            self.__dict__[inpts[i]] = x
+
+    def output(self, *args):
+        outputs = ["Z_output"]
+        for i, x in enumerate(args):
+            self.__dict__[outputs[i]] = x
+
+
+    def call(self):
         pass
-    def __call__(self):
-        pass
+
+layer_map['zipmap'] = ZipMap
 

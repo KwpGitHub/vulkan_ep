@@ -47,12 +47,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Unsqueeze(std::string n, Shape_t axes);
+        Unsqueeze(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string data_input, std::string expanded_output); 
+        void init( Shape_t _axes); 
+        void bind(std::string _data_input, std::string _expanded_output); 
 
         ~Unsqueeze() {}
 

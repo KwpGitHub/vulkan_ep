@@ -157,12 +157,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Loop(std::string n, int body);
+        Loop(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string M_input_opt, std::string cond_input_opt); 
+        void init( int _body); 
+        void bind(std::string _M_input_opt, std::string _cond_input_opt); 
 
         ~Loop() {}
 

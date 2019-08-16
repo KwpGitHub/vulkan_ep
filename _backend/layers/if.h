@@ -41,12 +41,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        If(std::string n, int else_branch, int then_branch);
+        If(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string cond_input); 
+        void init( int _else_branch,  int _then_branch); 
+        void bind(std::string _cond_input); 
 
         ~If() {}
 

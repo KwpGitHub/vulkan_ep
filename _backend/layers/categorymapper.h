@@ -50,12 +50,12 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        CategoryMapper(std::string n, Shape_t cats_int64s, int default_int64, int default_string);
+        CategoryMapper(std::string n);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void call(std::string cats_strings, std::string X_input, std::string Y_output); 
+        void init( Shape_t _cats_int64s,  int _default_int64,  int _default_string); 
+        void bind(std::string _cats_strings, std::string _X_input, std::string _Y_output); 
 
         ~CategoryMapper() {}
 

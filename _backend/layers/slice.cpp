@@ -13,7 +13,11 @@ namespace backend {
     }
     
     void Slice::init() {      
+  
+    }
     
+    void Slice::bind(std::string _data_input, std::string _starts_input, std::string _ends_input, std::string _axes_input_opt, std::string _steps_input_opt, std::string _output_output){
+        data_input = _data_input; starts_input = _starts_input; ends_input = _ends_input; axes_input_opt = _axes_input_opt; steps_input_opt = _steps_input_opt; output_output = _output_output;
 		binding.data_input = tensor_dict[data_input]->shape();
   		binding.starts_input = tensor_dict[starts_input]->shape();
   		binding.ends_input = tensor_dict[ends_input]->shape();
@@ -23,18 +27,16 @@ namespace backend {
 		binding.output_output = tensor_dict[output_output]->shape();
  
 
-    }
-    
-    void Slice::call(std::string data_input, std::string starts_input, std::string ends_input, std::string axes_input_opt, std::string steps_input_opt, std::string output_output){       
+
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/slice.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[starts_input]->data(), *tensor_dict[ends_input]->data(), *tensor_dict[axes_input_opt]->data(), *tensor_dict[steps_input_opt]->data(), *tensor_dict[output_output]->data());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[starts_input]->data(), *tensor_dict[ends_input]->data(), *tensor_dict[axes_input_opt]->data(), *tensor_dict[steps_input_opt]->data(), *tensor_dict[output_output]->data());
     }
     
 }
 
-    py::module m("_backend.nn", "nn MOD");
+    //backend::nn;
 
 //python stuff
 

@@ -33,20 +33,22 @@ def graph_def_info(onnx_file):
     print("\n\n")
     for node in graph['node']:
         nodes[node['name']] = node
-
         name = node['name']
-        op_type = node['opType']
+        op_type = node['opType'].lower()
         input = node['input']
         output = node['output']
-        attribute = {}
+        layer = layer_map[op_type](name)
+        layer.input(*input)
+        layer.output(*output)
         if('attribute' in node.keys()):
             for attr_ in node['attribute']:
                 _x = [x for n,x in attr_.items() if(n != 'name' and n != 'type')]
                 if(type(_x[0]) == list and len(_x) == 1):
-                    attribute[attr_['name']] =  _x[0]
+                    layer.__dict__[attr_['name']] = _x[0]
                 else:
-                    attribute[attr_['name']] = _x
-        backend.create_layer(name, op_type, input, output, attribute)
+                    layer.__dict__[attr_['name']] = _x
+        print(name)
+                
     unint_nodes = {}
     for node in graph['input'] + graph['output']:
         if(node['name'] not in init_nodes):
