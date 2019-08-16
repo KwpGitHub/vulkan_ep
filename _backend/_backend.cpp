@@ -2,16 +2,23 @@
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 
+namespace py = pybind11;
+
 #include <vector>
 #include <numeric>
 #include <string>
 
+
 #include "kernel/vuh.h"
 #include "tensor.h"
 #include "layer.h"
+#include "layers.h"
 //#include "layers_map.h"
 
-namespace py = pybind11;
+namespace backend {
+	std::map<std::string, Layer*> layer_dict;
+	//py::module nn;
+}
 
 void test() {
 	auto y = std::vector<float>(128, 1.0f);
@@ -87,7 +94,6 @@ void create_tensor_from_numpy(py::str name, py::array_t<float> input){
 
 }
 
-
 void create_tensor(py::str name, py::list data, py::list shape) {
 	std::vector<float> d;
 	std::vector<uint32_t> s;
@@ -154,12 +160,18 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 
 }
 
-
-
 PYBIND11_MODULE(_backend, m) {
+	m.doc() = "C nn Executor";
 	m.def("create_instance", &create_instance);
 	m.def("create_tensor", &create_tensor);
 	m.def("create_tensor_from_numpy", &create_tensor_from_numpy);
 	m.def("create_layer", &create_layer);
 	m.def("test", &test);
+
+	backend::nn = m.def_submodule("nn", "Neural Network C Execution");
+
+}
+
+PYBIND11_MODULE(acos, m) {
+
 }

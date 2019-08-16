@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef EXPAND_H
 #define EXPAND_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
 Broadcast the input tensor following the given shape and the broadcast rule.
@@ -26,8 +25,6 @@ output: Output tensor
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -67,55 +64,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    Expand::Expand(std::string n) : Layer(n) { }
-       
-    vuh::Device* Expand::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void Expand::init() {      
-    
-		binding.input_input = tensor_dict[input_input]->shape();
-  		binding.shape_input = tensor_dict[shape_input]->shape();
- 
-		binding.output_output = tensor_dict[output_output]->shape();
- 
-
-    }
-    
-    void Expand::call(std::string input_input, std::string shape_input, std::string output_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/expand.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[shape_input]->data(), *tensor_dict[output_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<Expand, Layer>(m, "Expand")
-            .def(py::init<std::string> ())
-            .def("forward", &Expand::forward)
-            .def("init", &Expand::init)
-            .def("call", (void (Expand::*) (std::string, std::string, std::string)) &Expand::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

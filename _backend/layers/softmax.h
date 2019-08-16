@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef SOFTMAX_H
 #define SOFTMAX_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
 The operator computes the softmax (normalized exponential) values for each layer in the batch
@@ -32,8 +31,6 @@ output: The output values with the same shape as input tensor (the original size
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -73,55 +70,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    Softmax::Softmax(std::string n, int axis) : Layer(n) { }
-       
-    vuh::Device* Softmax::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void Softmax::init() {      
-    
-		binding.input_input = tensor_dict[input_input]->shape();
- 
-		binding.output_output = tensor_dict[output_output]->shape();
- 
-		binding.axis = axis;
- 
-    }
-    
-    void Softmax::call(std::string input_input, std::string output_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/softmax.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<Softmax, Layer>(m, "Softmax")
-            .def(py::init<std::string, int> ())
-            .def("forward", &Softmax::forward)
-            .def("init", &Softmax::init)
-            .def("call", (void (Softmax::*) (std::string, std::string)) &Softmax::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

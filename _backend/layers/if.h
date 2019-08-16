@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef IF_H
 #define IF_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 If conditional
 input: Condition for the if
@@ -16,8 +15,6 @@ output: Values that are live-out to the enclosing scope. The return values in th
 //PARAMETER_TYPES:          int, int
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -57,55 +54,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    If::If(std::string n, int else_branch, int then_branch) : Layer(n) { }
-       
-    vuh::Device* If::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void If::init() {      
-    
-		binding.cond_input = tensor_dict[cond_input]->shape();
- 
-
-		binding.else_branch = else_branch;
-  		binding.then_branch = then_branch;
- 
-    }
-    
-    void If::call(std::string cond_input){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/if.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[cond_input]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<If, Layer>(m, "If")
-            .def(py::init<std::string, int, int> ())
-            .def("forward", &If::forward)
-            .def("init", &If::init)
-            .def("call", (void (If::*) (std::string)) &If::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

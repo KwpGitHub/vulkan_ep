@@ -17,7 +17,8 @@ namespace backend {
 		uint32_t h;
 		uint32_t w;
 	};
-	   
+
+	/*
 	void convert_vec_param(std::vector<std::string> s, Shape_t out) {
 		backend::Shape_t _shape = { 1,1,1,1,1 };
 		switch (s.size()) {
@@ -41,7 +42,7 @@ namespace backend {
 	void convert_vec_param(std::vector<std::string> s, float out) {
 		out = std::stof(s[0]);
 	}
-	
+	*/
 	static vuh::Instance* instance;
 	static vuh::Device* device;
 	static std::string file_path;

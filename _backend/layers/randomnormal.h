@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef RANDOMNORMAL_H
 #define RANDOMNORMAL_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
 Generate a tensor with random values drawn from a normal distribution. The shape
@@ -24,8 +23,6 @@ output: Output tensor of random values drawn from normal distribution
 //PARAMETER_TYPES:          Shape_t
 //OPTIONAL_PARAMETERS:      dtype, mean, scale, seed
 //OPTIONAL_PARAMETERS_TYPE: int, float, float, float
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -65,58 +62,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    RandomNormal::RandomNormal(std::string n, Shape_t shape, int dtype, float mean, float scale, float seed) : Layer(n) { }
-       
-    vuh::Device* RandomNormal::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void RandomNormal::init() {      
-    
-
-		binding.output_output = tensor_dict[output_output]->shape();
- 
-		binding.shape = shape;
-  		binding.dtype = dtype;
-  		binding.mean = mean;
-  		binding.scale = scale;
-  		binding.seed = seed;
- 
-    }
-    
-    void RandomNormal::call(std::string output_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomnormal.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[output_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<RandomNormal, Layer>(m, "RandomNormal")
-            .def(py::init<std::string, Shape_t, int, float, float, float> ())
-            .def("forward", &RandomNormal::forward)
-            .def("init", &RandomNormal::init)
-            .def("call", (void (RandomNormal::*) (std::string)) &RandomNormal::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef LESS_H
 #define LESS_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
 Returns the tensor resulted from performing the `less` logical operation
@@ -22,8 +21,6 @@ output: Result tensor.
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -63,55 +60,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    Less::Less(std::string n) : Layer(n) { }
-       
-    vuh::Device* Less::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void Less::init() {      
-    
-		binding.A_input = tensor_dict[A_input]->shape();
-  		binding.B_input = tensor_dict[B_input]->shape();
- 
-		binding.C_output = tensor_dict[C_output]->shape();
- 
-
-    }
-    
-    void Less::call(std::string A_input, std::string B_input, std::string C_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/less.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<Less, Layer>(m, "Less")
-            .def(py::init<std::string> ())
-            .def("forward", &Less::forward)
-            .def("init", &Less::init)
-            .def("call", (void (Less::*) (std::string, std::string, std::string)) &Less::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

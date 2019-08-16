@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef RNN_H
 #define RNN_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
 Computes an one-layer simple RNN. This operator is usually supported
@@ -85,8 +84,6 @@ output: The last output value of the hidden. It has shape `[num_directions, batc
 //OPTIONAL_PARAMETERS:      activation_alpha, activation_beta, activations, clip, direction, hidden_size
 //OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, Tensor*, float, int, int
 
-namespace py = pybind11;
-
 //class stuff
 namespace backend {   
 
@@ -125,66 +122,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    RNN::RNN(std::string n, float clip, int direction, int hidden_size) : Layer(n) { }
-       
-    vuh::Device* RNN::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void RNN::init() {      
-    
-		binding.X_input = tensor_dict[X_input]->shape();
-  		binding.W_input = tensor_dict[W_input]->shape();
-  		binding.R_input = tensor_dict[R_input]->shape();
-  		binding.B_input_opt = tensor_dict[B_input_opt]->shape();
-  		binding.sequence_lens_input_opt = tensor_dict[sequence_lens_input_opt]->shape();
-  		binding.initial_h_input_opt = tensor_dict[initial_h_input_opt]->shape();
- 
-		binding.Y_output_opt = tensor_dict[Y_output_opt]->shape();
-  		binding.Y_h_output_opt = tensor_dict[Y_h_output_opt]->shape();
- 
-		binding.clip = clip;
-  		binding.direction = direction;
-  		binding.hidden_size = hidden_size;
-  		binding.activation_alpha = tensor_dict[activation_alpha]->shape();
-  		binding.activation_beta = tensor_dict[activation_beta]->shape();
-  		binding.activations = tensor_dict[activations]->shape();
- 
-    }
-    
-    void RNN::call(std::string activation_alpha, std::string activation_beta, std::string activations, std::string X_input, std::string W_input, std::string R_input, std::string B_input_opt, std::string sequence_lens_input_opt, std::string initial_h_input_opt, std::string Y_output_opt, std::string Y_h_output_opt){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/rnn.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[activation_alpha]->data(), *tensor_dict[activation_beta]->data(), *tensor_dict[activations]->data(), *tensor_dict[X_input]->data(), *tensor_dict[W_input]->data(), *tensor_dict[R_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[sequence_lens_input_opt]->data(), *tensor_dict[initial_h_input_opt]->data(), *tensor_dict[Y_output_opt]->data(), *tensor_dict[Y_h_output_opt]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<RNN, Layer>(m, "RNN")
-            .def(py::init<std::string, float, int, int> ())
-            .def("forward", &RNN::forward)
-            .def("init", &RNN::init)
-            .def("call", (void (RNN::*) (std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string)) &RNN::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

@@ -1,5 +1,5 @@
 
-from _backend import LSTM as c_LSTM
+from _backend.nn import LSTM as c_LSTM
 class LSTM:
     def __init__(self):
         pass
@@ -9,7 +9,7 @@ class LSTM:
 
 
 
-from _backend import Identity as c_Identity
+from _backend.nn import Identity as c_Identity
 class Identity:
     def __init__(self):
         pass
@@ -19,7 +19,7 @@ class Identity:
 
 
 
-from _backend import Abs as c_Abs
+from _backend.nn import Abs as c_Abs
 class Abs:
     def __init__(self):
         pass
@@ -29,7 +29,7 @@ class Abs:
 
 
 
-from _backend import BatchNormalization as c_BatchNormalization
+from _backend.nn import BatchNormalization as c_BatchNormalization
 class BatchNormalization:
     def __init__(self):
         pass
@@ -39,7 +39,7 @@ class BatchNormalization:
 
 
 
-from _backend import Mean as c_Mean
+from _backend.nn import Mean as c_Mean
 class Mean:
     def __init__(self):
         pass
@@ -49,7 +49,7 @@ class Mean:
 
 
 
-from _backend import Add as c_Add
+from _backend.nn import Add as c_Add
 class Add:
     def __init__(self):
         pass
@@ -59,7 +59,7 @@ class Add:
 
 
 
-from _backend import GlobalMaxPool as c_GlobalMaxPool
+from _backend.nn import GlobalMaxPool as c_GlobalMaxPool
 class GlobalMaxPool:
     def __init__(self):
         pass
@@ -69,7 +69,7 @@ class GlobalMaxPool:
 
 
 
-from _backend import Cast as c_Cast
+from _backend.nn import Cast as c_Cast
 class Cast:
     def __init__(self):
         pass
@@ -79,7 +79,7 @@ class Cast:
 
 
 
-from _backend import AveragePool as c_AveragePool
+from _backend.nn import AveragePool as c_AveragePool
 class AveragePool:
     def __init__(self):
         pass
@@ -89,7 +89,7 @@ class AveragePool:
 
 
 
-from _backend import And as c_And
+from _backend.nn import And as c_And
 class And:
     def __init__(self):
         pass
@@ -99,7 +99,7 @@ class And:
 
 
 
-from _backend import LRN as c_LRN
+from _backend.nn import LRN as c_LRN
 class LRN:
     def __init__(self):
         pass
@@ -109,7 +109,7 @@ class LRN:
 
 
 
-from _backend import ArgMax as c_ArgMax
+from _backend.nn import ArgMax as c_ArgMax
 class ArgMax:
     def __init__(self):
         pass
@@ -119,7 +119,7 @@ class ArgMax:
 
 
 
-from _backend import Resize as c_Resize
+from _backend.nn import Resize as c_Resize
 class Resize:
     def __init__(self):
         pass
@@ -129,7 +129,7 @@ class Resize:
 
 
 
-from _backend import Expand as c_Expand
+from _backend.nn import Expand as c_Expand
 class Expand:
     def __init__(self):
         pass
@@ -139,7 +139,7 @@ class Expand:
 
 
 
-from _backend import Neg as c_Neg
+from _backend.nn import Neg as c_Neg
 class Neg:
     def __init__(self):
         pass
@@ -149,7 +149,7 @@ class Neg:
 
 
 
-from _backend import Mul as c_Mul
+from _backend.nn import Mul as c_Mul
 class Mul:
     def __init__(self):
         pass
@@ -159,7 +159,7 @@ class Mul:
 
 
 
-from _backend import ArgMin as c_ArgMin
+from _backend.nn import ArgMin as c_ArgMin
 class ArgMin:
     def __init__(self):
         pass
@@ -169,7 +169,7 @@ class ArgMin:
 
 
 
-from _backend import CastMap as c_CastMap
+from _backend.nn import CastMap as c_CastMap
 class CastMap:
     def __init__(self):
         pass
@@ -179,7 +179,7 @@ class CastMap:
 
 
 
-from _backend import Exp as c_Exp
+from _backend.nn import Exp as c_Exp
 class Exp:
     def __init__(self):
         pass
@@ -189,7 +189,7 @@ class Exp:
 
 
 
-from _backend import Div as c_Div
+from _backend.nn import Div as c_Div
 class Div:
     def __init__(self):
         pass
@@ -199,7 +199,7 @@ class Div:
 
 
 
-from _backend import ReverseSequence as c_ReverseSequence
+from _backend.nn import ReverseSequence as c_ReverseSequence
 class ReverseSequence:
     def __init__(self):
         pass
@@ -209,7 +209,7 @@ class ReverseSequence:
 
 
 
-from _backend import Ceil as c_Ceil
+from _backend.nn import Ceil as c_Ceil
 class Ceil:
     def __init__(self):
         pass
@@ -219,7 +219,7 @@ class Ceil:
 
 
 
-from _backend import DepthToSpace as c_DepthToSpace
+from _backend.nn import DepthToSpace as c_DepthToSpace
 class DepthToSpace:
     def __init__(self):
         pass
@@ -229,7 +229,7 @@ class DepthToSpace:
 
 
 
-from _backend import Clip as c_Clip
+from _backend.nn import Clip as c_Clip
 class Clip:
     def __init__(self):
         pass
@@ -239,7 +239,7 @@ class Clip:
 
 
 
-from _backend import RNN as c_RNN
+from _backend.nn import RNN as c_RNN
 class RNN:
     def __init__(self):
         pass
@@ -249,7 +249,7 @@ class RNN:
 
 
 
-from _backend import Concat as c_Concat
+from _backend.nn import Concat as c_Concat
 class Concat:
     def __init__(self):
         pass
@@ -259,7 +259,7 @@ class Concat:
 
 
 
-from _backend import Constant as c_Constant
+from _backend.nn import Constant as c_Constant
 class Constant:
     def __init__(self):
         pass
@@ -269,7 +269,7 @@ class Constant:
 
 
 
-from _backend import LpPool as c_LpPool
+from _backend.nn import LpPool as c_LpPool
 class LpPool:
     def __init__(self):
         pass
@@ -279,7 +279,7 @@ class LpPool:
 
 
 
-from _backend import Conv as c_Conv
+from _backend.nn import Conv as c_Conv
 class Conv:
     def __init__(self):
         pass
@@ -289,7 +289,7 @@ class Conv:
 
 
 
-from _backend import Not as c_Not
+from _backend.nn import Not as c_Not
 class Not:
     def __init__(self):
         pass
@@ -299,7 +299,7 @@ class Not:
 
 
 
-from _backend import Gather as c_Gather
+from _backend.nn import Gather as c_Gather
 class Gather:
     def __init__(self):
         pass
@@ -309,7 +309,7 @@ class Gather:
 
 
 
-from _backend import ConvTranspose as c_ConvTranspose
+from _backend.nn import ConvTranspose as c_ConvTranspose
 class ConvTranspose:
     def __init__(self):
         pass
@@ -319,7 +319,7 @@ class ConvTranspose:
 
 
 
-from _backend import Dropout as c_Dropout
+from _backend.nn import Dropout as c_Dropout
 class Dropout:
     def __init__(self):
         pass
@@ -329,7 +329,7 @@ class Dropout:
 
 
 
-from _backend import LeakyRelu as c_LeakyRelu
+from _backend.nn import LeakyRelu as c_LeakyRelu
 class LeakyRelu:
     def __init__(self):
         pass
@@ -339,7 +339,7 @@ class LeakyRelu:
 
 
 
-from _backend import Elu as c_Elu
+from _backend.nn import Elu as c_Elu
 class Elu:
     def __init__(self):
         pass
@@ -349,7 +349,7 @@ class Elu:
 
 
 
-from _backend import GlobalAveragePool as c_GlobalAveragePool
+from _backend.nn import GlobalAveragePool as c_GlobalAveragePool
 class GlobalAveragePool:
     def __init__(self):
         pass
@@ -359,7 +359,7 @@ class GlobalAveragePool:
 
 
 
-from _backend import Gemm as c_Gemm
+from _backend.nn import Gemm as c_Gemm
 class Gemm:
     def __init__(self):
         pass
@@ -369,7 +369,7 @@ class Gemm:
 
 
 
-from _backend import MaxPool as c_MaxPool
+from _backend.nn import MaxPool as c_MaxPool
 class MaxPool:
     def __init__(self):
         pass
@@ -379,7 +379,7 @@ class MaxPool:
 
 
 
-from _backend import Equal as c_Equal
+from _backend.nn import Equal as c_Equal
 class Equal:
     def __init__(self):
         pass
@@ -389,7 +389,7 @@ class Equal:
 
 
 
-from _backend import Tile as c_Tile
+from _backend.nn import Tile as c_Tile
 class Tile:
     def __init__(self):
         pass
@@ -399,7 +399,7 @@ class Tile:
 
 
 
-from _backend import Flatten as c_Flatten
+from _backend.nn import Flatten as c_Flatten
 class Flatten:
     def __init__(self):
         pass
@@ -409,7 +409,7 @@ class Flatten:
 
 
 
-from _backend import Floor as c_Floor
+from _backend.nn import Floor as c_Floor
 class Floor:
     def __init__(self):
         pass
@@ -419,7 +419,7 @@ class Floor:
 
 
 
-from _backend import GRU as c_GRU
+from _backend.nn import GRU as c_GRU
 class GRU:
     def __init__(self):
         pass
@@ -429,7 +429,7 @@ class GRU:
 
 
 
-from _backend import GlobalLpPool as c_GlobalLpPool
+from _backend.nn import GlobalLpPool as c_GlobalLpPool
 class GlobalLpPool:
     def __init__(self):
         pass
@@ -439,7 +439,7 @@ class GlobalLpPool:
 
 
 
-from _backend import Greater as c_Greater
+from _backend.nn import Greater as c_Greater
 class Greater:
     def __init__(self):
         pass
@@ -449,7 +449,7 @@ class Greater:
 
 
 
-from _backend import HardSigmoid as c_HardSigmoid
+from _backend.nn import HardSigmoid as c_HardSigmoid
 class HardSigmoid:
     def __init__(self):
         pass
@@ -459,7 +459,7 @@ class HardSigmoid:
 
 
 
-from _backend import Selu as c_Selu
+from _backend.nn import Selu as c_Selu
 class Selu:
     def __init__(self):
         pass
@@ -469,7 +469,7 @@ class Selu:
 
 
 
-from _backend import Hardmax as c_Hardmax
+from _backend.nn import Hardmax as c_Hardmax
 class Hardmax:
     def __init__(self):
         pass
@@ -479,7 +479,7 @@ class Hardmax:
 
 
 
-from _backend import If as c_If
+from _backend.nn import If as c_If
 class If:
     def __init__(self):
         pass
@@ -489,7 +489,7 @@ class If:
 
 
 
-from _backend import Min as c_Min
+from _backend.nn import Min as c_Min
 class Min:
     def __init__(self):
         pass
@@ -499,7 +499,7 @@ class Min:
 
 
 
-from _backend import InstanceNormalization as c_InstanceNormalization
+from _backend.nn import InstanceNormalization as c_InstanceNormalization
 class InstanceNormalization:
     def __init__(self):
         pass
@@ -509,7 +509,7 @@ class InstanceNormalization:
 
 
 
-from _backend import Less as c_Less
+from _backend.nn import Less as c_Less
 class Less:
     def __init__(self):
         pass
@@ -519,7 +519,7 @@ class Less:
 
 
 
-from _backend import EyeLike as c_EyeLike
+from _backend.nn import EyeLike as c_EyeLike
 class EyeLike:
     def __init__(self):
         pass
@@ -529,7 +529,7 @@ class EyeLike:
 
 
 
-from _backend import RandomNormal as c_RandomNormal
+from _backend.nn import RandomNormal as c_RandomNormal
 class RandomNormal:
     def __init__(self):
         pass
@@ -539,7 +539,7 @@ class RandomNormal:
 
 
 
-from _backend import Slice as c_Slice
+from _backend.nn import Slice as c_Slice
 class Slice:
     def __init__(self):
         pass
@@ -549,7 +549,7 @@ class Slice:
 
 
 
-from _backend import PRelu as c_PRelu
+from _backend.nn import PRelu as c_PRelu
 class PRelu:
     def __init__(self):
         pass
@@ -559,7 +559,7 @@ class PRelu:
 
 
 
-from _backend import Log as c_Log
+from _backend.nn import Log as c_Log
 class Log:
     def __init__(self):
         pass
@@ -569,7 +569,7 @@ class Log:
 
 
 
-from _backend import LogSoftmax as c_LogSoftmax
+from _backend.nn import LogSoftmax as c_LogSoftmax
 class LogSoftmax:
     def __init__(self):
         pass
@@ -579,7 +579,7 @@ class LogSoftmax:
 
 
 
-from _backend import Loop as c_Loop
+from _backend.nn import Loop as c_Loop
 class Loop:
     def __init__(self):
         pass
@@ -589,7 +589,7 @@ class Loop:
 
 
 
-from _backend import LpNormalization as c_LpNormalization
+from _backend.nn import LpNormalization as c_LpNormalization
 class LpNormalization:
     def __init__(self):
         pass
@@ -599,7 +599,7 @@ class LpNormalization:
 
 
 
-from _backend import MatMul as c_MatMul
+from _backend.nn import MatMul as c_MatMul
 class MatMul:
     def __init__(self):
         pass
@@ -609,7 +609,7 @@ class MatMul:
 
 
 
-from _backend import ReduceL2 as c_ReduceL2
+from _backend.nn import ReduceL2 as c_ReduceL2
 class ReduceL2:
     def __init__(self):
         pass
@@ -619,7 +619,7 @@ class ReduceL2:
 
 
 
-from _backend import Max as c_Max
+from _backend.nn import Max as c_Max
 class Max:
     def __init__(self):
         pass
@@ -629,7 +629,7 @@ class Max:
 
 
 
-from _backend import MaxRoiPool as c_MaxRoiPool
+from _backend.nn import MaxRoiPool as c_MaxRoiPool
 class MaxRoiPool:
     def __init__(self):
         pass
@@ -639,7 +639,7 @@ class MaxRoiPool:
 
 
 
-from _backend import Or as c_Or
+from _backend.nn import Or as c_Or
 class Or:
     def __init__(self):
         pass
@@ -649,7 +649,7 @@ class Or:
 
 
 
-from _backend import Pad as c_Pad
+from _backend.nn import Pad as c_Pad
 class Pad:
     def __init__(self):
         pass
@@ -659,7 +659,7 @@ class Pad:
 
 
 
-from _backend import RandomUniformLike as c_RandomUniformLike
+from _backend.nn import RandomUniformLike as c_RandomUniformLike
 class RandomUniformLike:
     def __init__(self):
         pass
@@ -669,7 +669,7 @@ class RandomUniformLike:
 
 
 
-from _backend import Reciprocal as c_Reciprocal
+from _backend.nn import Reciprocal as c_Reciprocal
 class Reciprocal:
     def __init__(self):
         pass
@@ -679,7 +679,7 @@ class Reciprocal:
 
 
 
-from _backend import Pow as c_Pow
+from _backend.nn import Pow as c_Pow
 class Pow:
     def __init__(self):
         pass
@@ -689,7 +689,7 @@ class Pow:
 
 
 
-from _backend import RandomNormalLike as c_RandomNormalLike
+from _backend.nn import RandomNormalLike as c_RandomNormalLike
 class RandomNormalLike:
     def __init__(self):
         pass
@@ -699,7 +699,7 @@ class RandomNormalLike:
 
 
 
-from _backend import OneHot as c_OneHot
+from _backend.nn import OneHot as c_OneHot
 class OneHot:
     def __init__(self):
         pass
@@ -709,7 +709,7 @@ class OneHot:
 
 
 
-from _backend import RandomUniform as c_RandomUniform
+from _backend.nn import RandomUniform as c_RandomUniform
 class RandomUniform:
     def __init__(self):
         pass
@@ -719,7 +719,7 @@ class RandomUniform:
 
 
 
-from _backend import ReduceL1 as c_ReduceL1
+from _backend.nn import ReduceL1 as c_ReduceL1
 class ReduceL1:
     def __init__(self):
         pass
@@ -729,7 +729,7 @@ class ReduceL1:
 
 
 
-from _backend import ReduceLogSum as c_ReduceLogSum
+from _backend.nn import ReduceLogSum as c_ReduceLogSum
 class ReduceLogSum:
     def __init__(self):
         pass
@@ -739,7 +739,7 @@ class ReduceLogSum:
 
 
 
-from _backend import ReduceLogSumExp as c_ReduceLogSumExp
+from _backend.nn import ReduceLogSumExp as c_ReduceLogSumExp
 class ReduceLogSumExp:
     def __init__(self):
         pass
@@ -749,7 +749,7 @@ class ReduceLogSumExp:
 
 
 
-from _backend import ReduceMax as c_ReduceMax
+from _backend.nn import ReduceMax as c_ReduceMax
 class ReduceMax:
     def __init__(self):
         pass
@@ -759,7 +759,7 @@ class ReduceMax:
 
 
 
-from _backend import OneHotEncoder as c_OneHotEncoder
+from _backend.nn import OneHotEncoder as c_OneHotEncoder
 class OneHotEncoder:
     def __init__(self):
         pass
@@ -769,7 +769,7 @@ class OneHotEncoder:
 
 
 
-from _backend import IsNaN as c_IsNaN
+from _backend.nn import IsNaN as c_IsNaN
 class IsNaN:
     def __init__(self):
         pass
@@ -779,7 +779,7 @@ class IsNaN:
 
 
 
-from _backend import ReduceMean as c_ReduceMean
+from _backend.nn import ReduceMean as c_ReduceMean
 class ReduceMean:
     def __init__(self):
         pass
@@ -789,7 +789,7 @@ class ReduceMean:
 
 
 
-from _backend import ReduceMin as c_ReduceMin
+from _backend.nn import ReduceMin as c_ReduceMin
 class ReduceMin:
     def __init__(self):
         pass
@@ -799,7 +799,7 @@ class ReduceMin:
 
 
 
-from _backend import TreeEnsembleRegressor as c_TreeEnsembleRegressor
+from _backend.nn import TreeEnsembleRegressor as c_TreeEnsembleRegressor
 class TreeEnsembleRegressor:
     def __init__(self):
         pass
@@ -809,7 +809,7 @@ class TreeEnsembleRegressor:
 
 
 
-from _backend import ReduceProd as c_ReduceProd
+from _backend.nn import ReduceProd as c_ReduceProd
 class ReduceProd:
     def __init__(self):
         pass
@@ -819,7 +819,7 @@ class ReduceProd:
 
 
 
-from _backend import ReduceSum as c_ReduceSum
+from _backend.nn import ReduceSum as c_ReduceSum
 class ReduceSum:
     def __init__(self):
         pass
@@ -829,7 +829,7 @@ class ReduceSum:
 
 
 
-from _backend import ReduceSumSquare as c_ReduceSumSquare
+from _backend.nn import ReduceSumSquare as c_ReduceSumSquare
 class ReduceSumSquare:
     def __init__(self):
         pass
@@ -839,7 +839,7 @@ class ReduceSumSquare:
 
 
 
-from _backend import Relu as c_Relu
+from _backend.nn import Relu as c_Relu
 class Relu:
     def __init__(self):
         pass
@@ -849,7 +849,7 @@ class Relu:
 
 
 
-from _backend import Reshape as c_Reshape
+from _backend.nn import Reshape as c_Reshape
 class Reshape:
     def __init__(self):
         pass
@@ -859,7 +859,7 @@ class Reshape:
 
 
 
-from _backend import Shape as c_Shape
+from _backend.nn import Shape as c_Shape
 class Shape:
     def __init__(self):
         pass
@@ -869,7 +869,7 @@ class Shape:
 
 
 
-from _backend import Sigmoid as c_Sigmoid
+from _backend.nn import Sigmoid as c_Sigmoid
 class Sigmoid:
     def __init__(self):
         pass
@@ -879,7 +879,7 @@ class Sigmoid:
 
 
 
-from _backend import Size as c_Size
+from _backend.nn import Size as c_Size
 class Size:
     def __init__(self):
         pass
@@ -889,7 +889,7 @@ class Size:
 
 
 
-from _backend import Softmax as c_Softmax
+from _backend.nn import Softmax as c_Softmax
 class Softmax:
     def __init__(self):
         pass
@@ -899,7 +899,7 @@ class Softmax:
 
 
 
-from _backend import Softplus as c_Softplus
+from _backend.nn import Softplus as c_Softplus
 class Softplus:
     def __init__(self):
         pass
@@ -909,7 +909,7 @@ class Softplus:
 
 
 
-from _backend import Softsign as c_Softsign
+from _backend.nn import Softsign as c_Softsign
 class Softsign:
     def __init__(self):
         pass
@@ -919,7 +919,7 @@ class Softsign:
 
 
 
-from _backend import SpaceToDepth as c_SpaceToDepth
+from _backend.nn import SpaceToDepth as c_SpaceToDepth
 class SpaceToDepth:
     def __init__(self):
         pass
@@ -929,7 +929,7 @@ class SpaceToDepth:
 
 
 
-from _backend import TfIdfVectorizer as c_TfIdfVectorizer
+from _backend.nn import TfIdfVectorizer as c_TfIdfVectorizer
 class TfIdfVectorizer:
     def __init__(self):
         pass
@@ -939,7 +939,7 @@ class TfIdfVectorizer:
 
 
 
-from _backend import Split as c_Split
+from _backend.nn import Split as c_Split
 class Split:
     def __init__(self):
         pass
@@ -949,7 +949,7 @@ class Split:
 
 
 
-from _backend import Imputer as c_Imputer
+from _backend.nn import Imputer as c_Imputer
 class Imputer:
     def __init__(self):
         pass
@@ -959,7 +959,7 @@ class Imputer:
 
 
 
-from _backend import Sqrt as c_Sqrt
+from _backend.nn import Sqrt as c_Sqrt
 class Sqrt:
     def __init__(self):
         pass
@@ -969,7 +969,7 @@ class Sqrt:
 
 
 
-from _backend import Squeeze as c_Squeeze
+from _backend.nn import Squeeze as c_Squeeze
 class Squeeze:
     def __init__(self):
         pass
@@ -979,7 +979,7 @@ class Squeeze:
 
 
 
-from _backend import TopK as c_TopK
+from _backend.nn import TopK as c_TopK
 class TopK:
     def __init__(self):
         pass
@@ -989,7 +989,7 @@ class TopK:
 
 
 
-from _backend import Sub as c_Sub
+from _backend.nn import Sub as c_Sub
 class Sub:
     def __init__(self):
         pass
@@ -999,7 +999,7 @@ class Sub:
 
 
 
-from _backend import Sum as c_Sum
+from _backend.nn import Sum as c_Sum
 class Sum:
     def __init__(self):
         pass
@@ -1009,7 +1009,7 @@ class Sum:
 
 
 
-from _backend import Shrink as c_Shrink
+from _backend.nn import Shrink as c_Shrink
 class Shrink:
     def __init__(self):
         pass
@@ -1019,7 +1019,7 @@ class Shrink:
 
 
 
-from _backend import Tanh as c_Tanh
+from _backend.nn import Tanh as c_Tanh
 class Tanh:
     def __init__(self):
         pass
@@ -1029,7 +1029,7 @@ class Tanh:
 
 
 
-from _backend import Transpose as c_Transpose
+from _backend.nn import Transpose as c_Transpose
 class Transpose:
     def __init__(self):
         pass
@@ -1039,7 +1039,7 @@ class Transpose:
 
 
 
-from _backend import Unsqueeze as c_Unsqueeze
+from _backend.nn import Unsqueeze as c_Unsqueeze
 class Unsqueeze:
     def __init__(self):
         pass
@@ -1049,7 +1049,7 @@ class Unsqueeze:
 
 
 
-from _backend import Upsample as c_Upsample
+from _backend.nn import Upsample as c_Upsample
 class Upsample:
     def __init__(self):
         pass
@@ -1059,7 +1059,7 @@ class Upsample:
 
 
 
-from _backend import SVMClassifier as c_SVMClassifier
+from _backend.nn import SVMClassifier as c_SVMClassifier
 class SVMClassifier:
     def __init__(self):
         pass
@@ -1069,7 +1069,7 @@ class SVMClassifier:
 
 
 
-from _backend import Xor as c_Xor
+from _backend.nn import Xor as c_Xor
 class Xor:
     def __init__(self):
         pass
@@ -1079,7 +1079,7 @@ class Xor:
 
 
 
-from _backend import Acos as c_Acos
+from _backend.nn import Acos as c_Acos
 class Acos:
     def __init__(self):
         pass
@@ -1089,7 +1089,7 @@ class Acos:
 
 
 
-from _backend import Asin as c_Asin
+from _backend.nn import Asin as c_Asin
 class Asin:
     def __init__(self):
         pass
@@ -1099,7 +1099,7 @@ class Asin:
 
 
 
-from _backend import Atan as c_Atan
+from _backend.nn import Atan as c_Atan
 class Atan:
     def __init__(self):
         pass
@@ -1109,7 +1109,7 @@ class Atan:
 
 
 
-from _backend import Cos as c_Cos
+from _backend.nn import Cos as c_Cos
 class Cos:
     def __init__(self):
         pass
@@ -1119,7 +1119,7 @@ class Cos:
 
 
 
-from _backend import Sin as c_Sin
+from _backend.nn import Sin as c_Sin
 class Sin:
     def __init__(self):
         pass
@@ -1129,7 +1129,7 @@ class Sin:
 
 
 
-from _backend import Tan as c_Tan
+from _backend.nn import Tan as c_Tan
 class Tan:
     def __init__(self):
         pass
@@ -1139,7 +1139,7 @@ class Tan:
 
 
 
-from _backend import Multinomial as c_Multinomial
+from _backend.nn import Multinomial as c_Multinomial
 class Multinomial:
     def __init__(self):
         pass
@@ -1149,7 +1149,7 @@ class Multinomial:
 
 
 
-from _backend import Scan as c_Scan
+from _backend.nn import Scan as c_Scan
 class Scan:
     def __init__(self):
         pass
@@ -1159,7 +1159,7 @@ class Scan:
 
 
 
-from _backend import Compress as c_Compress
+from _backend.nn import Compress as c_Compress
 class Compress:
     def __init__(self):
         pass
@@ -1169,7 +1169,7 @@ class Compress:
 
 
 
-from _backend import ConstantOfShape as c_ConstantOfShape
+from _backend.nn import ConstantOfShape as c_ConstantOfShape
 class ConstantOfShape:
     def __init__(self):
         pass
@@ -1179,7 +1179,7 @@ class ConstantOfShape:
 
 
 
-from _backend import MaxUnpool as c_MaxUnpool
+from _backend.nn import MaxUnpool as c_MaxUnpool
 class MaxUnpool:
     def __init__(self):
         pass
@@ -1189,7 +1189,7 @@ class MaxUnpool:
 
 
 
-from _backend import Scatter as c_Scatter
+from _backend.nn import Scatter as c_Scatter
 class Scatter:
     def __init__(self):
         pass
@@ -1199,7 +1199,7 @@ class Scatter:
 
 
 
-from _backend import Sinh as c_Sinh
+from _backend.nn import Sinh as c_Sinh
 class Sinh:
     def __init__(self):
         pass
@@ -1209,7 +1209,7 @@ class Sinh:
 
 
 
-from _backend import Cosh as c_Cosh
+from _backend.nn import Cosh as c_Cosh
 class Cosh:
     def __init__(self):
         pass
@@ -1219,7 +1219,7 @@ class Cosh:
 
 
 
-from _backend import Asinh as c_Asinh
+from _backend.nn import Asinh as c_Asinh
 class Asinh:
     def __init__(self):
         pass
@@ -1229,7 +1229,7 @@ class Asinh:
 
 
 
-from _backend import Acosh as c_Acosh
+from _backend.nn import Acosh as c_Acosh
 class Acosh:
     def __init__(self):
         pass
@@ -1239,7 +1239,7 @@ class Acosh:
 
 
 
-from _backend import NonMaxSuppression as c_NonMaxSuppression
+from _backend.nn import NonMaxSuppression as c_NonMaxSuppression
 class NonMaxSuppression:
     def __init__(self):
         pass
@@ -1249,7 +1249,7 @@ class NonMaxSuppression:
 
 
 
-from _backend import Atanh as c_Atanh
+from _backend.nn import Atanh as c_Atanh
 class Atanh:
     def __init__(self):
         pass
@@ -1259,7 +1259,7 @@ class Atanh:
 
 
 
-from _backend import Sign as c_Sign
+from _backend.nn import Sign as c_Sign
 class Sign:
     def __init__(self):
         pass
@@ -1269,7 +1269,7 @@ class Sign:
 
 
 
-from _backend import Erf as c_Erf
+from _backend.nn import Erf as c_Erf
 class Erf:
     def __init__(self):
         pass
@@ -1279,7 +1279,7 @@ class Erf:
 
 
 
-from _backend import Where as c_Where
+from _backend.nn import Where as c_Where
 class Where:
     def __init__(self):
         pass
@@ -1289,7 +1289,7 @@ class Where:
 
 
 
-from _backend import NonZero as c_NonZero
+from _backend.nn import NonZero as c_NonZero
 class NonZero:
     def __init__(self):
         pass
@@ -1299,7 +1299,7 @@ class NonZero:
 
 
 
-from _backend import MeanVarianceNormalization as c_MeanVarianceNormalization
+from _backend.nn import MeanVarianceNormalization as c_MeanVarianceNormalization
 class MeanVarianceNormalization:
     def __init__(self):
         pass
@@ -1309,7 +1309,7 @@ class MeanVarianceNormalization:
 
 
 
-from _backend import StringNormalizer as c_StringNormalizer
+from _backend.nn import StringNormalizer as c_StringNormalizer
 class StringNormalizer:
     def __init__(self):
         pass
@@ -1319,7 +1319,7 @@ class StringNormalizer:
 
 
 
-from _backend import Mod as c_Mod
+from _backend.nn import Mod as c_Mod
 class Mod:
     def __init__(self):
         pass
@@ -1329,7 +1329,7 @@ class Mod:
 
 
 
-from _backend import ThresholdedRelu as c_ThresholdedRelu
+from _backend.nn import ThresholdedRelu as c_ThresholdedRelu
 class ThresholdedRelu:
     def __init__(self):
         pass
@@ -1339,7 +1339,7 @@ class ThresholdedRelu:
 
 
 
-from _backend import MatMulInteger as c_MatMulInteger
+from _backend.nn import MatMulInteger as c_MatMulInteger
 class MatMulInteger:
     def __init__(self):
         pass
@@ -1349,7 +1349,7 @@ class MatMulInteger:
 
 
 
-from _backend import QLinearMatMul as c_QLinearMatMul
+from _backend.nn import QLinearMatMul as c_QLinearMatMul
 class QLinearMatMul:
     def __init__(self):
         pass
@@ -1359,7 +1359,7 @@ class QLinearMatMul:
 
 
 
-from _backend import ConvInteger as c_ConvInteger
+from _backend.nn import ConvInteger as c_ConvInteger
 class ConvInteger:
     def __init__(self):
         pass
@@ -1369,7 +1369,7 @@ class ConvInteger:
 
 
 
-from _backend import QLinearConv as c_QLinearConv
+from _backend.nn import QLinearConv as c_QLinearConv
 class QLinearConv:
     def __init__(self):
         pass
@@ -1379,7 +1379,7 @@ class QLinearConv:
 
 
 
-from _backend import QuantizeLinear as c_QuantizeLinear
+from _backend.nn import QuantizeLinear as c_QuantizeLinear
 class QuantizeLinear:
     def __init__(self):
         pass
@@ -1389,7 +1389,7 @@ class QuantizeLinear:
 
 
 
-from _backend import DequantizeLinear as c_DequantizeLinear
+from _backend.nn import DequantizeLinear as c_DequantizeLinear
 class DequantizeLinear:
     def __init__(self):
         pass
@@ -1399,7 +1399,7 @@ class DequantizeLinear:
 
 
 
-from _backend import IsInf as c_IsInf
+from _backend.nn import IsInf as c_IsInf
 class IsInf:
     def __init__(self):
         pass
@@ -1409,7 +1409,7 @@ class IsInf:
 
 
 
-from _backend import RoiAlign as c_RoiAlign
+from _backend.nn import RoiAlign as c_RoiAlign
 class RoiAlign:
     def __init__(self):
         pass
@@ -1419,7 +1419,7 @@ class RoiAlign:
 
 
 
-from _backend import ArrayFeatureExtractor as c_ArrayFeatureExtractor
+from _backend.nn import ArrayFeatureExtractor as c_ArrayFeatureExtractor
 class ArrayFeatureExtractor:
     def __init__(self):
         pass
@@ -1429,7 +1429,7 @@ class ArrayFeatureExtractor:
 
 
 
-from _backend import Binarizer as c_Binarizer
+from _backend.nn import Binarizer as c_Binarizer
 class Binarizer:
     def __init__(self):
         pass
@@ -1439,7 +1439,7 @@ class Binarizer:
 
 
 
-from _backend import CategoryMapper as c_CategoryMapper
+from _backend.nn import CategoryMapper as c_CategoryMapper
 class CategoryMapper:
     def __init__(self):
         pass
@@ -1449,7 +1449,7 @@ class CategoryMapper:
 
 
 
-from _backend import DictVectorizer as c_DictVectorizer
+from _backend.nn import DictVectorizer as c_DictVectorizer
 class DictVectorizer:
     def __init__(self):
         pass
@@ -1459,7 +1459,7 @@ class DictVectorizer:
 
 
 
-from _backend import FeatureVectorizer as c_FeatureVectorizer
+from _backend.nn import FeatureVectorizer as c_FeatureVectorizer
 class FeatureVectorizer:
     def __init__(self):
         pass
@@ -1469,7 +1469,7 @@ class FeatureVectorizer:
 
 
 
-from _backend import LabelEncoder as c_LabelEncoder
+from _backend.nn import LabelEncoder as c_LabelEncoder
 class LabelEncoder:
     def __init__(self):
         pass
@@ -1479,7 +1479,7 @@ class LabelEncoder:
 
 
 
-from _backend import LinearClassifier as c_LinearClassifier
+from _backend.nn import LinearClassifier as c_LinearClassifier
 class LinearClassifier:
     def __init__(self):
         pass
@@ -1489,7 +1489,7 @@ class LinearClassifier:
 
 
 
-from _backend import LinearRegressor as c_LinearRegressor
+from _backend.nn import LinearRegressor as c_LinearRegressor
 class LinearRegressor:
     def __init__(self):
         pass
@@ -1499,7 +1499,7 @@ class LinearRegressor:
 
 
 
-from _backend import Normalizer as c_Normalizer
+from _backend.nn import Normalizer as c_Normalizer
 class Normalizer:
     def __init__(self):
         pass
@@ -1509,7 +1509,7 @@ class Normalizer:
 
 
 
-from _backend import SVMRegressor as c_SVMRegressor
+from _backend.nn import SVMRegressor as c_SVMRegressor
 class SVMRegressor:
     def __init__(self):
         pass
@@ -1519,7 +1519,7 @@ class SVMRegressor:
 
 
 
-from _backend import Scaler as c_Scaler
+from _backend.nn import Scaler as c_Scaler
 class Scaler:
     def __init__(self):
         pass
@@ -1529,7 +1529,7 @@ class Scaler:
 
 
 
-from _backend import TreeEnsembleClassifier as c_TreeEnsembleClassifier
+from _backend.nn import TreeEnsembleClassifier as c_TreeEnsembleClassifier
 class TreeEnsembleClassifier:
     def __init__(self):
         pass
@@ -1539,7 +1539,7 @@ class TreeEnsembleClassifier:
 
 
 
-from _backend import ZipMap as c_ZipMap
+from _backend.nn import ZipMap as c_ZipMap
 class ZipMap:
     def __init__(self):
         pass

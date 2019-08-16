@@ -63,10 +63,9 @@ std::map<std::string, std::map<std::string, std::string> > parameter_map = {{
 
 
 
-class_h_str = """#ifndef {upper}_H
+class_h_str = """#include "../layer.h"
+#ifndef {upper}_H
 #define {upper}_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 {doc}
 //*/
@@ -79,8 +78,6 @@ class_h_str = """#ifndef {upper}_H
 //PARAMETER_TYPES:          {parameter_types}
 //OPTIONAL_PARAMETERS:      {optional_parameters}
 //OPTIONAL_PARAMETERS_TYPE: {optional_parameter_types}
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {{   
@@ -119,6 +116,11 @@ namespace backend {{
     
 }}
 
+#endif
+
+""".format_map
+
+cpp_class_str = """#include "{norm}.h"
 
 //cpp stuff
 namespace backend {{    
@@ -145,33 +147,18 @@ namespace backend {{
         program->spec(64,64,64);
         program->bind(binding{bind_param_lst}{bind_input_lst}{bind_output_lst});
     }}
-
-
+    
 }}
 
-
+    backend::nn;
 
 //python stuff
-namespace backend {{
-    PYBIND11_MODULE(_backend, m) {{
-        py::class_<{norm}, Layer>(m, "{norm}")
-            .def(py::init<std::string{constructor_param_type}> ())
-            .def("forward", &{norm}::forward)
-            .def("init", &{norm}::init)
-            .def("call", (void ({norm}::*) ({call_python_binding})) &{norm}::call);
-    }}
-}}
 
-#endif
-
-/* PYTHON STUFF
-
-*/
 
 """.format_map
 
 python_class_str = """
-from _backend import {norm} as c_{norm}
+from _backend.nn import {norm} as c_{norm}
 class {norm}:
     def __init__(self):
         pass
@@ -226,7 +213,12 @@ def onnx_proto():
         os.mkdir('../_backend/layers')
     if(not os.path.isdir(os.path.join(os.getcwd(),'../_backend/shaders\\'))):
         os.mkdir('../_backend/shaders')
+    activation = [ 'Tanh', 'Acos', 'Asin', 'Atan', 'Cos', 'Sin', 'Tan', 'Sinh', 'Cosh', 'Asinh', 'Acosh', 'Atanh', 'Softplus', 'Softsign', 'Sigmoid', 'Relu', 'PRelu', 'Elu', 'HardSigmoid', 'Hardmax', 'Selu', 'LogSoftmax', 'Softmax']
+    elementwise = ['Abs', 'Neg', 'Exp', 'Ceil', 'Not', 'Floor', 'Log', 'IsNaN', 'Sqrt', 'Sign', 'Erf', 'NonZero']
+    math_op = ['Add', 'And', 'Mul', 'Div', 'Sub', 'Or', 'Pow', 'Xor', 'Min', 'Max', 'Sum']
     
+    single_input = []
+    single_output = []
     single_element = []
     double_element = []
     complex_element = []
@@ -309,8 +301,7 @@ def onnx_proto():
                 
 
                 'call_input_lst' :              ', '.join(['std::string {0}'.format(x) for x in layer_parameter_tensors + INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),              
-                'call_python_binding' :         ', '.join(['std::string' for _ in layer_parameter_tensors + INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
-
+               
                 #'bind_param_lst' :              ', '.join(  ['{1}'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES) if(j != 'Tensor*')] + \
                 #                                            ['{0}->shape()'.format(i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES) if(j == 'Tensor*')] + \
                 #                                            ['{0}->shape()'.format(i) for i in INPUT_NAMES] + \
@@ -327,27 +318,39 @@ def onnx_proto():
                                                          ['\t\tbinding.{0} = tensor_dict[{0}]->shape();\n '.format(i)for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES) if(j == 'Tensor*')]),
 
                 'shader_layout_lst' :           '\n'.join(['layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};'.format(i,x) for i,x in enumerate(layer_parameter_tensors + INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)]),
-           
+                
+                'call_python_binding' :         ', '.join(['std::string' for _ in layer_parameter_tensors + INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+
+                'pybind11_constructor':        ''.join( [ ', {0}'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES) if (j != 'Tensor*')]).replace("Shape_t", "backend::Shape_t"),
+
                 }        
 
         py_layers_map.append(python_class_str(mapt))
-        if(len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 1 and len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) == 1 and len(PARAMETERS + OPTIONAL_PARAMETERS) == 0):
-            single_element.append(op_name)
-        elif(len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 2 and len(PARAMETERS + OPTIONAL_PARAMETERS) == 0):
-            double_element.append(op_name)
-        elif((len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 1 or len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) == 1) and  len(PARAMETERS + OPTIONAL_PARAMETERS) <=3 ):
-            simple_element.append(op_name)
-        else:
-            complex_element.append(op_name)
-
+       
 
         op_file.write(op.name+'=' + ', '.join(layer_paramaters) + '\n')
         
         if(op.since_version <= 10 and op.deprecated==False):
+            if(len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 1 and len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) == 1 and len(PARAMETERS + OPTIONAL_PARAMETERS) == 0 and op_name not in activation and op_name not in elementwise and op_name not in math_op):
+                single_element.append(op_name)
+            elif(len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 2 and len(PARAMETERS + OPTIONAL_PARAMETERS) == 0 and op_name not in activation and op_name not in elementwise and op_name not in math_op):
+                double_element.append(op_name)
+            elif(len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 1 and  len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) == 0 and op_name not in activation and op_name not in elementwise and op_name not in math_op):
+                single_input.append(op_name)
+            elif(len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 0 and  len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) == 1 and op_name not in activation and op_name not in elementwise and op_name not in math_op):
+                single_output.append(op_name)
+            elif((len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 1 or len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) == 1) and  len(PARAMETERS + OPTIONAL_PARAMETERS) <= 3 and op_name not in activation and op_name not in elementwise and op_name not in math_op):
+                simple_element.append(op_name)        
+            elif(op_name not in activation and op_name not in elementwise and op_name not in math_op):
+                complex_element.append(op_name)
+
+
             f = open('../_backend/layers/'+op_name.lower()+'.h', 'w')
             f.write(class_h_str(mapt))
             f.close()
-          
+            f_cpp = open("../_backend/layers/" + op_name.lower() + '.cpp', 'w')
+            f_cpp.write(cpp_class_str(mapt))
+            f_cpp.close()
             s_cpp = open('../_backend/shaders/' + op_name.lower() + '.comp', 'w')
             s_cpp.write(class_shader_str(mapt))
             s_cpp.close()
@@ -361,11 +364,10 @@ def onnx_proto():
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
     py_layers.write('\n\n'.join(py_layers_map))
     print(single_element)
-    print()
     print(double_element)
-    print()
+    print(single_input)
+    print(single_output)
     print(simple_element)
-    print()
     print(complex_element)
 
     layer_map_file.close()

@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef SCATTER_H
 #define SCATTER_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
 Given `data`, `updates` and `indices` input tensors of rank r >= 1, write the values provided by `updates` 
@@ -53,8 +52,6 @@ output: Tensor of rank r >= 1 (same rank as input).
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
 
-namespace py = pybind11;
-
 //class stuff
 namespace backend {   
 
@@ -93,57 +90,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    Scatter::Scatter(std::string n, int axis) : Layer(n) { }
-       
-    vuh::Device* Scatter::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void Scatter::init() {      
-    
-		binding.data_input = tensor_dict[data_input]->shape();
-  		binding.indices_input = tensor_dict[indices_input]->shape();
-  		binding.updates_input = tensor_dict[updates_input]->shape();
- 
-		binding.output_output = tensor_dict[output_output]->shape();
- 
-		binding.axis = axis;
- 
-    }
-    
-    void Scatter::call(std::string data_input, std::string indices_input, std::string updates_input, std::string output_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scatter.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[indices_input]->data(), *tensor_dict[updates_input]->data(), *tensor_dict[output_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<Scatter, Layer>(m, "Scatter")
-            .def(py::init<std::string, int> ())
-            .def("forward", &Scatter::forward)
-            .def("init", &Scatter::init)
-            .def("call", (void (Scatter::*) (std::string, std::string, std::string, std::string)) &Scatter::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

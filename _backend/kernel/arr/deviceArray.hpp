@@ -206,7 +206,7 @@ public:
 
 	/// @return size of a memory chunk occupied by array elements
 	/// (not the size of actually allocated chunk, which may be a bit bigger).
-	auto size_bytes() const-> uint32_t {return _size*sizeof(T);}
+	auto size_bytes() const-> size_t {return _size*sizeof(T);}
 
 	/// doc me
 	auto device_begin()-> ArrayIter<DeviceArray> { return ArrayIter<DeviceArray>(*this, 0); }

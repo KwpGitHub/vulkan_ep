@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef ONEHOT_H
 #define ONEHOT_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
     Produces a one-hot tensor based on inputs.
@@ -31,8 +30,6 @@ output: Tensor of rank one greater than input tensor 'indices', i.e. rank(output
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -72,57 +69,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    OneHot::OneHot(std::string n, int axis) : Layer(n) { }
-       
-    vuh::Device* OneHot::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void OneHot::init() {      
-    
-		binding.indices_input = tensor_dict[indices_input]->shape();
-  		binding.depth_input = tensor_dict[depth_input]->shape();
-  		binding.values_input = tensor_dict[values_input]->shape();
- 
-		binding.output_output = tensor_dict[output_output]->shape();
- 
-		binding.axis = axis;
- 
-    }
-    
-    void OneHot::call(std::string indices_input, std::string depth_input, std::string values_input, std::string output_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/onehot.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[indices_input]->data(), *tensor_dict[depth_input]->data(), *tensor_dict[values_input]->data(), *tensor_dict[output_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<OneHot, Layer>(m, "OneHot")
-            .def(py::init<std::string, int> ())
-            .def("forward", &OneHot::forward)
-            .def("init", &OneHot::init)
-            .def("call", (void (OneHot::*) (std::string, std::string, std::string, std::string)) &OneHot::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

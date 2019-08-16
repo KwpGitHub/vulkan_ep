@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef NONMAXSUPPRESSION_H
 #define NONMAXSUPPRESSION_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
 Filter out boxes that have high intersection-over-union (IOU) overlap with previously selected boxes.
@@ -29,8 +28,6 @@ output: selected indices from the boxes tensor. [num_selected_indices, 3], the s
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      center_point_box
 //OPTIONAL_PARAMETERS_TYPE: int
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -70,59 +67,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    NonMaxSuppression::NonMaxSuppression(std::string n, int center_point_box) : Layer(n) { }
-       
-    vuh::Device* NonMaxSuppression::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void NonMaxSuppression::init() {      
-    
-		binding.boxes_input = tensor_dict[boxes_input]->shape();
-  		binding.scores_input = tensor_dict[scores_input]->shape();
-  		binding.max_output_boxes_per_class_input_opt = tensor_dict[max_output_boxes_per_class_input_opt]->shape();
-  		binding.iou_threshold_input_opt = tensor_dict[iou_threshold_input_opt]->shape();
-  		binding.score_threshold_input_opt = tensor_dict[score_threshold_input_opt]->shape();
- 
-		binding.selected_indices_output = tensor_dict[selected_indices_output]->shape();
- 
-		binding.center_point_box = center_point_box;
- 
-    }
-    
-    void NonMaxSuppression::call(std::string boxes_input, std::string scores_input, std::string max_output_boxes_per_class_input_opt, std::string iou_threshold_input_opt, std::string score_threshold_input_opt, std::string selected_indices_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/nonmaxsuppression.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[boxes_input]->data(), *tensor_dict[scores_input]->data(), *tensor_dict[max_output_boxes_per_class_input_opt]->data(), *tensor_dict[iou_threshold_input_opt]->data(), *tensor_dict[score_threshold_input_opt]->data(), *tensor_dict[selected_indices_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<NonMaxSuppression, Layer>(m, "NonMaxSuppression")
-            .def(py::init<std::string, int> ())
-            .def("forward", &NonMaxSuppression::forward)
-            .def("init", &NonMaxSuppression::init)
-            .def("call", (void (NonMaxSuppression::*) (std::string, std::string, std::string, std::string, std::string, std::string)) &NonMaxSuppression::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

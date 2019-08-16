@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef AVERAGEPOOL_H
 #define AVERAGEPOOL_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
  AveragePool consumes an input tensor X and applies average pooling across
@@ -46,8 +45,6 @@ output: Output data tensor from average or max pooling across the input tensor. 
 //OPTIONAL_PARAMETERS:      auto_pad, ceil_mode, count_include_pad, pads, strides
 //OPTIONAL_PARAMETERS_TYPE: int, int, int, Shape_t, Shape_t
 
-namespace py = pybind11;
-
 //class stuff
 namespace backend {   
 
@@ -86,60 +83,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    AveragePool::AveragePool(std::string n, Shape_t kernel_shape, int auto_pad, int ceil_mode, int count_include_pad, Shape_t pads, Shape_t strides) : Layer(n) { }
-       
-    vuh::Device* AveragePool::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void AveragePool::init() {      
-    
-		binding.X_input = tensor_dict[X_input]->shape();
- 
-		binding.Y_output = tensor_dict[Y_output]->shape();
- 
-		binding.kernel_shape = kernel_shape;
-  		binding.auto_pad = auto_pad;
-  		binding.ceil_mode = ceil_mode;
-  		binding.count_include_pad = count_include_pad;
-  		binding.pads = pads;
-  		binding.strides = strides;
- 
-    }
-    
-    void AveragePool::call(std::string X_input, std::string Y_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/averagepool.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<AveragePool, Layer>(m, "AveragePool")
-            .def(py::init<std::string, Shape_t, int, int, int, Shape_t, Shape_t> ())
-            .def("forward", &AveragePool::forward)
-            .def("init", &AveragePool::init)
-            .def("call", (void (AveragePool::*) (std::string, std::string)) &AveragePool::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

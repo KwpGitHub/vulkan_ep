@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef FEATUREVECTORIZER_H
 #define FEATUREVECTORIZER_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
     Concatenates input tensors into one continuous output.<br>
@@ -21,8 +20,6 @@ output: The output array, elements ordered as the inputs.
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      inputdimensions
 //OPTIONAL_PARAMETERS_TYPE: Shape_t
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -62,54 +59,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    FeatureVectorizer::FeatureVectorizer(std::string n, Shape_t inputdimensions) : Layer(n) { }
-       
-    vuh::Device* FeatureVectorizer::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void FeatureVectorizer::init() {      
-    
-
-		binding.Y_output = tensor_dict[Y_output]->shape();
- 
-		binding.inputdimensions = inputdimensions;
- 
-    }
-    
-    void FeatureVectorizer::call(std::string Y_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/featurevectorizer.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[Y_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<FeatureVectorizer, Layer>(m, "FeatureVectorizer")
-            .def(py::init<std::string, Shape_t> ())
-            .def("forward", &FeatureVectorizer::forward)
-            .def("init", &FeatureVectorizer::init)
-            .def("call", (void (FeatureVectorizer::*) (std::string)) &FeatureVectorizer::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 

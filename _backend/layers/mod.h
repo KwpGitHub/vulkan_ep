@@ -1,7 +1,6 @@
+#include "../layer.h"
 #ifndef MOD_H
 #define MOD_H 
-#include <pybind11/pybind11.h>
-#include "../layer.h"
 /*
 
   Performs element-wise binary modulus (with Numpy-style broadcasting support). 
@@ -31,8 +30,6 @@ output: Remainder tensor
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      fmod
 //OPTIONAL_PARAMETERS_TYPE: int
-
-namespace py = pybind11;
 
 //class stuff
 namespace backend {   
@@ -72,56 +69,5 @@ namespace backend {
     
 }
 
-
-//cpp stuff
-namespace backend {    
-   
-    Mod::Mod(std::string n, int fmod) : Layer(n) { }
-       
-    vuh::Device* Mod::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
-        return device;
-    }
-    
-    void Mod::init() {      
-    
-		binding.A_input = tensor_dict[A_input]->shape();
-  		binding.B_input = tensor_dict[B_input]->shape();
- 
-		binding.C_output = tensor_dict[C_output]->shape();
- 
-		binding.fmod = fmod;
- 
-    }
-    
-    void Mod::call(std::string A_input, std::string B_input, std::string C_output){       
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mod.spv")).c_str());
-        program->grid(1024/PROCESSKERNEL_SIZE, 1024/PROCESSKERNEL_SIZE, 64/PROCESSKERNEL_SIZE);
-        program->spec(64,64,64);
-        program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
-    }
-
-
-}
-
-
-
-//python stuff
-namespace backend {
-    PYBIND11_MODULE(_backend, m) {
-        py::class_<Mod, Layer>(m, "Mod")
-            .def(py::init<std::string, int> ())
-            .def("forward", &Mod::forward)
-            .def("init", &Mod::init)
-            .def("call", (void (Mod::*) (std::string, std::string, std::string)) &Mod::call);
-    }
-}
-
 #endif
-
-/* PYTHON STUFF
-
-*/
 
