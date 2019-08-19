@@ -1,11 +1,17 @@
-#include "../layer.h"
 #ifndef CONSTANT_H
 #define CONSTANT_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 A constant tensor.
 
 output: Output tensor containing the same value of the provided tensor.
-//*/
+*/
+
 //Constant
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -41,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Constant(std::string n);
+        Constant();
     
         void forward() { program->run(); }
         
@@ -49,10 +55,16 @@ namespace backend {
         void bind(std::string _value, std::string _output_output); 
 
         ~Constant() {}
-
     };
+
     
+    void init_layer_Constant(py::module& m) {
+        // py::class_(m, "Constant");
+    }
+    
+
 }
+
 
 #endif
 

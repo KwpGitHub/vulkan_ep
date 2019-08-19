@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MEAN_H
 #define MEAN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Element-wise mean of each of the input tensors (with Numpy-style broadcasting support).
@@ -9,7 +14,8 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 
 input: List of tensors for mean.
 output: Output tensor.
-//*/
+*/
+
 //Mean
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Mean(std::string n);
+        Mean();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _mean_output); 
 
         ~Mean() {}
-
     };
+
     
+    void init_layer_Mean(py::module& m) {
+        // py::class_(m, "Mean");
+    }
+    
+
 }
+
 
 #endif
 

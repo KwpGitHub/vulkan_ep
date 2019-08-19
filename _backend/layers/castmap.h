@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef CASTMAP_H
 #define CASTMAP_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Converts a map to a tensor.<br>The map key must be an int64 and the values will be ordered
@@ -9,7 +14,8 @@
 
 input: The input map that is to be cast to a tensor
 output: A tensor representing the same data as the input map, ordered by their keys
-//*/
+*/
+
 //CastMap
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        CastMap(std::string n);
+        CastMap();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~CastMap() {}
-
     };
+
     
+    void init_layer_CastMap(py::module& m) {
+        // py::class_(m, "CastMap");
+    }
+    
+
 }
+
 
 #endif
 

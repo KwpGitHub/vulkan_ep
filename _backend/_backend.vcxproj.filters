@@ -1451,4 +1451,9 @@
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="pybind_modules.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

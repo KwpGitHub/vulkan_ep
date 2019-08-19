@@ -1,11 +1,17 @@
-#include "../layer.h"
 #ifndef IF_H
 #define IF_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 If conditional
 input: Condition for the if
 output: Values that are live-out to the enclosing scope. The return values in the `then_branch` and `else_branch` must be of the same shape and same data type.
-//*/
+*/
+
 //If
 //INPUTS:                   cond_input
 //OPTIONAL_INPUTS:          
@@ -41,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        If(std::string n);
+        If();
     
         void forward() { program->run(); }
         
@@ -49,10 +55,16 @@ namespace backend {
         void bind(std::string _cond_input); 
 
         ~If() {}
-
     };
+
     
+    void init_layer_If(py::module& m) {
+        // py::class_(m, "If");
+    }
+    
+
 }
+
 
 #endif
 

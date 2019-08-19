@@ -1,14 +1,11 @@
 #include "ConvTranspose.h"
-
 //cpp stuff
 namespace backend {    
    
-    ConvTranspose::ConvTranspose(std::string n) : Layer(n) { }
+    ConvTranspose::ConvTranspose() : Layer() { }
        
     vuh::Device* ConvTranspose::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -47,11 +44,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[W_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[Y_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

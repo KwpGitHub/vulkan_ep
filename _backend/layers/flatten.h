@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef FLATTEN_H
 #define FLATTEN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Flattens the input tensor into a 2D matrix. If input tensor has shape
@@ -9,7 +14,8 @@ Flattens the input tensor into a 2D matrix. If input tensor has shape
 
 input: A tensor of rank >= axis.
 output: A 2D tensor with the contents of the input tensor, with input dimensions up to axis flattened to the outer dimension of the output and remaining input dimensions flattened into the inner dimension of the output.
-//*/
+*/
+
 //Flatten
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Flatten(std::string n);
+        Flatten();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Flatten() {}
-
     };
+
     
+    void init_layer_Flatten(py::module& m) {
+        // py::class_(m, "Flatten");
+    }
+    
+
 }
+
 
 #endif
 

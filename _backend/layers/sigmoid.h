@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SIGMOID_H
 #define SIGMOID_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Sigmoid takes one input data (Tensor<T>) and produces one output data
@@ -9,7 +14,8 @@ tensor elementwise.
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //Sigmoid
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sigmoid(std::string n);
+        Sigmoid();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Sigmoid() {}
-
     };
+
     
+    void init_layer_Sigmoid(py::module& m) {
+        // py::class_(m, "Sigmoid");
+    }
+    
+
 }
+
 
 #endif
 

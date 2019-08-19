@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SIGN_H
 #define SIGN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculate the sign of the given input tensor element-wise.
@@ -8,7 +13,8 @@ If input > 0, output 1. if input < 0, output -1. if input == 0, output 0.
 
 input: Input tensor
 output: The sign of the input tensor computed element-wise. It has the same shape and type of the input.
-//*/
+*/
+
 //Sign
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -44,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sign(std::string n);
+        Sign();
     
         void forward() { program->run(); }
         
@@ -52,10 +58,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Sign() {}
-
     };
+
     
+    void init_layer_Sign(py::module& m) {
+        // py::class_(m, "Sign");
+    }
+    
+
 }
+
 
 #endif
 

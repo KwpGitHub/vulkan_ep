@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LESS_H
 #define LESS_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Returns the tensor resulted from performing the `less` logical operation
@@ -11,7 +16,8 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 input: First input operand for the logical operator.
 input: Second input operand for the logical operator.
 output: Result tensor.
-//*/
+*/
+
 //Less
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Less(std::string n);
+        Less();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _C_output); 
 
         ~Less() {}
-
     };
+
     
+    void init_layer_Less(py::module& m) {
+        // py::class_(m, "Less");
+    }
+    
+
 }
+
 
 #endif
 

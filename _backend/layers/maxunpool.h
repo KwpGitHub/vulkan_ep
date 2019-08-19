@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MAXUNPOOL_H
 #define MAXUNPOOL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 MaxUnpool essentially computes the partial inverse of the MaxPool op.
@@ -26,7 +31,8 @@ input: Input data tensor that has to be unpooled. This tensor is typically the f
 input: Input data tensor containing the indices corresponding to elements in the first input tensor X.This tensor is typically the second output of the MaxPool op.Dimensions must be the same as input tensor X. The indices are linear, i.e. computed considering the tensor as flattened 1-D tensor, assuming row-major storage. Also, the linear indices should not consider padding. So the values in indices are in the range [0, N x C x D1 x ... x Dn).
 input: The shape of the output can be explicitly set which will cause pads values to be auto generated. If 'output_shape' is specified, 'pads' values are ignored.
 output: Output data tensor that contains the result of the unpooling.
-//*/
+*/
+
 //MaxUnpool
 //INPUTS:                   X_input, I_input
 //OPTIONAL_INPUTS:          output_shape_input_opt
@@ -62,7 +68,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxUnpool(std::string n);
+        MaxUnpool();
     
         void forward() { program->run(); }
         
@@ -70,10 +76,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _I_input, std::string _output_shape_input_opt, std::string _output_output); 
 
         ~MaxUnpool() {}
-
     };
+
     
+    void init_layer_MaxUnpool(py::module& m) {
+        // py::class_(m, "MaxUnpool");
+    }
+    
+
 }
+
 
 #endif
 

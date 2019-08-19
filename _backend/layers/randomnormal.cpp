@@ -1,14 +1,11 @@
 #include "RandomNormal.h"
-
 //cpp stuff
 namespace backend {    
    
-    RandomNormal::RandomNormal(std::string n) : Layer(n) { }
+    RandomNormal::RandomNormal() : Layer() { }
        
     vuh::Device* RandomNormal::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -38,11 +35,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[output_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

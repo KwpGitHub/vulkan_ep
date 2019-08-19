@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef REDUCEMAX_H
 #define REDUCEMAX_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes the max of the input tensor's element along the provided axes. The resulted
@@ -11,7 +16,8 @@ The above behavior is similar to numpy, with the exception that numpy default ke
 False instead of True.
 input: An input tensor.
 output: Reduced output tensor.
-//*/
+*/
+
 //ReduceMax
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceMax(std::string n);
+        ReduceMax();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _reduced_output); 
 
         ~ReduceMax() {}
-
     };
+
     
+    void init_layer_ReduceMax(py::module& m) {
+        // py::class_(m, "ReduceMax");
+    }
+    
+
 }
+
 
 #endif
 

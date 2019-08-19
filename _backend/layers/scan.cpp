@@ -1,14 +1,11 @@
 #include "Scan.h"
-
 //cpp stuff
 namespace backend {    
    
-    Scan::Scan(std::string n) : Layer(n) { }
+    Scan::Scan() : Layer() { }
        
     vuh::Device* Scan::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -39,11 +36,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding);
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

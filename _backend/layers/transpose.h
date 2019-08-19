@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef TRANSPOSE_H
 #define TRANSPOSE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Transpose the input tensor similar to numpy.transpose. For example, when
@@ -9,7 +14,8 @@ will be (2, 1, 3).
 
 input: An input tensor.
 output: Transposed output.
-//*/
+*/
+
 //Transpose
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Transpose(std::string n);
+        Transpose();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _transposed_output); 
 
         ~Transpose() {}
-
     };
+
     
+    void init_layer_Transpose(py::module& m) {
+        // py::class_(m, "Transpose");
+    }
+    
+
 }
+
 
 #endif
 

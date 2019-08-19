@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef ARGMAX_H
 #define ARGMAX_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes the indices of the max elements of the input tensor's element along the 
@@ -9,7 +14,8 @@ If keepdims equal 0, then the resulted tensor have the reduced dimension pruned.
 The type of the output tensor is integer.
 input: An input tensor.
 output: Reduced output tensor with integer data type.
-//*/
+*/
+
 //ArgMax
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ArgMax(std::string n);
+        ArgMax();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _reduced_output); 
 
         ~ArgMax() {}
-
     };
+
     
+    void init_layer_ArgMax(py::module& m) {
+        // py::class_(m, "ArgMax");
+    }
+    
+
 }
+
 
 #endif
 

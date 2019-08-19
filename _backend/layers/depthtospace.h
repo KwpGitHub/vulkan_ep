@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef DEPTHTOSPACE_H
 #define DEPTHTOSPACE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 DepthToSpace rearranges (permutes) data from depth into blocks of spatial data.
 This is the reverse transformation of SpaceToDepth. More specifically, this op outputs a copy of
@@ -9,7 +14,8 @@ and width dimensions.
 
 input: Input tensor of [N,C,H,W], where N is the batch axis, C is the channel or depth, H is the height and W is the width.
 output: Output tensor of [N, C/(blocksize * blocksize), H * blocksize, W * blocksize].
-//*/
+*/
+
 //DepthToSpace
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DepthToSpace(std::string n);
+        DepthToSpace();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~DepthToSpace() {}
-
     };
+
     
+    void init_layer_DepthToSpace(py::module& m) {
+        // py::class_(m, "DepthToSpace");
+    }
+    
+
 }
+
 
 #endif
 

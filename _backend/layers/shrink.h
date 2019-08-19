@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SHRINK_H
 #define SHRINK_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Shrink takes one input data (Tensor<numeric>) and produces one Tensor output,
@@ -10,7 +15,8 @@ If x > lambd, y = x - bias; Otherwise, y = 0.
 
 input: The input data as Tensor.
 output: The output.
-//*/
+*/
+
 //Shrink
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Shrink(std::string n);
+        Shrink();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Shrink() {}
-
     };
+
     
+    void init_layer_Shrink(py::module& m) {
+        // py::class_(m, "Shrink");
+    }
+    
+
 }
+
 
 #endif
 

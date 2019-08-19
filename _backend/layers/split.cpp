@@ -1,14 +1,11 @@
 #include "Split.h"
-
 //cpp stuff
 namespace backend {    
    
-    Split::Split(std::string n) : Layer(n) { }
+    Split::Split() : Layer() { }
        
     vuh::Device* Split::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -32,11 +29,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[input_input]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

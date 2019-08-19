@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef REDUCEMIN_H
 #define REDUCEMIN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes the min of the input tensor's element along the provided axes. The resulted
@@ -11,7 +16,8 @@ The above behavior is similar to numpy, with the exception that numpy default ke
 False instead of True.
 input: An input tensor.
 output: Reduced output tensor.
-//*/
+*/
+
 //ReduceMin
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceMin(std::string n);
+        ReduceMin();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _reduced_output); 
 
         ~ReduceMin() {}
-
     };
+
     
+    void init_layer_ReduceMin(py::module& m) {
+        // py::class_(m, "ReduceMin");
+    }
+    
+
 }
+
 
 #endif
 

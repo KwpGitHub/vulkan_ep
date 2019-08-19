@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MAX_H
 #define MAX_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Element-wise max of each of the input tensors (with Numpy-style broadcasting support).
@@ -9,7 +14,8 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 
 input: List of tensors for max.
 output: Output tensor.
-//*/
+*/
+
 //Max
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Max(std::string n);
+        Max();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _max_output); 
 
         ~Max() {}
-
     };
+
     
+    void init_layer_Max(py::module& m) {
+        // py::class_(m, "Max");
+    }
+    
+
 }
+
 
 #endif
 

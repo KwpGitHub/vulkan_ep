@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef TFIDFVECTORIZER_H
 #define TFIDFVECTORIZER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 This transform extracts n-grams from the input sequence and save them as a vector. Input can
@@ -33,7 +38,8 @@ If pool_strings is set, the input must be a string tensor.
 
 input: Input for n-gram extraction
 output: Ngram results
-//*/
+*/
+
 //TfIdfVectorizer
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -69,7 +75,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TfIdfVectorizer(std::string n);
+        TfIdfVectorizer();
     
         void forward() { program->run(); }
         
@@ -77,10 +83,16 @@ namespace backend {
         void bind(std::string _pool_strings, std::string _weights, std::string _X_input, std::string _Y_output); 
 
         ~TfIdfVectorizer() {}
-
     };
+
     
+    void init_layer_TfIdfVectorizer(py::module& m) {
+        // py::class_(m, "TfIdfVectorizer");
+    }
+    
+
 }
+
 
 #endif
 

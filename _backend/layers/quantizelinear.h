@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef QUANTIZELINEAR_H
 #define QUANTIZELINEAR_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 The linear per-tensor/layer quantization operator. It consumes a high precision tensor, a scale, a zero point to compute the low precision / quantized tensor.
@@ -11,7 +16,8 @@ input: N-D full precision Input tensor to be quantized.
 input: Scale for doing quantization to get 'y'. It's a scalar, which means a per-tensor/layer quantization.
 input: Zero point for doing quantization to get 'y'. It's a scalar, which means a per-tensor/layer quantization. Default value is 0 if it's not specified.
 output: N-D quantized output tensor. It has same shape as input 'x'.
-//*/
+*/
+
 //QuantizeLinear
 //INPUTS:                   x_input, y_scale_input
 //OPTIONAL_INPUTS:          y_zero_point_input_opt
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        QuantizeLinear(std::string n);
+        QuantizeLinear();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _x_input, std::string _y_scale_input, std::string _y_zero_point_input_opt, std::string _y_output); 
 
         ~QuantizeLinear() {}
-
     };
+
     
+    void init_layer_QuantizeLinear(py::module& m) {
+        // py::class_(m, "QuantizeLinear");
+    }
+    
+
 }
+
 
 #endif
 

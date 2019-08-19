@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef ATANH_H
 #define ATANH_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the hyperbolic arctangent of the given input tensor element-wise.
 
 input: Input tensor
 output: The hyperbolic arctangent values of the input tensor computed element-wise
-//*/
+*/
+
 //Atanh
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Atanh(std::string n);
+        Atanh();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Atanh() {}
-
     };
+
     
+    void init_layer_Atanh(py::module& m) {
+        // py::class_(m, "Atanh");
+    }
+    
+
 }
+
 
 #endif
 

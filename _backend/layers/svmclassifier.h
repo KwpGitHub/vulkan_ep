@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SVMCLASSIFIER_H
 #define SVMCLASSIFIER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Support Vector Machine classifier
@@ -8,7 +13,8 @@
 input: Data to be classified.
 output: Classification outputs (one class per example).
 output: Class scores (one per class per example), if prob_a and prob_b are provided they are probabilities for each class, otherwise they are raw scores.
-//*/
+*/
+
 //SVMClassifier
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -44,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMClassifier(std::string n);
+        SVMClassifier();
     
         void forward() { program->run(); }
         
@@ -52,10 +58,16 @@ namespace backend {
         void bind(std::string _classlabels_strings, std::string _coefficients, std::string _kernel_params, std::string _prob_a, std::string _prob_b, std::string _rho, std::string _support_vectors, std::string _X_input, std::string _Y_output, std::string _Z_output); 
 
         ~SVMClassifier() {}
-
     };
+
     
+    void init_layer_SVMClassifier(py::module& m) {
+        // py::class_(m, "SVMClassifier");
+    }
+    
+
 }
+
 
 #endif
 

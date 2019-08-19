@@ -1,14 +1,11 @@
 #include "DepthToSpace.h"
-
 //cpp stuff
 namespace backend {    
    
-    DepthToSpace::DepthToSpace(std::string n) : Layer(n) { }
+    DepthToSpace::DepthToSpace() : Layer() { }
        
     vuh::Device* DepthToSpace::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -31,11 +28,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

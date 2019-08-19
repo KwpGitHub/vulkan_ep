@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RANDOMNORMAL_H
 #define RANDOMNORMAL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Generate a tensor with random values drawn from a normal distribution. The shape
@@ -13,7 +18,8 @@ TensorProto message.
 
 
 output: Output tensor of random values drawn from normal distribution
-//*/
+*/
+
 //RandomNormal
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -49,7 +55,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomNormal(std::string n);
+        RandomNormal();
     
         void forward() { program->run(); }
         
@@ -57,10 +63,16 @@ namespace backend {
         void bind(std::string _output_output); 
 
         ~RandomNormal() {}
-
     };
+
     
+    void init_layer_RandomNormal(py::module& m) {
+        // py::class_(m, "RandomNormal");
+    }
+    
+
 }
+
 
 #endif
 

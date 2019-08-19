@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LINEARCLASSIFIER_H
 #define LINEARCLASSIFIER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Linear classifier
@@ -8,7 +13,8 @@
 input: Data to be classified.
 output: Classification outputs (one class per example).
 output: Classification scores ([N,E] - one score for each class and example
-//*/
+*/
+
 //LinearClassifier
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -44,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LinearClassifier(std::string n);
+        LinearClassifier();
     
         void forward() { program->run(); }
         
@@ -52,10 +58,16 @@ namespace backend {
         void bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_input, std::string _Y_output, std::string _Z_output); 
 
         ~LinearClassifier() {}
-
     };
+
     
+    void init_layer_LinearClassifier(py::module& m) {
+        // py::class_(m, "LinearClassifier");
+    }
+    
+
 }
+
 
 #endif
 

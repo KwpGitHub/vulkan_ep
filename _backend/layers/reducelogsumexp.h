@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef REDUCELOGSUMEXP_H
 #define REDUCELOGSUMEXP_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes the log sum exponent of the input tensor's element along the provided axes. The resulted
@@ -11,7 +16,8 @@ The above behavior is similar to numpy, with the exception that numpy default ke
 False instead of True.
 input: An input tensor.
 output: Reduced output tensor.
-//*/
+*/
+
 //ReduceLogSumExp
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceLogSumExp(std::string n);
+        ReduceLogSumExp();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _reduced_output); 
 
         ~ReduceLogSumExp() {}
-
     };
+
     
+    void init_layer_ReduceLogSumExp(py::module& m) {
+        // py::class_(m, "ReduceLogSumExp");
+    }
+    
+
 }
+
 
 #endif
 

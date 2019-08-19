@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef SCALER_H
 #define SCALER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Rescale input data, for example to standardize features by removing the mean and scaling to unit variance.
 
 input: Data to be scaled.
 output: Scaled output data.
-//*/
+*/
+
 //Scaler
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scaler(std::string n);
+        Scaler();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _offset, std::string _scale, std::string _X_input, std::string _Y_output); 
 
         ~Scaler() {}
-
     };
+
     
+    void init_layer_Scaler(py::module& m) {
+        // py::class_(m, "Scaler");
+    }
+    
+
 }
+
 
 #endif
 

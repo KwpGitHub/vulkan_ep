@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef DEQUANTIZELINEAR_H
 #define DEQUANTIZELINEAR_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 The linear dequantization operator. It consumes a quantized tensor, a scale, a zero point to compute the full precision tensor.
@@ -12,7 +17,8 @@ input: N-D quantized input tensor to be de-quantized.
 input: Scale for input 'x'. It's a scalar, which means a per-tensor/layer quantization.
 input: Zero point for input 'x'. It's a scalar, which means a per-tensor/layer quantization. It's optional. 0 is the default value when it's not specified.
 output: N-D full precision output tensor. It has same shape as input 'x'.
-//*/
+*/
+
 //DequantizeLinear
 //INPUTS:                   x_input, x_scale_input
 //OPTIONAL_INPUTS:          x_zero_point_input_opt
@@ -48,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DequantizeLinear(std::string n);
+        DequantizeLinear();
     
         void forward() { program->run(); }
         
@@ -56,10 +62,16 @@ namespace backend {
         void bind(std::string _x_input, std::string _x_scale_input, std::string _x_zero_point_input_opt, std::string _y_output); 
 
         ~DequantizeLinear() {}
-
     };
+
     
+    void init_layer_DequantizeLinear(py::module& m) {
+        // py::class_(m, "DequantizeLinear");
+    }
+    
+
 }
+
 
 #endif
 

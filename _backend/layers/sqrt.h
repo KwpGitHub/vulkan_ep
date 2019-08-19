@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SQRT_H
 #define SQRT_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Square root takes one input data (Tensor<T>) and produces one output data
@@ -9,7 +14,8 @@ the tensor elementwise. If x is negative, then it will return NaN.
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //Sqrt
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sqrt(std::string n);
+        Sqrt();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Sqrt() {}
-
     };
+
     
+    void init_layer_Sqrt(py::module& m) {
+        // py::class_(m, "Sqrt");
+    }
+    
+
 }
+
 
 #endif
 

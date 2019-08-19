@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef PRELU_H
 #define PRELU_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 PRelu takes input data (Tensor<T>) and slope tensor as input, and produces one
@@ -10,7 +15,8 @@ This operator supports **unidirectional broadcasting** (tensor slope should be u
 input: Input tensor
 input: Slope tensor. The shape of slope can be smaller then first input X; if so, its shape must be unidirectional broadcastable to X
 output: Output tensor (same size as X)
-//*/
+*/
+
 //PRelu
 //INPUTS:                   X_input, slope_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        PRelu(std::string n);
+        PRelu();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _slope_input, std::string _Y_output); 
 
         ~PRelu() {}
-
     };
+
     
+    void init_layer_PRelu(py::module& m) {
+        // py::class_(m, "PRelu");
+    }
+    
+
 }
+
 
 #endif
 

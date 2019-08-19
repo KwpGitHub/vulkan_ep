@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MUL_H
 #define MUL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Performs element-wise binary multiplication (with Numpy-style broadcasting support).
@@ -10,7 +15,8 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 input: First operand.
 input: Second operand.
 output: Result, has same element type as two inputs
-//*/
+*/
+
 //Mul
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Mul(std::string n);
+        Mul();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _C_output); 
 
         ~Mul() {}
-
     };
+
     
+    void init_layer_Mul(py::module& m) {
+        // py::class_(m, "Mul");
+    }
+    
+
 }
+
 
 #endif
 

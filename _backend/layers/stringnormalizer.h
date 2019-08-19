@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef STRINGNORMALIZER_H
 #define STRINGNORMALIZER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 StringNormalization performs string operations for basic cleaning.
@@ -15,7 +20,8 @@ if input shape is [C] and shape [1, 1] if input shape is [1, C].
 
 input: UTF-8 strings to normalize
 output: UTF-8 Normalized strings
-//*/
+*/
+
 //StringNormalizer
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -51,7 +57,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        StringNormalizer(std::string n);
+        StringNormalizer();
     
         void forward() { program->run(); }
         
@@ -59,10 +65,16 @@ namespace backend {
         void bind(std::string _stopwords, std::string _X_input, std::string _Y_output); 
 
         ~StringNormalizer() {}
-
     };
+
     
+    void init_layer_StringNormalizer(py::module& m) {
+        // py::class_(m, "StringNormalizer");
+    }
+    
+
 }
+
 
 #endif
 

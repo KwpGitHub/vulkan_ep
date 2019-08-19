@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef REDUCEPROD_H
 #define REDUCEPROD_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes the product of the input tensor's element along the provided axes. The resulted
@@ -11,7 +16,8 @@ The above behavior is similar to numpy, with the exception that numpy default ke
 False instead of True.
 input: An input tensor.
 output: Reduced output tensor.
-//*/
+*/
+
 //ReduceProd
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceProd(std::string n);
+        ReduceProd();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _reduced_output); 
 
         ~ReduceProd() {}
-
     };
+
     
+    void init_layer_ReduceProd(py::module& m) {
+        // py::class_(m, "ReduceProd");
+    }
+    
+
 }
+
 
 #endif
 

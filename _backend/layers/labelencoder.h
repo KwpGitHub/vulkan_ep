@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LABELENCODER_H
 #define LABELENCODER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Maps each element in the input tensor to another value.<br>
@@ -23,7 +28,8 @@
 
 input: Input data. It can be either tensor or scalar.
 output: Output data.
-//*/
+*/
+
 //LabelEncoder
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -59,7 +65,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LabelEncoder(std::string n);
+        LabelEncoder();
     
         void forward() { program->run(); }
         
@@ -67,10 +73,16 @@ namespace backend {
         void bind(std::string _keys_floats, std::string _keys_strings, std::string _values_floats, std::string _values_strings, std::string _X_input, std::string _Y_output); 
 
         ~LabelEncoder() {}
-
     };
+
     
+    void init_layer_LabelEncoder(py::module& m) {
+        // py::class_(m, "LabelEncoder");
+    }
+    
+
 }
+
 
 #endif
 

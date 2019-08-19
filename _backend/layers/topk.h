@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef TOPK_H
 #define TOPK_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Retrieve the top-K elements along a specified axis. Given an input tensor of
@@ -18,7 +23,8 @@ input: Tensor of shape [a_1, a_2, ..., a_n, r]
 input: A 1-D tensor containing a single positive value corresponding to the number of top elements to retrieve
 output: Tensor of shape [a_1, a_2, ..., a_{axis-1}, k, a_{axis+1}, ... a_n] containing top K values from the input tensor
 output: Tensor of shape [a_1, a_2, ..., a_{axis-1}, k, a_{axis+1}, ... a_n] containing the corresponding input tensor indices for the top K values.
-//*/
+*/
+
 //TopK
 //INPUTS:                   X_input, K_input
 //OPTIONAL_INPUTS:          
@@ -54,7 +60,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TopK(std::string n);
+        TopK();
     
         void forward() { program->run(); }
         
@@ -62,10 +68,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _K_input, std::string _Values_output, std::string _Indices_output); 
 
         ~TopK() {}
-
     };
+
     
+    void init_layer_TopK(py::module& m) {
+        // py::class_(m, "TopK");
+    }
+    
+
 }
+
 
 #endif
 

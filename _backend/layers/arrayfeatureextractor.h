@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef ARRAYFEATUREEXTRACTOR_H
 #define ARRAYFEATUREEXTRACTOR_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Select elements of the input tensor based on the indices passed.<br>
@@ -9,7 +14,8 @@
 input: Data to be selected
 input: The indices, based on 0 as the first index of any dimension.
 output: Selected output data as an array
-//*/
+*/
+
 //ArrayFeatureExtractor
 //INPUTS:                   X_input, Y_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ArrayFeatureExtractor(std::string n);
+        ArrayFeatureExtractor();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_input, std::string _Z_output); 
 
         ~ArrayFeatureExtractor() {}
-
     };
+
     
+    void init_layer_ArrayFeatureExtractor(py::module& m) {
+        // py::class_(m, "ArrayFeatureExtractor");
+    }
+    
+
 }
+
 
 #endif
 

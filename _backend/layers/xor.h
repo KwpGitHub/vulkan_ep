@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef XOR_H
 #define XOR_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Returns the tensor resulted from performing the `xor` logical operation
@@ -11,7 +16,8 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 input: First input operand for the logical operator.
 input: Second input operand for the logical operator.
 output: Result tensor.
-//*/
+*/
+
 //Xor
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Xor(std::string n);
+        Xor();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _C_output); 
 
         ~Xor() {}
-
     };
+
     
+    void init_layer_Xor(py::module& m) {
+        // py::class_(m, "Xor");
+    }
+    
+
 }
+
 
 #endif
 

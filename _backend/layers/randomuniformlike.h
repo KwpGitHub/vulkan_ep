@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RANDOMUNIFORMLIKE_H
 #define RANDOMUNIFORMLIKE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Generate a tensor with random values drawn from a uniform distribution.
@@ -13,7 +18,8 @@ TensorProto message and be valid as an output type.
 
 input: Input tensor to copy shape and optionally type information from.
 output: Output tensor of random values drawn from uniform distribution
-//*/
+*/
+
 //RandomUniformLike
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -49,7 +55,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomUniformLike(std::string n);
+        RandomUniformLike();
     
         void forward() { program->run(); }
         
@@ -57,10 +63,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~RandomUniformLike() {}
-
     };
+
     
+    void init_layer_RandomUniformLike(py::module& m) {
+        // py::class_(m, "RandomUniformLike");
+    }
+    
+
 }
+
 
 #endif
 

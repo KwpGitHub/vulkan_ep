@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef ACOSH_H
 #define ACOSH_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the hyperbolic arccosine of the given input tensor element-wise.
 
 input: Input tensor
 output: The hyperbolic arccosine values of the input tensor computed element-wise
-//*/
+*/
+
 //Acosh
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Acosh(std::string n);
+        Acosh();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Acosh() {}
-
     };
+
     
+    void init_layer_Acosh(py::module& m) {
+        // py::class_(m, "Acosh");
+    }
+    
+
 }
+
 
 #endif
 

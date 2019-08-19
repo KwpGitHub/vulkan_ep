@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RANDOMNORMALLIKE_H
 #define RANDOMNORMALLIKE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Generate a tensor with random values drawn from a normal distribution.
@@ -13,7 +18,8 @@ TensorProto message, and be valid as an output type.
 
 input: Input tensor to copy shape and optionally type information from.
 output: Output tensor of random values drawn from normal distribution
-//*/
+*/
+
 //RandomNormalLike
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -49,7 +55,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomNormalLike(std::string n);
+        RandomNormalLike();
     
         void forward() { program->run(); }
         
@@ -57,10 +63,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~RandomNormalLike() {}
-
     };
+
     
+    void init_layer_RandomNormalLike(py::module& m) {
+        // py::class_(m, "RandomNormalLike");
+    }
+    
+
 }
+
 
 #endif
 

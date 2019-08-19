@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef NEG_H
 #define NEG_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Neg takes one input data (Tensor<T>) and produces one output data
@@ -9,7 +14,8 @@ the tensor elementwise.
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //Neg
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Neg(std::string n);
+        Neg();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Neg() {}
-
     };
+
     
+    void init_layer_Neg(py::module& m) {
+        // py::class_(m, "Neg");
+    }
+    
+
 }
+
 
 #endif
 

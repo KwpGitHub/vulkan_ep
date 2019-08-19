@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MATMULINTEGER_H
 #define MATMULINTEGER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Matrix product that behaves like numpy.matmul: https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.matmul.html.
@@ -11,7 +16,8 @@ input: N-dimensional matrix B
 input: Zero point tensor for input 'A'. It's optional and default value is 0. It could be a scalar or a 1-D tensor, which means a per-tensor or per-row quantization. If it's a 1-D tensor, its number of elements should be equal to the number of rows of input 'A'.
 input: Scale tensor for input 'B'. It's optional and default value is 0.  It could be a scalar or a 1-D tensor, which means a per-tensor or per-column quantization. If it's a 1-D tensor, its number of elements should be equal to the number of columns of input 'B'.
 output: Matrix multiply results from A * B
-//*/
+*/
+
 //MatMulInteger
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          a_zero_point_input_opt, b_zero_point_input_opt
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MatMulInteger(std::string n);
+        MatMulInteger();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _a_zero_point_input_opt, std::string _b_zero_point_input_opt, std::string _Y_output); 
 
         ~MatMulInteger() {}
-
     };
+
     
+    void init_layer_MatMulInteger(py::module& m) {
+        // py::class_(m, "MatMulInteger");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef SIZE_H
 #define SIZE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Takes a tensor as input and outputs a int64 scalar that equals to the total number of elements of the input tensor.
 
 input: An input tensor.
 output: Total number of elements of the input tensor
-//*/
+*/
+
 //Size
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Size(std::string n);
+        Size();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _size_output); 
 
         ~Size() {}
-
     };
+
     
+    void init_layer_Size(py::module& m) {
+        // py::class_(m, "Size");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RELU_H
 #define RELU_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Relu takes one input data (Tensor<T>) and produces one output data
@@ -9,7 +14,8 @@ the tensor elementwise.
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //Relu
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Relu(std::string n);
+        Relu();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Relu() {}
-
     };
+
     
+    void init_layer_Relu(py::module& m) {
+        // py::class_(m, "Relu");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SCATTER_H
 #define SCATTER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Given `data`, `updates` and `indices` input tensors of rank r >= 1, write the values provided by `updates` 
@@ -41,7 +46,8 @@ input: Tensor of rank r >= 1.
 input: Tensor of int32/int64 indices, of r >= 1 (same rank as input).
 input: Tensor of rank r >=1 (same rank and shape as indices)
 output: Tensor of rank r >= 1 (same rank as input).
-//*/
+*/
+
 //Scatter
 //INPUTS:                   data_input, indices_input, updates_input
 //OPTIONAL_INPUTS:          
@@ -77,7 +83,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scatter(std::string n);
+        Scatter();
     
         void forward() { program->run(); }
         
@@ -85,10 +91,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _indices_input, std::string _updates_input, std::string _output_output); 
 
         ~Scatter() {}
-
     };
+
     
+    void init_layer_Scatter(py::module& m) {
+        // py::class_(m, "Scatter");
+    }
+    
+
 }
+
 
 #endif
 

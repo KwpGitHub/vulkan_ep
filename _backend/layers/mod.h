@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MOD_H
 #define MOD_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
   Performs element-wise binary modulus (with Numpy-style broadcasting support). 
@@ -20,7 +25,8 @@
 input: Dividend tensor
 input: Divisor tensor
 output: Remainder tensor
-//*/
+*/
+
 //Mod
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -56,7 +62,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Mod(std::string n);
+        Mod();
     
         void forward() { program->run(); }
         
@@ -64,10 +70,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _C_output); 
 
         ~Mod() {}
-
     };
+
     
+    void init_layer_Mod(py::module& m) {
+        // py::class_(m, "Mod");
+    }
+    
+
 }
+
 
 #endif
 

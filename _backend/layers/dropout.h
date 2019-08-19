@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef DROPOUT_H
 #define DROPOUT_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Dropout takes one input floating tensor and produces two tensor outputs,
@@ -13,7 +18,8 @@ This operator has **optional** inputs/outputs. See [the doc](IR.md) for more det
 input: The input data as Tensor.
 output: The output.
 output: The output mask.
-//*/
+*/
+
 //Dropout
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -49,7 +55,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Dropout(std::string n);
+        Dropout();
     
         void forward() { program->run(); }
         
@@ -57,10 +63,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _output_output, std::string _mask_output_opt); 
 
         ~Dropout() {}
-
     };
+
     
+    void init_layer_Dropout(py::module& m) {
+        // py::class_(m, "Dropout");
+    }
+    
+
 }
+
 
 #endif
 

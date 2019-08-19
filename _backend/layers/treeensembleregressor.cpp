@@ -1,14 +1,11 @@
 #include "TreeEnsembleRegressor.h"
-
 //cpp stuff
 namespace backend {    
    
-    TreeEnsembleRegressor::TreeEnsembleRegressor(std::string n) : Layer(n) { }
+    TreeEnsembleRegressor::TreeEnsembleRegressor() : Layer() { }
        
     vuh::Device* TreeEnsembleRegressor::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -58,11 +55,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[base_values]->data(), *tensor_dict[nodes_hitrates]->data(), *tensor_dict[nodes_modes]->data(), *tensor_dict[nodes_values]->data(), *tensor_dict[target_weights]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LSTM_H
 #define LSTM_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes an one-layer LSTM. This operator is usually supported via some
@@ -96,7 +101,8 @@ input: The weight tensor for peepholes. Concatenation of `P[iof]` and `PB[iof]` 
 output: A tensor that concats all the intermediate output values of the hidden. It has shape `[seq_length, num_directions, batch_size, hidden_size]`. 
 output: The last output value of the hidden. It has shape `[num_directions, batch_size, hidden_size]`.
 output: The last output value of the cell. It has shape `[num_directions, batch_size, hidden_size]`.
-//*/
+*/
+
 //LSTM
 //INPUTS:                   X_input, W_input, R_input
 //OPTIONAL_INPUTS:          B_input_opt, sequence_lens_input_opt, initial_h_input_opt, initial_c_input_opt, P_input_opt
@@ -132,7 +138,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LSTM(std::string n);
+        LSTM();
     
         void forward() { program->run(); }
         
@@ -140,10 +146,16 @@ namespace backend {
         void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_input, std::string _W_input, std::string _R_input, std::string _B_input_opt, std::string _sequence_lens_input_opt, std::string _initial_h_input_opt, std::string _initial_c_input_opt, std::string _P_input_opt, std::string _Y_output_opt, std::string _Y_h_output_opt, std::string _Y_c_output_opt); 
 
         ~LSTM() {}
-
     };
+
     
+    void init_layer_LSTM(py::module& m) {
+        // py::class_(m, "LSTM");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,11 +1,17 @@
-#include "../layer.h"
 #ifndef ISINF_H
 #define ISINF_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 Map infinity to true and other values to false.
 input: input
 output: output
-//*/
+*/
+
 //IsInf
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -41,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        IsInf(std::string n);
+        IsInf();
     
         void forward() { program->run(); }
         
@@ -49,10 +55,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~IsInf() {}
-
     };
+
     
+    void init_layer_IsInf(py::module& m) {
+        // py::class_(m, "IsInf");
+    }
+    
+
 }
+
 
 #endif
 

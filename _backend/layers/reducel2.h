@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef REDUCEL2_H
 #define REDUCEL2_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes the L2 norm of the input tensor's element along the provided axes. The resulted
@@ -11,7 +16,8 @@ The above behavior is similar to numpy, with the exception that numpy default ke
 False instead of True.
 input: An input tensor.
 output: Reduced output tensor.
-//*/
+*/
+
 //ReduceL2
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceL2(std::string n);
+        ReduceL2();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _reduced_output); 
 
         ~ReduceL2() {}
-
     };
+
     
+    void init_layer_ReduceL2(py::module& m) {
+        // py::class_(m, "ReduceL2");
+    }
+    
+
 }
+
 
 #endif
 

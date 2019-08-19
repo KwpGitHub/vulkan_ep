@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef ROIALIGN_H
 #define ROIALIGN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Region of Interest (RoI) align operation described in the
@@ -19,7 +24,8 @@ input: Input data tensor from the previous operator; 4-D feature map of shape (N
 input: RoIs (Regions of Interest) to pool over; rois is 2-D input of shape (num_rois, 4) given as [[x1, y1, x2, y2], ...]. The RoIs' coordinates are in the coordinate system of the input image. Each coordinate set has a 1:1 correspondence with the 'batch_indices' input.
 input: 1-D tensor of shape (num_rois,) with each element denoting the index of the corresponding image in the batch.
 output: RoI pooled output, 4-D tensor of shape (num_rois, C, output_height, output_width). The r-th batch element Y[r-1] is a pooled feature map corresponding to the r-th RoI X[r-1].
-//*/
+*/
+
 //RoiAlign
 //INPUTS:                   X_input, rois_input, batch_indices_input
 //OPTIONAL_INPUTS:          
@@ -55,7 +61,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RoiAlign(std::string n);
+        RoiAlign();
     
         void forward() { program->run(); }
         
@@ -63,10 +69,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _rois_input, std::string _batch_indices_input, std::string _Y_output); 
 
         ~RoiAlign() {}
-
     };
+
     
+    void init_layer_RoiAlign(py::module& m) {
+        // py::class_(m, "RoiAlign");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MEANVARIANCENORMALIZATION_H
 #define MEANVARIANCENORMALIZATION_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
       A MeanVarianceNormalization Function: Perform mean variance normalization
@@ -8,7 +13,8 @@
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //MeanVarianceNormalization
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -44,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MeanVarianceNormalization(std::string n);
+        MeanVarianceNormalization();
     
         void forward() { program->run(); }
         
@@ -52,10 +58,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~MeanVarianceNormalization() {}
-
     };
+
     
+    void init_layer_MeanVarianceNormalization(py::module& m) {
+        // py::class_(m, "MeanVarianceNormalization");
+    }
+    
+
 }
+
 
 #endif
 

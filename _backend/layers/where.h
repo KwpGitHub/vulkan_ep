@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef WHERE_H
 #define WHERE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Return elements, either from X or Y, depending on condition
@@ -12,7 +17,8 @@ input: When True (nonzero), yield X, otherwise yield Y
 input: values selected at indices where condition is True
 input: values selected at indices where condition is False
 output: Tensor of shape equal to the broadcasted shape of condition, X, and Y.
-//*/
+*/
+
 //Where
 //INPUTS:                   condition_input, X_input, Y_input
 //OPTIONAL_INPUTS:          
@@ -48,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Where(std::string n);
+        Where();
     
         void forward() { program->run(); }
         
@@ -56,10 +62,16 @@ namespace backend {
         void bind(std::string _condition_input, std::string _X_input, std::string _Y_input, std::string _output_output); 
 
         ~Where() {}
-
     };
+
     
+    void init_layer_Where(py::module& m) {
+        // py::class_(m, "Where");
+    }
+    
+
 }
+
 
 #endif
 

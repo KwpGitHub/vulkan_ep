@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RECIPROCAL_H
 #define RECIPROCAL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Reciprocal takes one input data (Tensor<T>) and produces one output data
@@ -9,7 +14,8 @@ the tensor elementwise.
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //Reciprocal
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Reciprocal(std::string n);
+        Reciprocal();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Reciprocal() {}
-
     };
+
     
+    void init_layer_Reciprocal(py::module& m) {
+        // py::class_(m, "Reciprocal");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,14 +1,11 @@
 #include "Dropout.h"
-
 //cpp stuff
 namespace backend {    
    
-    Dropout::Dropout(std::string n) : Layer(n) { }
+    Dropout::Dropout() : Layer() { }
        
     vuh::Device* Dropout::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -32,11 +29,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[output_output]->data(), *tensor_dict[mask_output_opt]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

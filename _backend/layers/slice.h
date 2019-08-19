@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SLICE_H
 #define SLICE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Produces a slice of the input tensor along multiple axes. Similar to numpy:
@@ -44,7 +49,8 @@ input: 1-D tensor of ending indices (exclusive) of corresponding axis in `axes`
 input: 1-D tensor of axes that `starts` and `ends` apply to.
 input: 1-D tensor of slice step of corresponding axis in `axes`. Default to 1. 
 output: Sliced data tensor.
-//*/
+*/
+
 //Slice
 //INPUTS:                   data_input, starts_input, ends_input
 //OPTIONAL_INPUTS:          axes_input_opt, steps_input_opt
@@ -80,7 +86,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Slice(std::string n);
+        Slice();
     
         void forward() { program->run(); }
         
@@ -88,10 +94,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _starts_input, std::string _ends_input, std::string _axes_input_opt, std::string _steps_input_opt, std::string _output_output); 
 
         ~Slice() {}
-
     };
+
     
+    void init_layer_Slice(py::module& m) {
+        // py::class_(m, "Slice");
+    }
+    
+
 }
+
 
 #endif
 

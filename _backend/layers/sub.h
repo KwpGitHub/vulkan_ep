@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SUB_H
 #define SUB_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Performs element-wise binary subtraction (with Numpy-style broadcasting support).
@@ -10,7 +15,8 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 input: First operand.
 input: Second operand.
 output: Result, has same element type as two inputs
-//*/
+*/
+
 //Sub
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sub(std::string n);
+        Sub();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _C_output); 
 
         ~Sub() {}
-
     };
+
     
+    void init_layer_Sub(py::module& m) {
+        // py::class_(m, "Sub");
+    }
+    
+
 }
+
 
 #endif
 

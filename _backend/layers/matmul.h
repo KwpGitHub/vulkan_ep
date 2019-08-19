@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MATMUL_H
 #define MATMUL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Matrix product that behaves like numpy.matmul: https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.matmul.html
@@ -8,7 +13,8 @@ Matrix product that behaves like numpy.matmul: https://docs.scipy.org/doc/numpy-
 input: N-dimensional matrix A
 input: N-dimensional matrix B
 output: Matrix multiply results from A * B
-//*/
+*/
+
 //MatMul
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -44,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MatMul(std::string n);
+        MatMul();
     
         void forward() { program->run(); }
         
@@ -52,10 +58,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _Y_output); 
 
         ~MatMul() {}
-
     };
+
     
+    void init_layer_MatMul(py::module& m) {
+        // py::class_(m, "MatMul");
+    }
+    
+
 }
+
 
 #endif
 

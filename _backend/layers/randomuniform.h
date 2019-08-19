@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RANDOMUNIFORM_H
 #define RANDOMUNIFORM_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Generate a tensor with random values drawn from a uniform distribution. The shape
@@ -12,7 +17,8 @@ TensorProto message.
 
 
 output: Output tensor of random values drawn from uniform distribution
-//*/
+*/
+
 //RandomUniform
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -48,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomUniform(std::string n);
+        RandomUniform();
     
         void forward() { program->run(); }
         
@@ -56,10 +62,16 @@ namespace backend {
         void bind(std::string _output_output); 
 
         ~RandomUniform() {}
-
     };
+
     
+    void init_layer_RandomUniform(py::module& m) {
+        // py::class_(m, "RandomUniform");
+    }
+    
+
 }
+
 
 #endif
 

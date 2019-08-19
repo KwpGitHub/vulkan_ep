@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef SHAPE_H
 #define SHAPE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Takes a tensor as input and outputs an 1D int64 tensor containing the shape of the input tensor.
 
 input: An input tensor.
 output: Shape of the input tensor
-//*/
+*/
+
 //Shape
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Shape(std::string n);
+        Shape();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _shape_output); 
 
         ~Shape() {}
-
     };
+
     
+    void init_layer_Shape(py::module& m) {
+        // py::class_(m, "Shape");
+    }
+    
+
 }
+
 
 #endif
 

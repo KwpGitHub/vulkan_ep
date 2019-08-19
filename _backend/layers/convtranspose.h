@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef CONVTRANSPOSE_H
 #define CONVTRANSPOSE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 The convolution transpose operator consumes an input tensor and a filter,
@@ -21,7 +26,8 @@ input: Input data tensor from previous layer; has size (N x C x H x W), where N 
 input: The weight tensor that will be used in the convolutions; has size (C x M/group x kH x kW), where C is the number of channels, and kH and kW are the height and width of the kernel, and M is the number of feature maps. For more than 2 dimensions, the weight shape will be (C x M/group x k1 x k2 x ... x kn), where (k1 x k2 x ... x kn) is the dimension of the kernel. The number of channels in the output should be equal to W.shape[1] * group (assuming zero based indices of the shape array)
 input: Optional 1D bias to be added to the convolution, has size of M.
 output: Output data tensor that contains the result of the convolution. The output dimensions are functions of the kernel size, stride size, pad lengths and group count. The number of channels in the output should be equal to W.shape[1] * group (assuming zero based indices of the shape array)
-//*/
+*/
+
 //ConvTranspose
 //INPUTS:                   X_input, W_input
 //OPTIONAL_INPUTS:          B_input_opt
@@ -57,7 +63,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ConvTranspose(std::string n);
+        ConvTranspose();
     
         void forward() { program->run(); }
         
@@ -65,10 +71,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _W_input, std::string _B_input_opt, std::string _Y_output); 
 
         ~ConvTranspose() {}
-
     };
+
     
+    void init_layer_ConvTranspose(py::module& m) {
+        // py::class_(m, "ConvTranspose");
+    }
+    
+
 }
+
 
 #endif
 

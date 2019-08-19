@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SOFTPLUS_H
 #define SOFTPLUS_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Softplus takes one input data (Tensor<T>) and produces one output data
@@ -9,7 +14,8 @@ the tensor elementwise.
 
 input: 1D input tensor
 output: 1D input tensor
-//*/
+*/
+
 //Softplus
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Softplus(std::string n);
+        Softplus();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Softplus() {}
-
     };
+
     
+    void init_layer_Softplus(py::module& m) {
+        // py::class_(m, "Softplus");
+    }
+    
+
 }
+
 
 #endif
 

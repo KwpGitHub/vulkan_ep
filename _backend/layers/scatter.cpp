@@ -1,14 +1,11 @@
 #include "Scatter.h"
-
 //cpp stuff
 namespace backend {    
    
-    Scatter::Scatter(std::string n) : Layer(n) { }
+    Scatter::Scatter() : Layer() { }
        
     vuh::Device* Scatter::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -33,11 +30,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[indices_input]->data(), *tensor_dict[updates_input]->data(), *tensor_dict[output_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

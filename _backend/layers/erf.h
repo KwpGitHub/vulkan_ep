@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef ERF_H
 #define ERF_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes the error function of the given input tensor element-wise.
 
 input: Input tensor
 output: The error function of the input tensor computed element-wise. It has the same shape and type of the input.
-//*/
+*/
+
 //Erf
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Erf(std::string n);
+        Erf();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Erf() {}
-
     };
+
     
+    void init_layer_Erf(py::module& m) {
+        // py::class_(m, "Erf");
+    }
+    
+
 }
+
 
 #endif
 

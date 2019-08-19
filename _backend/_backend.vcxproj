@@ -670,6 +670,9 @@
     <None Include="shaders\xor.comp" />
     <None Include="shaders\zipmap.comp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="pybind_modules.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

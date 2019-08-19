@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef QLINEARCONV_H
 #define QLINEARCONV_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 The convolution operator consumes a quantized input tensor, its scale and zero point,
@@ -19,7 +24,8 @@ input: Scale tensor for output 'y'. It's a scalar, which means a per-tensor/laye
 input: Scale tensor for output 'y'. It's a scalar, which means a per-tensor/layer quantization.
 input: Optional 1D bias to be added to the convolution, has size of M.
 output: Output data tensor that contains the result of the convolution. The output dimensions are functions of the kernel size, stride size, and pad lengths.
-//*/
+*/
+
 //QLinearConv
 //INPUTS:                   x_input, x_scale_input, x_zero_point_input, w_input, w_scale_input, w_zero_point_input, y_scale_input, y_zero_point_input
 //OPTIONAL_INPUTS:          B_input_opt
@@ -55,7 +61,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        QLinearConv(std::string n);
+        QLinearConv();
     
         void forward() { program->run(); }
         
@@ -63,10 +69,16 @@ namespace backend {
         void bind(std::string _x_input, std::string _x_scale_input, std::string _x_zero_point_input, std::string _w_input, std::string _w_scale_input, std::string _w_zero_point_input, std::string _y_scale_input, std::string _y_zero_point_input, std::string _B_input_opt, std::string _y_output); 
 
         ~QLinearConv() {}
-
     };
+
     
+    void init_layer_QLinearConv(py::module& m) {
+        // py::class_(m, "QLinearConv");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef BATCHNORMALIZATION_H
 #define BATCHNORMALIZATION_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Carries out batch normalization as described in the paper
@@ -24,7 +29,8 @@ output: The running mean after the BatchNormalization operator.
 output: The running variance after the BatchNormalization operator.
 output: Saved mean used during training to speed up gradient computation.
 output: Saved variance used during training to speed up gradient computation.
-//*/
+*/
+
 //BatchNormalization
 //INPUTS:                   X_input, scale_input, B_input, mean_input, var_input
 //OPTIONAL_INPUTS:          
@@ -60,7 +66,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        BatchNormalization(std::string n);
+        BatchNormalization();
     
         void forward() { program->run(); }
         
@@ -68,10 +74,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _scale_input, std::string _B_input, std::string _mean_input, std::string _var_input, std::string _Y_output, std::string _mean_output_opt, std::string _var_output_opt, std::string _saved_mean_output_opt, std::string _saved_var_output_opt); 
 
         ~BatchNormalization() {}
-
     };
+
     
+    void init_layer_BatchNormalization(py::module& m) {
+        // py::class_(m, "BatchNormalization");
+    }
+    
+
 }
+
 
 #endif
 

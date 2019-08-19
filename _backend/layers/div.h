@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef DIV_H
 #define DIV_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Performs element-wise binary division (with Numpy-style broadcasting support).
@@ -10,7 +15,8 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 input: First operand.
 input: Second operand.
 output: Result, has same element type as two inputs
-//*/
+*/
+
 //Div
 //INPUTS:                   A_input, B_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Div(std::string n);
+        Div();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _C_output); 
 
         ~Div() {}
-
     };
+
     
+    void init_layer_Div(py::module& m) {
+        // py::class_(m, "Div");
+    }
+    
+
 }
+
 
 #endif
 

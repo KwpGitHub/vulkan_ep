@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LEAKYRELU_H
 #define LEAKYRELU_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 LeakyRelu takes input data (Tensor<T>) and an argument alpha, and produces one
@@ -9,7 +14,8 @@ output data (Tensor<T>) where the function `f(x) = alpha * x for x < 0`,
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //LeakyRelu
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LeakyRelu(std::string n);
+        LeakyRelu();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~LeakyRelu() {}
-
     };
+
     
+    void init_layer_LeakyRelu(py::module& m) {
+        // py::class_(m, "LeakyRelu");
+    }
+    
+
 }
+
 
 #endif
 

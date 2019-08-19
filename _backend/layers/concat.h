@@ -1,11 +1,17 @@
-#include "../layer.h"
 #ifndef CONCAT_H
 #define CONCAT_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 Concatenate a list of tensors into a single tensor
 input: List of tensors for concatenation
 output: Concatenated tensor
-//*/
+*/
+
 //Concat
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -41,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Concat(std::string n);
+        Concat();
     
         void forward() { program->run(); }
         
@@ -49,10 +55,16 @@ namespace backend {
         void bind(std::string _concat_result_output); 
 
         ~Concat() {}
-
     };
+
     
+    void init_layer_Concat(py::module& m) {
+        // py::class_(m, "Concat");
+    }
+    
+
 }
+
 
 #endif
 

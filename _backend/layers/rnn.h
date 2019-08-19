@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RNN_H
 #define RNN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Computes an one-layer simple RNN. This operator is usually supported
@@ -73,7 +78,8 @@ input: Optional tensor specifying lengths of the sequences in a batch. If not sp
 input: Optional initial value of the hidden. If not specified - assumed to be 0. It has shape `[num_directions, batch_size, hidden_size]`.
 output: A tensor that concats all the intermediate output values of the hidden. It has shape `[seq_length, num_directions, batch_size, hidden_size]`. 
 output: The last output value of the hidden. It has shape `[num_directions, batch_size, hidden_size]`.
-//*/
+*/
+
 //RNN
 //INPUTS:                   X_input, W_input, R_input
 //OPTIONAL_INPUTS:          B_input_opt, sequence_lens_input_opt, initial_h_input_opt
@@ -109,7 +115,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RNN(std::string n);
+        RNN();
     
         void forward() { program->run(); }
         
@@ -117,10 +123,16 @@ namespace backend {
         void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_input, std::string _W_input, std::string _R_input, std::string _B_input_opt, std::string _sequence_lens_input_opt, std::string _initial_h_input_opt, std::string _Y_output_opt, std::string _Y_h_output_opt); 
 
         ~RNN() {}
-
     };
+
     
+    void init_layer_RNN(py::module& m) {
+        // py::class_(m, "RNN");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef NORMALIZER_H
 #define NORMALIZER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Normalize the input.  There are three normalization modes, which have the corresponding formulas,
@@ -16,7 +21,8 @@
 
 input: Data to be encoded, a tensor of shape [N,C] or [C]
 output: Encoded output data
-//*/
+*/
+
 //Normalizer
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -52,7 +58,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Normalizer(std::string n);
+        Normalizer();
     
         void forward() { program->run(); }
         
@@ -60,10 +66,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Normalizer() {}
-
     };
+
     
+    void init_layer_Normalizer(py::module& m) {
+        // py::class_(m, "Normalizer");
+    }
+    
+
 }
+
 
 #endif
 

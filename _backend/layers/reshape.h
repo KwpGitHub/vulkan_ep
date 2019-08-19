@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RESHAPE_H
 #define RESHAPE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Reshape the input tensor similar to numpy.reshape.
@@ -12,7 +17,8 @@ from the input tensor).
 input: An input tensor.
 input: Specified shape for output.
 output: Reshaped data.
-//*/
+*/
+
 //Reshape
 //INPUTS:                   data_input, shape_input
 //OPTIONAL_INPUTS:          
@@ -48,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Reshape(std::string n);
+        Reshape();
     
         void forward() { program->run(); }
         
@@ -56,10 +62,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _shape_input, std::string _reshaped_output); 
 
         ~Reshape() {}
-
     };
+
     
+    void init_layer_Reshape(py::module& m) {
+        // py::class_(m, "Reshape");
+    }
+    
+
 }
+
 
 #endif
 

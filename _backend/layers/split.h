@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SPLIT_H
 #define SPLIT_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 Split a tensor into a list of tensors, along the specified
 'axis'. Lengths of the parts can be specified using argument 'split'.
@@ -8,7 +13,8 @@ Otherwise, the tensor is split to equal sized parts.
 
 input: The tensor to split
 output: One or more outputs forming list of tensors after splitting
-//*/
+*/
+
 //Split
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -44,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Split(std::string n);
+        Split();
     
         void forward() { program->run(); }
         
@@ -52,10 +58,16 @@ namespace backend {
         void bind(std::string _input_input); 
 
         ~Split() {}
-
     };
+
     
+    void init_layer_Split(py::module& m) {
+        // py::class_(m, "Split");
+    }
+    
+
 }
+
 
 #endif
 

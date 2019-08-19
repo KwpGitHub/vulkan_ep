@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef EYELIKE_H
 #define EYELIKE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Generate a 2D tensor (matrix) with ones on the diagonal and zeros everywhere else. Only 2D
@@ -13,7 +18,8 @@ TensorProto message and be valid as an output type.
 
 input: 2D input tensor to copy shape, and optionally, type information from.
 output: Output tensor, same shape as input tensor T1.
-//*/
+*/
+
 //EyeLike
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -49,7 +55,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        EyeLike(std::string n);
+        EyeLike();
     
         void forward() { program->run(); }
         
@@ -57,10 +63,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~EyeLike() {}
-
     };
+
     
+    void init_layer_EyeLike(py::module& m) {
+        // py::class_(m, "EyeLike");
+    }
+    
+
 }
+
 
 #endif
 

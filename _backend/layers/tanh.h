@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef TANH_H
 #define TANH_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the hyperbolic tangent of the given input tensor element-wise.
 
 input: Input tensor
 output: The hyperbolic tangent values of the input tensor computed element-wise
-//*/
+*/
+
 //Tanh
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Tanh(std::string n);
+        Tanh();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Tanh() {}
-
     };
+
     
+    void init_layer_Tanh(py::module& m) {
+        // py::class_(m, "Tanh");
+    }
+    
+
 }
+
 
 #endif
 

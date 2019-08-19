@@ -1,14 +1,11 @@
 #include "QLinearMatMul.h"
-
 //cpp stuff
 namespace backend {    
    
-    QLinearMatMul::QLinearMatMul(std::string n) : Layer(n) { }
+    QLinearMatMul::QLinearMatMul() : Layer() { }
        
     vuh::Device* QLinearMatMul::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -36,11 +33,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[a_input]->data(), *tensor_dict[a_scale_input]->data(), *tensor_dict[a_zero_point_input]->data(), *tensor_dict[b_input]->data(), *tensor_dict[b_scale_input]->data(), *tensor_dict[b_zero_point_input]->data(), *tensor_dict[y_scale_input]->data(), *tensor_dict[y_zero_point_input]->data(), *tensor_dict[y_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

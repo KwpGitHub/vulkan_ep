@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef BINARIZER_H
 #define BINARIZER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Maps the values of the input tensor to either 0 or 1, element-wise, based on the outcome of a comparison against a threshold value.
 
 input: Data to be binarized
 output: Binarized output data
-//*/
+*/
+
 //Binarizer
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Binarizer(std::string n);
+        Binarizer();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Binarizer() {}
-
     };
+
     
+    void init_layer_Binarizer(py::module& m) {
+        // py::class_(m, "Binarizer");
+    }
+    
+
 }
+
 
 #endif
 

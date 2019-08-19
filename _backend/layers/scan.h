@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SCAN_H
 #define SCAN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Scan can be used to iterate over one or more scan_input tensors,
@@ -127,7 +132,8 @@ values are computed in the outer graph, they need to be passed in as extra state
 
 input: Initial values of the loop's N state variables followed by M scan_inputs
 output: Final values of the loop's N state variables followed by K scan_outputs
-//*/
+*/
+
 //Scan
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -163,7 +169,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scan(std::string n);
+        Scan();
     
         void forward() { program->run(); }
         
@@ -171,10 +177,16 @@ namespace backend {
         void bind(); 
 
         ~Scan() {}
-
     };
+
     
+    void init_layer_Scan(py::module& m) {
+        // py::class_(m, "Scan");
+    }
+    
+
 }
+
 
 #endif
 

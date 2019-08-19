@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef NOT_H
 #define NOT_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Returns the negation of the input tensor element-wise.
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //Not
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Not(std::string n);
+        Not();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Not() {}
-
     };
+
     
+    void init_layer_Not(py::module& m) {
+        // py::class_(m, "Not");
+    }
+    
+
 }
+
 
 #endif
 

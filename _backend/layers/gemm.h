@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef GEMM_H
 #define GEMM_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 General Matrix multiplication:
 https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms#Level_3
@@ -18,7 +23,8 @@ input: Input tensor A. The shape of A should be (M, K) if transA is 0, or (K, M)
 input: Input tensor B. The shape of B should be (K, N) if transB is 0, or (N, K) if transB is non-zero.
 input: Input tensor C. The shape of C should be unidirectional broadcastable to (M, N).
 output: Output tensor of shape (M, N).
-//*/
+*/
+
 //Gemm
 //INPUTS:                   A_input, B_input, C_input
 //OPTIONAL_INPUTS:          
@@ -54,7 +60,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Gemm(std::string n);
+        Gemm();
     
         void forward() { program->run(); }
         
@@ -62,10 +68,16 @@ namespace backend {
         void bind(std::string _A_input, std::string _B_input, std::string _C_input, std::string _Y_output); 
 
         ~Gemm() {}
-
     };
+
     
+    void init_layer_Gemm(py::module& m) {
+        // py::class_(m, "Gemm");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef FEATUREVECTORIZER_H
 #define FEATUREVECTORIZER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Concatenates input tensors into one continuous output.<br>
@@ -10,7 +15,8 @@
 
 input: An ordered collection of tensors, all with the same element type.
 output: The output array, elements ordered as the inputs.
-//*/
+*/
+
 //FeatureVectorizer
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        FeatureVectorizer(std::string n);
+        FeatureVectorizer();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _Y_output); 
 
         ~FeatureVectorizer() {}
-
     };
+
     
+    void init_layer_FeatureVectorizer(py::module& m) {
+        // py::class_(m, "FeatureVectorizer");
+    }
+    
+
 }
+
 
 #endif
 

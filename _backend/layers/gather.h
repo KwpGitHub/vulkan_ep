@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef GATHER_H
 #define GATHER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Given `data` tensor of rank r >= 1, and `indices` tensor of rank q, gather
@@ -47,7 +52,8 @@ Example 2:
 input: Tensor of rank r >= 1.
 input: Tensor of int32/int64 indices, of any rank q.
 output: Tensor of rank q + (r - 1).
-//*/
+*/
+
 //Gather
 //INPUTS:                   data_input, indices_input
 //OPTIONAL_INPUTS:          
@@ -83,7 +89,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Gather(std::string n);
+        Gather();
     
         void forward() { program->run(); }
         
@@ -91,10 +97,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _indices_input, std::string _output_output); 
 
         ~Gather() {}
-
     };
+
     
+    void init_layer_Gather(py::module& m) {
+        // py::class_(m, "Gather");
+    }
+    
+
 }
+
 
 #endif
 

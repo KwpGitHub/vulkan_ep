@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LRN_H
 #define LRN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Local Response Normalization proposed in the [AlexNet paper](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf).
@@ -16,7 +21,8 @@ Y[n, c, d1, ..., dk] = X[n, c, d1, ..., dk] / (bias + alpha / size * square_sum[
 
 input: Input data tensor from the previous operator; dimensions for image case are (N x C x H x W), where N is the batch size, C is the number of channels, and H and W are the height and the width of the data. For non image case, the dimensions are in the form of (N x C x D1 x D2 ... Dn), where N is the batch size. Optionally, if dimension denotation is in effect, the operation expects the input data tensor to arrive with the dimension denotation of [DATA_BATCH, DATA_CHANNEL, DATA_FEATURE, DATA_FEATURE ...].
 output: Output tensor, which has the shape and type as input tensor
-//*/
+*/
+
 //LRN
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -52,7 +58,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LRN(std::string n);
+        LRN();
     
         void forward() { program->run(); }
         
@@ -60,10 +66,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~LRN() {}
-
     };
+
     
+    void init_layer_LRN(py::module& m) {
+        // py::class_(m, "LRN");
+    }
+    
+
 }
+
 
 #endif
 

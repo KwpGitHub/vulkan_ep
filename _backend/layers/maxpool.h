@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MAXPOOL_H
 #define MAXPOOL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
  MaxPool consumes an input tensor X and applies max pooling across
@@ -35,7 +40,8 @@
 input: Input data tensor from the previous operator; dimensions for image case are (N x C x H x W), where N is the batch size, C is the number of channels, and H and W are the height and the width of the data. For non image case, the dimensions are in the form of (N x C x D1 x D2 ... Dn), where N is the batch size. Optionally, if dimension denotation is in effect, the operation expects the input data tensor to arrive with the dimension denotation of [DATA_BATCH, DATA_CHANNEL, DATA_FEATURE, DATA_FEATURE ...].
 output: Output data tensor from average or max pooling across the input tensor. Dimensions will vary based on various kernel, stride, and pad sizes. Floor value of the dimension is used
 output: Indices tensor from max pooling across the input tensor. The dimensions of indices are the same as output tensor. The values in indices of are the indices of the selected values during pooling. The indices are computed as flatten 1-D tensor, and the indices do not consider padding. So the values in indices are in [0, N x C x D1 x ... x Dn).
-//*/
+*/
+
 //MaxPool
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -71,7 +77,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxPool(std::string n);
+        MaxPool();
     
         void forward() { program->run(); }
         
@@ -79,10 +85,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output, std::string _Indices_output_opt); 
 
         ~MaxPool() {}
-
     };
+
     
+    void init_layer_MaxPool(py::module& m) {
+        // py::class_(m, "MaxPool");
+    }
+    
+
 }
+
 
 #endif
 

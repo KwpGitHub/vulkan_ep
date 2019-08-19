@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef CONV_H
 #define CONV_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 The convolution operator consumes an input tensor and a filter, and
@@ -9,7 +14,8 @@ input: Input data tensor from previous layer; has size (N x C x H x W), where N 
 input: The weight tensor that will be used in the convolutions; has size (M x C/group x kH x kW), where C is the number of channels, and kH and kW are the height and width of the kernel, and M is the number of feature maps. For more than 2 dimensions, the kernel shape will be (M x C/group x k1 x k2 x ... x kn), where (k1 x k2 x ... kn) is the dimension of the kernel. Optionally, if dimension denotation is in effect, the operation expects the weight tensor to arrive with the dimension denotation of [FILTER_OUT_CHANNEL, FILTER_IN_CHANNEL, FILTER_SPATIAL, FILTER_SPATIAL ...]. X.shape[1] == (W.shape[1] * group) == C (assuming zero based indices for the shape array). Or in other words FILTER_IN_CHANNEL should be equal to DATA_CHANNEL. 
 input: Optional 1D bias to be added to the convolution, has size of M.
 output: Output data tensor that contains the result of the convolution. The output dimensions are functions of the kernel size, stride size, and pad lengths.
-//*/
+*/
+
 //Conv
 //INPUTS:                   X_input, W_input
 //OPTIONAL_INPUTS:          B_input_opt
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Conv(std::string n);
+        Conv();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _W_input, std::string _B_input_opt, std::string _Y_output); 
 
         ~Conv() {}
-
     };
+
     
+    void init_layer_Conv(py::module& m) {
+        // py::class_(m, "Conv");
+    }
+    
+
 }
+
 
 #endif
 

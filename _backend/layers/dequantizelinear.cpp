@@ -1,14 +1,11 @@
 #include "DequantizeLinear.h"
-
 //cpp stuff
 namespace backend {    
    
-    DequantizeLinear::DequantizeLinear(std::string n) : Layer(n) { }
+    DequantizeLinear::DequantizeLinear() : Layer() { }
        
     vuh::Device* DequantizeLinear::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -31,11 +28,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[x_input]->data(), *tensor_dict[x_scale_input]->data(), *tensor_dict[x_zero_point_input_opt]->data(), *tensor_dict[y_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

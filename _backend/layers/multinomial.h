@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MULTINOMIAL_H
 #define MULTINOMIAL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Generate a tensor of samples from a multinomial distribution according to the probabilities
@@ -8,7 +13,8 @@ of each of the possible outcomes.
 
 input: Input tensor with shape [batch_size, class_size], where class_size is the number of all possible outcomes. Each value along the axis zero represents the unnormalized log-probability of each corresponding outcome in a batch.
 output: Output tensor with shape [batch_size, sample_size], where sample_size is the number of times to sample. Each value along the axis zero represents the outcome of the corresponding sample in a batch.
-//*/
+*/
+
 //Multinomial
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -44,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Multinomial(std::string n);
+        Multinomial();
     
         void forward() { program->run(); }
         
@@ -52,10 +58,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Multinomial() {}
-
     };
+
     
+    void init_layer_Multinomial(py::module& m) {
+        // py::class_(m, "Multinomial");
+    }
+    
+
 }
+
 
 #endif
 

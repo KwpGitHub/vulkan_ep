@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef CAST_H
 #define CAST_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 The operator casts the elements of a given input tensor to a data type
@@ -25,7 +30,8 @@ an integer 36 to Boolean may produce 1 because we truncate bits which can't be s
 
 input: Input tensor to be cast.
 output: Output tensor with the same shape as input with type specified by the 'to' argument
-//*/
+*/
+
 //Cast
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -61,7 +67,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Cast(std::string n);
+        Cast();
     
         void forward() { program->run(); }
         
@@ -69,10 +75,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Cast() {}
-
     };
+
     
+    void init_layer_Cast(py::module& m) {
+        // py::class_(m, "Cast");
+    }
+    
+
 }
+
 
 #endif
 

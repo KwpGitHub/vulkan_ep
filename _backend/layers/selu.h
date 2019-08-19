@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SELU_H
 #define SELU_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Selu takes one input data (Tensor<T>) and produces one output data
@@ -10,7 +15,8 @@ is applied to the tensor elementwise.
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //Selu
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Selu(std::string n);
+        Selu();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Selu() {}
-
     };
+
     
+    void init_layer_Selu(py::module& m) {
+        // py::class_(m, "Selu");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SPACETODEPTH_H
 #define SPACETODEPTH_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 SpaceToDepth rearranges blocks of spatial data into depth. More specifically,
 this op outputs a copy of the input tensor where values from the height and width dimensions
@@ -8,7 +13,8 @@ are moved to the depth dimension.
 
 input: Input tensor of [N,C,H,W], where N is the batch axis, C is the channel or depth, H is the height and W is the width.
 output: Output tensor of [N, C * blocksize * blocksize, H/blocksize, W/blocksize].
-//*/
+*/
+
 //SpaceToDepth
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -44,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SpaceToDepth(std::string n);
+        SpaceToDepth();
     
         void forward() { program->run(); }
         
@@ -52,10 +58,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~SpaceToDepth() {}
-
     };
+
     
+    void init_layer_SpaceToDepth(py::module& m) {
+        // py::class_(m, "SpaceToDepth");
+    }
+    
+
 }
+
 
 #endif
 

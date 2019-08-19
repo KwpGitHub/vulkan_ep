@@ -1,14 +1,11 @@
 #include "ZipMap.h"
-
 //cpp stuff
 namespace backend {    
    
-    ZipMap::ZipMap(std::string n) : Layer(n) { }
+    ZipMap::ZipMap() : Layer() { }
        
     vuh::Device* ZipMap::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -32,11 +29,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Z_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

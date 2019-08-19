@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef SQUEEZE_H
 #define SQUEEZE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Remove single-dimensional entries from the shape of a tensor.
@@ -10,7 +15,8 @@ the shape. If an axis is selected with shape entry not equal to one, an error is
 
 input: Tensors with at least max(dims) dimensions.
 output: Reshaped tensor with same data as input.
-//*/
+*/
+
 //Squeeze
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Squeeze(std::string n);
+        Squeeze();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _squeezed_output); 
 
         ~Squeeze() {}
-
     };
+
     
+    void init_layer_Squeeze(py::module& m) {
+        // py::class_(m, "Squeeze");
+    }
+    
+
 }
+
 
 #endif
 

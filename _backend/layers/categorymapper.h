@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef CATEGORYMAPPER_H
 #define CATEGORYMAPPER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Converts strings to integers and vice versa.<br>
@@ -14,7 +19,8 @@
 
 input: Input data
 output: Output data. If strings are input, the output values are integers, and vice versa.
-//*/
+*/
+
 //CategoryMapper
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -50,7 +56,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        CategoryMapper(std::string n);
+        CategoryMapper();
     
         void forward() { program->run(); }
         
@@ -58,10 +64,16 @@ namespace backend {
         void bind(std::string _cats_strings, std::string _X_input, std::string _Y_output); 
 
         ~CategoryMapper() {}
-
     };
+
     
+    void init_layer_CategoryMapper(py::module& m) {
+        // py::class_(m, "CategoryMapper");
+    }
+    
+
 }
+
 
 #endif
 

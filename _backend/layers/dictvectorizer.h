@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef DICTVECTORIZER_H
 #define DICTVECTORIZER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Uses an index mapping to convert a dictionary to an array.<br>
@@ -17,7 +22,8 @@
     
 input: A dictionary.
 output: A 1-D tensor holding values from the input dictionary.
-//*/
+*/
+
 //DictVectorizer
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -53,7 +59,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DictVectorizer(std::string n);
+        DictVectorizer();
     
         void forward() { program->run(); }
         
@@ -61,10 +67,16 @@ namespace backend {
         void bind(std::string _string_vocabulary, std::string _X_input, std::string _Y_output); 
 
         ~DictVectorizer() {}
-
     };
+
     
+    void init_layer_DictVectorizer(py::module& m) {
+        // py::class_(m, "DictVectorizer");
+    }
+    
+
 }
+
 
 #endif
 

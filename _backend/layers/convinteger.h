@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef CONVINTEGER_H
 #define CONVINTEGER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 The integer convolution operator consumes an input tensor, its zero-point, a filter, and its zero-point,
@@ -11,7 +16,8 @@ input: The weight tensor that will be used in the convolutions; has size (M x C/
 input: Zero point tensor for input 'x'. It's optional and default value is 0. It's a scalar, which means a per-tensor/layer quantization.
 input: Scale tensor for input 'w'. It's optional and default value is 0.  It could be a scalar or a 1-D tensor, which means a per-tensor/layer or per output channel quantization. If it's a 1-D tensor, its number of elements should be equal to the number of output channels (M)
 output: Output data tensor that contains the result of the convolution. The output dimensions are functions of the kernel size, stride size, and pad lengths.
-//*/
+*/
+
 //ConvInteger
 //INPUTS:                   x_input, w_input
 //OPTIONAL_INPUTS:          x_zero_point_input_opt, w_zero_point_input_opt
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ConvInteger(std::string n);
+        ConvInteger();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _x_input, std::string _w_input, std::string _x_zero_point_input_opt, std::string _w_zero_point_input_opt, std::string _y_output); 
 
         ~ConvInteger() {}
-
     };
+
     
+    void init_layer_ConvInteger(py::module& m) {
+        // py::class_(m, "ConvInteger");
+    }
+    
+
 }
+
 
 #endif
 

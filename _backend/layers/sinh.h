@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef SINH_H
 #define SINH_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the hyperbolic sine of the given input tensor element-wise.
 
 input: Input tensor
 output: The hyperbolic sine values of the input tensor computed element-wise
-//*/
+*/
+
 //Sinh
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sinh(std::string n);
+        Sinh();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Sinh() {}
-
     };
+
     
+    void init_layer_Sinh(py::module& m) {
+        // py::class_(m, "Sinh");
+    }
+    
+
 }
+
 
 #endif
 

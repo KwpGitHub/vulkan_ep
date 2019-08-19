@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef PAD_H
 #define PAD_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Given `data` tensor, pads, mode, and value.
@@ -22,7 +27,8 @@ Example:
 
 input: Input tensor.
 output: Tensor after padding.
-//*/
+*/
+
 //Pad
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -58,7 +64,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Pad(std::string n);
+        Pad();
     
         void forward() { program->run(); }
         
@@ -66,10 +72,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _output_output); 
 
         ~Pad() {}
-
     };
+
     
+    void init_layer_Pad(py::module& m) {
+        // py::class_(m, "Pad");
+    }
+    
+
 }
+
 
 #endif
 

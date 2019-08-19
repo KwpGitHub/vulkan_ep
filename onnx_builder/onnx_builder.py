@@ -6,21 +6,21 @@ import json
 import os
 
 type_map = {
-        'STRING' :  'int',
-        'STRINGS':  'Tensor*',
-        'INT' :     'int',
-        'INTS':     'Shape_t',
-        'FLOAT':    'float',
-        'FLOATS':   'Tensor*',
-        'TENSOR':   'Tensor*',
-        'GRAPH':    'int',
-        'GRAPHS':   'int'
+    'STRING' :  'int',
+    'STRINGS':  'Tensor*',
+    'INT' :     'int',
+    'INTS':     'Shape_t',
+    'FLOAT':    'float',
+    'FLOATS':   'Tensor*',
+    'TENSOR':   'Tensor*',
+    'GRAPH':    'int',
+    'GRAPHS':   'int'
 }
-
 
 
 ops = {}
 op_file = open('op_file.h','w')
+
 
 layer_map_str = """#include <map>
 #include "layers.h"
@@ -41,18 +41,23 @@ std::map<std::string, std::map<std::string, std::string> > parameter_map = {{
 */
 }};
 
-
 }}
     """.format
 
 
 
-class_h_str = """#include "../layer.h"
-#ifndef {upper}_H
+class_h_str = """#ifndef {upper}_H
 #define {upper}_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 {doc}
-//*/
+*/
+
 //{norm}
 //INPUTS:                   {input_names}
 //OPTIONAL_INPUTS:          {optional_input_names}
@@ -87,7 +92,7 @@ namespace backend {{
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        {norm}(std::string n);
+        {norm}();
     
         void forward() {{ program->run(); }}
         
@@ -95,21 +100,26 @@ namespace backend {{
         void bind({bind_lst}); 
 
         ~{norm}() {{}}
-
     }};
+
     
+    void init_layer_{norm}(py::module& m) {{
+        // py::class_(m, "{norm}");
+    }}
+    
+
 }}
+
 
 #endif
 
 """.format_map
 
 cpp_class_str = """#include "{norm}.h"
-
 //cpp stuff
 namespace backend {{    
    
-    {norm}::{norm}(std::string n) : Layer(n) {{ }}
+    {norm}::{norm}() : Layer() {{ }}
        
     vuh::Device* {norm}::_get_device() {{
         
@@ -131,12 +141,11 @@ namespace backend {{
         program->spec(64, 64, 64);
         //program->bind(binding{bind_param_lst}{bind_input_lst}{bind_output_lst});
     }}
-    
+
+
+
 }}
 
-    //backend::nn;
-
-//python stuff
 
 
 """.format_map
@@ -225,11 +234,12 @@ def onnx_proto():
     double_element = []
     complex_element = []
     simple_element = []
-
-
+    
     layers = open('../_backend/layers.h', 'w')
     layer_map_file = open("../_backend/layers_map.h", 'w')
     py_layers = open('../TestingPipeline/layers.py', 'w')
+    pybind_modules_file = open('../_backend/pybind_modules.txt', 'w')
+    pybind_modules = list()
     layers_lst = list()
     layer_map = list()
     parameter_map = list()
@@ -322,7 +332,7 @@ def onnx_proto():
                 'python_parameters' :           ''.join(['    {0} = None\n'.format(i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES) if(j != 'Tensor*') ]),
                 'python_inputs_func' :          ', '.join('"{0}"'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES),
                 'python_outputs_func' :         ', '.join('"{0}"'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)
-                }        
+        }        
 
         py_layers_map.append(python_class_str(mapt))
        
@@ -343,6 +353,7 @@ def onnx_proto():
             elif(op_name not in activation and op_name not in elementwise and op_name not in math_op):
                 complex_element.append(op_name)
 
+            pybind_modules.append('backend::init_layer_{norm}(nn);'.format_map(mapt) )
 
             f = open('../_backend/layers/'+op_name.lower()+'.h', 'w')
             f.write(class_h_str(mapt))
@@ -357,7 +368,8 @@ def onnx_proto():
             layer_map.append('	{{ "{0}", &createInstance<{0}>}}'.format(op_name))
             parameter_map.append('{{ "{0}", {{{1}}} }}'.format(op_name, ', '.join(['{0}'.format(i) for k, i in p_map.items() if(i != '') ] )))
 
-    
+   
+    pybind_modules_file.write('\n'.join(pybind_modules))
     layers.writelines(layers_lst)
     op_file.close()
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))

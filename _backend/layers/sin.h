@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef SIN_H
 #define SIN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the sine of the given input tensor, element-wise.
 
 input: Input tensor
 output: The sine of the input tensor computed element-wise
-//*/
+*/
+
 //Sin
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sin(std::string n);
+        Sin();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Sin() {}
-
     };
+
     
+    void init_layer_Sin(py::module& m) {
+        // py::class_(m, "Sin");
+    }
+    
+
 }
+
 
 #endif
 

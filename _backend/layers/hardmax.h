@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef HARDMAX_H
 #define HARDMAX_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 The operator computes the hardmax (1 for the first maximum value, and 0 for all others) values for each layer in the batch
@@ -21,7 +26,8 @@ will throw errors.
 
 input: The input tensor that's coerced into a 2D matrix of size (NxD) as described above.
 output: The output values with the same shape as input tensor (the original size without coercion).
-//*/
+*/
+
 //Hardmax
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -57,7 +63,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Hardmax(std::string n);
+        Hardmax();
     
         void forward() { program->run(); }
         
@@ -65,10 +71,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Hardmax() {}
-
     };
+
     
+    void init_layer_Hardmax(py::module& m) {
+        // py::class_(m, "Hardmax");
+    }
+    
+
 }
+
 
 #endif
 

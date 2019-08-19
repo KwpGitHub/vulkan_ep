@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef TREEENSEMBLECLASSIFIER_H
 #define TREEENSEMBLECLASSIFIER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Tree Ensemble classifier.  Returns the top class for each of N inputs.<br>
@@ -16,7 +21,8 @@
 input: Input of shape [N,F]
 output: N, Top class for each point
 output: The class score for each class, for each point, a tensor of shape [N,E].
-//*/
+*/
+
 //TreeEnsembleClassifier
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -52,7 +58,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TreeEnsembleClassifier(std::string n);
+        TreeEnsembleClassifier();
     
         void forward() { program->run(); }
         
@@ -60,10 +66,16 @@ namespace backend {
         void bind(std::string _base_values, std::string _class_weights, std::string _classlabels_strings, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _X_input, std::string _Y_output, std::string _Z_output); 
 
         ~TreeEnsembleClassifier() {}
-
     };
+
     
+    void init_layer_TreeEnsembleClassifier(py::module& m) {
+        // py::class_(m, "TreeEnsembleClassifier");
+    }
+    
+
 }
+
 
 #endif
 

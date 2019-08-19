@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef RESIZE_H
 #define RESIZE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Resize the input tensor.
@@ -10,7 +15,8 @@ Each dimension value of the output tensor is:
 input: N-D tensor
 input: The scale array along each dimension. It takes value greater than 0. If it's less than 1, it's sampling down, otherwise, it's upsampling. The number of elements of 'scales' should be the same as the rank of input 'X'.
 output: N-D tensor after resizing
-//*/
+*/
+
 //Resize
 //INPUTS:                   X_input, scales_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Resize(std::string n);
+        Resize();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _scales_input, std::string _Y_output); 
 
         ~Resize() {}
-
     };
+
     
+    void init_layer_Resize(py::module& m) {
+        // py::class_(m, "Resize");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef ONEHOT_H
 #define ONEHOT_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Produces a one-hot tensor based on inputs.
@@ -20,7 +25,8 @@ input: Input tensor containing indices. The values must be non-negative integers
 input: Scalar specifying the number of classes in one-hot tensor. This is also the size of the one-hot dimension (specified by 'axis' attribute) added on in the output tensor and the values in the 'indices' input tensor are expected to be in the range [0, depth). TheIn case 'depth' is of non-integer type, it will be casted to int64 before use.
 input: Rank 1 tensor containing exactly two elements, in the format [off_value, on_value], where 'on_value' is the value used for filling locations specified in 'indices' input tensor, and 'off_value' is the value used for filling locations other than those specified in 'indices' input tensor. 
 output: Tensor of rank one greater than input tensor 'indices', i.e. rank(output) = rank(indices) + 1. The data type for the elements of the output tensor is the same as the type of input 'values' is used.
-//*/
+*/
+
 //OneHot
 //INPUTS:                   indices_input, depth_input, values_input
 //OPTIONAL_INPUTS:          
@@ -56,7 +62,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        OneHot(std::string n);
+        OneHot();
     
         void forward() { program->run(); }
         
@@ -64,10 +70,16 @@ namespace backend {
         void bind(std::string _indices_input, std::string _depth_input, std::string _values_input, std::string _output_output); 
 
         ~OneHot() {}
-
     };
+
     
+    void init_layer_OneHot(py::module& m) {
+        // py::class_(m, "OneHot");
+    }
+    
+
 }
+
 
 #endif
 

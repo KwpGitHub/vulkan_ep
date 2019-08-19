@@ -1,14 +1,11 @@
 #include "Pow.h"
-
 //cpp stuff
 namespace backend {    
    
-    Pow::Pow(std::string n) : Layer(n) { }
+    Pow::Pow() : Layer() { }
        
     vuh::Device* Pow::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -30,11 +27,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_input]->data(), *tensor_dict[Z_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

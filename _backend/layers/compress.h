@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef COMPRESS_H
 #define COMPRESS_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Selects slices from an input tensor along a given axis where condition evaluates to True for each axis index.
@@ -10,7 +15,8 @@
 input: Tensor of rank r >= 1.
 input: Rank 1 tensor of booleans to indicate which slices or data elements to be selected. Its length can be less than the input length alone the axis or the flattened input size if axis is not specified. In such cases data slices or elements exceeding the condition length are discarded.
 output: Tensor of rank r if axis is specified. Otherwise output is a Tensor of rank 1.
-//*/
+*/
+
 //Compress
 //INPUTS:                   input_input, condition_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Compress(std::string n);
+        Compress();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _condition_input, std::string _output_output); 
 
         ~Compress() {}
-
     };
+
     
+    void init_layer_Compress(py::module& m) {
+        // py::class_(m, "Compress");
+    }
+    
+
 }
+
 
 #endif
 

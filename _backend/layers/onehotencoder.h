@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef ONEHOTENCODER_H
 #define ONEHOTENCODER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Replace each input element with an array of ones and zeros, where a single
@@ -14,7 +19,8 @@
 
 input: Data to be encoded.
 output: Encoded output data, having one more dimension than X.
-//*/
+*/
+
 //OneHotEncoder
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -50,7 +56,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        OneHotEncoder(std::string n);
+        OneHotEncoder();
     
         void forward() { program->run(); }
         
@@ -58,10 +64,16 @@ namespace backend {
         void bind(std::string _cats_strings, std::string _X_input, std::string _Y_output); 
 
         ~OneHotEncoder() {}
-
     };
+
     
+    void init_layer_OneHotEncoder(py::module& m) {
+        // py::class_(m, "OneHotEncoder");
+    }
+    
+
 }
+
 
 #endif
 

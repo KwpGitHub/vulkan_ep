@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LINEARREGRESSOR_H
 #define LINEARREGRESSOR_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Generalized linear regression evaluation.<br>
@@ -12,7 +17,8 @@
 
 input: Data to be regressed.
 output: Regression outputs (one per target, per example).
-//*/
+*/
+
 //LinearRegressor
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -48,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LinearRegressor(std::string n);
+        LinearRegressor();
     
         void forward() { program->run(); }
         
@@ -56,10 +62,16 @@ namespace backend {
         void bind(std::string _coefficients, std::string _intercepts, std::string _X_input, std::string _Y_output); 
 
         ~LinearRegressor() {}
-
     };
+
     
+    void init_layer_LinearRegressor(py::module& m) {
+        // py::class_(m, "LinearRegressor");
+    }
+    
+
 }
+
 
 #endif
 

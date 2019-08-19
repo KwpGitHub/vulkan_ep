@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef REVERSESEQUENCE_H
 #define REVERSESEQUENCE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Reverse batch of sequences having different lengths specified by `sequence_lens`.
@@ -40,7 +45,8 @@ Example 2:
 input: Tensor of rank r >= 2.
 input: Tensor specifying lengths of the sequences in a batch. It has shape `[batch_size]`.
 output: Tensor with same shape of input.
-//*/
+*/
+
 //ReverseSequence
 //INPUTS:                   input_input, sequence_lens_input
 //OPTIONAL_INPUTS:          
@@ -76,7 +82,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReverseSequence(std::string n);
+        ReverseSequence();
     
         void forward() { program->run(); }
         
@@ -84,10 +90,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _sequence_lens_input, std::string _Y_output); 
 
         ~ReverseSequence() {}
-
     };
+
     
+    void init_layer_ReverseSequence(py::module& m) {
+        // py::class_(m, "ReverseSequence");
+    }
+    
+
 }
+
 
 #endif
 

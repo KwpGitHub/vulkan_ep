@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef TILE_H
 #define TILE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 Constructs a tensor by tiling a given tensor.
 This is the same as function `tile` in Numpy, but no broadcast.
@@ -9,7 +14,8 @@ For example A = [[1, 2], [3, 4]], B = [1, 2], tile(A, B) = [[1, 2, 1, 2], [3, 4,
 input: Input tensor of any shape.
 input: 1D int64 tensor of the same length as input's dimension number, includes numbers of repeated copies along input's dimensions.
 output: Output tensor of the same dimension and type as tensor input. output_dim[i] = input_dim[i] * repeats[i]
-//*/
+*/
+
 //Tile
 //INPUTS:                   input_input, repeats_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Tile(std::string n);
+        Tile();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _repeats_input, std::string _output_output); 
 
         ~Tile() {}
-
     };
+
     
+    void init_layer_Tile(py::module& m) {
+        // py::class_(m, "Tile");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef ASINH_H
 #define ASINH_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the hyperbolic arcsine of the given input tensor element-wise.
 
 input: Input tensor
 output: The hyperbolic arcsine values of the input tensor computed element-wise
-//*/
+*/
+
 //Asinh
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Asinh(std::string n);
+        Asinh();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Asinh() {}
-
     };
+
     
+    void init_layer_Asinh(py::module& m) {
+        // py::class_(m, "Asinh");
+    }
+    
+
 }
+
 
 #endif
 

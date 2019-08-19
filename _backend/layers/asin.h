@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef ASIN_H
 #define ASIN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the arcsine (inverse of sine) of the given input tensor, element-wise.
 
 input: Input tensor
 output: The arcsine of the input tensor computed element-wise
-//*/
+*/
+
 //Asin
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Asin(std::string n);
+        Asin();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Asin() {}
-
     };
+
     
+    void init_layer_Asin(py::module& m) {
+        // py::class_(m, "Asin");
+    }
+    
+
 }
+
 
 #endif
 

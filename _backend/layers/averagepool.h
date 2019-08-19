@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef AVERAGEPOOL_H
 #define AVERAGEPOOL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
  AveragePool consumes an input tensor X and applies average pooling across
@@ -34,7 +39,8 @@
  
 input: Input data tensor from the previous operator; dimensions for image case are (N x C x H x W), where N is the batch size, C is the number of channels, and H and W are the height and the width of the data. For non image case, the dimensions are in the form of (N x C x D1 x D2 ... Dn), where N is the batch size. Optionally, if dimension denotation is in effect, the operation expects the input data tensor to arrive with the dimension denotation of [DATA_BATCH, DATA_CHANNEL, DATA_FEATURE, DATA_FEATURE ...].
 output: Output data tensor from average or max pooling across the input tensor. Dimensions will vary based on various kernel, stride, and pad sizes. Floor value of the dimension is used
-//*/
+*/
+
 //AveragePool
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -70,7 +76,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        AveragePool(std::string n);
+        AveragePool();
     
         void forward() { program->run(); }
         
@@ -78,10 +84,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~AveragePool() {}
-
     };
+
     
+    void init_layer_AveragePool(py::module& m) {
+        // py::class_(m, "AveragePool");
+    }
+    
+
 }
+
 
 #endif
 

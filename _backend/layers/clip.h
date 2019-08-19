@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef CLIP_H
 #define CLIP_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Clip operator limits the given input within an interval. The interval is
@@ -9,7 +14,8 @@ numeric_limits::lowest() and numeric_limits::max() respectively.
 
 input: Input tensor whose elements to be clipped
 output: Output tensor with clipped input elements
-//*/
+*/
+
 //Clip
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Clip(std::string n);
+        Clip();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Clip() {}
-
     };
+
     
+    void init_layer_Clip(py::module& m) {
+        // py::class_(m, "Clip");
+    }
+    
+
 }
+
 
 #endif
 

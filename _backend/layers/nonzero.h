@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef NONZERO_H
 #define NONZERO_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Returns the indices of the elements that are non-zero
@@ -10,7 +15,8 @@
 
 input: input
 output: output (always 2D tensor)
-//*/
+*/
+
 //NonZero
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        NonZero(std::string n);
+        NonZero();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~NonZero() {}
-
     };
+
     
+    void init_layer_NonZero(py::module& m) {
+        // py::class_(m, "NonZero");
+    }
+    
+
 }
+
 
 #endif
 

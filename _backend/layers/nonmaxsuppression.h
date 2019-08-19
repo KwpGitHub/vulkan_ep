@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef NONMAXSUPPRESSION_H
 #define NONMAXSUPPRESSION_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Filter out boxes that have high intersection-over-union (IOU) overlap with previously selected boxes.
@@ -18,7 +23,8 @@ input: Integer representing the maximum number of boxes to be selected per batch
 input: Float representing the threshold for deciding whether boxes overlap too much with respect to IOU. It is scalar. Value range [0, 1].
 input: Float representing the threshold for deciding when to remove boxes based on score. It is a scalar
 output: selected indices from the boxes tensor. [num_selected_indices, 3], the selected index format is [batch_index, class_index, box_index].
-//*/
+*/
+
 //NonMaxSuppression
 //INPUTS:                   boxes_input, scores_input
 //OPTIONAL_INPUTS:          max_output_boxes_per_class_input_opt, iou_threshold_input_opt, score_threshold_input_opt
@@ -54,7 +60,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        NonMaxSuppression(std::string n);
+        NonMaxSuppression();
     
         void forward() { program->run(); }
         
@@ -62,10 +68,16 @@ namespace backend {
         void bind(std::string _boxes_input, std::string _scores_input, std::string _max_output_boxes_per_class_input_opt, std::string _iou_threshold_input_opt, std::string _score_threshold_input_opt, std::string _selected_indices_output); 
 
         ~NonMaxSuppression() {}
-
     };
+
     
+    void init_layer_NonMaxSuppression(py::module& m) {
+        // py::class_(m, "NonMaxSuppression");
+    }
+    
+
 }
+
 
 #endif
 

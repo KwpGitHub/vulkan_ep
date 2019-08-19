@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef IMPUTER_H
 #define IMPUTER_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Replaces inputs that equal one value with another, leaving all other elements alone.<br>
@@ -14,7 +19,8 @@
 
 input: Data to be processed.
 output: Imputed output data
-//*/
+*/
+
 //Imputer
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -50,7 +56,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Imputer(std::string n);
+        Imputer();
     
         void forward() { program->run(); }
         
@@ -58,10 +64,16 @@ namespace backend {
         void bind(std::string _imputed_value_floats, std::string _X_input, std::string _Y_output); 
 
         ~Imputer() {}
-
     };
+
     
+    void init_layer_Imputer(py::module& m) {
+        // py::class_(m, "Imputer");
+    }
+    
+
 }
+
 
 #endif
 

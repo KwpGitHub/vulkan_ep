@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef QLINEARMATMUL_H
 #define QLINEARMATMUL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Matrix product that behaves like numpy.matmul: https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.matmul.html.
@@ -21,7 +26,8 @@ input: zero point of quantized input b
 input: scale of quantized output y
 input: zero point of quantized output y
 output: Quantized matrix multiply results from a * b
-//*/
+*/
+
 //QLinearMatMul
 //INPUTS:                   a_input, a_scale_input, a_zero_point_input, b_input, b_scale_input, b_zero_point_input, y_scale_input, y_zero_point_input
 //OPTIONAL_INPUTS:          
@@ -57,7 +63,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        QLinearMatMul(std::string n);
+        QLinearMatMul();
     
         void forward() { program->run(); }
         
@@ -65,10 +71,16 @@ namespace backend {
         void bind(std::string _a_input, std::string _a_scale_input, std::string _a_zero_point_input, std::string _b_input, std::string _b_scale_input, std::string _b_zero_point_input, std::string _y_scale_input, std::string _y_zero_point_input, std::string _y_output); 
 
         ~QLinearMatMul() {}
-
     };
+
     
+    void init_layer_QLinearMatMul(py::module& m) {
+        // py::class_(m, "QLinearMatMul");
+    }
+    
+
 }
+
 
 #endif
 

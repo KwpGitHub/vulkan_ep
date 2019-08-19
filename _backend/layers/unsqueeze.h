@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef UNSQUEEZE_H
 #define UNSQUEEZE_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Insert single-dimensional entries to the shape of a tensor.
@@ -11,7 +16,8 @@ Dimension indices in `axes` are as seen in the output tensor. For example:
 
 input: Original tensor
 output: Reshaped tensor with same data as input.
-//*/
+*/
+
 //Unsqueeze
 //INPUTS:                   data_input
 //OPTIONAL_INPUTS:          
@@ -47,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Unsqueeze(std::string n);
+        Unsqueeze();
     
         void forward() { program->run(); }
         
@@ -55,10 +61,16 @@ namespace backend {
         void bind(std::string _data_input, std::string _expanded_output); 
 
         ~Unsqueeze() {}
-
     };
+
     
+    void init_layer_Unsqueeze(py::module& m) {
+        // py::class_(m, "Unsqueeze");
+    }
+    
+
 }
+
 
 #endif
 

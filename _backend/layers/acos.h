@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef ACOS_H
 #define ACOS_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the arccosine (inverse of cosine) of the given input tensor, element-wise.
 
 input: Input tensor
 output: The arccosine of the input tensor computed element-wise
-//*/
+*/
+
 //Acos
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Acos(std::string n);
+        Acos();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Acos() {}
-
     };
+
     
+    void init_layer_Acos(py::module& m) {
+        // py::class_(m, "Acos");
+    }
+    
+
 }
+
 
 #endif
 

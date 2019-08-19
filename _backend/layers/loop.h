@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LOOP_H
 #define LOOP_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Generic Looping construct. This loop has multiple termination conditions:
@@ -121,7 +126,8 @@ input: A maximum trip-count for the loop specified at runtime. Optional. Pass em
 input: A boolean termination condition. Optional. Pass empty string to skip.
 input: The initial values of any loop-carried dependencies (values that change across loop iterations)
 output: Final N loop carried dependency values then K scan_outputs
-//*/
+*/
+
 //Loop
 //INPUTS:                   
 //OPTIONAL_INPUTS:          M_input_opt, cond_input_opt
@@ -157,7 +163,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Loop(std::string n);
+        Loop();
     
         void forward() { program->run(); }
         
@@ -165,10 +171,16 @@ namespace backend {
         void bind(std::string _M_input_opt, std::string _cond_input_opt); 
 
         ~Loop() {}
-
     };
+
     
+    void init_layer_Loop(py::module& m) {
+        // py::class_(m, "Loop");
+    }
+    
+
 }
+
 
 #endif
 

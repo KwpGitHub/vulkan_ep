@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MAXROIPOOL_H
 #define MAXROIPOOL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
  ROI max pool consumes an input tensor X and region of interests (RoIs) to
@@ -9,7 +14,8 @@
 input: Input data tensor from the previous operator; dimensions for image case are (N x C x H x W), where N is the batch size, C is the number of channels, and H and W are the height and the width of the data.
 input: RoIs (Regions of Interest) to pool over. Should be a 2-D tensor of shape (num_rois, 5) given as [[batch_id, x1, y1, x2, y2], ...].
 output: RoI pooled output 4-D tensor of shape (num_rois, channels, pooled_shape[0], pooled_shape[1]).
-//*/
+*/
+
 //MaxRoiPool
 //INPUTS:                   X_input, rois_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxRoiPool(std::string n);
+        MaxRoiPool();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _rois_input, std::string _Y_output); 
 
         ~MaxRoiPool() {}
-
     };
+
     
+    void init_layer_MaxRoiPool(py::module& m) {
+        // py::class_(m, "MaxRoiPool");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef SVMREGRESSOR_H
 #define SVMREGRESSOR_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Support Vector Machine regression prediction and one-class SVM anomaly detection.
 
 input: Data to be regressed.
 output: Regression outputs (one score per target per example).
-//*/
+*/
+
 //SVMRegressor
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMRegressor(std::string n);
+        SVMRegressor();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _coefficients, std::string _kernel_params, std::string _rho, std::string _support_vectors, std::string _X_input, std::string _Y_output); 
 
         ~SVMRegressor() {}
-
     };
+
     
+    void init_layer_SVMRegressor(py::module& m) {
+        // py::class_(m, "SVMRegressor");
+    }
+    
+
 }
+
 
 #endif
 

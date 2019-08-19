@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef TAN_H
 #define TAN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the tangent of the given input tensor, element-wise.
 
 input: Input tensor
 output: The tangent of the input tensor computed element-wise
-//*/
+*/
+
 //Tan
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Tan(std::string n);
+        Tan();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Tan() {}
-
     };
+
     
+    void init_layer_Tan(py::module& m) {
+        // py::class_(m, "Tan");
+    }
+    
+
 }
+
 
 #endif
 

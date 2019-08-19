@@ -1,14 +1,11 @@
 #include "Shape.h"
-
 //cpp stuff
 namespace backend {    
    
-    Shape::Shape(std::string n) : Layer(n) { }
+    Shape::Shape() : Layer() { }
        
     vuh::Device* Shape::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -29,11 +26,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[shape_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

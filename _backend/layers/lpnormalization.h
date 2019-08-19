@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef LPNORMALIZATION_H
 #define LPNORMALIZATION_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Given a matrix, apply Lp-normalization along the provided axis.
 
 input: Input matrix
 output: Matrix after normalization
-//*/
+*/
+
 //LpNormalization
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LpNormalization(std::string n);
+        LpNormalization();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~LpNormalization() {}
-
     };
+
     
+    void init_layer_LpNormalization(py::module& m) {
+        // py::class_(m, "LpNormalization");
+    }
+    
+
 }
+
 
 #endif
 

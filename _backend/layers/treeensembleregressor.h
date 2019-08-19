@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef TREEENSEMBLEREGRESSOR_H
 #define TREEENSEMBLEREGRESSOR_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Tree Ensemble regressor.  Returns the regressed values for each input in N.<br>
@@ -16,7 +21,8 @@
 
 input: Input of shape [N,F]
 output: N classes
-//*/
+*/
+
 //TreeEnsembleRegressor
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -52,7 +58,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TreeEnsembleRegressor(std::string n);
+        TreeEnsembleRegressor();
     
         void forward() { program->run(); }
         
@@ -60,10 +66,16 @@ namespace backend {
         void bind(std::string _base_values, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _target_weights, std::string _X_input, std::string _Y_output); 
 
         ~TreeEnsembleRegressor() {}
-
     };
+
     
+    void init_layer_TreeEnsembleRegressor(py::module& m) {
+        // py::class_(m, "TreeEnsembleRegressor");
+    }
+    
+
 }
+
 
 #endif
 

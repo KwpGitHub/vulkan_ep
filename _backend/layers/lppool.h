@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef LPPOOL_H
 #define LPPOOL_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
  LpPool consumes an input tensor X and applies Lp pooling across
@@ -10,7 +15,8 @@
  data into the output tensor Y for further processing.
 input: Input data tensor from the previous operator; dimensions for image case are (N x C x H x W), where N is the batch size, C is the number of channels, and H and W are the height and the width of the data. For non image case, the dimensions are in the form of (N x C x D1 x D2 ... Dn), where N is the batch size.
 output: Output data tensor from Lp pooling across the input tensor. Dimensions will vary based on various kernel, stride, and pad sizes.
-//*/
+*/
+
 //LpPool
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LpPool(std::string n);
+        LpPool();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~LpPool() {}
-
     };
+
     
+    void init_layer_LpPool(py::module& m) {
+        // py::class_(m, "LpPool");
+    }
+    
+
 }
+
 
 #endif
 

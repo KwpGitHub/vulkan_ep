@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef EXPAND_H
 #define EXPAND_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Broadcast the input tensor following the given shape and the broadcast rule.
@@ -15,7 +20,8 @@ or the shape.ndim < input.shape.ndim.
 input: Input tensor
 input: A 1-D tensor indicates the shape you want to expand to, following the broadcast rule
 output: Output tensor
-//*/
+*/
+
 //Expand
 //INPUTS:                   input_input, shape_input
 //OPTIONAL_INPUTS:          
@@ -51,7 +57,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Expand(std::string n);
+        Expand();
     
         void forward() { program->run(); }
         
@@ -59,10 +65,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _shape_input, std::string _output_output); 
 
         ~Expand() {}
-
     };
+
     
+    void init_layer_Expand(py::module& m) {
+        // py::class_(m, "Expand");
+    }
+    
+
 }
+
 
 #endif
 

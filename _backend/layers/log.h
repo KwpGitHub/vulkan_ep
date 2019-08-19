@@ -1,13 +1,19 @@
-#include "../layer.h"
 #ifndef LOG_H
 #define LOG_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Calculates the natural log of the given input tensor, element-wise.
 
 input: Input tensor
 output: The natural log of the input tensor computed element-wise
-//*/
+*/
+
 //Log
 //INPUTS:                   input_input
 //OPTIONAL_INPUTS:          
@@ -43,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Log(std::string n);
+        Log();
     
         void forward() { program->run(); }
         
@@ -51,10 +57,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _output_output); 
 
         ~Log() {}
-
     };
+
     
+    void init_layer_Log(py::module& m) {
+        // py::class_(m, "Log");
+    }
+    
+
 }
+
 
 #endif
 

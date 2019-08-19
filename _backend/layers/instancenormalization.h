@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef INSTANCENORMALIZATION_H
 #define INSTANCENORMALIZATION_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Carries out instance normalization as described in the paper
@@ -14,7 +19,8 @@ input: Input data tensor from the previous operator; dimensions for image case a
 input: The input 1-dimensional scale tensor of size C.
 input: The input 1-dimensional bias tensor of size C.
 output: The output tensor of the same shape as input.
-//*/
+*/
+
 //InstanceNormalization
 //INPUTS:                   input_input, scale_input, B_input
 //OPTIONAL_INPUTS:          
@@ -50,7 +56,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        InstanceNormalization(std::string n);
+        InstanceNormalization();
     
         void forward() { program->run(); }
         
@@ -58,10 +64,16 @@ namespace backend {
         void bind(std::string _input_input, std::string _scale_input, std::string _B_input, std::string _output_output); 
 
         ~InstanceNormalization() {}
-
     };
+
     
+    void init_layer_InstanceNormalization(py::module& m) {
+        // py::class_(m, "InstanceNormalization");
+    }
+    
+
 }
+
 
 #endif
 

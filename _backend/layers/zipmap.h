@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef ZIPMAP_H
 #define ZIPMAP_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
     Creates a map from the input and the attributes.<br>
@@ -10,7 +15,8 @@
 
 input: The input values
 output: The output map
-//*/
+*/
+
 //ZipMap
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -46,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ZipMap(std::string n);
+        ZipMap();
     
         void forward() { program->run(); }
         
@@ -54,10 +60,16 @@ namespace backend {
         void bind(std::string _classlabels_strings, std::string _X_input, std::string _Z_output); 
 
         ~ZipMap() {}
-
     };
+
     
+    void init_layer_ZipMap(py::module& m) {
+        // py::class_(m, "ZipMap");
+    }
+    
+
 }
+
 
 #endif
 

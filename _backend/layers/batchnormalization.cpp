@@ -1,14 +1,11 @@
 #include "BatchNormalization.h"
-
 //cpp stuff
 namespace backend {    
    
-    BatchNormalization::BatchNormalization(std::string n) : Layer(n) { }
+    BatchNormalization::BatchNormalization() : Layer() { }
        
     vuh::Device* BatchNormalization::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -41,11 +38,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[scale_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[mean_input]->data(), *tensor_dict[var_input]->data(), *tensor_dict[Y_output]->data(), *tensor_dict[mean_output_opt]->data(), *tensor_dict[var_output_opt]->data(), *tensor_dict[saved_mean_output_opt]->data(), *tensor_dict[saved_var_output_opt]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef MIN_H
 #define MIN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Element-wise min of each of the input tensors (with Numpy-style broadcasting support).
@@ -9,7 +14,8 @@ This operator supports **multidirectional (i.e., Numpy-style) broadcasting**; fo
 
 input: List of tensors for min.
 output: Output tensor.
-//*/
+*/
+
 //Min
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Min(std::string n);
+        Min();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _min_output); 
 
         ~Min() {}
-
     };
+
     
+    void init_layer_Min(py::module& m) {
+        // py::class_(m, "Min");
+    }
+    
+
 }
+
 
 #endif
 

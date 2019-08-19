@@ -1,11 +1,17 @@
-#include "../layer.h"
 #ifndef ISNAN_H
 #define ISNAN_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 Returns which elements of the input are NaN.
 input: input
 output: output
-//*/
+*/
+
 //IsNaN
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -41,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        IsNaN(std::string n);
+        IsNaN();
     
         void forward() { program->run(); }
         
@@ -49,10 +55,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~IsNaN() {}
-
     };
+
     
+    void init_layer_IsNaN(py::module& m) {
+        // py::class_(m, "IsNaN");
+    }
+    
+
 }
+
 
 #endif
 

@@ -1,14 +1,11 @@
 #include "Reshape.h"
-
 //cpp stuff
 namespace backend {    
    
-    Reshape::Reshape(std::string n) : Layer(n) { }
+    Reshape::Reshape() : Layer() { }
        
     vuh::Device* Reshape::_get_device() {
-        for(auto t_name: inputs) {
-            if(tensor_dict.end() != tensor_dict.find(t_name)) return tensor_dict[t_name]->dev;
-        }
+        
         return device;
     }
     
@@ -30,11 +27,10 @@ namespace backend {
         program->spec(64, 64, 64);
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[shape_input]->data(), *tensor_dict[reshaped_output]->data());
     }
-    
+
+
+
 }
 
-    //backend::nn;
-
-//python stuff
 
 

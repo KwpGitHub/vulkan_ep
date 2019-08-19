@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vk_pipe", "vk_pipe\vk_pipe.vcxproj", "{1BC3D931-B686-47FF-80B7-6D8F4BA179E8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "onnx_ep", "onnx_ep\onnx_ep.vcxproj", "{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}"
-EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "onnx_builder", "onnx_builder\onnx_builder.pyproj", "{EE5F2720-B59F-4AE8-AEBB-6F0149ABD786}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_backend", "_backend\_backend.vcxproj", "{91E2152E-2C2F-471B-9088-204EB4C55F82}"
@@ -33,16 +31,6 @@ Global
 		{1BC3D931-B686-47FF-80B7-6D8F4BA179E8}.Release|x64.Build.0 = Release|x64
 		{1BC3D931-B686-47FF-80B7-6D8F4BA179E8}.Release|x86.ActiveCfg = Release|Win32
 		{1BC3D931-B686-47FF-80B7-6D8F4BA179E8}.Release|x86.Build.0 = Release|Win32
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Debug|x64.ActiveCfg = Debug|x64
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Debug|x64.Build.0 = Debug|x64
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Debug|x86.ActiveCfg = Debug|Win32
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Debug|x86.Build.0 = Debug|Win32
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Release|Any CPU.ActiveCfg = Release|Win32
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Release|x64.ActiveCfg = Release|x64
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Release|x64.Build.0 = Release|x64
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Release|x86.ActiveCfg = Release|Win32
-		{4CABADE1-EC4A-440F-8140-0C24D7F4E3C2}.Release|x86.Build.0 = Release|Win32
 		{EE5F2720-B59F-4AE8-AEBB-6F0149ABD786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE5F2720-B59F-4AE8-AEBB-6F0149ABD786}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{EE5F2720-B59F-4AE8-AEBB-6F0149ABD786}.Debug|x86.ActiveCfg = Debug|Any CPU

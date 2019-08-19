@@ -1,6 +1,11 @@
-#include "../layer.h"
 #ifndef FLOOR_H
 #define FLOOR_H 
+
+#include "../layer.h"
+
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
+
 /*
 
 Floor takes one input data (Tensor<T>) and produces one output data
@@ -9,7 +14,8 @@ the tensor elementwise.
 
 input: Input tensor
 output: Output tensor
-//*/
+*/
+
 //Floor
 //INPUTS:                   X_input
 //OPTIONAL_INPUTS:          
@@ -45,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Floor(std::string n);
+        Floor();
     
         void forward() { program->run(); }
         
@@ -53,10 +59,16 @@ namespace backend {
         void bind(std::string _X_input, std::string _Y_output); 
 
         ~Floor() {}
-
     };
+
     
+    void init_layer_Floor(py::module& m) {
+        // py::class_(m, "Floor");
+    }
+    
+
 }
+
 
 #endif
 
