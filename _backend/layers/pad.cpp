@@ -16,11 +16,11 @@ namespace backend {
   
     }
     
-    void Pad::bind(std::string _data_input, std::string _output_output){
-        data_input = _data_input; output_output = _output_output;
-		binding.data_input = tensor_dict[data_input]->shape();
+    void Pad::bind(std::string _data_i, std::string _output_o){
+        data_i = _data_i; output_o = _output_o;
+		binding.data_i = tensor_dict[data_i]->shape();
  
-		binding.output_output = tensor_dict[output_output]->shape();
+		binding.output_o = tensor_dict[output_o]->shape();
  
 		binding.pads = pads;
   		binding.mode = mode;
@@ -30,7 +30,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/pad.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[output_output]->data());
+        //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[output_o]->data());
     }
 
 }

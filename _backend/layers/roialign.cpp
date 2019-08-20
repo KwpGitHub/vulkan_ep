@@ -18,13 +18,13 @@ namespace backend {
   
     }
     
-    void RoiAlign::bind(std::string _X_input, std::string _rois_input, std::string _batch_indices_input, std::string _Y_output){
-        X_input = _X_input; rois_input = _rois_input; batch_indices_input = _batch_indices_input; Y_output = _Y_output;
-		binding.X_input = tensor_dict[X_input]->shape();
-  		binding.rois_input = tensor_dict[rois_input]->shape();
-  		binding.batch_indices_input = tensor_dict[batch_indices_input]->shape();
+    void RoiAlign::bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o){
+        X_i = _X_i; rois_i = _rois_i; batch_indices_i = _batch_indices_i; Y_o = _Y_o;
+		binding.X_i = tensor_dict[X_i]->shape();
+  		binding.rois_i = tensor_dict[rois_i]->shape();
+  		binding.batch_indices_i = tensor_dict[batch_indices_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
  
 		binding.mode = mode;
   		binding.output_height = output_height;
@@ -36,7 +36,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/roialign.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[rois_input]->data(), *tensor_dict[batch_indices_input]->data(), *tensor_dict[Y_output]->data());
+        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[rois_i]->data(), *tensor_dict[batch_indices_i]->data(), *tensor_dict[Y_o]->data());
     }
 
 }

@@ -23,9 +23,9 @@ output: UTF-8 Normalized strings
 */
 
 //StringNormalizer
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -39,16 +39,16 @@ namespace backend {
         typedef struct {
             int case_change_action; int is_case_sensitive; int locale;
 			Shape_t stopwords;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         int case_change_action; int is_case_sensitive; int locale; std::string stopwords;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -62,7 +62,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _case_change_action,  int _is_case_sensitive,  int _locale); 
-        void bind(std::string _stopwords, std::string _X_input, std::string _Y_output); 
+        void bind(std::string _stopwords, std::string _X_i, std::string _Y_o); 
 
         ~StringNormalizer() {}
     };

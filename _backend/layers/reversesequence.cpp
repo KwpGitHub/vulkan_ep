@@ -15,12 +15,12 @@ namespace backend {
   
     }
     
-    void ReverseSequence::bind(std::string _input_input, std::string _sequence_lens_input, std::string _Y_output){
-        input_input = _input_input; sequence_lens_input = _sequence_lens_input; Y_output = _Y_output;
-		binding.input_input = tensor_dict[input_input]->shape();
-  		binding.sequence_lens_input = tensor_dict[sequence_lens_input]->shape();
+    void ReverseSequence::bind(std::string _input_i, std::string _sequence_lens_i, std::string _Y_o){
+        input_i = _input_i; sequence_lens_i = _sequence_lens_i; Y_o = _Y_o;
+		binding.input_i = tensor_dict[input_i]->shape();
+  		binding.sequence_lens_i = tensor_dict[sequence_lens_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
  
 		binding.batch_axis = batch_axis;
   		binding.time_axis = time_axis;
@@ -29,7 +29,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reversesequence.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[sequence_lens_input]->data(), *tensor_dict[Y_output]->data());
+        //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[sequence_lens_i]->data(), *tensor_dict[Y_o]->data());
     }
 
 }

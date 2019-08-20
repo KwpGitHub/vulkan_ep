@@ -15,9 +15,9 @@ output: Shape of the input tensor
 */
 
 //Shape
-//INPUTS:                   data_input
+//INPUTS:                   data_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   shape_output
+//OUTPUS:                   shape_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -31,16 +31,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t data_input;
+            Shape_t data_i;
             
-            Shape_t shape_output;
+            Shape_t shape_o;
             
         } binding_descriptor;
 
         
-        std::string data_input;
+        std::string data_i;
         
-        std::string shape_output;
+        std::string shape_o;
         
 
         binding_descriptor   binding;
@@ -54,7 +54,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _data_input, std::string _shape_output); 
+        void bind(std::string _data_i, std::string _shape_o); 
 
         ~Shape() {}
     };

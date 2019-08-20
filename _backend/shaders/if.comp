@@ -10,21 +10,21 @@ layout(push_constant) uniform Parameters {
     int else_branch; int then_branch;
 			
 //input
-    Shape_t cond_input;
+    Shape_t cond_i;
     
 //output
     
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float cond_input[]; };
+layout(std430, binding = 0) buffer lay0 { float cond_i[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     
-    const uint cond_input_size = params.cond_input.n * params.cond_input.c * params.cond_input.d * params.cond_input.w * params.cond_input.h;
+    const uint cond_i_size = params.cond_i.n * params.cond_i.c * params.cond_i.d * params.cond_i.w * params.cond_i.h;
     
     
     

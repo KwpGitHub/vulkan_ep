@@ -52,9 +52,9 @@ output: Sliced data tensor.
 */
 
 //Slice
-//INPUTS:                   data_input, starts_input, ends_input
-//OPTIONAL_INPUTS:          axes_input_opt, steps_input_opt
-//OUTPUS:                   output_output
+//INPUTS:                   data_i, starts_i, ends_i
+//OPTIONAL_INPUTS:          axes_i, steps_i
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -68,16 +68,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t data_input; Shape_t starts_input; Shape_t ends_input;
-            Shape_t axes_input_opt; Shape_t steps_input_opt;
-            Shape_t output_output;
+            Shape_t data_i; Shape_t starts_i; Shape_t ends_i;
+            Shape_t axes_i; Shape_t steps_i;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         
-        std::string data_input; std::string starts_input; std::string ends_input;
-        std::string axes_input_opt; std::string steps_input_opt;
-        std::string output_output;
+        std::string data_i; std::string starts_i; std::string ends_i;
+        std::string axes_i; std::string steps_i;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -91,7 +91,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _data_input, std::string _starts_input, std::string _ends_input, std::string _axes_input_opt, std::string _steps_input_opt, std::string _output_output); 
+        void bind(std::string _data_i, std::string _starts_i, std::string _ends_i, std::string _axes_i, std::string _steps_i, std::string _output_o); 
 
         ~Slice() {}
     };

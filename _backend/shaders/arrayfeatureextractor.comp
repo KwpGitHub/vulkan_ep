@@ -10,26 +10,26 @@ layout(push_constant) uniform Parameters {
     
 			
 //input
-    Shape_t X_input; Shape_t Y_input;
+    Shape_t X_i; Shape_t Y_i;
     
 //output
-    Shape_t Z_output;
+    Shape_t Z_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float X_input[]; };
-layout(std430, binding = 1) buffer lay1 { float Y_input[]; };
-layout(std430, binding = 2) buffer lay2 { float Z_output[]; };
+layout(std430, binding = 0) buffer lay0 { float X_i[]; };
+layout(std430, binding = 1) buffer lay1 { float Y_i[]; };
+layout(std430, binding = 2) buffer lay2 { float Z_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     
-    const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
-	const uint Y_input_size = params.Y_input.n * params.Y_input.c * params.Y_input.d * params.Y_input.w * params.Y_input.h;
+    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+	const uint Y_i_size = params.Y_i.n * params.Y_i.c * params.Y_i.d * params.Y_i.w * params.Y_i.h;
     
-    const uint Z_output_size = params.Z_output.n * params.Z_output.c * params.Z_output.d * params.Z_output.w * params.Z_output.h;
+    const uint Z_o_size = params.Z_o.n * params.Z_o.c * params.Z_o.d * params.Z_o.w * params.Z_o.h;
     
 
     if(size <= idx) {

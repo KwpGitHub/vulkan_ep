@@ -3,8 +3,9 @@ from google.protobuf.json_format import MessageToJson
 import onnx
 import json
 import os
-import _backend as backend
-from layers import *
+import onnx_helper
+#import _backend as backend
+#from layers import *
 
 def graph_def_info(onnx_file):
     onnx_model_str =  MessageToJson(onnx.load(onnx_file))
@@ -58,4 +59,7 @@ def graph_def_info(onnx_file):
 
 
 if(__name__=="__main__"):   
-    node_info = graph_def_info('mobilenetv2.onnx')
+    mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')
+    mobilenet.build()
+    print()
+    #node_info = graph_def_info('mobilenetv2.onnx')

@@ -48,9 +48,9 @@ output: Tensor with same shape of input.
 */
 
 //ReverseSequence
-//INPUTS:                   input_input, sequence_lens_input
+//INPUTS:                   input_i, sequence_lens_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -64,16 +64,16 @@ namespace backend {
         typedef struct {
             int batch_axis; int time_axis;
 			
-            Shape_t input_input; Shape_t sequence_lens_input;
+            Shape_t input_i; Shape_t sequence_lens_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         int batch_axis; int time_axis;
-        std::string input_input; std::string sequence_lens_input;
+        std::string input_i; std::string sequence_lens_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -87,7 +87,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _batch_axis,  int _time_axis); 
-        void bind(std::string _input_input, std::string _sequence_lens_input, std::string _Y_output); 
+        void bind(std::string _input_i, std::string _sequence_lens_i, std::string _Y_o); 
 
         ~ReverseSequence() {}
     };

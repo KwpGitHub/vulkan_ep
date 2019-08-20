@@ -22,7 +22,7 @@ output: Output tensor of random values drawn from uniform distribution
 //RandomUniform
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               shape
 //PARAMETER_TYPES:          Shape_t
@@ -38,14 +38,14 @@ namespace backend {
 			
             
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         Shape_t shape; int dtype; float high; float low; float seed;
         
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -59,7 +59,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _shape,  int _dtype,  float _high,  float _low,  float _seed); 
-        void bind(std::string _output_output); 
+        void bind(std::string _output_o); 
 
         ~RandomUniform() {}
     };

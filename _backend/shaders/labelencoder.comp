@@ -10,10 +10,10 @@ layout(push_constant) uniform Parameters {
     float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s;
 			Shape_t keys_floats; Shape_t keys_strings; Shape_t values_floats; Shape_t values_strings;
 //input
-    Shape_t X_input;
+    Shape_t X_i;
     
 //output
-    Shape_t Y_output;
+    Shape_t Y_o;
     
 } params;
 
@@ -21,8 +21,8 @@ layout(std430, binding = 0) buffer lay0 { float keys_floats[]; };
 layout(std430, binding = 1) buffer lay1 { float keys_strings[]; };
 layout(std430, binding = 2) buffer lay2 { float values_floats[]; };
 layout(std430, binding = 3) buffer lay3 { float values_strings[]; };
-layout(std430, binding = 4) buffer lay4 { float X_input[]; };
-layout(std430, binding = 5) buffer lay5 { float Y_output[]; };
+layout(std430, binding = 4) buffer lay4 { float X_i[]; };
+layout(std430, binding = 5) buffer lay5 { float Y_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -32,9 +32,9 @@ void main(){
 	const uint keys_strings_size = params.keys_strings.n * params.keys_strings.c * params.keys_strings.d * params.keys_strings.w * params.keys_strings.h;
 	const uint values_floats_size = params.values_floats.n * params.values_floats.c * params.values_floats.d * params.values_floats.w * params.values_floats.h;
 	const uint values_strings_size = params.values_strings.n * params.values_strings.c * params.values_strings.d * params.values_strings.w * params.values_strings.h;
-    const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
+    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
     
-    const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
+    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
     
 
     if(size <= idx) {

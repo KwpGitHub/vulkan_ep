@@ -151,24 +151,29 @@ class {norm}:
 {python_variables}
     #parameters
 {python_parameters}
+    input_params = [{python_inputs_func}]
+    output_params = [{python_outputs_func}]
+    #attribute_params = [{python_attribute_func}]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._{norm}(name)
+        #self.Module = nn._{norm}(name)
+
     def input(self, *args):
-        inpts = [{python_inputs_func}]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = [{python_outputs_func}]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['{lower}'] = {norm}
+layer_map['{norm}'] = {norm}
 
 """.format_map
 
@@ -251,10 +256,10 @@ def onnx_proto():
         OPTIONAL_PARAMETERS =       [str(x.name) for _, x in op.attributes.items() if(x.required == False)]        
         OPTIONAL_PARAMETER_TYPES =  [type_map[str(x.type).replace('AttrType.','')] for _, x in op.attributes.items() if(x.required == False)]
 
-        INPUT_NAMES =               [str(x.name)+"_input" for x in op.inputs if(str(x.option) == 'FormalParameterOption.Single')]
-        OPTIONAL_INPUT_NAMES =      [str(x.name)+"_input_opt" for x in op.inputs if(str(x.option) == 'FormalParameterOption.Optional')]
-        OUTPUT_NAMES =              [str(x.name)+"_output"  for x in op.outputs if(str(x.option) == 'FormalParameterOption.Single')]        
-        OPTIONAL_OUTPUT_NAMES =     [str(x.name)+"_output_opt" for x in op.outputs if(str(x.option) == 'FormalParameterOption.Optional')]
+        INPUT_NAMES =               [str(x.name)+"_i" for x in op.inputs if(str(x.option) == 'FormalParameterOption.Single')]
+        OPTIONAL_INPUT_NAMES =      [str(x.name)+"_i" for x in op.inputs if(str(x.option) == 'FormalParameterOption.Optional')]
+        OUTPUT_NAMES =              [str(x.name)+"_o"  for x in op.outputs if(str(x.option) == 'FormalParameterOption.Single')]        
+        OPTIONAL_OUTPUT_NAMES =     [str(x.name)+"_o" for x in op.outputs if(str(x.option) == 'FormalParameterOption.Optional')]
     
         p_map = {"inputs" :                 ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'inputs') for x in INPUT_NAMES] ),
                  "optional_input" :         ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'optional_input')  for x in OPTIONAL_INPUT_NAMES]),
@@ -325,7 +330,8 @@ def onnx_proto():
                 'python_variables' :            ''.join(['    {0} = None\n'.format(x) for x in layer_parameter_tensors + INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 'python_parameters' :           ''.join(['    {0} = None\n'.format(i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES) if(j != 'Tensor*') ]),
                 'python_inputs_func' :          ', '.join('"{0}"'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES),
-                'python_outputs_func' :         ', '.join('"{0}"'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)
+                'python_outputs_func' :         ', '.join('"{0}"'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES),
+                'python_attribute_func' :       ', '.join('"{0}"'.format(x) for x in PARAMETERS + OPTIONAL_PARAMETERS)
         }        
 
         py_layers_map.append(python_class_str(mapt))
@@ -367,7 +373,7 @@ def onnx_proto():
     layers.writelines(layers_lst)
     op_file.close()
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
-    py_layers.write('import _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
+    py_layers.write('#import _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
 
     print(single_element)
     print(double_element)

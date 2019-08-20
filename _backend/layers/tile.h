@@ -17,9 +17,9 @@ output: Output tensor of the same dimension and type as tensor input. output_dim
 */
 
 //Tile
-//INPUTS:                   input_input, repeats_input
+//INPUTS:                   input_i, repeats_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -33,16 +33,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t input_input; Shape_t repeats_input;
+            Shape_t input_i; Shape_t repeats_i;
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         
-        std::string input_input; std::string repeats_input;
+        std::string input_i; std::string repeats_i;
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _input_input, std::string _repeats_input, std::string _output_output); 
+        void bind(std::string _input_i, std::string _repeats_i, std::string _output_o); 
 
         ~Tile() {}
     };

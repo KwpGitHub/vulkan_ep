@@ -22,9 +22,9 @@ output: The output tensor of the same shape as input.
 */
 
 //InstanceNormalization
-//INPUTS:                   input_input, scale_input, B_input
+//INPUTS:                   input_i, scale_i, B_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -38,16 +38,16 @@ namespace backend {
         typedef struct {
             float epsilon;
 			
-            Shape_t input_input; Shape_t scale_input; Shape_t B_input;
+            Shape_t input_i; Shape_t scale_i; Shape_t B_i;
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         float epsilon;
-        std::string input_input; std::string scale_input; std::string B_input;
+        std::string input_i; std::string scale_i; std::string B_i;
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -61,7 +61,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( float _epsilon); 
-        void bind(std::string _input_input, std::string _scale_input, std::string _B_input, std::string _output_output); 
+        void bind(std::string _input_i, std::string _scale_i, std::string _B_i, std::string _output_o); 
 
         ~InstanceNormalization() {}
     };

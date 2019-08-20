@@ -18,9 +18,9 @@ output: Reshaped tensor with same data as input.
 */
 
 //Squeeze
-//INPUTS:                   data_input
+//INPUTS:                   data_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   squeezed_output
+//OUTPUS:                   squeezed_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -34,16 +34,16 @@ namespace backend {
         typedef struct {
             Shape_t axes;
 			
-            Shape_t data_input;
+            Shape_t data_i;
             
-            Shape_t squeezed_output;
+            Shape_t squeezed_o;
             
         } binding_descriptor;
 
         Shape_t axes;
-        std::string data_input;
+        std::string data_i;
         
-        std::string squeezed_output;
+        std::string squeezed_o;
         
 
         binding_descriptor   binding;
@@ -57,7 +57,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _axes); 
-        void bind(std::string _data_input, std::string _squeezed_output); 
+        void bind(std::string _data_i, std::string _squeezed_o); 
 
         ~Squeeze() {}
     };

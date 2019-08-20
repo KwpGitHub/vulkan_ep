@@ -18,11 +18,11 @@ namespace backend {
   
     }
     
-    void LabelEncoder::bind(std::string _keys_floats, std::string _keys_strings, std::string _values_floats, std::string _values_strings, std::string _X_input, std::string _Y_output){
-        keys_floats = _keys_floats; keys_strings = _keys_strings; values_floats = _values_floats; values_strings = _values_strings; X_input = _X_input; Y_output = _Y_output;
-		binding.X_input = tensor_dict[X_input]->shape();
+    void LabelEncoder::bind(std::string _keys_floats, std::string _keys_strings, std::string _values_floats, std::string _values_strings, std::string _X_i, std::string _Y_o){
+        keys_floats = _keys_floats; keys_strings = _keys_strings; values_floats = _values_floats; values_strings = _values_strings; X_i = _X_i; Y_o = _Y_o;
+		binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
  
 		binding.default_float = default_float;
   		binding.default_int64 = default_int64;
@@ -38,7 +38,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/labelencoder.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[keys_floats]->data(), *tensor_dict[keys_strings]->data(), *tensor_dict[values_floats]->data(), *tensor_dict[values_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
+        //program->bind(binding, *tensor_dict[keys_floats]->data(), *tensor_dict[keys_strings]->data(), *tensor_dict[values_floats]->data(), *tensor_dict[values_strings]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
     }
 
 }

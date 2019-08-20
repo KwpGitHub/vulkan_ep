@@ -16,9 +16,9 @@ output: Output data tensor from pooling across the input tensor. Dimensions will
 */
 
 //GlobalAveragePool
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -32,16 +32,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -55,7 +55,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _X_input, std::string _Y_output); 
+        void bind(std::string _X_i, std::string _Y_o); 
 
         ~GlobalAveragePool() {}
     };

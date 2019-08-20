@@ -28,9 +28,9 @@ output: Tensor of rank one greater than input tensor 'indices', i.e. rank(output
 */
 
 //OneHot
-//INPUTS:                   indices_input, depth_input, values_input
+//INPUTS:                   indices_i, depth_i, values_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -44,16 +44,16 @@ namespace backend {
         typedef struct {
             int axis;
 			
-            Shape_t indices_input; Shape_t depth_input; Shape_t values_input;
+            Shape_t indices_i; Shape_t depth_i; Shape_t values_i;
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         int axis;
-        std::string indices_input; std::string depth_input; std::string values_input;
+        std::string indices_i; std::string depth_i; std::string values_i;
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -67,7 +67,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _axis); 
-        void bind(std::string _indices_input, std::string _depth_input, std::string _values_input, std::string _output_output); 
+        void bind(std::string _indices_i, std::string _depth_i, std::string _values_i, std::string _output_o); 
 
         ~OneHot() {}
     };

@@ -15,7 +15,7 @@ output: Output tensor containing the same value of the provided tensor.
 //Constant
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               value
 //PARAMETER_TYPES:          Tensor*
@@ -31,14 +31,14 @@ namespace backend {
 			Shape_t value;
             
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         std::string value;
         
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -52,7 +52,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _value, std::string _output_output); 
+        void bind(std::string _value, std::string _output_o); 
 
         ~Constant() {}
     };

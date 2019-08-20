@@ -19,9 +19,9 @@ output: Result tensor.
 */
 
 //Less
-//INPUTS:                   A_input, B_input
+//INPUTS:                   A_i, B_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   C_output
+//OUTPUS:                   C_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -35,16 +35,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t A_input; Shape_t B_input;
+            Shape_t A_i; Shape_t B_i;
             
-            Shape_t C_output;
+            Shape_t C_o;
             
         } binding_descriptor;
 
         
-        std::string A_input; std::string B_input;
+        std::string A_i; std::string B_i;
         
-        std::string C_output;
+        std::string C_o;
         
 
         binding_descriptor   binding;
@@ -58,7 +58,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _A_input, std::string _B_input, std::string _C_output); 
+        void bind(std::string _A_i, std::string _B_i, std::string _C_o); 
 
         ~Less() {}
     };

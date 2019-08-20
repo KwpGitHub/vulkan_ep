@@ -16,12 +16,12 @@ namespace backend {
   
     }
     
-    void LinearClassifier::bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_input, std::string _Y_output, std::string _Z_output){
-        coefficients = _coefficients; classlabels_strings = _classlabels_strings; intercepts = _intercepts; X_input = _X_input; Y_output = _Y_output; Z_output = _Z_output;
-		binding.X_input = tensor_dict[X_input]->shape();
+    void LinearClassifier::bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_i, std::string _Y_o, std::string _Z_o){
+        coefficients = _coefficients; classlabels_strings = _classlabels_strings; intercepts = _intercepts; X_i = _X_i; Y_o = _Y_o; Z_o = _Z_o;
+		binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
-  		binding.Z_output = tensor_dict[Z_output]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
+  		binding.Z_o = tensor_dict[Z_o]->shape();
  
 		binding.classlabels_ints = classlabels_ints;
   		binding.multi_class = multi_class;
@@ -34,7 +34,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearclassifier.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[classlabels_strings]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data(), *tensor_dict[Z_output]->data());
+        //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[classlabels_strings]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Z_o]->data());
     }
 
 }

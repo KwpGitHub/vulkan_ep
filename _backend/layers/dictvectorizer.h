@@ -25,9 +25,9 @@ output: A 1-D tensor holding values from the input dictionary.
 */
 
 //DictVectorizer
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -41,16 +41,16 @@ namespace backend {
         typedef struct {
             Shape_t int64_vocabulary;
 			Shape_t string_vocabulary;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         Shape_t int64_vocabulary; std::string string_vocabulary;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -64,7 +64,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _int64_vocabulary); 
-        void bind(std::string _string_vocabulary, std::string _X_input, std::string _Y_output); 
+        void bind(std::string _string_vocabulary, std::string _X_i, std::string _Y_o); 
 
         ~DictVectorizer() {}
     };

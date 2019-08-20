@@ -29,9 +29,9 @@ output: Quantized matrix multiply results from a * b
 */
 
 //QLinearMatMul
-//INPUTS:                   a_input, a_scale_input, a_zero_point_input, b_input, b_scale_input, b_zero_point_input, y_scale_input, y_zero_point_input
+//INPUTS:                   a_i, a_scale_i, a_zero_point_i, b_i, b_scale_i, b_zero_point_i, y_scale_i, y_zero_point_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   y_output
+//OUTPUS:                   y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -45,16 +45,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t a_input; Shape_t a_scale_input; Shape_t a_zero_point_input; Shape_t b_input; Shape_t b_scale_input; Shape_t b_zero_point_input; Shape_t y_scale_input; Shape_t y_zero_point_input;
+            Shape_t a_i; Shape_t a_scale_i; Shape_t a_zero_point_i; Shape_t b_i; Shape_t b_scale_i; Shape_t b_zero_point_i; Shape_t y_scale_i; Shape_t y_zero_point_i;
             
-            Shape_t y_output;
+            Shape_t y_o;
             
         } binding_descriptor;
 
         
-        std::string a_input; std::string a_scale_input; std::string a_zero_point_input; std::string b_input; std::string b_scale_input; std::string b_zero_point_input; std::string y_scale_input; std::string y_zero_point_input;
+        std::string a_i; std::string a_scale_i; std::string a_zero_point_i; std::string b_i; std::string b_scale_i; std::string b_zero_point_i; std::string y_scale_i; std::string y_zero_point_i;
         
-        std::string y_output;
+        std::string y_o;
         
 
         binding_descriptor   binding;
@@ -68,7 +68,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _a_input, std::string _a_scale_input, std::string _a_zero_point_input, std::string _b_input, std::string _b_scale_input, std::string _b_zero_point_input, std::string _y_scale_input, std::string _y_zero_point_input, std::string _y_output); 
+        void bind(std::string _a_i, std::string _a_scale_i, std::string _a_zero_point_i, std::string _b_i, std::string _b_scale_i, std::string _b_zero_point_i, std::string _y_scale_i, std::string _y_zero_point_i, std::string _y_o); 
 
         ~QLinearMatMul() {}
     };

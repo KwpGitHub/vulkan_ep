@@ -17,9 +17,9 @@ output: Reduced output tensor with integer data type.
 */
 
 //ArgMin
-//INPUTS:                   data_input
+//INPUTS:                   data_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   reduced_output
+//OUTPUS:                   reduced_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -33,16 +33,16 @@ namespace backend {
         typedef struct {
             int axis; int keepdims;
 			
-            Shape_t data_input;
+            Shape_t data_i;
             
-            Shape_t reduced_output;
+            Shape_t reduced_o;
             
         } binding_descriptor;
 
         int axis; int keepdims;
-        std::string data_input;
+        std::string data_i;
         
-        std::string reduced_output;
+        std::string reduced_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _axis,  int _keepdims); 
-        void bind(std::string _data_input, std::string _reduced_output); 
+        void bind(std::string _data_i, std::string _reduced_o); 
 
         ~ArgMin() {}
     };

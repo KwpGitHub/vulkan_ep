@@ -14,10 +14,10 @@ namespace backend {
   
     }
     
-    void Concat::bind(std::string _concat_result_output){
-        concat_result_output = _concat_result_output;
+    void Concat::bind(std::string _concat_result_o){
+        concat_result_o = _concat_result_o;
 
-		binding.concat_result_output = tensor_dict[concat_result_output]->shape();
+		binding.concat_result_o = tensor_dict[concat_result_o]->shape();
  
 		binding.axis = axis;
  
@@ -25,7 +25,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/concat.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[concat_result_output]->data());
+        //program->bind(binding, *tensor_dict[concat_result_o]->data());
     }
 
 }

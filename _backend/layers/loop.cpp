@@ -14,10 +14,10 @@ namespace backend {
   
     }
     
-    void Loop::bind(std::string _M_input_opt, std::string _cond_input_opt){
-        M_input_opt = _M_input_opt; cond_input_opt = _cond_input_opt;
-		binding.M_input_opt = tensor_dict[M_input_opt]->shape();
-  		binding.cond_input_opt = tensor_dict[cond_input_opt]->shape();
+    void Loop::bind(std::string _M_i, std::string _cond_i){
+        M_i = _M_i; cond_i = _cond_i;
+		binding.M_i = tensor_dict[M_i]->shape();
+  		binding.cond_i = tensor_dict[cond_i]->shape();
  
 
 		binding.body = body;
@@ -26,7 +26,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/loop.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[M_input_opt]->data(), *tensor_dict[cond_input_opt]->data());
+        //program->bind(binding, *tensor_dict[M_i]->data(), *tensor_dict[cond_i]->data());
     }
 
 }

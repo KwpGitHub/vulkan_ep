@@ -13,19 +13,19 @@ namespace backend {
   
     }
     
-    void Expand::bind(std::string _input_input, std::string _shape_input, std::string _output_output){
-        input_input = _input_input; shape_input = _shape_input; output_output = _output_output;
-		binding.input_input = tensor_dict[input_input]->shape();
-  		binding.shape_input = tensor_dict[shape_input]->shape();
+    void Expand::bind(std::string _input_i, std::string _shape_i, std::string _output_o){
+        input_i = _input_i; shape_i = _shape_i; output_o = _output_o;
+		binding.input_i = tensor_dict[input_i]->shape();
+  		binding.shape_i = tensor_dict[shape_i]->shape();
  
-		binding.output_output = tensor_dict[output_output]->shape();
+		binding.output_o = tensor_dict[output_o]->shape();
  
 
 
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/expand.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[shape_input]->data(), *tensor_dict[output_output]->data());
+        //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[shape_i]->data(), *tensor_dict[output_o]->data());
     }
 
 }

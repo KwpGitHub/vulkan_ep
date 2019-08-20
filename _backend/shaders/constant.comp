@@ -13,12 +13,12 @@ layout(push_constant) uniform Parameters {
     
     
 //output
-    Shape_t output_output;
+    Shape_t output_o;
     
 } params;
 
 layout(std430, binding = 0) buffer lay0 { float value[]; };
-layout(std430, binding = 1) buffer lay1 { float output_output[]; };
+layout(std430, binding = 1) buffer lay1 { float output_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -27,7 +27,7 @@ void main(){
     const uint value_size = params.value.n * params.value.c * params.value.d * params.value.w * params.value.h;
     
     
-    const uint output_output_size = params.output_output.n * params.output_output.c * params.output_output.d * params.output_output.w * params.output_output.h;
+    const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
     
 
     if(size <= idx) {

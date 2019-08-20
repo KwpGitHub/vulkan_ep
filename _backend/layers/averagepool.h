@@ -42,9 +42,9 @@ output: Output data tensor from average or max pooling across the input tensor. 
 */
 
 //AveragePool
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               kernel_shape
 //PARAMETER_TYPES:          Shape_t
@@ -58,16 +58,16 @@ namespace backend {
         typedef struct {
             Shape_t kernel_shape; int auto_pad; int ceil_mode; int count_include_pad; Shape_t pads; Shape_t strides;
 			
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         Shape_t kernel_shape; int auto_pad; int ceil_mode; int count_include_pad; Shape_t pads; Shape_t strides;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -81,7 +81,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _kernel_shape,  int _auto_pad,  int _ceil_mode,  int _count_include_pad,  Shape_t _pads,  Shape_t _strides); 
-        void bind(std::string _X_input, std::string _Y_output); 
+        void bind(std::string _X_i, std::string _Y_o); 
 
         ~AveragePool() {}
     };

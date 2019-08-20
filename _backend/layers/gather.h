@@ -55,9 +55,9 @@ output: Tensor of rank q + (r - 1).
 */
 
 //Gather
-//INPUTS:                   data_input, indices_input
+//INPUTS:                   data_i, indices_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -71,16 +71,16 @@ namespace backend {
         typedef struct {
             int axis;
 			
-            Shape_t data_input; Shape_t indices_input;
+            Shape_t data_i; Shape_t indices_i;
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         int axis;
-        std::string data_input; std::string indices_input;
+        std::string data_i; std::string indices_i;
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -94,7 +94,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _axis); 
-        void bind(std::string _data_input, std::string _indices_input, std::string _output_output); 
+        void bind(std::string _data_i, std::string _indices_i, std::string _output_o); 
 
         ~Gather() {}
     };

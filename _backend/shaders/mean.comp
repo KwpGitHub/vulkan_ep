@@ -13,11 +13,11 @@ layout(push_constant) uniform Parameters {
     
     
 //output
-    Shape_t mean_output;
+    Shape_t mean_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float mean_output[]; };
+layout(std430, binding = 0) buffer lay0 { float mean_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -26,7 +26,7 @@ void main(){
     
     
     
-    const uint mean_output_size = params.mean_output.n * params.mean_output.c * params.mean_output.d * params.mean_output.w * params.mean_output.h;
+    const uint mean_o_size = params.mean_o.n * params.mean_o.c * params.mean_o.d * params.mean_o.w * params.mean_o.h;
     
 
     if(size <= idx) {

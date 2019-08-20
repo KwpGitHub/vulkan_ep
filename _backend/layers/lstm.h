@@ -104,10 +104,10 @@ output: The last output value of the cell. It has shape `[num_directions, batch_
 */
 
 //LSTM
-//INPUTS:                   X_input, W_input, R_input
-//OPTIONAL_INPUTS:          B_input_opt, sequence_lens_input_opt, initial_h_input_opt, initial_c_input_opt, P_input_opt
+//INPUTS:                   X_i, W_i, R_i
+//OPTIONAL_INPUTS:          B_i, sequence_lens_i, initial_h_i, initial_c_i, P_i
 //OUTPUS:                   
-//OPTIONAL_OUTPUTS:         Y_output_opt, Y_h_output_opt, Y_c_output_opt
+//OPTIONAL_OUTPUTS:         Y_o, Y_h_o, Y_c_o
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      activation_alpha, activation_beta, activations, clip, direction, hidden_size, input_forget
@@ -120,17 +120,17 @@ namespace backend {
         typedef struct {
             float clip; int direction; int hidden_size; int input_forget;
 			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
-            Shape_t X_input; Shape_t W_input; Shape_t R_input;
-            Shape_t B_input_opt; Shape_t sequence_lens_input_opt; Shape_t initial_h_input_opt; Shape_t initial_c_input_opt; Shape_t P_input_opt;
+            Shape_t X_i; Shape_t W_i; Shape_t R_i;
+            Shape_t B_i; Shape_t sequence_lens_i; Shape_t initial_h_i; Shape_t initial_c_i; Shape_t P_i;
             
-            Shape_t Y_output_opt; Shape_t Y_h_output_opt; Shape_t Y_c_output_opt;
+            Shape_t Y_o; Shape_t Y_h_o; Shape_t Y_c_o;
         } binding_descriptor;
 
         float clip; int direction; int hidden_size; int input_forget; std::string activation_alpha; std::string activation_beta; std::string activations;
-        std::string X_input; std::string W_input; std::string R_input;
-        std::string B_input_opt; std::string sequence_lens_input_opt; std::string initial_h_input_opt; std::string initial_c_input_opt; std::string P_input_opt;
+        std::string X_i; std::string W_i; std::string R_i;
+        std::string B_i; std::string sequence_lens_i; std::string initial_h_i; std::string initial_c_i; std::string P_i;
         
-        std::string Y_output_opt; std::string Y_h_output_opt; std::string Y_c_output_opt;
+        std::string Y_o; std::string Y_h_o; std::string Y_c_o;
 
         binding_descriptor   binding;
 
@@ -143,7 +143,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( float _clip,  int _direction,  int _hidden_size,  int _input_forget); 
-        void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_input, std::string _W_input, std::string _R_input, std::string _B_input_opt, std::string _sequence_lens_input_opt, std::string _initial_h_input_opt, std::string _initial_c_input_opt, std::string _P_input_opt, std::string _Y_output_opt, std::string _Y_h_output_opt, std::string _Y_c_output_opt); 
+        void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_i, std::string _W_i, std::string _R_i, std::string _B_i, std::string _sequence_lens_i, std::string _initial_h_i, std::string _initial_c_i, std::string _P_i, std::string _Y_o, std::string _Y_h_o, std::string _Y_c_o); 
 
         ~LSTM() {}
     };

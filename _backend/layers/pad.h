@@ -30,9 +30,9 @@ output: Tensor after padding.
 */
 
 //Pad
-//INPUTS:                   data_input
+//INPUTS:                   data_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               pads
 //PARAMETER_TYPES:          Shape_t
@@ -46,16 +46,16 @@ namespace backend {
         typedef struct {
             Shape_t pads; int mode; float value;
 			
-            Shape_t data_input;
+            Shape_t data_i;
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         Shape_t pads; int mode; float value;
-        std::string data_input;
+        std::string data_i;
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -69,7 +69,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _pads,  int _mode,  float _value); 
-        void bind(std::string _data_input, std::string _output_output); 
+        void bind(std::string _data_i, std::string _output_o); 
 
         ~Pad() {}
     };

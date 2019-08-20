@@ -15,9 +15,9 @@ output: Regression outputs (one score per target per example).
 */
 
 //SVMRegressor
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -31,16 +31,16 @@ namespace backend {
         typedef struct {
             int kernel_type; int n_supports; int one_class; int post_transform;
 			Shape_t coefficients; Shape_t kernel_params; Shape_t rho; Shape_t support_vectors;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         int kernel_type; int n_supports; int one_class; int post_transform; std::string coefficients; std::string kernel_params; std::string rho; std::string support_vectors;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -54,7 +54,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _kernel_type,  int _n_supports,  int _one_class,  int _post_transform); 
-        void bind(std::string _coefficients, std::string _kernel_params, std::string _rho, std::string _support_vectors, std::string _X_input, std::string _Y_output); 
+        void bind(std::string _coefficients, std::string _kernel_params, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o); 
 
         ~SVMRegressor() {}
     };

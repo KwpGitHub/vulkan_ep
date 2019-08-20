@@ -27,9 +27,9 @@ output: RoI pooled output, 4-D tensor of shape (num_rois, C, output_height, outp
 */
 
 //RoiAlign
-//INPUTS:                   X_input, rois_input, batch_indices_input
+//INPUTS:                   X_i, rois_i, batch_indices_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -43,16 +43,16 @@ namespace backend {
         typedef struct {
             int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
 			
-            Shape_t X_input; Shape_t rois_input; Shape_t batch_indices_input;
+            Shape_t X_i; Shape_t rois_i; Shape_t batch_indices_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
-        std::string X_input; std::string rois_input; std::string batch_indices_input;
+        std::string X_i; std::string rois_i; std::string batch_indices_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -66,7 +66,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale); 
-        void bind(std::string _X_input, std::string _rois_input, std::string _batch_indices_input, std::string _Y_output); 
+        void bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o); 
 
         ~RoiAlign() {}
     };

@@ -14,13 +14,13 @@ namespace backend {
   
     }
     
-    void OneHot::bind(std::string _indices_input, std::string _depth_input, std::string _values_input, std::string _output_output){
-        indices_input = _indices_input; depth_input = _depth_input; values_input = _values_input; output_output = _output_output;
-		binding.indices_input = tensor_dict[indices_input]->shape();
-  		binding.depth_input = tensor_dict[depth_input]->shape();
-  		binding.values_input = tensor_dict[values_input]->shape();
+    void OneHot::bind(std::string _indices_i, std::string _depth_i, std::string _values_i, std::string _output_o){
+        indices_i = _indices_i; depth_i = _depth_i; values_i = _values_i; output_o = _output_o;
+		binding.indices_i = tensor_dict[indices_i]->shape();
+  		binding.depth_i = tensor_dict[depth_i]->shape();
+  		binding.values_i = tensor_dict[values_i]->shape();
  
-		binding.output_output = tensor_dict[output_output]->shape();
+		binding.output_o = tensor_dict[output_o]->shape();
  
 		binding.axis = axis;
  
@@ -28,7 +28,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/onehot.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[indices_input]->data(), *tensor_dict[depth_input]->data(), *tensor_dict[values_input]->data(), *tensor_dict[output_output]->data());
+        //program->bind(binding, *tensor_dict[indices_i]->data(), *tensor_dict[depth_i]->data(), *tensor_dict[values_i]->data(), *tensor_dict[output_o]->data());
     }
 
 }

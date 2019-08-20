@@ -16,7 +16,7 @@ output: One or more outputs forming list of tensors after splitting
 */
 
 //Split
-//INPUTS:                   input_input
+//INPUTS:                   input_i
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
@@ -32,14 +32,14 @@ namespace backend {
         typedef struct {
             int axis; Shape_t split;
 			
-            Shape_t input_input;
+            Shape_t input_i;
             
             
             
         } binding_descriptor;
 
         int axis; Shape_t split;
-        std::string input_input;
+        std::string input_i;
         
         
         
@@ -55,7 +55,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _axis,  Shape_t _split); 
-        void bind(std::string _input_input); 
+        void bind(std::string _input_i); 
 
         ~Split() {}
     };

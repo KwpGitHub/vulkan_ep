@@ -13,17 +13,17 @@ namespace backend {
   
     }
     
-    void Mean::bind(std::string _mean_output){
-        mean_output = _mean_output;
+    void Mean::bind(std::string _mean_o){
+        mean_o = _mean_o;
 
-		binding.mean_output = tensor_dict[mean_output]->shape();
+		binding.mean_o = tensor_dict[mean_o]->shape();
  
 
 
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mean.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[mean_output]->data());
+        //program->bind(binding, *tensor_dict[mean_o]->data());
     }
 
 }

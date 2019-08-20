@@ -10,24 +10,24 @@ layout(push_constant) uniform Parameters {
     Shape_t axes;
 			
 //input
-    Shape_t data_input;
+    Shape_t data_i;
     
 //output
-    Shape_t squeezed_output;
+    Shape_t squeezed_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float data_input[]; };
-layout(std430, binding = 1) buffer lay1 { float squeezed_output[]; };
+layout(std430, binding = 0) buffer lay0 { float data_i[]; };
+layout(std430, binding = 1) buffer lay1 { float squeezed_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     
-    const uint data_input_size = params.data_input.n * params.data_input.c * params.data_input.d * params.data_input.w * params.data_input.h;
+    const uint data_i_size = params.data_i.n * params.data_i.c * params.data_i.d * params.data_i.w * params.data_i.h;
     
-    const uint squeezed_output_size = params.squeezed_output.n * params.squeezed_output.c * params.squeezed_output.d * params.squeezed_output.w * params.squeezed_output.h;
+    const uint squeezed_o_size = params.squeezed_o.n * params.squeezed_o.c * params.squeezed_o.d * params.squeezed_o.w * params.squeezed_o.h;
     
 
     if(size <= idx) {

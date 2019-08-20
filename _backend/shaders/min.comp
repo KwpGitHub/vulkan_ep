@@ -13,11 +13,11 @@ layout(push_constant) uniform Parameters {
     
     
 //output
-    Shape_t min_output;
+    Shape_t min_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float min_output[]; };
+layout(std430, binding = 0) buffer lay0 { float min_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -26,7 +26,7 @@ void main(){
     
     
     
-    const uint min_output_size = params.min_output.n * params.min_output.c * params.min_output.d * params.min_output.w * params.min_output.h;
+    const uint min_o_size = params.min_o.n * params.min_o.c * params.min_o.d * params.min_o.w * params.min_o.h;
     
 
     if(size <= idx) {

@@ -23,7 +23,7 @@ output: Output tensor of random values drawn from normal distribution
 //RandomNormal
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               shape
 //PARAMETER_TYPES:          Shape_t
@@ -39,14 +39,14 @@ namespace backend {
 			
             
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         Shape_t shape; int dtype; float mean; float scale; float seed;
         
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -60,7 +60,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _shape,  int _dtype,  float _mean,  float _scale,  float _seed); 
-        void bind(std::string _output_output); 
+        void bind(std::string _output_o); 
 
         ~RandomNormal() {}
     };

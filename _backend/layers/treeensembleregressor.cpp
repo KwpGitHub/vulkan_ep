@@ -25,11 +25,11 @@ namespace backend {
   
     }
     
-    void TreeEnsembleRegressor::bind(std::string _base_values, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _target_weights, std::string _X_input, std::string _Y_output){
-        base_values = _base_values; nodes_hitrates = _nodes_hitrates; nodes_modes = _nodes_modes; nodes_values = _nodes_values; target_weights = _target_weights; X_input = _X_input; Y_output = _Y_output;
-		binding.X_input = tensor_dict[X_input]->shape();
+    void TreeEnsembleRegressor::bind(std::string _base_values, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _target_weights, std::string _X_i, std::string _Y_o){
+        base_values = _base_values; nodes_hitrates = _nodes_hitrates; nodes_modes = _nodes_modes; nodes_values = _nodes_values; target_weights = _target_weights; X_i = _X_i; Y_o = _Y_o;
+		binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
  
 		binding.aggregate_function = aggregate_function;
   		binding.n_targets = n_targets;
@@ -53,7 +53,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/treeensembleregressor.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[base_values]->data(), *tensor_dict[nodes_hitrates]->data(), *tensor_dict[nodes_modes]->data(), *tensor_dict[nodes_values]->data(), *tensor_dict[target_weights]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
+        //program->bind(binding, *tensor_dict[base_values]->data(), *tensor_dict[nodes_hitrates]->data(), *tensor_dict[nodes_modes]->data(), *tensor_dict[nodes_values]->data(), *tensor_dict[target_weights]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
     }
 
 }

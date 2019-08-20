@@ -11,14 +11,14 @@ layout(push_constant) uniform Parameters {
 			
 //input
     
-    Shape_t M_input_opt; Shape_t cond_input_opt;
+    Shape_t M_i; Shape_t cond_i;
 //output
     
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float M_input_opt[]; };
-layout(std430, binding = 1) buffer lay1 { float cond_input_opt[]; };
+layout(std430, binding = 0) buffer lay0 { float M_i[]; };
+layout(std430, binding = 1) buffer lay1 { float cond_i[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -26,8 +26,8 @@ void main(){
     const uint idz = gl_GlobalInvocationID.z;
     
     
-    const uint M_input_opt_size = params.M_input_opt.n * params.M_input_opt.c * params.M_input_opt.d * params.M_input_opt.w * params.M_input_opt.h;
-	const uint cond_input_opt_size = params.cond_input_opt.n * params.cond_input_opt.c * params.cond_input_opt.d * params.cond_input_opt.w * params.cond_input_opt.h;
+    const uint M_i_size = params.M_i.n * params.M_i.c * params.M_i.d * params.M_i.w * params.M_i.h;
+	const uint cond_i_size = params.cond_i.n * params.cond_i.c * params.cond_i.d * params.cond_i.w * params.cond_i.h;
     
     
 

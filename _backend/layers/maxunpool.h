@@ -34,9 +34,9 @@ output: Output data tensor that contains the result of the unpooling.
 */
 
 //MaxUnpool
-//INPUTS:                   X_input, I_input
-//OPTIONAL_INPUTS:          output_shape_input_opt
-//OUTPUS:                   output_output
+//INPUTS:                   X_i, I_i
+//OPTIONAL_INPUTS:          output_shape_i
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               kernel_shape
 //PARAMETER_TYPES:          Shape_t
@@ -50,16 +50,16 @@ namespace backend {
         typedef struct {
             Shape_t kernel_shape; Shape_t pads; Shape_t strides;
 			
-            Shape_t X_input; Shape_t I_input;
-            Shape_t output_shape_input_opt;
-            Shape_t output_output;
+            Shape_t X_i; Shape_t I_i;
+            Shape_t output_shape_i;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-        std::string X_input; std::string I_input;
-        std::string output_shape_input_opt;
-        std::string output_output;
+        std::string X_i; std::string I_i;
+        std::string output_shape_i;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -73,7 +73,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _kernel_shape,  Shape_t _pads,  Shape_t _strides); 
-        void bind(std::string _X_input, std::string _I_input, std::string _output_shape_input_opt, std::string _output_output); 
+        void bind(std::string _X_i, std::string _I_i, std::string _output_shape_i, std::string _output_o); 
 
         ~MaxUnpool() {}
     };

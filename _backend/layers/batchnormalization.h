@@ -32,10 +32,10 @@ output: Saved variance used during training to speed up gradient computation.
 */
 
 //BatchNormalization
-//INPUTS:                   X_input, scale_input, B_input, mean_input, var_input
+//INPUTS:                   X_i, scale_i, B_i, mean_i, var_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
-//OPTIONAL_OUTPUTS:         mean_output_opt, var_output_opt, saved_mean_output_opt, saved_var_output_opt
+//OUTPUS:                   Y_o
+//OPTIONAL_OUTPUTS:         mean_o, var_o, saved_mean_o, saved_var_o
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      epsilon, momentum
@@ -48,17 +48,17 @@ namespace backend {
         typedef struct {
             float epsilon; float momentum;
 			
-            Shape_t X_input; Shape_t scale_input; Shape_t B_input; Shape_t mean_input; Shape_t var_input;
+            Shape_t X_i; Shape_t scale_i; Shape_t B_i; Shape_t mean_i; Shape_t var_i;
             
-            Shape_t Y_output;
-            Shape_t mean_output_opt; Shape_t var_output_opt; Shape_t saved_mean_output_opt; Shape_t saved_var_output_opt;
+            Shape_t Y_o;
+            Shape_t mean_o; Shape_t var_o; Shape_t saved_mean_o; Shape_t saved_var_o;
         } binding_descriptor;
 
         float epsilon; float momentum;
-        std::string X_input; std::string scale_input; std::string B_input; std::string mean_input; std::string var_input;
+        std::string X_i; std::string scale_i; std::string B_i; std::string mean_i; std::string var_i;
         
-        std::string Y_output;
-        std::string mean_output_opt; std::string var_output_opt; std::string saved_mean_output_opt; std::string saved_var_output_opt;
+        std::string Y_o;
+        std::string mean_o; std::string var_o; std::string saved_mean_o; std::string saved_var_o;
 
         binding_descriptor   binding;
 
@@ -71,7 +71,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( float _epsilon,  float _momentum); 
-        void bind(std::string _X_input, std::string _scale_input, std::string _B_input, std::string _mean_input, std::string _var_input, std::string _Y_output, std::string _mean_output_opt, std::string _var_output_opt, std::string _saved_mean_output_opt, std::string _saved_var_output_opt); 
+        void bind(std::string _X_i, std::string _scale_i, std::string _B_i, std::string _mean_i, std::string _var_i, std::string _Y_o, std::string _mean_o, std::string _var_o, std::string _saved_mean_o, std::string _saved_var_o); 
 
         ~BatchNormalization() {}
     };

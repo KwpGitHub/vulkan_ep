@@ -17,9 +17,9 @@ output: RoI pooled output 4-D tensor of shape (num_rois, channels, pooled_shape[
 */
 
 //MaxRoiPool
-//INPUTS:                   X_input, rois_input
+//INPUTS:                   X_i, rois_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               pooled_shape
 //PARAMETER_TYPES:          Shape_t
@@ -33,16 +33,16 @@ namespace backend {
         typedef struct {
             Shape_t pooled_shape; float spatial_scale;
 			
-            Shape_t X_input; Shape_t rois_input;
+            Shape_t X_i; Shape_t rois_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         Shape_t pooled_shape; float spatial_scale;
-        std::string X_input; std::string rois_input;
+        std::string X_i; std::string rois_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _pooled_shape,  float _spatial_scale); 
-        void bind(std::string _X_input, std::string _rois_input, std::string _Y_output); 
+        void bind(std::string _X_i, std::string _rois_i, std::string _Y_o); 
 
         ~MaxRoiPool() {}
     };

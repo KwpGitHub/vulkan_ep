@@ -10,24 +10,24 @@ layout(push_constant) uniform Parameters {
     int axis;
 			
 //input
-    Shape_t input_input;
+    Shape_t input_i;
     
 //output
-    Shape_t output_output;
+    Shape_t output_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float input_input[]; };
-layout(std430, binding = 1) buffer lay1 { float output_output[]; };
+layout(std430, binding = 0) buffer lay0 { float input_i[]; };
+layout(std430, binding = 1) buffer lay1 { float output_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     
-    const uint input_input_size = params.input_input.n * params.input_input.c * params.input_input.d * params.input_input.w * params.input_input.h;
+    const uint input_i_size = params.input_i.n * params.input_i.c * params.input_i.d * params.input_i.w * params.input_i.h;
     
-    const uint output_output_size = params.output_output.n * params.output_output.c * params.output_output.d * params.output_output.w * params.output_output.h;
+    const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
     
 
     if(size <= idx) {

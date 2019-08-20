@@ -24,9 +24,9 @@ output: N classes
 */
 
 //TreeEnsembleRegressor
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -40,16 +40,16 @@ namespace backend {
         typedef struct {
             int aggregate_function; int n_targets; Shape_t nodes_falsenodeids; Shape_t nodes_featureids; Shape_t nodes_missing_value_tracks_true; Shape_t nodes_nodeids; Shape_t nodes_treeids; Shape_t nodes_truenodeids; int post_transform; Shape_t target_ids; Shape_t target_nodeids; Shape_t target_treeids;
 			Shape_t base_values; Shape_t nodes_hitrates; Shape_t nodes_modes; Shape_t nodes_values; Shape_t target_weights;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         int aggregate_function; int n_targets; Shape_t nodes_falsenodeids; Shape_t nodes_featureids; Shape_t nodes_missing_value_tracks_true; Shape_t nodes_nodeids; Shape_t nodes_treeids; Shape_t nodes_truenodeids; int post_transform; Shape_t target_ids; Shape_t target_nodeids; Shape_t target_treeids; std::string base_values; std::string nodes_hitrates; std::string nodes_modes; std::string nodes_values; std::string target_weights;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -63,7 +63,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _aggregate_function,  int _n_targets,  Shape_t _nodes_falsenodeids,  Shape_t _nodes_featureids,  Shape_t _nodes_missing_value_tracks_true,  Shape_t _nodes_nodeids,  Shape_t _nodes_treeids,  Shape_t _nodes_truenodeids,  int _post_transform,  Shape_t _target_ids,  Shape_t _target_nodeids,  Shape_t _target_treeids); 
-        void bind(std::string _base_values, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _target_weights, std::string _X_input, std::string _Y_output); 
+        void bind(std::string _base_values, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _target_weights, std::string _X_i, std::string _Y_o); 
 
         ~TreeEnsembleRegressor() {}
     };

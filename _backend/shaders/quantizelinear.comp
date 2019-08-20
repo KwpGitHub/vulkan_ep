@@ -10,27 +10,27 @@ layout(push_constant) uniform Parameters {
     
 			
 //input
-    Shape_t x_input; Shape_t y_scale_input;
-    Shape_t y_zero_point_input_opt;
+    Shape_t x_i; Shape_t y_scale_i;
+    Shape_t y_zero_point_i;
 //output
-    Shape_t y_output;
+    Shape_t y_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float x_input[]; };
-layout(std430, binding = 1) buffer lay1 { float y_scale_input[]; };
-layout(std430, binding = 2) buffer lay2 { float y_zero_point_input_opt[]; };
-layout(std430, binding = 3) buffer lay3 { float y_output[]; };
+layout(std430, binding = 0) buffer lay0 { float x_i[]; };
+layout(std430, binding = 1) buffer lay1 { float y_scale_i[]; };
+layout(std430, binding = 2) buffer lay2 { float y_zero_point_i[]; };
+layout(std430, binding = 3) buffer lay3 { float y_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     
-    const uint x_input_size = params.x_input.n * params.x_input.c * params.x_input.d * params.x_input.w * params.x_input.h;
-	const uint y_scale_input_size = params.y_scale_input.n * params.y_scale_input.c * params.y_scale_input.d * params.y_scale_input.w * params.y_scale_input.h;
-    const uint y_zero_point_input_opt_size = params.y_zero_point_input_opt.n * params.y_zero_point_input_opt.c * params.y_zero_point_input_opt.d * params.y_zero_point_input_opt.w * params.y_zero_point_input_opt.h;
-    const uint y_output_size = params.y_output.n * params.y_output.c * params.y_output.d * params.y_output.w * params.y_output.h;
+    const uint x_i_size = params.x_i.n * params.x_i.c * params.x_i.d * params.x_i.w * params.x_i.h;
+	const uint y_scale_i_size = params.y_scale_i.n * params.y_scale_i.c * params.y_scale_i.d * params.y_scale_i.w * params.y_scale_i.h;
+    const uint y_zero_point_i_size = params.y_zero_point_i.n * params.y_zero_point_i.c * params.y_zero_point_i.d * params.y_zero_point_i.w * params.y_zero_point_i.h;
+    const uint y_o_size = params.y_o.n * params.y_o.c * params.y_o.d * params.y_o.w * params.y_o.h;
     
 
     if(size <= idx) {

@@ -10,10 +10,10 @@ layout(push_constant) uniform Parameters {
     Shape_t class_ids; Shape_t class_nodeids; Shape_t class_treeids; Shape_t classlabels_int64s; Shape_t nodes_falsenodeids; Shape_t nodes_featureids; Shape_t nodes_missing_value_tracks_true; Shape_t nodes_nodeids; Shape_t nodes_treeids; Shape_t nodes_truenodeids; int post_transform;
 			Shape_t base_values; Shape_t class_weights; Shape_t classlabels_strings; Shape_t nodes_hitrates; Shape_t nodes_modes; Shape_t nodes_values;
 //input
-    Shape_t X_input;
+    Shape_t X_i;
     
 //output
-    Shape_t Y_output; Shape_t Z_output;
+    Shape_t Y_o; Shape_t Z_o;
     
 } params;
 
@@ -23,9 +23,9 @@ layout(std430, binding = 2) buffer lay2 { float classlabels_strings[]; };
 layout(std430, binding = 3) buffer lay3 { float nodes_hitrates[]; };
 layout(std430, binding = 4) buffer lay4 { float nodes_modes[]; };
 layout(std430, binding = 5) buffer lay5 { float nodes_values[]; };
-layout(std430, binding = 6) buffer lay6 { float X_input[]; };
-layout(std430, binding = 7) buffer lay7 { float Y_output[]; };
-layout(std430, binding = 8) buffer lay8 { float Z_output[]; };
+layout(std430, binding = 6) buffer lay6 { float X_i[]; };
+layout(std430, binding = 7) buffer lay7 { float Y_o[]; };
+layout(std430, binding = 8) buffer lay8 { float Z_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -37,10 +37,10 @@ void main(){
 	const uint nodes_hitrates_size = params.nodes_hitrates.n * params.nodes_hitrates.c * params.nodes_hitrates.d * params.nodes_hitrates.w * params.nodes_hitrates.h;
 	const uint nodes_modes_size = params.nodes_modes.n * params.nodes_modes.c * params.nodes_modes.d * params.nodes_modes.w * params.nodes_modes.h;
 	const uint nodes_values_size = params.nodes_values.n * params.nodes_values.c * params.nodes_values.d * params.nodes_values.w * params.nodes_values.h;
-    const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
+    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
     
-    const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
-	const uint Z_output_size = params.Z_output.n * params.Z_output.c * params.Z_output.d * params.Z_output.w * params.Z_output.h;
+    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+	const uint Z_o_size = params.Z_o.n * params.Z_o.c * params.Z_o.d * params.Z_o.w * params.Z_o.h;
     
 
     if(size <= idx) {

@@ -15,7 +15,7 @@ output: Concatenated tensor
 //Concat
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   concat_result_output
+//OUTPUS:                   concat_result_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               axis
 //PARAMETER_TYPES:          int
@@ -31,14 +31,14 @@ namespace backend {
 			
             
             
-            Shape_t concat_result_output;
+            Shape_t concat_result_o;
             
         } binding_descriptor;
 
         int axis;
         
         
-        std::string concat_result_output;
+        std::string concat_result_o;
         
 
         binding_descriptor   binding;
@@ -52,7 +52,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _axis); 
-        void bind(std::string _concat_result_output); 
+        void bind(std::string _concat_result_o); 
 
         ~Concat() {}
     };

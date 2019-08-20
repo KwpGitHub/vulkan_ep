@@ -13,7 +13,7 @@ output: Values that are live-out to the enclosing scope. The return values in th
 */
 
 //If
-//INPUTS:                   cond_input
+//INPUTS:                   cond_i
 //OPTIONAL_INPUTS:          
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
@@ -29,14 +29,14 @@ namespace backend {
         typedef struct {
             int else_branch; int then_branch;
 			
-            Shape_t cond_input;
+            Shape_t cond_i;
             
             
             
         } binding_descriptor;
 
         int else_branch; int then_branch;
-        std::string cond_input;
+        std::string cond_i;
         
         
         
@@ -52,7 +52,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _else_branch,  int _then_branch); 
-        void bind(std::string _cond_input); 
+        void bind(std::string _cond_i); 
 
         ~If() {}
     };

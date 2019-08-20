@@ -1,4 +1,4 @@
-import _backend.nn as nn
+#import _backend.nn as nn
 layer_map = {}
 
 
@@ -7,17 +7,17 @@ class LSTM:
     activation_alpha = None
     activation_beta = None
     activations = None
-    X_input = None
-    W_input = None
-    R_input = None
-    B_input_opt = None
-    sequence_lens_input_opt = None
-    initial_h_input_opt = None
-    initial_c_input_opt = None
-    P_input_opt = None
-    Y_output_opt = None
-    Y_h_output_opt = None
-    Y_c_output_opt = None
+    X_i = None
+    W_i = None
+    R_i = None
+    B_i = None
+    sequence_lens_i = None
+    initial_h_i = None
+    initial_c_i = None
+    P_i = None
+    Y_o = None
+    Y_h_o = None
+    Y_c_o = None
 
     #parameters
     clip = None
@@ -25,24 +25,29 @@ class LSTM:
     hidden_size = None
     input_forget = None
 
+    input_params = ["X_i", "W_i", "R_i", "B_i", "sequence_lens_i", "initial_h_i", "initial_c_i", "P_i"]
+    output_params = ["Y_o", "Y_h_o", "Y_c_o"]
+    #attribute_params = ["activation_alpha", "activation_beta", "activations", "clip", "direction", "hidden_size", "input_forget"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LSTM(name)
+        #self.Module = nn._LSTM(name)
+
     def input(self, *args):
-        inpts = ["X_input", "W_input", "R_input", "B_input_opt", "sequence_lens_input_opt", "initial_h_input_opt", "initial_c_input_opt", "P_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output_opt", "Y_h_output_opt", "Y_c_output_opt"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['lstm'] = LSTM
+layer_map['LSTM'] = LSTM
 
 
 
@@ -50,29 +55,34 @@ layer_map['lstm'] = LSTM
 
 class Identity:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Identity(name)
+        #self.Module = nn._Identity(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['identity'] = Identity
+layer_map['Identity'] = Identity
 
 
 
@@ -80,29 +90,34 @@ layer_map['identity'] = Identity
 
 class Abs:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Abs(name)
+        #self.Module = nn._Abs(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['abs'] = Abs
+layer_map['Abs'] = Abs
 
 
 
@@ -110,39 +125,44 @@ layer_map['abs'] = Abs
 
 class BatchNormalization:
     name = None
-    X_input = None
-    scale_input = None
-    B_input = None
-    mean_input = None
-    var_input = None
-    Y_output = None
-    mean_output_opt = None
-    var_output_opt = None
-    saved_mean_output_opt = None
-    saved_var_output_opt = None
+    X_i = None
+    scale_i = None
+    B_i = None
+    mean_i = None
+    var_i = None
+    Y_o = None
+    mean_o = None
+    var_o = None
+    saved_mean_o = None
+    saved_var_o = None
 
     #parameters
     epsilon = None
     momentum = None
 
+    input_params = ["X_i", "scale_i", "B_i", "mean_i", "var_i"]
+    output_params = ["Y_o", "mean_o", "var_o", "saved_mean_o", "saved_var_o"]
+    #attribute_params = ["epsilon", "momentum"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._BatchNormalization(name)
+        #self.Module = nn._BatchNormalization(name)
+
     def input(self, *args):
-        inpts = ["X_input", "scale_input", "B_input", "mean_input", "var_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output", "mean_output_opt", "var_output_opt", "saved_mean_output_opt", "saved_var_output_opt"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['batchnormalization'] = BatchNormalization
+layer_map['BatchNormalization'] = BatchNormalization
 
 
 
@@ -150,28 +170,33 @@ layer_map['batchnormalization'] = BatchNormalization
 
 class Mean:
     name = None
-    mean_output = None
+    mean_o = None
 
     #parameters
 
+    input_params = []
+    output_params = ["mean_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Mean(name)
+        #self.Module = nn._Mean(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["mean_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['mean'] = Mean
+layer_map['Mean'] = Mean
 
 
 
@@ -179,30 +204,35 @@ layer_map['mean'] = Mean
 
 class Add:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Add(name)
+        #self.Module = nn._Add(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['add'] = Add
+layer_map['Add'] = Add
 
 
 
@@ -210,29 +240,34 @@ layer_map['add'] = Add
 
 class GlobalMaxPool:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._GlobalMaxPool(name)
+        #self.Module = nn._GlobalMaxPool(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['globalmaxpool'] = GlobalMaxPool
+layer_map['GlobalMaxPool'] = GlobalMaxPool
 
 
 
@@ -240,30 +275,35 @@ layer_map['globalmaxpool'] = GlobalMaxPool
 
 class Cast:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     to = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["to"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Cast(name)
+        #self.Module = nn._Cast(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['cast'] = Cast
+layer_map['Cast'] = Cast
 
 
 
@@ -271,8 +311,8 @@ layer_map['cast'] = Cast
 
 class AveragePool:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     kernel_shape = None
@@ -282,24 +322,29 @@ class AveragePool:
     pads = None
     strides = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["kernel_shape", "auto_pad", "ceil_mode", "count_include_pad", "pads", "strides"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._AveragePool(name)
+        #self.Module = nn._AveragePool(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['averagepool'] = AveragePool
+layer_map['AveragePool'] = AveragePool
 
 
 
@@ -307,30 +352,35 @@ layer_map['averagepool'] = AveragePool
 
 class And:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._And(name)
+        #self.Module = nn._And(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['and'] = And
+layer_map['And'] = And
 
 
 
@@ -338,8 +388,8 @@ layer_map['and'] = And
 
 class LRN:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     size = None
@@ -347,24 +397,29 @@ class LRN:
     beta = None
     bias = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["size", "alpha", "beta", "bias"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LRN(name)
+        #self.Module = nn._LRN(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['lrn'] = LRN
+layer_map['LRN'] = LRN
 
 
 
@@ -372,31 +427,36 @@ layer_map['lrn'] = LRN
 
 class ArgMax:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axis = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axis", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ArgMax(name)
+        #self.Module = nn._ArgMax(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['argmax'] = ArgMax
+layer_map['ArgMax'] = ArgMax
 
 
 
@@ -404,31 +464,36 @@ layer_map['argmax'] = ArgMax
 
 class Resize:
     name = None
-    X_input = None
-    scales_input = None
-    Y_output = None
+    X_i = None
+    scales_i = None
+    Y_o = None
 
     #parameters
     mode = None
 
+    input_params = ["X_i", "scales_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["mode"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Resize(name)
+        #self.Module = nn._Resize(name)
+
     def input(self, *args):
-        inpts = ["X_input", "scales_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['resize'] = Resize
+layer_map['Resize'] = Resize
 
 
 
@@ -436,30 +501,35 @@ layer_map['resize'] = Resize
 
 class Expand:
     name = None
-    input_input = None
-    shape_input = None
-    output_output = None
+    input_i = None
+    shape_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i", "shape_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Expand(name)
+        #self.Module = nn._Expand(name)
+
     def input(self, *args):
-        inpts = ["input_input", "shape_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['expand'] = Expand
+layer_map['Expand'] = Expand
 
 
 
@@ -467,29 +537,34 @@ layer_map['expand'] = Expand
 
 class Neg:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Neg(name)
+        #self.Module = nn._Neg(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['neg'] = Neg
+layer_map['Neg'] = Neg
 
 
 
@@ -497,30 +572,35 @@ layer_map['neg'] = Neg
 
 class Mul:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Mul(name)
+        #self.Module = nn._Mul(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['mul'] = Mul
+layer_map['Mul'] = Mul
 
 
 
@@ -528,31 +608,36 @@ layer_map['mul'] = Mul
 
 class ArgMin:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axis = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axis", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ArgMin(name)
+        #self.Module = nn._ArgMin(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['argmin'] = ArgMin
+layer_map['ArgMin'] = ArgMin
 
 
 
@@ -560,32 +645,37 @@ layer_map['argmin'] = ArgMin
 
 class CastMap:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     cast_to = None
     map_form = None
     max_map = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["cast_to", "map_form", "max_map"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._CastMap(name)
+        #self.Module = nn._CastMap(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['castmap'] = CastMap
+layer_map['CastMap'] = CastMap
 
 
 
@@ -593,29 +683,34 @@ layer_map['castmap'] = CastMap
 
 class Exp:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Exp(name)
+        #self.Module = nn._Exp(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['exp'] = Exp
+layer_map['Exp'] = Exp
 
 
 
@@ -623,30 +718,35 @@ layer_map['exp'] = Exp
 
 class Div:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Div(name)
+        #self.Module = nn._Div(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['div'] = Div
+layer_map['Div'] = Div
 
 
 
@@ -654,32 +754,37 @@ layer_map['div'] = Div
 
 class ReverseSequence:
     name = None
-    input_input = None
-    sequence_lens_input = None
-    Y_output = None
+    input_i = None
+    sequence_lens_i = None
+    Y_o = None
 
     #parameters
     batch_axis = None
     time_axis = None
 
+    input_params = ["input_i", "sequence_lens_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["batch_axis", "time_axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReverseSequence(name)
+        #self.Module = nn._ReverseSequence(name)
+
     def input(self, *args):
-        inpts = ["input_input", "sequence_lens_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reversesequence'] = ReverseSequence
+layer_map['ReverseSequence'] = ReverseSequence
 
 
 
@@ -687,29 +792,34 @@ layer_map['reversesequence'] = ReverseSequence
 
 class Ceil:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Ceil(name)
+        #self.Module = nn._Ceil(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['ceil'] = Ceil
+layer_map['Ceil'] = Ceil
 
 
 
@@ -717,30 +827,35 @@ layer_map['ceil'] = Ceil
 
 class DepthToSpace:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     blocksize = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["blocksize"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._DepthToSpace(name)
+        #self.Module = nn._DepthToSpace(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['depthtospace'] = DepthToSpace
+layer_map['DepthToSpace'] = DepthToSpace
 
 
 
@@ -748,31 +863,36 @@ layer_map['depthtospace'] = DepthToSpace
 
 class Clip:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     max = None
     min = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["max", "min"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Clip(name)
+        #self.Module = nn._Clip(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['clip'] = Clip
+layer_map['Clip'] = Clip
 
 
 
@@ -783,38 +903,43 @@ class RNN:
     activation_alpha = None
     activation_beta = None
     activations = None
-    X_input = None
-    W_input = None
-    R_input = None
-    B_input_opt = None
-    sequence_lens_input_opt = None
-    initial_h_input_opt = None
-    Y_output_opt = None
-    Y_h_output_opt = None
+    X_i = None
+    W_i = None
+    R_i = None
+    B_i = None
+    sequence_lens_i = None
+    initial_h_i = None
+    Y_o = None
+    Y_h_o = None
 
     #parameters
     clip = None
     direction = None
     hidden_size = None
 
+    input_params = ["X_i", "W_i", "R_i", "B_i", "sequence_lens_i", "initial_h_i"]
+    output_params = ["Y_o", "Y_h_o"]
+    #attribute_params = ["activation_alpha", "activation_beta", "activations", "clip", "direction", "hidden_size"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RNN(name)
+        #self.Module = nn._RNN(name)
+
     def input(self, *args):
-        inpts = ["X_input", "W_input", "R_input", "B_input_opt", "sequence_lens_input_opt", "initial_h_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output_opt", "Y_h_output_opt"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['rnn'] = RNN
+layer_map['RNN'] = RNN
 
 
 
@@ -822,29 +947,34 @@ layer_map['rnn'] = RNN
 
 class Concat:
     name = None
-    concat_result_output = None
+    concat_result_o = None
 
     #parameters
     axis = None
 
+    input_params = []
+    output_params = ["concat_result_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Concat(name)
+        #self.Module = nn._Concat(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["concat_result_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['concat'] = Concat
+layer_map['Concat'] = Concat
 
 
 
@@ -853,28 +983,33 @@ layer_map['concat'] = Concat
 class Constant:
     name = None
     value = None
-    output_output = None
+    output_o = None
 
     #parameters
 
+    input_params = []
+    output_params = ["output_o"]
+    #attribute_params = ["value"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Constant(name)
+        #self.Module = nn._Constant(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['constant'] = Constant
+layer_map['Constant'] = Constant
 
 
 
@@ -882,8 +1017,8 @@ layer_map['constant'] = Constant
 
 class LpPool:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     kernel_shape = None
@@ -892,24 +1027,29 @@ class LpPool:
     pads = None
     strides = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["kernel_shape", "auto_pad", "p", "pads", "strides"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LpPool(name)
+        #self.Module = nn._LpPool(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['lppool'] = LpPool
+layer_map['LpPool'] = LpPool
 
 
 
@@ -917,10 +1057,10 @@ layer_map['lppool'] = LpPool
 
 class Conv:
     name = None
-    X_input = None
-    W_input = None
-    B_input_opt = None
-    Y_output = None
+    X_i = None
+    W_i = None
+    B_i = None
+    Y_o = None
 
     #parameters
     auto_pad = None
@@ -930,24 +1070,29 @@ class Conv:
     pads = None
     strides = None
 
+    input_params = ["X_i", "W_i", "B_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["auto_pad", "dilations", "group", "kernel_shape", "pads", "strides"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Conv(name)
+        #self.Module = nn._Conv(name)
+
     def input(self, *args):
-        inpts = ["X_input", "W_input", "B_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['conv'] = Conv
+layer_map['Conv'] = Conv
 
 
 
@@ -955,29 +1100,34 @@ layer_map['conv'] = Conv
 
 class Not:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Not(name)
+        #self.Module = nn._Not(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['not'] = Not
+layer_map['Not'] = Not
 
 
 
@@ -985,31 +1135,36 @@ layer_map['not'] = Not
 
 class Gather:
     name = None
-    data_input = None
-    indices_input = None
-    output_output = None
+    data_i = None
+    indices_i = None
+    output_o = None
 
     #parameters
     axis = None
 
+    input_params = ["data_i", "indices_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Gather(name)
+        #self.Module = nn._Gather(name)
+
     def input(self, *args):
-        inpts = ["data_input", "indices_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['gather'] = Gather
+layer_map['Gather'] = Gather
 
 
 
@@ -1017,10 +1172,10 @@ layer_map['gather'] = Gather
 
 class ConvTranspose:
     name = None
-    X_input = None
-    W_input = None
-    B_input_opt = None
-    Y_output = None
+    X_i = None
+    W_i = None
+    B_i = None
+    Y_o = None
 
     #parameters
     auto_pad = None
@@ -1032,24 +1187,29 @@ class ConvTranspose:
     pads = None
     strides = None
 
+    input_params = ["X_i", "W_i", "B_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["auto_pad", "dilations", "group", "kernel_shape", "output_padding", "output_shape", "pads", "strides"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ConvTranspose(name)
+        #self.Module = nn._ConvTranspose(name)
+
     def input(self, *args):
-        inpts = ["X_input", "W_input", "B_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['convtranspose'] = ConvTranspose
+layer_map['ConvTranspose'] = ConvTranspose
 
 
 
@@ -1057,31 +1217,36 @@ layer_map['convtranspose'] = ConvTranspose
 
 class Dropout:
     name = None
-    data_input = None
-    output_output = None
-    mask_output_opt = None
+    data_i = None
+    output_o = None
+    mask_o = None
 
     #parameters
     ratio = None
 
+    input_params = ["data_i"]
+    output_params = ["output_o", "mask_o"]
+    #attribute_params = ["ratio"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Dropout(name)
+        #self.Module = nn._Dropout(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output", "mask_output_opt"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['dropout'] = Dropout
+layer_map['Dropout'] = Dropout
 
 
 
@@ -1089,30 +1254,35 @@ layer_map['dropout'] = Dropout
 
 class LeakyRelu:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     alpha = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["alpha"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LeakyRelu(name)
+        #self.Module = nn._LeakyRelu(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['leakyrelu'] = LeakyRelu
+layer_map['LeakyRelu'] = LeakyRelu
 
 
 
@@ -1120,30 +1290,35 @@ layer_map['leakyrelu'] = LeakyRelu
 
 class Elu:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     alpha = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["alpha"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Elu(name)
+        #self.Module = nn._Elu(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['elu'] = Elu
+layer_map['Elu'] = Elu
 
 
 
@@ -1151,29 +1326,34 @@ layer_map['elu'] = Elu
 
 class GlobalAveragePool:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._GlobalAveragePool(name)
+        #self.Module = nn._GlobalAveragePool(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['globalaveragepool'] = GlobalAveragePool
+layer_map['GlobalAveragePool'] = GlobalAveragePool
 
 
 
@@ -1181,10 +1361,10 @@ layer_map['globalaveragepool'] = GlobalAveragePool
 
 class Gemm:
     name = None
-    A_input = None
-    B_input = None
-    C_input = None
-    Y_output = None
+    A_i = None
+    B_i = None
+    C_i = None
+    Y_o = None
 
     #parameters
     alpha = None
@@ -1192,24 +1372,29 @@ class Gemm:
     transA = None
     transB = None
 
+    input_params = ["A_i", "B_i", "C_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["alpha", "beta", "transA", "transB"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Gemm(name)
+        #self.Module = nn._Gemm(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input", "C_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['gemm'] = Gemm
+layer_map['Gemm'] = Gemm
 
 
 
@@ -1217,9 +1402,9 @@ layer_map['gemm'] = Gemm
 
 class MaxPool:
     name = None
-    X_input = None
-    Y_output = None
-    Indices_output_opt = None
+    X_i = None
+    Y_o = None
+    Indices_o = None
 
     #parameters
     kernel_shape = None
@@ -1230,24 +1415,29 @@ class MaxPool:
     storage_order = None
     strides = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o", "Indices_o"]
+    #attribute_params = ["kernel_shape", "auto_pad", "ceil_mode", "dilations", "pads", "storage_order", "strides"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MaxPool(name)
+        #self.Module = nn._MaxPool(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output", "Indices_output_opt"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['maxpool'] = MaxPool
+layer_map['MaxPool'] = MaxPool
 
 
 
@@ -1255,30 +1445,35 @@ layer_map['maxpool'] = MaxPool
 
 class Equal:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Equal(name)
+        #self.Module = nn._Equal(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['equal'] = Equal
+layer_map['Equal'] = Equal
 
 
 
@@ -1286,30 +1481,35 @@ layer_map['equal'] = Equal
 
 class Tile:
     name = None
-    input_input = None
-    repeats_input = None
-    output_output = None
+    input_i = None
+    repeats_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i", "repeats_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Tile(name)
+        #self.Module = nn._Tile(name)
+
     def input(self, *args):
-        inpts = ["input_input", "repeats_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['tile'] = Tile
+layer_map['Tile'] = Tile
 
 
 
@@ -1317,30 +1517,35 @@ layer_map['tile'] = Tile
 
 class Flatten:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     axis = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Flatten(name)
+        #self.Module = nn._Flatten(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['flatten'] = Flatten
+layer_map['Flatten'] = Flatten
 
 
 
@@ -1348,29 +1553,34 @@ layer_map['flatten'] = Flatten
 
 class Floor:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Floor(name)
+        #self.Module = nn._Floor(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['floor'] = Floor
+layer_map['Floor'] = Floor
 
 
 
@@ -1381,14 +1591,14 @@ class GRU:
     activation_alpha = None
     activation_beta = None
     activations = None
-    X_input = None
-    W_input = None
-    R_input = None
-    B_input_opt = None
-    sequence_lens_input_opt = None
-    initial_h_input_opt = None
-    Y_output_opt = None
-    Y_h_output_opt = None
+    X_i = None
+    W_i = None
+    R_i = None
+    B_i = None
+    sequence_lens_i = None
+    initial_h_i = None
+    Y_o = None
+    Y_h_o = None
 
     #parameters
     clip = None
@@ -1396,24 +1606,29 @@ class GRU:
     hidden_size = None
     linear_before_reset = None
 
+    input_params = ["X_i", "W_i", "R_i", "B_i", "sequence_lens_i", "initial_h_i"]
+    output_params = ["Y_o", "Y_h_o"]
+    #attribute_params = ["activation_alpha", "activation_beta", "activations", "clip", "direction", "hidden_size", "linear_before_reset"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._GRU(name)
+        #self.Module = nn._GRU(name)
+
     def input(self, *args):
-        inpts = ["X_input", "W_input", "R_input", "B_input_opt", "sequence_lens_input_opt", "initial_h_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output_opt", "Y_h_output_opt"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['gru'] = GRU
+layer_map['GRU'] = GRU
 
 
 
@@ -1421,30 +1636,35 @@ layer_map['gru'] = GRU
 
 class GlobalLpPool:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     p = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["p"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._GlobalLpPool(name)
+        #self.Module = nn._GlobalLpPool(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['globallppool'] = GlobalLpPool
+layer_map['GlobalLpPool'] = GlobalLpPool
 
 
 
@@ -1452,30 +1672,35 @@ layer_map['globallppool'] = GlobalLpPool
 
 class Greater:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Greater(name)
+        #self.Module = nn._Greater(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['greater'] = Greater
+layer_map['Greater'] = Greater
 
 
 
@@ -1483,31 +1708,36 @@ layer_map['greater'] = Greater
 
 class HardSigmoid:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     alpha = None
     beta = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["alpha", "beta"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._HardSigmoid(name)
+        #self.Module = nn._HardSigmoid(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['hardsigmoid'] = HardSigmoid
+layer_map['HardSigmoid'] = HardSigmoid
 
 
 
@@ -1515,31 +1745,36 @@ layer_map['hardsigmoid'] = HardSigmoid
 
 class Selu:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     alpha = None
     gamma = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["alpha", "gamma"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Selu(name)
+        #self.Module = nn._Selu(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['selu'] = Selu
+layer_map['Selu'] = Selu
 
 
 
@@ -1547,30 +1782,35 @@ layer_map['selu'] = Selu
 
 class Hardmax:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     axis = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Hardmax(name)
+        #self.Module = nn._Hardmax(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['hardmax'] = Hardmax
+layer_map['Hardmax'] = Hardmax
 
 
 
@@ -1578,30 +1818,35 @@ layer_map['hardmax'] = Hardmax
 
 class If:
     name = None
-    cond_input = None
+    cond_i = None
 
     #parameters
     else_branch = None
     then_branch = None
 
+    input_params = ["cond_i"]
+    output_params = []
+    #attribute_params = ["else_branch", "then_branch"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._If(name)
+        #self.Module = nn._If(name)
+
     def input(self, *args):
-        inpts = ["cond_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = []
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['if'] = If
+layer_map['If'] = If
 
 
 
@@ -1609,28 +1854,33 @@ layer_map['if'] = If
 
 class Min:
     name = None
-    min_output = None
+    min_o = None
 
     #parameters
 
+    input_params = []
+    output_params = ["min_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Min(name)
+        #self.Module = nn._Min(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["min_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['min'] = Min
+layer_map['Min'] = Min
 
 
 
@@ -1638,32 +1888,37 @@ layer_map['min'] = Min
 
 class InstanceNormalization:
     name = None
-    input_input = None
-    scale_input = None
-    B_input = None
-    output_output = None
+    input_i = None
+    scale_i = None
+    B_i = None
+    output_o = None
 
     #parameters
     epsilon = None
 
+    input_params = ["input_i", "scale_i", "B_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["epsilon"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._InstanceNormalization(name)
+        #self.Module = nn._InstanceNormalization(name)
+
     def input(self, *args):
-        inpts = ["input_input", "scale_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['instancenormalization'] = InstanceNormalization
+layer_map['InstanceNormalization'] = InstanceNormalization
 
 
 
@@ -1671,30 +1926,35 @@ layer_map['instancenormalization'] = InstanceNormalization
 
 class Less:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Less(name)
+        #self.Module = nn._Less(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['less'] = Less
+layer_map['Less'] = Less
 
 
 
@@ -1702,31 +1962,36 @@ layer_map['less'] = Less
 
 class EyeLike:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     dtype = None
     k = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["dtype", "k"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._EyeLike(name)
+        #self.Module = nn._EyeLike(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['eyelike'] = EyeLike
+layer_map['EyeLike'] = EyeLike
 
 
 
@@ -1734,7 +1999,7 @@ layer_map['eyelike'] = EyeLike
 
 class RandomNormal:
     name = None
-    output_output = None
+    output_o = None
 
     #parameters
     shape = None
@@ -1743,24 +2008,29 @@ class RandomNormal:
     scale = None
     seed = None
 
+    input_params = []
+    output_params = ["output_o"]
+    #attribute_params = ["shape", "dtype", "mean", "scale", "seed"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RandomNormal(name)
+        #self.Module = nn._RandomNormal(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['randomnormal'] = RandomNormal
+layer_map['RandomNormal'] = RandomNormal
 
 
 
@@ -1768,33 +2038,38 @@ layer_map['randomnormal'] = RandomNormal
 
 class Slice:
     name = None
-    data_input = None
-    starts_input = None
-    ends_input = None
-    axes_input_opt = None
-    steps_input_opt = None
-    output_output = None
+    data_i = None
+    starts_i = None
+    ends_i = None
+    axes_i = None
+    steps_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["data_i", "starts_i", "ends_i", "axes_i", "steps_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Slice(name)
+        #self.Module = nn._Slice(name)
+
     def input(self, *args):
-        inpts = ["data_input", "starts_input", "ends_input", "axes_input_opt", "steps_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['slice'] = Slice
+layer_map['Slice'] = Slice
 
 
 
@@ -1802,30 +2077,35 @@ layer_map['slice'] = Slice
 
 class PRelu:
     name = None
-    X_input = None
-    slope_input = None
-    Y_output = None
+    X_i = None
+    slope_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i", "slope_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._PRelu(name)
+        #self.Module = nn._PRelu(name)
+
     def input(self, *args):
-        inpts = ["X_input", "slope_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['prelu'] = PRelu
+layer_map['PRelu'] = PRelu
 
 
 
@@ -1833,29 +2113,34 @@ layer_map['prelu'] = PRelu
 
 class Log:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Log(name)
+        #self.Module = nn._Log(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['log'] = Log
+layer_map['Log'] = Log
 
 
 
@@ -1863,30 +2148,35 @@ layer_map['log'] = Log
 
 class LogSoftmax:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     axis = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LogSoftmax(name)
+        #self.Module = nn._LogSoftmax(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['logsoftmax'] = LogSoftmax
+layer_map['LogSoftmax'] = LogSoftmax
 
 
 
@@ -1894,30 +2184,35 @@ layer_map['logsoftmax'] = LogSoftmax
 
 class Loop:
     name = None
-    M_input_opt = None
-    cond_input_opt = None
+    M_i = None
+    cond_i = None
 
     #parameters
     body = None
 
+    input_params = ["M_i", "cond_i"]
+    output_params = []
+    #attribute_params = ["body"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Loop(name)
+        #self.Module = nn._Loop(name)
+
     def input(self, *args):
-        inpts = ["M_input_opt", "cond_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = []
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['loop'] = Loop
+layer_map['Loop'] = Loop
 
 
 
@@ -1925,31 +2220,36 @@ layer_map['loop'] = Loop
 
 class LpNormalization:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     axis = None
     p = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis", "p"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LpNormalization(name)
+        #self.Module = nn._LpNormalization(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['lpnormalization'] = LpNormalization
+layer_map['LpNormalization'] = LpNormalization
 
 
 
@@ -1957,30 +2257,35 @@ layer_map['lpnormalization'] = LpNormalization
 
 class MatMul:
     name = None
-    A_input = None
-    B_input = None
-    Y_output = None
+    A_i = None
+    B_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MatMul(name)
+        #self.Module = nn._MatMul(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['matmul'] = MatMul
+layer_map['MatMul'] = MatMul
 
 
 
@@ -1988,31 +2293,36 @@ layer_map['matmul'] = MatMul
 
 class ReduceL2:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceL2(name)
+        #self.Module = nn._ReduceL2(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducel2'] = ReduceL2
+layer_map['ReduceL2'] = ReduceL2
 
 
 
@@ -2020,28 +2330,33 @@ layer_map['reducel2'] = ReduceL2
 
 class Max:
     name = None
-    max_output = None
+    max_o = None
 
     #parameters
 
+    input_params = []
+    output_params = ["max_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Max(name)
+        #self.Module = nn._Max(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["max_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['max'] = Max
+layer_map['Max'] = Max
 
 
 
@@ -2049,32 +2364,37 @@ layer_map['max'] = Max
 
 class MaxRoiPool:
     name = None
-    X_input = None
-    rois_input = None
-    Y_output = None
+    X_i = None
+    rois_i = None
+    Y_o = None
 
     #parameters
     pooled_shape = None
     spatial_scale = None
 
+    input_params = ["X_i", "rois_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["pooled_shape", "spatial_scale"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MaxRoiPool(name)
+        #self.Module = nn._MaxRoiPool(name)
+
     def input(self, *args):
-        inpts = ["X_input", "rois_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['maxroipool'] = MaxRoiPool
+layer_map['MaxRoiPool'] = MaxRoiPool
 
 
 
@@ -2082,30 +2402,35 @@ layer_map['maxroipool'] = MaxRoiPool
 
 class Or:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Or(name)
+        #self.Module = nn._Or(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['or'] = Or
+layer_map['Or'] = Or
 
 
 
@@ -2113,32 +2438,37 @@ layer_map['or'] = Or
 
 class Pad:
     name = None
-    data_input = None
-    output_output = None
+    data_i = None
+    output_o = None
 
     #parameters
     pads = None
     mode = None
     value = None
 
+    input_params = ["data_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["pads", "mode", "value"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Pad(name)
+        #self.Module = nn._Pad(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['pad'] = Pad
+layer_map['Pad'] = Pad
 
 
 
@@ -2146,8 +2476,8 @@ layer_map['pad'] = Pad
 
 class RandomUniformLike:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     dtype = None
@@ -2155,24 +2485,29 @@ class RandomUniformLike:
     low = None
     seed = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["dtype", "high", "low", "seed"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RandomUniformLike(name)
+        #self.Module = nn._RandomUniformLike(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['randomuniformlike'] = RandomUniformLike
+layer_map['RandomUniformLike'] = RandomUniformLike
 
 
 
@@ -2180,29 +2515,34 @@ layer_map['randomuniformlike'] = RandomUniformLike
 
 class Reciprocal:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Reciprocal(name)
+        #self.Module = nn._Reciprocal(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reciprocal'] = Reciprocal
+layer_map['Reciprocal'] = Reciprocal
 
 
 
@@ -2210,30 +2550,35 @@ layer_map['reciprocal'] = Reciprocal
 
 class Pow:
     name = None
-    X_input = None
-    Y_input = None
-    Z_output = None
+    X_i = None
+    Y_i = None
+    Z_o = None
 
     #parameters
 
+    input_params = ["X_i", "Y_i"]
+    output_params = ["Z_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Pow(name)
+        #self.Module = nn._Pow(name)
+
     def input(self, *args):
-        inpts = ["X_input", "Y_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Z_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['pow'] = Pow
+layer_map['Pow'] = Pow
 
 
 
@@ -2241,8 +2586,8 @@ layer_map['pow'] = Pow
 
 class RandomNormalLike:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     dtype = None
@@ -2250,24 +2595,29 @@ class RandomNormalLike:
     scale = None
     seed = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["dtype", "mean", "scale", "seed"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RandomNormalLike(name)
+        #self.Module = nn._RandomNormalLike(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['randomnormallike'] = RandomNormalLike
+layer_map['RandomNormalLike'] = RandomNormalLike
 
 
 
@@ -2275,32 +2625,37 @@ layer_map['randomnormallike'] = RandomNormalLike
 
 class OneHot:
     name = None
-    indices_input = None
-    depth_input = None
-    values_input = None
-    output_output = None
+    indices_i = None
+    depth_i = None
+    values_i = None
+    output_o = None
 
     #parameters
     axis = None
 
+    input_params = ["indices_i", "depth_i", "values_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._OneHot(name)
+        #self.Module = nn._OneHot(name)
+
     def input(self, *args):
-        inpts = ["indices_input", "depth_input", "values_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['onehot'] = OneHot
+layer_map['OneHot'] = OneHot
 
 
 
@@ -2308,7 +2663,7 @@ layer_map['onehot'] = OneHot
 
 class RandomUniform:
     name = None
-    output_output = None
+    output_o = None
 
     #parameters
     shape = None
@@ -2317,24 +2672,29 @@ class RandomUniform:
     low = None
     seed = None
 
+    input_params = []
+    output_params = ["output_o"]
+    #attribute_params = ["shape", "dtype", "high", "low", "seed"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RandomUniform(name)
+        #self.Module = nn._RandomUniform(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['randomuniform'] = RandomUniform
+layer_map['RandomUniform'] = RandomUniform
 
 
 
@@ -2342,31 +2702,36 @@ layer_map['randomuniform'] = RandomUniform
 
 class ReduceL1:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceL1(name)
+        #self.Module = nn._ReduceL1(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducel1'] = ReduceL1
+layer_map['ReduceL1'] = ReduceL1
 
 
 
@@ -2374,31 +2739,36 @@ layer_map['reducel1'] = ReduceL1
 
 class ReduceLogSum:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceLogSum(name)
+        #self.Module = nn._ReduceLogSum(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducelogsum'] = ReduceLogSum
+layer_map['ReduceLogSum'] = ReduceLogSum
 
 
 
@@ -2406,31 +2776,36 @@ layer_map['reducelogsum'] = ReduceLogSum
 
 class ReduceLogSumExp:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceLogSumExp(name)
+        #self.Module = nn._ReduceLogSumExp(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducelogsumexp'] = ReduceLogSumExp
+layer_map['ReduceLogSumExp'] = ReduceLogSumExp
 
 
 
@@ -2438,31 +2813,36 @@ layer_map['reducelogsumexp'] = ReduceLogSumExp
 
 class ReduceMax:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceMax(name)
+        #self.Module = nn._ReduceMax(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducemax'] = ReduceMax
+layer_map['ReduceMax'] = ReduceMax
 
 
 
@@ -2471,31 +2851,36 @@ layer_map['reducemax'] = ReduceMax
 class OneHotEncoder:
     name = None
     cats_strings = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     cats_int64s = None
     zeros = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["cats_int64s", "cats_strings", "zeros"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._OneHotEncoder(name)
+        #self.Module = nn._OneHotEncoder(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['onehotencoder'] = OneHotEncoder
+layer_map['OneHotEncoder'] = OneHotEncoder
 
 
 
@@ -2503,29 +2888,34 @@ layer_map['onehotencoder'] = OneHotEncoder
 
 class IsNaN:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._IsNaN(name)
+        #self.Module = nn._IsNaN(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['isnan'] = IsNaN
+layer_map['IsNaN'] = IsNaN
 
 
 
@@ -2533,31 +2923,36 @@ layer_map['isnan'] = IsNaN
 
 class ReduceMean:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceMean(name)
+        #self.Module = nn._ReduceMean(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducemean'] = ReduceMean
+layer_map['ReduceMean'] = ReduceMean
 
 
 
@@ -2565,31 +2960,36 @@ layer_map['reducemean'] = ReduceMean
 
 class ReduceMin:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceMin(name)
+        #self.Module = nn._ReduceMin(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducemin'] = ReduceMin
+layer_map['ReduceMin'] = ReduceMin
 
 
 
@@ -2602,8 +3002,8 @@ class TreeEnsembleRegressor:
     nodes_modes = None
     nodes_values = None
     target_weights = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     aggregate_function = None
@@ -2619,24 +3019,29 @@ class TreeEnsembleRegressor:
     target_nodeids = None
     target_treeids = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["aggregate_function", "base_values", "n_targets", "nodes_falsenodeids", "nodes_featureids", "nodes_hitrates", "nodes_missing_value_tracks_true", "nodes_modes", "nodes_nodeids", "nodes_treeids", "nodes_truenodeids", "nodes_values", "post_transform", "target_ids", "target_nodeids", "target_treeids", "target_weights"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._TreeEnsembleRegressor(name)
+        #self.Module = nn._TreeEnsembleRegressor(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['treeensembleregressor'] = TreeEnsembleRegressor
+layer_map['TreeEnsembleRegressor'] = TreeEnsembleRegressor
 
 
 
@@ -2644,31 +3049,36 @@ layer_map['treeensembleregressor'] = TreeEnsembleRegressor
 
 class ReduceProd:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceProd(name)
+        #self.Module = nn._ReduceProd(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reduceprod'] = ReduceProd
+layer_map['ReduceProd'] = ReduceProd
 
 
 
@@ -2676,31 +3086,36 @@ layer_map['reduceprod'] = ReduceProd
 
 class ReduceSum:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceSum(name)
+        #self.Module = nn._ReduceSum(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducesum'] = ReduceSum
+layer_map['ReduceSum'] = ReduceSum
 
 
 
@@ -2708,31 +3123,36 @@ layer_map['reducesum'] = ReduceSum
 
 class ReduceSumSquare:
     name = None
-    data_input = None
-    reduced_output = None
+    data_i = None
+    reduced_o = None
 
     #parameters
     axes = None
     keepdims = None
 
+    input_params = ["data_i"]
+    output_params = ["reduced_o"]
+    #attribute_params = ["axes", "keepdims"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceSumSquare(name)
+        #self.Module = nn._ReduceSumSquare(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reduced_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reducesumsquare'] = ReduceSumSquare
+layer_map['ReduceSumSquare'] = ReduceSumSquare
 
 
 
@@ -2740,29 +3160,34 @@ layer_map['reducesumsquare'] = ReduceSumSquare
 
 class Relu:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Relu(name)
+        #self.Module = nn._Relu(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['relu'] = Relu
+layer_map['Relu'] = Relu
 
 
 
@@ -2770,30 +3195,35 @@ layer_map['relu'] = Relu
 
 class Reshape:
     name = None
-    data_input = None
-    shape_input = None
-    reshaped_output = None
+    data_i = None
+    shape_i = None
+    reshaped_o = None
 
     #parameters
 
+    input_params = ["data_i", "shape_i"]
+    output_params = ["reshaped_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Reshape(name)
+        #self.Module = nn._Reshape(name)
+
     def input(self, *args):
-        inpts = ["data_input", "shape_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["reshaped_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['reshape'] = Reshape
+layer_map['Reshape'] = Reshape
 
 
 
@@ -2801,29 +3231,34 @@ layer_map['reshape'] = Reshape
 
 class Shape:
     name = None
-    data_input = None
-    shape_output = None
+    data_i = None
+    shape_o = None
 
     #parameters
 
+    input_params = ["data_i"]
+    output_params = ["shape_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Shape(name)
+        #self.Module = nn._Shape(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["shape_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['shape'] = Shape
+layer_map['Shape'] = Shape
 
 
 
@@ -2831,29 +3266,34 @@ layer_map['shape'] = Shape
 
 class Sigmoid:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sigmoid(name)
+        #self.Module = nn._Sigmoid(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['sigmoid'] = Sigmoid
+layer_map['Sigmoid'] = Sigmoid
 
 
 
@@ -2861,29 +3301,34 @@ layer_map['sigmoid'] = Sigmoid
 
 class Size:
     name = None
-    data_input = None
-    size_output = None
+    data_i = None
+    size_o = None
 
     #parameters
 
+    input_params = ["data_i"]
+    output_params = ["size_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Size(name)
+        #self.Module = nn._Size(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["size_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['size'] = Size
+layer_map['Size'] = Size
 
 
 
@@ -2891,30 +3336,35 @@ layer_map['size'] = Size
 
 class Softmax:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     axis = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Softmax(name)
+        #self.Module = nn._Softmax(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['softmax'] = Softmax
+layer_map['Softmax'] = Softmax
 
 
 
@@ -2922,29 +3372,34 @@ layer_map['softmax'] = Softmax
 
 class Softplus:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Softplus(name)
+        #self.Module = nn._Softplus(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['softplus'] = Softplus
+layer_map['Softplus'] = Softplus
 
 
 
@@ -2952,29 +3407,34 @@ layer_map['softplus'] = Softplus
 
 class Softsign:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Softsign(name)
+        #self.Module = nn._Softsign(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['softsign'] = Softsign
+layer_map['Softsign'] = Softsign
 
 
 
@@ -2982,30 +3442,35 @@ layer_map['softsign'] = Softsign
 
 class SpaceToDepth:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     blocksize = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["blocksize"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._SpaceToDepth(name)
+        #self.Module = nn._SpaceToDepth(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['spacetodepth'] = SpaceToDepth
+layer_map['SpaceToDepth'] = SpaceToDepth
 
 
 
@@ -3015,8 +3480,8 @@ class TfIdfVectorizer:
     name = None
     pool_strings = None
     weights = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     max_gram_length = None
@@ -3027,24 +3492,29 @@ class TfIdfVectorizer:
     ngram_indexes = None
     pool_int64s = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["max_gram_length", "max_skip_count", "min_gram_length", "mode", "ngram_counts", "ngram_indexes", "pool_int64s", "pool_strings", "weights"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._TfIdfVectorizer(name)
+        #self.Module = nn._TfIdfVectorizer(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['tfidfvectorizer'] = TfIdfVectorizer
+layer_map['TfIdfVectorizer'] = TfIdfVectorizer
 
 
 
@@ -3052,30 +3522,35 @@ layer_map['tfidfvectorizer'] = TfIdfVectorizer
 
 class Split:
     name = None
-    input_input = None
+    input_i = None
 
     #parameters
     axis = None
     split = None
 
+    input_params = ["input_i"]
+    output_params = []
+    #attribute_params = ["axis", "split"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Split(name)
+        #self.Module = nn._Split(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = []
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['split'] = Split
+layer_map['Split'] = Split
 
 
 
@@ -3084,32 +3559,37 @@ layer_map['split'] = Split
 class Imputer:
     name = None
     imputed_value_floats = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     imputed_value_int64s = None
     replaced_value_float = None
     replaced_value_int64 = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["imputed_value_floats", "imputed_value_int64s", "replaced_value_float", "replaced_value_int64"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Imputer(name)
+        #self.Module = nn._Imputer(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['imputer'] = Imputer
+layer_map['Imputer'] = Imputer
 
 
 
@@ -3117,29 +3597,34 @@ layer_map['imputer'] = Imputer
 
 class Sqrt:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sqrt(name)
+        #self.Module = nn._Sqrt(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['sqrt'] = Sqrt
+layer_map['Sqrt'] = Sqrt
 
 
 
@@ -3147,30 +3632,35 @@ layer_map['sqrt'] = Sqrt
 
 class Squeeze:
     name = None
-    data_input = None
-    squeezed_output = None
+    data_i = None
+    squeezed_o = None
 
     #parameters
     axes = None
 
+    input_params = ["data_i"]
+    output_params = ["squeezed_o"]
+    #attribute_params = ["axes"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Squeeze(name)
+        #self.Module = nn._Squeeze(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["squeezed_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['squeeze'] = Squeeze
+layer_map['Squeeze'] = Squeeze
 
 
 
@@ -3178,32 +3668,37 @@ layer_map['squeeze'] = Squeeze
 
 class TopK:
     name = None
-    X_input = None
-    K_input = None
-    Values_output = None
-    Indices_output = None
+    X_i = None
+    K_i = None
+    Values_o = None
+    Indices_o = None
 
     #parameters
     axis = None
 
+    input_params = ["X_i", "K_i"]
+    output_params = ["Values_o", "Indices_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._TopK(name)
+        #self.Module = nn._TopK(name)
+
     def input(self, *args):
-        inpts = ["X_input", "K_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Values_output", "Indices_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['topk'] = TopK
+layer_map['TopK'] = TopK
 
 
 
@@ -3211,30 +3706,35 @@ layer_map['topk'] = TopK
 
 class Sub:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sub(name)
+        #self.Module = nn._Sub(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['sub'] = Sub
+layer_map['Sub'] = Sub
 
 
 
@@ -3242,28 +3742,33 @@ layer_map['sub'] = Sub
 
 class Sum:
     name = None
-    sum_output = None
+    sum_o = None
 
     #parameters
 
+    input_params = []
+    output_params = ["sum_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sum(name)
+        #self.Module = nn._Sum(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["sum_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['sum'] = Sum
+layer_map['Sum'] = Sum
 
 
 
@@ -3271,31 +3776,36 @@ layer_map['sum'] = Sum
 
 class Shrink:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     bias = None
     lambd = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["bias", "lambd"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Shrink(name)
+        #self.Module = nn._Shrink(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['shrink'] = Shrink
+layer_map['Shrink'] = Shrink
 
 
 
@@ -3303,29 +3813,34 @@ layer_map['shrink'] = Shrink
 
 class Tanh:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Tanh(name)
+        #self.Module = nn._Tanh(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['tanh'] = Tanh
+layer_map['Tanh'] = Tanh
 
 
 
@@ -3333,30 +3848,35 @@ layer_map['tanh'] = Tanh
 
 class Transpose:
     name = None
-    data_input = None
-    transposed_output = None
+    data_i = None
+    transposed_o = None
 
     #parameters
     perm = None
 
+    input_params = ["data_i"]
+    output_params = ["transposed_o"]
+    #attribute_params = ["perm"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Transpose(name)
+        #self.Module = nn._Transpose(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["transposed_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['transpose'] = Transpose
+layer_map['Transpose'] = Transpose
 
 
 
@@ -3364,30 +3884,35 @@ layer_map['transpose'] = Transpose
 
 class Unsqueeze:
     name = None
-    data_input = None
-    expanded_output = None
+    data_i = None
+    expanded_o = None
 
     #parameters
     axes = None
 
+    input_params = ["data_i"]
+    output_params = ["expanded_o"]
+    #attribute_params = ["axes"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Unsqueeze(name)
+        #self.Module = nn._Unsqueeze(name)
+
     def input(self, *args):
-        inpts = ["data_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["expanded_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['unsqueeze'] = Unsqueeze
+layer_map['Unsqueeze'] = Unsqueeze
 
 
 
@@ -3395,31 +3920,36 @@ layer_map['unsqueeze'] = Unsqueeze
 
 class Upsample:
     name = None
-    X_input = None
-    scales_input = None
-    Y_output = None
+    X_i = None
+    scales_i = None
+    Y_o = None
 
     #parameters
     mode = None
 
+    input_params = ["X_i", "scales_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["mode"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Upsample(name)
+        #self.Module = nn._Upsample(name)
+
     def input(self, *args):
-        inpts = ["X_input", "scales_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['upsample'] = Upsample
+layer_map['Upsample'] = Upsample
 
 
 
@@ -3434,9 +3964,9 @@ class SVMClassifier:
     prob_b = None
     rho = None
     support_vectors = None
-    X_input = None
-    Y_output = None
-    Z_output = None
+    X_i = None
+    Y_o = None
+    Z_o = None
 
     #parameters
     classlabels_ints = None
@@ -3444,24 +3974,29 @@ class SVMClassifier:
     post_transform = None
     vectors_per_class = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o", "Z_o"]
+    #attribute_params = ["classlabels_ints", "classlabels_strings", "coefficients", "kernel_params", "kernel_type", "post_transform", "prob_a", "prob_b", "rho", "support_vectors", "vectors_per_class"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._SVMClassifier(name)
+        #self.Module = nn._SVMClassifier(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output", "Z_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['svmclassifier'] = SVMClassifier
+layer_map['SVMClassifier'] = SVMClassifier
 
 
 
@@ -3469,30 +4004,35 @@ layer_map['svmclassifier'] = SVMClassifier
 
 class Xor:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Xor(name)
+        #self.Module = nn._Xor(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['xor'] = Xor
+layer_map['Xor'] = Xor
 
 
 
@@ -3500,29 +4040,34 @@ layer_map['xor'] = Xor
 
 class Acos:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Acos(name)
+        #self.Module = nn._Acos(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['acos'] = Acos
+layer_map['Acos'] = Acos
 
 
 
@@ -3530,29 +4075,34 @@ layer_map['acos'] = Acos
 
 class Asin:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Asin(name)
+        #self.Module = nn._Asin(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['asin'] = Asin
+layer_map['Asin'] = Asin
 
 
 
@@ -3560,29 +4110,34 @@ layer_map['asin'] = Asin
 
 class Atan:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Atan(name)
+        #self.Module = nn._Atan(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['atan'] = Atan
+layer_map['Atan'] = Atan
 
 
 
@@ -3590,29 +4145,34 @@ layer_map['atan'] = Atan
 
 class Cos:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Cos(name)
+        #self.Module = nn._Cos(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['cos'] = Cos
+layer_map['Cos'] = Cos
 
 
 
@@ -3620,29 +4180,34 @@ layer_map['cos'] = Cos
 
 class Sin:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sin(name)
+        #self.Module = nn._Sin(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['sin'] = Sin
+layer_map['Sin'] = Sin
 
 
 
@@ -3650,29 +4215,34 @@ layer_map['sin'] = Sin
 
 class Tan:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Tan(name)
+        #self.Module = nn._Tan(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['tan'] = Tan
+layer_map['Tan'] = Tan
 
 
 
@@ -3680,32 +4250,37 @@ layer_map['tan'] = Tan
 
 class Multinomial:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
     dtype = None
     sample_size = None
     seed = None
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["dtype", "sample_size", "seed"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Multinomial(name)
+        #self.Module = nn._Multinomial(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['multinomial'] = Multinomial
+layer_map['Multinomial'] = Multinomial
 
 
 
@@ -3722,24 +4297,29 @@ class Scan:
     scan_output_axes = None
     scan_output_directions = None
 
+    input_params = []
+    output_params = []
+    #attribute_params = ["body", "num_scan_inputs", "scan_input_axes", "scan_input_directions", "scan_output_axes", "scan_output_directions"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Scan(name)
+        #self.Module = nn._Scan(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = []
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['scan'] = Scan
+layer_map['Scan'] = Scan
 
 
 
@@ -3747,31 +4327,36 @@ layer_map['scan'] = Scan
 
 class Compress:
     name = None
-    input_input = None
-    condition_input = None
-    output_output = None
+    input_i = None
+    condition_i = None
+    output_o = None
 
     #parameters
     axis = None
 
+    input_params = ["input_i", "condition_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Compress(name)
+        #self.Module = nn._Compress(name)
+
     def input(self, *args):
-        inpts = ["input_input", "condition_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['compress'] = Compress
+layer_map['Compress'] = Compress
 
 
 
@@ -3780,29 +4365,34 @@ layer_map['compress'] = Compress
 class ConstantOfShape:
     name = None
     value = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["value"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ConstantOfShape(name)
+        #self.Module = nn._ConstantOfShape(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['constantofshape'] = ConstantOfShape
+layer_map['ConstantOfShape'] = ConstantOfShape
 
 
 
@@ -3810,34 +4400,39 @@ layer_map['constantofshape'] = ConstantOfShape
 
 class MaxUnpool:
     name = None
-    X_input = None
-    I_input = None
-    output_shape_input_opt = None
-    output_output = None
+    X_i = None
+    I_i = None
+    output_shape_i = None
+    output_o = None
 
     #parameters
     kernel_shape = None
     pads = None
     strides = None
 
+    input_params = ["X_i", "I_i", "output_shape_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["kernel_shape", "pads", "strides"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MaxUnpool(name)
+        #self.Module = nn._MaxUnpool(name)
+
     def input(self, *args):
-        inpts = ["X_input", "I_input", "output_shape_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['maxunpool'] = MaxUnpool
+layer_map['MaxUnpool'] = MaxUnpool
 
 
 
@@ -3845,32 +4440,37 @@ layer_map['maxunpool'] = MaxUnpool
 
 class Scatter:
     name = None
-    data_input = None
-    indices_input = None
-    updates_input = None
-    output_output = None
+    data_i = None
+    indices_i = None
+    updates_i = None
+    output_o = None
 
     #parameters
     axis = None
 
+    input_params = ["data_i", "indices_i", "updates_i"]
+    output_params = ["output_o"]
+    #attribute_params = ["axis"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Scatter(name)
+        #self.Module = nn._Scatter(name)
+
     def input(self, *args):
-        inpts = ["data_input", "indices_input", "updates_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['scatter'] = Scatter
+layer_map['Scatter'] = Scatter
 
 
 
@@ -3878,29 +4478,34 @@ layer_map['scatter'] = Scatter
 
 class Sinh:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sinh(name)
+        #self.Module = nn._Sinh(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['sinh'] = Sinh
+layer_map['Sinh'] = Sinh
 
 
 
@@ -3908,29 +4513,34 @@ layer_map['sinh'] = Sinh
 
 class Cosh:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Cosh(name)
+        #self.Module = nn._Cosh(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['cosh'] = Cosh
+layer_map['Cosh'] = Cosh
 
 
 
@@ -3938,29 +4548,34 @@ layer_map['cosh'] = Cosh
 
 class Asinh:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Asinh(name)
+        #self.Module = nn._Asinh(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['asinh'] = Asinh
+layer_map['Asinh'] = Asinh
 
 
 
@@ -3968,29 +4583,34 @@ layer_map['asinh'] = Asinh
 
 class Acosh:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Acosh(name)
+        #self.Module = nn._Acosh(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['acosh'] = Acosh
+layer_map['Acosh'] = Acosh
 
 
 
@@ -3998,34 +4618,39 @@ layer_map['acosh'] = Acosh
 
 class NonMaxSuppression:
     name = None
-    boxes_input = None
-    scores_input = None
-    max_output_boxes_per_class_input_opt = None
-    iou_threshold_input_opt = None
-    score_threshold_input_opt = None
-    selected_indices_output = None
+    boxes_i = None
+    scores_i = None
+    max_output_boxes_per_class_i = None
+    iou_threshold_i = None
+    score_threshold_i = None
+    selected_indices_o = None
 
     #parameters
     center_point_box = None
 
+    input_params = ["boxes_i", "scores_i", "max_output_boxes_per_class_i", "iou_threshold_i", "score_threshold_i"]
+    output_params = ["selected_indices_o"]
+    #attribute_params = ["center_point_box"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._NonMaxSuppression(name)
+        #self.Module = nn._NonMaxSuppression(name)
+
     def input(self, *args):
-        inpts = ["boxes_input", "scores_input", "max_output_boxes_per_class_input_opt", "iou_threshold_input_opt", "score_threshold_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["selected_indices_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['nonmaxsuppression'] = NonMaxSuppression
+layer_map['NonMaxSuppression'] = NonMaxSuppression
 
 
 
@@ -4033,29 +4658,34 @@ layer_map['nonmaxsuppression'] = NonMaxSuppression
 
 class Atanh:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Atanh(name)
+        #self.Module = nn._Atanh(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['atanh'] = Atanh
+layer_map['Atanh'] = Atanh
 
 
 
@@ -4063,29 +4693,34 @@ layer_map['atanh'] = Atanh
 
 class Sign:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sign(name)
+        #self.Module = nn._Sign(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['sign'] = Sign
+layer_map['Sign'] = Sign
 
 
 
@@ -4093,29 +4728,34 @@ layer_map['sign'] = Sign
 
 class Erf:
     name = None
-    input_input = None
-    output_output = None
+    input_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["input_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Erf(name)
+        #self.Module = nn._Erf(name)
+
     def input(self, *args):
-        inpts = ["input_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['erf'] = Erf
+layer_map['Erf'] = Erf
 
 
 
@@ -4123,31 +4763,36 @@ layer_map['erf'] = Erf
 
 class Where:
     name = None
-    condition_input = None
-    X_input = None
-    Y_input = None
-    output_output = None
+    condition_i = None
+    X_i = None
+    Y_i = None
+    output_o = None
 
     #parameters
 
+    input_params = ["condition_i", "X_i", "Y_i"]
+    output_params = ["output_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Where(name)
+        #self.Module = nn._Where(name)
+
     def input(self, *args):
-        inpts = ["condition_input", "X_input", "Y_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["output_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['where'] = Where
+layer_map['Where'] = Where
 
 
 
@@ -4155,29 +4800,34 @@ layer_map['where'] = Where
 
 class NonZero:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._NonZero(name)
+        #self.Module = nn._NonZero(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['nonzero'] = NonZero
+layer_map['NonZero'] = NonZero
 
 
 
@@ -4185,30 +4835,35 @@ layer_map['nonzero'] = NonZero
 
 class MeanVarianceNormalization:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     axes = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["axes"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MeanVarianceNormalization(name)
+        #self.Module = nn._MeanVarianceNormalization(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['meanvariancenormalization'] = MeanVarianceNormalization
+layer_map['MeanVarianceNormalization'] = MeanVarianceNormalization
 
 
 
@@ -4217,32 +4872,37 @@ layer_map['meanvariancenormalization'] = MeanVarianceNormalization
 class StringNormalizer:
     name = None
     stopwords = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     case_change_action = None
     is_case_sensitive = None
     locale = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["case_change_action", "is_case_sensitive", "locale", "stopwords"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._StringNormalizer(name)
+        #self.Module = nn._StringNormalizer(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['stringnormalizer'] = StringNormalizer
+layer_map['StringNormalizer'] = StringNormalizer
 
 
 
@@ -4250,31 +4910,36 @@ layer_map['stringnormalizer'] = StringNormalizer
 
 class Mod:
     name = None
-    A_input = None
-    B_input = None
-    C_output = None
+    A_i = None
+    B_i = None
+    C_o = None
 
     #parameters
     fmod = None
 
+    input_params = ["A_i", "B_i"]
+    output_params = ["C_o"]
+    #attribute_params = ["fmod"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Mod(name)
+        #self.Module = nn._Mod(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["C_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['mod'] = Mod
+layer_map['Mod'] = Mod
 
 
 
@@ -4282,30 +4947,35 @@ layer_map['mod'] = Mod
 
 class ThresholdedRelu:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     alpha = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["alpha"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ThresholdedRelu(name)
+        #self.Module = nn._ThresholdedRelu(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['thresholdedrelu'] = ThresholdedRelu
+layer_map['ThresholdedRelu'] = ThresholdedRelu
 
 
 
@@ -4313,32 +4983,37 @@ layer_map['thresholdedrelu'] = ThresholdedRelu
 
 class MatMulInteger:
     name = None
-    A_input = None
-    B_input = None
-    a_zero_point_input_opt = None
-    b_zero_point_input_opt = None
-    Y_output = None
+    A_i = None
+    B_i = None
+    a_zero_point_i = None
+    b_zero_point_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["A_i", "B_i", "a_zero_point_i", "b_zero_point_i"]
+    output_params = ["Y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MatMulInteger(name)
+        #self.Module = nn._MatMulInteger(name)
+
     def input(self, *args):
-        inpts = ["A_input", "B_input", "a_zero_point_input_opt", "b_zero_point_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['matmulinteger'] = MatMulInteger
+layer_map['MatMulInteger'] = MatMulInteger
 
 
 
@@ -4346,36 +5021,41 @@ layer_map['matmulinteger'] = MatMulInteger
 
 class QLinearMatMul:
     name = None
-    a_input = None
-    a_scale_input = None
-    a_zero_point_input = None
-    b_input = None
-    b_scale_input = None
-    b_zero_point_input = None
-    y_scale_input = None
-    y_zero_point_input = None
-    y_output = None
+    a_i = None
+    a_scale_i = None
+    a_zero_point_i = None
+    b_i = None
+    b_scale_i = None
+    b_zero_point_i = None
+    y_scale_i = None
+    y_zero_point_i = None
+    y_o = None
 
     #parameters
 
+    input_params = ["a_i", "a_scale_i", "a_zero_point_i", "b_i", "b_scale_i", "b_zero_point_i", "y_scale_i", "y_zero_point_i"]
+    output_params = ["y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._QLinearMatMul(name)
+        #self.Module = nn._QLinearMatMul(name)
+
     def input(self, *args):
-        inpts = ["a_input", "a_scale_input", "a_zero_point_input", "b_input", "b_scale_input", "b_zero_point_input", "y_scale_input", "y_zero_point_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['qlinearmatmul'] = QLinearMatMul
+layer_map['QLinearMatMul'] = QLinearMatMul
 
 
 
@@ -4383,11 +5063,11 @@ layer_map['qlinearmatmul'] = QLinearMatMul
 
 class ConvInteger:
     name = None
-    x_input = None
-    w_input = None
-    x_zero_point_input_opt = None
-    w_zero_point_input_opt = None
-    y_output = None
+    x_i = None
+    w_i = None
+    x_zero_point_i = None
+    w_zero_point_i = None
+    y_o = None
 
     #parameters
     auto_pad = None
@@ -4397,24 +5077,29 @@ class ConvInteger:
     pads = None
     strides = None
 
+    input_params = ["x_i", "w_i", "x_zero_point_i", "w_zero_point_i"]
+    output_params = ["y_o"]
+    #attribute_params = ["auto_pad", "dilations", "group", "kernel_shape", "pads", "strides"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ConvInteger(name)
+        #self.Module = nn._ConvInteger(name)
+
     def input(self, *args):
-        inpts = ["x_input", "w_input", "x_zero_point_input_opt", "w_zero_point_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['convinteger'] = ConvInteger
+layer_map['ConvInteger'] = ConvInteger
 
 
 
@@ -4422,16 +5107,16 @@ layer_map['convinteger'] = ConvInteger
 
 class QLinearConv:
     name = None
-    x_input = None
-    x_scale_input = None
-    x_zero_point_input = None
-    w_input = None
-    w_scale_input = None
-    w_zero_point_input = None
-    y_scale_input = None
-    y_zero_point_input = None
-    B_input_opt = None
-    y_output = None
+    x_i = None
+    x_scale_i = None
+    x_zero_point_i = None
+    w_i = None
+    w_scale_i = None
+    w_zero_point_i = None
+    y_scale_i = None
+    y_zero_point_i = None
+    B_i = None
+    y_o = None
 
     #parameters
     auto_pad = None
@@ -4441,24 +5126,29 @@ class QLinearConv:
     pads = None
     strides = None
 
+    input_params = ["x_i", "x_scale_i", "x_zero_point_i", "w_i", "w_scale_i", "w_zero_point_i", "y_scale_i", "y_zero_point_i", "B_i"]
+    output_params = ["y_o"]
+    #attribute_params = ["auto_pad", "dilations", "group", "kernel_shape", "pads", "strides"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._QLinearConv(name)
+        #self.Module = nn._QLinearConv(name)
+
     def input(self, *args):
-        inpts = ["x_input", "x_scale_input", "x_zero_point_input", "w_input", "w_scale_input", "w_zero_point_input", "y_scale_input", "y_zero_point_input", "B_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['qlinearconv'] = QLinearConv
+layer_map['QLinearConv'] = QLinearConv
 
 
 
@@ -4466,31 +5156,36 @@ layer_map['qlinearconv'] = QLinearConv
 
 class QuantizeLinear:
     name = None
-    x_input = None
-    y_scale_input = None
-    y_zero_point_input_opt = None
-    y_output = None
+    x_i = None
+    y_scale_i = None
+    y_zero_point_i = None
+    y_o = None
 
     #parameters
 
+    input_params = ["x_i", "y_scale_i", "y_zero_point_i"]
+    output_params = ["y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._QuantizeLinear(name)
+        #self.Module = nn._QuantizeLinear(name)
+
     def input(self, *args):
-        inpts = ["x_input", "y_scale_input", "y_zero_point_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['quantizelinear'] = QuantizeLinear
+layer_map['QuantizeLinear'] = QuantizeLinear
 
 
 
@@ -4498,31 +5193,36 @@ layer_map['quantizelinear'] = QuantizeLinear
 
 class DequantizeLinear:
     name = None
-    x_input = None
-    x_scale_input = None
-    x_zero_point_input_opt = None
-    y_output = None
+    x_i = None
+    x_scale_i = None
+    x_zero_point_i = None
+    y_o = None
 
     #parameters
 
+    input_params = ["x_i", "x_scale_i", "x_zero_point_i"]
+    output_params = ["y_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._DequantizeLinear(name)
+        #self.Module = nn._DequantizeLinear(name)
+
     def input(self, *args):
-        inpts = ["x_input", "x_scale_input", "x_zero_point_input_opt"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['dequantizelinear'] = DequantizeLinear
+layer_map['DequantizeLinear'] = DequantizeLinear
 
 
 
@@ -4530,31 +5230,36 @@ layer_map['dequantizelinear'] = DequantizeLinear
 
 class IsInf:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     detect_negative = None
     detect_positive = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["detect_negative", "detect_positive"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._IsInf(name)
+        #self.Module = nn._IsInf(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['isinf'] = IsInf
+layer_map['IsInf'] = IsInf
 
 
 
@@ -4562,10 +5267,10 @@ layer_map['isinf'] = IsInf
 
 class RoiAlign:
     name = None
-    X_input = None
-    rois_input = None
-    batch_indices_input = None
-    Y_output = None
+    X_i = None
+    rois_i = None
+    batch_indices_i = None
+    Y_o = None
 
     #parameters
     mode = None
@@ -4574,24 +5279,29 @@ class RoiAlign:
     sampling_ratio = None
     spatial_scale = None
 
+    input_params = ["X_i", "rois_i", "batch_indices_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["mode", "output_height", "output_width", "sampling_ratio", "spatial_scale"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RoiAlign(name)
+        #self.Module = nn._RoiAlign(name)
+
     def input(self, *args):
-        inpts = ["X_input", "rois_input", "batch_indices_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['roialign'] = RoiAlign
+layer_map['RoiAlign'] = RoiAlign
 
 
 
@@ -4599,30 +5309,35 @@ layer_map['roialign'] = RoiAlign
 
 class ArrayFeatureExtractor:
     name = None
-    X_input = None
-    Y_input = None
-    Z_output = None
+    X_i = None
+    Y_i = None
+    Z_o = None
 
     #parameters
 
+    input_params = ["X_i", "Y_i"]
+    output_params = ["Z_o"]
+    #attribute_params = []
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ArrayFeatureExtractor(name)
+        #self.Module = nn._ArrayFeatureExtractor(name)
+
     def input(self, *args):
-        inpts = ["X_input", "Y_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Z_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['arrayfeatureextractor'] = ArrayFeatureExtractor
+layer_map['ArrayFeatureExtractor'] = ArrayFeatureExtractor
 
 
 
@@ -4630,30 +5345,35 @@ layer_map['arrayfeatureextractor'] = ArrayFeatureExtractor
 
 class Binarizer:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     threshold = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["threshold"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Binarizer(name)
+        #self.Module = nn._Binarizer(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['binarizer'] = Binarizer
+layer_map['Binarizer'] = Binarizer
 
 
 
@@ -4662,32 +5382,37 @@ layer_map['binarizer'] = Binarizer
 class CategoryMapper:
     name = None
     cats_strings = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     cats_int64s = None
     default_int64 = None
     default_string = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["cats_int64s", "cats_strings", "default_int64", "default_string"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._CategoryMapper(name)
+        #self.Module = nn._CategoryMapper(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['categorymapper'] = CategoryMapper
+layer_map['CategoryMapper'] = CategoryMapper
 
 
 
@@ -4696,30 +5421,35 @@ layer_map['categorymapper'] = CategoryMapper
 class DictVectorizer:
     name = None
     string_vocabulary = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     int64_vocabulary = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["int64_vocabulary", "string_vocabulary"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._DictVectorizer(name)
+        #self.Module = nn._DictVectorizer(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['dictvectorizer'] = DictVectorizer
+layer_map['DictVectorizer'] = DictVectorizer
 
 
 
@@ -4727,29 +5457,34 @@ layer_map['dictvectorizer'] = DictVectorizer
 
 class FeatureVectorizer:
     name = None
-    Y_output = None
+    Y_o = None
 
     #parameters
     inputdimensions = None
 
+    input_params = []
+    output_params = ["Y_o"]
+    #attribute_params = ["inputdimensions"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._FeatureVectorizer(name)
+        #self.Module = nn._FeatureVectorizer(name)
+
     def input(self, *args):
-        inpts = []
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['featurevectorizer'] = FeatureVectorizer
+layer_map['FeatureVectorizer'] = FeatureVectorizer
 
 
 
@@ -4761,8 +5496,8 @@ class LabelEncoder:
     keys_strings = None
     values_floats = None
     values_strings = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     default_float = None
@@ -4771,24 +5506,29 @@ class LabelEncoder:
     keys_int64s = None
     values_int64s = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["default_float", "default_int64", "default_string", "keys_floats", "keys_int64s", "keys_strings", "values_floats", "values_int64s", "values_strings"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LabelEncoder(name)
+        #self.Module = nn._LabelEncoder(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['labelencoder'] = LabelEncoder
+layer_map['LabelEncoder'] = LabelEncoder
 
 
 
@@ -4799,33 +5539,38 @@ class LinearClassifier:
     coefficients = None
     classlabels_strings = None
     intercepts = None
-    X_input = None
-    Y_output = None
-    Z_output = None
+    X_i = None
+    Y_o = None
+    Z_o = None
 
     #parameters
     classlabels_ints = None
     multi_class = None
     post_transform = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o", "Z_o"]
+    #attribute_params = ["coefficients", "classlabels_ints", "classlabels_strings", "intercepts", "multi_class", "post_transform"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LinearClassifier(name)
+        #self.Module = nn._LinearClassifier(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output", "Z_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['linearclassifier'] = LinearClassifier
+layer_map['LinearClassifier'] = LinearClassifier
 
 
 
@@ -4835,31 +5580,36 @@ class LinearRegressor:
     name = None
     coefficients = None
     intercepts = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     post_transform = None
     targets = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["coefficients", "intercepts", "post_transform", "targets"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LinearRegressor(name)
+        #self.Module = nn._LinearRegressor(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['linearregressor'] = LinearRegressor
+layer_map['LinearRegressor'] = LinearRegressor
 
 
 
@@ -4867,30 +5617,35 @@ layer_map['linearregressor'] = LinearRegressor
 
 class Normalizer:
     name = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     norm = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["norm"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Normalizer(name)
+        #self.Module = nn._Normalizer(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['normalizer'] = Normalizer
+layer_map['Normalizer'] = Normalizer
 
 
 
@@ -4902,8 +5657,8 @@ class SVMRegressor:
     kernel_params = None
     rho = None
     support_vectors = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
     kernel_type = None
@@ -4911,24 +5666,29 @@ class SVMRegressor:
     one_class = None
     post_transform = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["coefficients", "kernel_params", "kernel_type", "n_supports", "one_class", "post_transform", "rho", "support_vectors"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._SVMRegressor(name)
+        #self.Module = nn._SVMRegressor(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['svmregressor'] = SVMRegressor
+layer_map['SVMRegressor'] = SVMRegressor
 
 
 
@@ -4938,29 +5698,34 @@ class Scaler:
     name = None
     offset = None
     scale = None
-    X_input = None
-    Y_output = None
+    X_i = None
+    Y_o = None
 
     #parameters
 
+    input_params = ["X_i"]
+    output_params = ["Y_o"]
+    #attribute_params = ["offset", "scale"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Scaler(name)
+        #self.Module = nn._Scaler(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['scaler'] = Scaler
+layer_map['Scaler'] = Scaler
 
 
 
@@ -4974,9 +5739,9 @@ class TreeEnsembleClassifier:
     nodes_hitrates = None
     nodes_modes = None
     nodes_values = None
-    X_input = None
-    Y_output = None
-    Z_output = None
+    X_i = None
+    Y_o = None
+    Z_o = None
 
     #parameters
     class_ids = None
@@ -4991,24 +5756,29 @@ class TreeEnsembleClassifier:
     nodes_truenodeids = None
     post_transform = None
 
+    input_params = ["X_i"]
+    output_params = ["Y_o", "Z_o"]
+    #attribute_params = ["base_values", "class_ids", "class_nodeids", "class_treeids", "class_weights", "classlabels_int64s", "classlabels_strings", "nodes_falsenodeids", "nodes_featureids", "nodes_hitrates", "nodes_missing_value_tracks_true", "nodes_modes", "nodes_nodeids", "nodes_treeids", "nodes_truenodeids", "nodes_values", "post_transform"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._TreeEnsembleClassifier(name)
+        #self.Module = nn._TreeEnsembleClassifier(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Y_output", "Z_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['treeensembleclassifier'] = TreeEnsembleClassifier
+layer_map['TreeEnsembleClassifier'] = TreeEnsembleClassifier
 
 
 
@@ -5017,28 +5787,33 @@ layer_map['treeensembleclassifier'] = TreeEnsembleClassifier
 class ZipMap:
     name = None
     classlabels_strings = None
-    X_input = None
-    Z_output = None
+    X_i = None
+    Z_o = None
 
     #parameters
     classlabels_int64s = None
 
+    input_params = ["X_i"]
+    output_params = ["Z_o"]
+    #attribute_params = ["classlabels_int64s", "classlabels_strings"]
+
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ZipMap(name)
+        #self.Module = nn._ZipMap(name)
+
     def input(self, *args):
-        inpts = ["X_input"]
         for i, x in enumerate(args):
-            self.__dict__[inpts[i]] = x
+            self.__dict__[self.input_params[i]] = x
 
-    def output(self, *args):
-        outputs = ["Z_output"]
+    def output(self, *args):        
         for i, x in enumerate(args):
-            self.__dict__[outputs[i]] = x
-
+            self.__dict__[self.output_params[i]] = x
+    
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def call(self):
         pass
 
-layer_map['zipmap'] = ZipMap
+layer_map['ZipMap'] = ZipMap
 

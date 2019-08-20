@@ -26,6 +26,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="layers.py" />
+    <Compile Include="onnx_helper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestingPipeline.py" />
   </ItemGroup>
   <ItemGroup>

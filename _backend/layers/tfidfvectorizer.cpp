@@ -20,11 +20,11 @@ namespace backend {
   
     }
     
-    void TfIdfVectorizer::bind(std::string _pool_strings, std::string _weights, std::string _X_input, std::string _Y_output){
-        pool_strings = _pool_strings; weights = _weights; X_input = _X_input; Y_output = _Y_output;
-		binding.X_input = tensor_dict[X_input]->shape();
+    void TfIdfVectorizer::bind(std::string _pool_strings, std::string _weights, std::string _X_i, std::string _Y_o){
+        pool_strings = _pool_strings; weights = _weights; X_i = _X_i; Y_o = _Y_o;
+		binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
  
 		binding.max_gram_length = max_gram_length;
   		binding.max_skip_count = max_skip_count;
@@ -40,7 +40,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tfidfvectorizer.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[pool_strings]->data(), *tensor_dict[weights]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
+        //program->bind(binding, *tensor_dict[pool_strings]->data(), *tensor_dict[weights]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
     }
 
 }

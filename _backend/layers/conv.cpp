@@ -19,13 +19,13 @@ namespace backend {
   
     }
     
-    void Conv::bind(std::string _X_input, std::string _W_input, std::string _B_input_opt, std::string _Y_output){
-        X_input = _X_input; W_input = _W_input; B_input_opt = _B_input_opt; Y_output = _Y_output;
-		binding.X_input = tensor_dict[X_input]->shape();
-  		binding.W_input = tensor_dict[W_input]->shape();
-  		binding.B_input_opt = tensor_dict[B_input_opt]->shape();
+    void Conv::bind(std::string _X_i, std::string _W_i, std::string _B_i, std::string _Y_o){
+        X_i = _X_i; W_i = _W_i; B_i = _B_i; Y_o = _Y_o;
+		binding.X_i = tensor_dict[X_i]->shape();
+  		binding.W_i = tensor_dict[W_i]->shape();
+  		binding.B_i = tensor_dict[B_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
  
 		binding.auto_pad = auto_pad;
   		binding.dilations = dilations;
@@ -38,7 +38,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/conv.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[W_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[Y_output]->data());
+        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[W_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[Y_o]->data());
     }
 
 }

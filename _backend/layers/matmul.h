@@ -16,9 +16,9 @@ output: Matrix multiply results from A * B
 */
 
 //MatMul
-//INPUTS:                   A_input, B_input
+//INPUTS:                   A_i, B_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -32,16 +32,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t A_input; Shape_t B_input;
+            Shape_t A_i; Shape_t B_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         
-        std::string A_input; std::string B_input;
+        std::string A_i; std::string B_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -55,7 +55,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _A_input, std::string _B_input, std::string _Y_output); 
+        void bind(std::string _A_i, std::string _B_i, std::string _Y_o); 
 
         ~MatMul() {}
     };

@@ -17,9 +17,9 @@ output: A tensor representing the same data as the input map, ordered by their k
 */
 
 //CastMap
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -33,16 +33,16 @@ namespace backend {
         typedef struct {
             int cast_to; int map_form; int max_map;
 			
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         int cast_to; int map_form; int max_map;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _cast_to,  int _map_form,  int _max_map); 
-        void bind(std::string _X_input, std::string _Y_output); 
+        void bind(std::string _X_i, std::string _Y_o); 
 
         ~CastMap() {}
     };

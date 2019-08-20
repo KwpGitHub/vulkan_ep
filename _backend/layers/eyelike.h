@@ -21,9 +21,9 @@ output: Output tensor, same shape as input tensor T1.
 */
 
 //EyeLike
-//INPUTS:                   input_input
+//INPUTS:                   input_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -37,16 +37,16 @@ namespace backend {
         typedef struct {
             int dtype; int k;
 			
-            Shape_t input_input;
+            Shape_t input_i;
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         int dtype; int k;
-        std::string input_input;
+        std::string input_i;
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -60,7 +60,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _dtype,  int _k); 
-        void bind(std::string _input_input, std::string _output_output); 
+        void bind(std::string _input_i, std::string _output_o); 
 
         ~EyeLike() {}
     };

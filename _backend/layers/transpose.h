@@ -17,9 +17,9 @@ output: Transposed output.
 */
 
 //Transpose
-//INPUTS:                   data_input
+//INPUTS:                   data_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   transposed_output
+//OUTPUS:                   transposed_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -33,16 +33,16 @@ namespace backend {
         typedef struct {
             Shape_t perm;
 			
-            Shape_t data_input;
+            Shape_t data_i;
             
-            Shape_t transposed_output;
+            Shape_t transposed_o;
             
         } binding_descriptor;
 
         Shape_t perm;
-        std::string data_input;
+        std::string data_i;
         
-        std::string transposed_output;
+        std::string transposed_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _perm); 
-        void bind(std::string _data_input, std::string _transposed_output); 
+        void bind(std::string _data_i, std::string _transposed_o); 
 
         ~Transpose() {}
     };

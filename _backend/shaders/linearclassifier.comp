@@ -10,19 +10,19 @@ layout(push_constant) uniform Parameters {
     Shape_t classlabels_ints; int multi_class; int post_transform;
 			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
 //input
-    Shape_t X_input;
+    Shape_t X_i;
     
 //output
-    Shape_t Y_output; Shape_t Z_output;
+    Shape_t Y_o; Shape_t Z_o;
     
 } params;
 
 layout(std430, binding = 0) buffer lay0 { float coefficients[]; };
 layout(std430, binding = 1) buffer lay1 { float classlabels_strings[]; };
 layout(std430, binding = 2) buffer lay2 { float intercepts[]; };
-layout(std430, binding = 3) buffer lay3 { float X_input[]; };
-layout(std430, binding = 4) buffer lay4 { float Y_output[]; };
-layout(std430, binding = 5) buffer lay5 { float Z_output[]; };
+layout(std430, binding = 3) buffer lay3 { float X_i[]; };
+layout(std430, binding = 4) buffer lay4 { float Y_o[]; };
+layout(std430, binding = 5) buffer lay5 { float Z_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -31,10 +31,10 @@ void main(){
     const uint coefficients_size = params.coefficients.n * params.coefficients.c * params.coefficients.d * params.coefficients.w * params.coefficients.h;
 	const uint classlabels_strings_size = params.classlabels_strings.n * params.classlabels_strings.c * params.classlabels_strings.d * params.classlabels_strings.w * params.classlabels_strings.h;
 	const uint intercepts_size = params.intercepts.n * params.intercepts.c * params.intercepts.d * params.intercepts.w * params.intercepts.h;
-    const uint X_input_size = params.X_input.n * params.X_input.c * params.X_input.d * params.X_input.w * params.X_input.h;
+    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
     
-    const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
-	const uint Z_output_size = params.Z_output.n * params.Z_output.c * params.Z_output.d * params.Z_output.w * params.Z_output.h;
+    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+	const uint Z_o_size = params.Z_o.n * params.Z_o.c * params.Z_o.d * params.Z_o.w * params.Z_o.h;
     
 
     if(size <= idx) {

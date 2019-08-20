@@ -16,13 +16,13 @@ namespace backend {
   
     }
     
-    void MaxUnpool::bind(std::string _X_input, std::string _I_input, std::string _output_shape_input_opt, std::string _output_output){
-        X_input = _X_input; I_input = _I_input; output_shape_input_opt = _output_shape_input_opt; output_output = _output_output;
-		binding.X_input = tensor_dict[X_input]->shape();
-  		binding.I_input = tensor_dict[I_input]->shape();
-  		binding.output_shape_input_opt = tensor_dict[output_shape_input_opt]->shape();
+    void MaxUnpool::bind(std::string _X_i, std::string _I_i, std::string _output_shape_i, std::string _output_o){
+        X_i = _X_i; I_i = _I_i; output_shape_i = _output_shape_i; output_o = _output_o;
+		binding.X_i = tensor_dict[X_i]->shape();
+  		binding.I_i = tensor_dict[I_i]->shape();
+  		binding.output_shape_i = tensor_dict[output_shape_i]->shape();
  
-		binding.output_output = tensor_dict[output_output]->shape();
+		binding.output_o = tensor_dict[output_o]->shape();
  
 		binding.kernel_shape = kernel_shape;
   		binding.pads = pads;
@@ -32,7 +32,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxunpool.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[I_input]->data(), *tensor_dict[output_shape_input_opt]->data(), *tensor_dict[output_output]->data());
+        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[I_i]->data(), *tensor_dict[output_shape_i]->data(), *tensor_dict[output_o]->data());
     }
 
 }

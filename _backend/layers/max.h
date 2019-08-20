@@ -19,7 +19,7 @@ output: Output tensor.
 //Max
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   max_output
+//OUTPUS:                   max_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -35,14 +35,14 @@ namespace backend {
 			
             
             
-            Shape_t max_output;
+            Shape_t max_o;
             
         } binding_descriptor;
 
         
         
         
-        std::string max_output;
+        std::string max_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _max_output); 
+        void bind(std::string _max_o); 
 
         ~Max() {}
     };

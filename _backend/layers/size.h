@@ -15,9 +15,9 @@ output: Total number of elements of the input tensor
 */
 
 //Size
-//INPUTS:                   data_input
+//INPUTS:                   data_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   size_output
+//OUTPUS:                   size_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -31,16 +31,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t data_input;
+            Shape_t data_i;
             
-            Shape_t size_output;
+            Shape_t size_o;
             
         } binding_descriptor;
 
         
-        std::string data_input;
+        std::string data_i;
         
-        std::string size_output;
+        std::string size_o;
         
 
         binding_descriptor   binding;
@@ -54,7 +54,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _data_input, std::string _size_output); 
+        void bind(std::string _data_i, std::string _size_o); 
 
         ~Size() {}
     };

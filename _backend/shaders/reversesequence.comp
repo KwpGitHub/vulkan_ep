@@ -10,26 +10,26 @@ layout(push_constant) uniform Parameters {
     int batch_axis; int time_axis;
 			
 //input
-    Shape_t input_input; Shape_t sequence_lens_input;
+    Shape_t input_i; Shape_t sequence_lens_i;
     
 //output
-    Shape_t Y_output;
+    Shape_t Y_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float input_input[]; };
-layout(std430, binding = 1) buffer lay1 { float sequence_lens_input[]; };
-layout(std430, binding = 2) buffer lay2 { float Y_output[]; };
+layout(std430, binding = 0) buffer lay0 { float input_i[]; };
+layout(std430, binding = 1) buffer lay1 { float sequence_lens_i[]; };
+layout(std430, binding = 2) buffer lay2 { float Y_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     
-    const uint input_input_size = params.input_input.n * params.input_input.c * params.input_input.d * params.input_input.w * params.input_input.h;
-	const uint sequence_lens_input_size = params.sequence_lens_input.n * params.sequence_lens_input.c * params.sequence_lens_input.d * params.sequence_lens_input.w * params.sequence_lens_input.h;
+    const uint input_i_size = params.input_i.n * params.input_i.c * params.input_i.d * params.input_i.w * params.input_i.h;
+	const uint sequence_lens_i_size = params.sequence_lens_i.n * params.sequence_lens_i.c * params.sequence_lens_i.d * params.sequence_lens_i.w * params.sequence_lens_i.h;
     
-    const uint Y_output_size = params.Y_output.n * params.Y_output.c * params.Y_output.d * params.Y_output.w * params.Y_output.h;
+    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
     
 
     if(size <= idx) {

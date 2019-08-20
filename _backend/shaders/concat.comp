@@ -13,11 +13,11 @@ layout(push_constant) uniform Parameters {
     
     
 //output
-    Shape_t concat_result_output;
+    Shape_t concat_result_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float concat_result_output[]; };
+layout(std430, binding = 0) buffer lay0 { float concat_result_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -26,7 +26,7 @@ void main(){
     
     
     
-    const uint concat_result_output_size = params.concat_result_output.n * params.concat_result_output.c * params.concat_result_output.d * params.concat_result_output.w * params.concat_result_output.h;
+    const uint concat_result_o_size = params.concat_result_o.n * params.concat_result_o.c * params.concat_result_o.d * params.concat_result_o.w * params.concat_result_o.h;
     
 
     if(size <= idx) {

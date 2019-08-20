@@ -19,9 +19,9 @@ output: Reduced output tensor.
 */
 
 //ReduceProd
-//INPUTS:                   data_input
+//INPUTS:                   data_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   reduced_output
+//OUTPUS:                   reduced_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -35,16 +35,16 @@ namespace backend {
         typedef struct {
             Shape_t axes; int keepdims;
 			
-            Shape_t data_input;
+            Shape_t data_i;
             
-            Shape_t reduced_output;
+            Shape_t reduced_o;
             
         } binding_descriptor;
 
         Shape_t axes; int keepdims;
-        std::string data_input;
+        std::string data_i;
         
-        std::string reduced_output;
+        std::string reduced_o;
         
 
         binding_descriptor   binding;
@@ -58,7 +58,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _axes,  int _keepdims); 
-        void bind(std::string _data_input, std::string _reduced_output); 
+        void bind(std::string _data_i, std::string _reduced_o); 
 
         ~ReduceProd() {}
     };

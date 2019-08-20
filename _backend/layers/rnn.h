@@ -81,10 +81,10 @@ output: The last output value of the hidden. It has shape `[num_directions, batc
 */
 
 //RNN
-//INPUTS:                   X_input, W_input, R_input
-//OPTIONAL_INPUTS:          B_input_opt, sequence_lens_input_opt, initial_h_input_opt
+//INPUTS:                   X_i, W_i, R_i
+//OPTIONAL_INPUTS:          B_i, sequence_lens_i, initial_h_i
 //OUTPUS:                   
-//OPTIONAL_OUTPUTS:         Y_output_opt, Y_h_output_opt
+//OPTIONAL_OUTPUTS:         Y_o, Y_h_o
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      activation_alpha, activation_beta, activations, clip, direction, hidden_size
@@ -97,17 +97,17 @@ namespace backend {
         typedef struct {
             float clip; int direction; int hidden_size;
 			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
-            Shape_t X_input; Shape_t W_input; Shape_t R_input;
-            Shape_t B_input_opt; Shape_t sequence_lens_input_opt; Shape_t initial_h_input_opt;
+            Shape_t X_i; Shape_t W_i; Shape_t R_i;
+            Shape_t B_i; Shape_t sequence_lens_i; Shape_t initial_h_i;
             
-            Shape_t Y_output_opt; Shape_t Y_h_output_opt;
+            Shape_t Y_o; Shape_t Y_h_o;
         } binding_descriptor;
 
         float clip; int direction; int hidden_size; std::string activation_alpha; std::string activation_beta; std::string activations;
-        std::string X_input; std::string W_input; std::string R_input;
-        std::string B_input_opt; std::string sequence_lens_input_opt; std::string initial_h_input_opt;
+        std::string X_i; std::string W_i; std::string R_i;
+        std::string B_i; std::string sequence_lens_i; std::string initial_h_i;
         
-        std::string Y_output_opt; std::string Y_h_output_opt;
+        std::string Y_o; std::string Y_h_o;
 
         binding_descriptor   binding;
 
@@ -120,7 +120,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( float _clip,  int _direction,  int _hidden_size); 
-        void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_input, std::string _W_input, std::string _R_input, std::string _B_input_opt, std::string _sequence_lens_input_opt, std::string _initial_h_input_opt, std::string _Y_output_opt, std::string _Y_h_output_opt); 
+        void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_i, std::string _W_i, std::string _R_i, std::string _B_i, std::string _sequence_lens_i, std::string _initial_h_i, std::string _Y_o, std::string _Y_h_o); 
 
         ~RNN() {}
     };

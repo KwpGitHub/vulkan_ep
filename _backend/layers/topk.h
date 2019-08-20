@@ -26,9 +26,9 @@ output: Tensor of shape [a_1, a_2, ..., a_{axis-1}, k, a_{axis+1}, ... a_n] cont
 */
 
 //TopK
-//INPUTS:                   X_input, K_input
+//INPUTS:                   X_i, K_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Values_output, Indices_output
+//OUTPUS:                   Values_o, Indices_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -42,16 +42,16 @@ namespace backend {
         typedef struct {
             int axis;
 			
-            Shape_t X_input; Shape_t K_input;
+            Shape_t X_i; Shape_t K_i;
             
-            Shape_t Values_output; Shape_t Indices_output;
+            Shape_t Values_o; Shape_t Indices_o;
             
         } binding_descriptor;
 
         int axis;
-        std::string X_input; std::string K_input;
+        std::string X_i; std::string K_i;
         
-        std::string Values_output; std::string Indices_output;
+        std::string Values_o; std::string Indices_o;
         
 
         binding_descriptor   binding;
@@ -65,7 +65,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _axis); 
-        void bind(std::string _X_input, std::string _K_input, std::string _Values_output, std::string _Indices_output); 
+        void bind(std::string _X_i, std::string _K_i, std::string _Values_o, std::string _Indices_o); 
 
         ~TopK() {}
     };

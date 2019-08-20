@@ -16,9 +16,9 @@ output: Classification scores ([N,E] - one score for each class and example
 */
 
 //LinearClassifier
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output, Z_output
+//OUTPUS:                   Y_o, Z_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               coefficients
 //PARAMETER_TYPES:          Tensor*
@@ -32,16 +32,16 @@ namespace backend {
         typedef struct {
             Shape_t classlabels_ints; int multi_class; int post_transform;
 			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output; Shape_t Z_output;
+            Shape_t Y_o; Shape_t Z_o;
             
         } binding_descriptor;
 
         Shape_t classlabels_ints; int multi_class; int post_transform; std::string coefficients; std::string classlabels_strings; std::string intercepts;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output; std::string Z_output;
+        std::string Y_o; std::string Z_o;
         
 
         binding_descriptor   binding;
@@ -55,7 +55,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _classlabels_ints,  int _multi_class,  int _post_transform); 
-        void bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_input, std::string _Y_output, std::string _Z_output); 
+        void bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_i, std::string _Y_o, std::string _Z_o); 
 
         ~LinearClassifier() {}
     };

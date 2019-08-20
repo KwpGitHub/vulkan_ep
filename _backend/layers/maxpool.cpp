@@ -20,12 +20,12 @@ namespace backend {
   
     }
     
-    void MaxPool::bind(std::string _X_input, std::string _Y_output, std::string _Indices_output_opt){
-        X_input = _X_input; Y_output = _Y_output; Indices_output_opt = _Indices_output_opt;
-		binding.X_input = tensor_dict[X_input]->shape();
+    void MaxPool::bind(std::string _X_i, std::string _Y_o, std::string _Indices_o){
+        X_i = _X_i; Y_o = _Y_o; Indices_o = _Indices_o;
+		binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
-  		binding.Indices_output_opt = tensor_dict[Indices_output_opt]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
+  		binding.Indices_o = tensor_dict[Indices_o]->shape();
  
 		binding.kernel_shape = kernel_shape;
   		binding.auto_pad = auto_pad;
@@ -39,7 +39,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxpool.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data(), *tensor_dict[Indices_output_opt]->data());
+        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Indices_o]->data());
     }
 
 }

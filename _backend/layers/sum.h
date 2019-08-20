@@ -19,7 +19,7 @@ output: Output tensor.
 //Sum
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   sum_output
+//OUTPUS:                   sum_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -35,14 +35,14 @@ namespace backend {
 			
             
             
-            Shape_t sum_output;
+            Shape_t sum_o;
             
         } binding_descriptor;
 
         
         
         
-        std::string sum_output;
+        std::string sum_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _sum_output); 
+        void bind(std::string _sum_o); 
 
         ~Sum() {}
     };

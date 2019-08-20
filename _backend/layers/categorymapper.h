@@ -22,9 +22,9 @@ output: Output data. If strings are input, the output values are integers, and v
 */
 
 //CategoryMapper
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -38,16 +38,16 @@ namespace backend {
         typedef struct {
             Shape_t cats_int64s; int default_int64; int default_string;
 			Shape_t cats_strings;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         Shape_t cats_int64s; int default_int64; int default_string; std::string cats_strings;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -61,7 +61,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _cats_int64s,  int _default_int64,  int _default_string); 
-        void bind(std::string _cats_strings, std::string _X_input, std::string _Y_output); 
+        void bind(std::string _cats_strings, std::string _X_i, std::string _Y_o); 
 
         ~CategoryMapper() {}
     };

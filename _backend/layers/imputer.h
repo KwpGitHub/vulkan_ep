@@ -22,9 +22,9 @@ output: Imputed output data
 */
 
 //Imputer
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -38,16 +38,16 @@ namespace backend {
         typedef struct {
             Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
 			Shape_t imputed_value_floats;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64; std::string imputed_value_floats;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -61,7 +61,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _imputed_value_int64s,  float _replaced_value_float,  int _replaced_value_int64); 
-        void bind(std::string _imputed_value_floats, std::string _X_input, std::string _Y_output); 
+        void bind(std::string _imputed_value_floats, std::string _X_i, std::string _Y_o); 
 
         ~Imputer() {}
     };

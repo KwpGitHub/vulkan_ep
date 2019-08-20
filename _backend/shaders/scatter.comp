@@ -10,28 +10,28 @@ layout(push_constant) uniform Parameters {
     int axis;
 			
 //input
-    Shape_t data_input; Shape_t indices_input; Shape_t updates_input;
+    Shape_t data_i; Shape_t indices_i; Shape_t updates_i;
     
 //output
-    Shape_t output_output;
+    Shape_t output_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float data_input[]; };
-layout(std430, binding = 1) buffer lay1 { float indices_input[]; };
-layout(std430, binding = 2) buffer lay2 { float updates_input[]; };
-layout(std430, binding = 3) buffer lay3 { float output_output[]; };
+layout(std430, binding = 0) buffer lay0 { float data_i[]; };
+layout(std430, binding = 1) buffer lay1 { float indices_i[]; };
+layout(std430, binding = 2) buffer lay2 { float updates_i[]; };
+layout(std430, binding = 3) buffer lay3 { float output_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     
-    const uint data_input_size = params.data_input.n * params.data_input.c * params.data_input.d * params.data_input.w * params.data_input.h;
-	const uint indices_input_size = params.indices_input.n * params.indices_input.c * params.indices_input.d * params.indices_input.w * params.indices_input.h;
-	const uint updates_input_size = params.updates_input.n * params.updates_input.c * params.updates_input.d * params.updates_input.w * params.updates_input.h;
+    const uint data_i_size = params.data_i.n * params.data_i.c * params.data_i.d * params.data_i.w * params.data_i.h;
+	const uint indices_i_size = params.indices_i.n * params.indices_i.c * params.indices_i.d * params.indices_i.w * params.indices_i.h;
+	const uint updates_i_size = params.updates_i.n * params.updates_i.c * params.updates_i.d * params.updates_i.w * params.updates_i.h;
     
-    const uint output_output_size = params.output_output.n * params.output_output.c * params.output_output.d * params.output_output.w * params.output_output.h;
+    const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
     
 
     if(size <= idx) {

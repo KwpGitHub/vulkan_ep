@@ -19,7 +19,7 @@ output: Output tensor.
 //Min
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   min_output
+//OUTPUS:                   min_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -35,14 +35,14 @@ namespace backend {
 			
             
             
-            Shape_t min_output;
+            Shape_t min_o;
             
         } binding_descriptor;
 
         
         
         
-        std::string min_output;
+        std::string min_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _min_output); 
+        void bind(std::string _min_o); 
 
         ~Min() {}
     };

@@ -17,13 +17,13 @@ namespace backend {
   
     }
     
-    void Gemm::bind(std::string _A_input, std::string _B_input, std::string _C_input, std::string _Y_output){
-        A_input = _A_input; B_input = _B_input; C_input = _C_input; Y_output = _Y_output;
-		binding.A_input = tensor_dict[A_input]->shape();
-  		binding.B_input = tensor_dict[B_input]->shape();
-  		binding.C_input = tensor_dict[C_input]->shape();
+    void Gemm::bind(std::string _A_i, std::string _B_i, std::string _C_i, std::string _Y_o){
+        A_i = _A_i; B_i = _B_i; C_i = _C_i; Y_o = _Y_o;
+		binding.A_i = tensor_dict[A_i]->shape();
+  		binding.B_i = tensor_dict[B_i]->shape();
+  		binding.C_i = tensor_dict[C_i]->shape();
  
-		binding.Y_output = tensor_dict[Y_output]->shape();
+		binding.Y_o = tensor_dict[Y_o]->shape();
  
 		binding.alpha = alpha;
   		binding.beta = beta;
@@ -34,7 +34,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/gemm.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_input]->data(), *tensor_dict[Y_output]->data());
+        //program->bind(binding, *tensor_dict[A_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[C_i]->data(), *tensor_dict[Y_o]->data());
     }
 
 }

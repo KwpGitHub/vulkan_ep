@@ -31,9 +31,9 @@ output: Output data.
 */
 
 //LabelEncoder
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -47,16 +47,16 @@ namespace backend {
         typedef struct {
             float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s;
 			Shape_t keys_floats; Shape_t keys_strings; Shape_t values_floats; Shape_t values_strings;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s; std::string keys_floats; std::string keys_strings; std::string values_floats; std::string values_strings;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -70,7 +70,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( float _default_float,  int _default_int64,  int _default_string,  Shape_t _keys_int64s,  Shape_t _values_int64s); 
-        void bind(std::string _keys_floats, std::string _keys_strings, std::string _values_floats, std::string _values_strings, std::string _X_input, std::string _Y_output); 
+        void bind(std::string _keys_floats, std::string _keys_strings, std::string _values_floats, std::string _values_strings, std::string _X_i, std::string _Y_o); 
 
         ~LabelEncoder() {}
     };

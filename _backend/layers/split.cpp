@@ -15,9 +15,9 @@ namespace backend {
   
     }
     
-    void Split::bind(std::string _input_input){
-        input_input = _input_input;
-		binding.input_input = tensor_dict[input_input]->shape();
+    void Split::bind(std::string _input_i){
+        input_i = _input_i;
+		binding.input_i = tensor_dict[input_i]->shape();
  
 
 		binding.axis = axis;
@@ -27,7 +27,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/split.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[input_input]->data());
+        //program->bind(binding, *tensor_dict[input_i]->data());
     }
 
 }

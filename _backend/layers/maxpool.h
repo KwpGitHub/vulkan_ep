@@ -43,10 +43,10 @@ output: Indices tensor from max pooling across the input tensor. The dimensions 
 */
 
 //MaxPool
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
-//OPTIONAL_OUTPUTS:         Indices_output_opt
+//OUTPUS:                   Y_o
+//OPTIONAL_OUTPUTS:         Indices_o
 //PARAMETERS:               kernel_shape
 //PARAMETER_TYPES:          Shape_t
 //OPTIONAL_PARAMETERS:      auto_pad, ceil_mode, dilations, pads, storage_order, strides
@@ -59,17 +59,17 @@ namespace backend {
         typedef struct {
             Shape_t kernel_shape; int auto_pad; int ceil_mode; Shape_t dilations; Shape_t pads; int storage_order; Shape_t strides;
 			
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
-            Shape_t Indices_output_opt;
+            Shape_t Y_o;
+            Shape_t Indices_o;
         } binding_descriptor;
 
         Shape_t kernel_shape; int auto_pad; int ceil_mode; Shape_t dilations; Shape_t pads; int storage_order; Shape_t strides;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
-        std::string Indices_output_opt;
+        std::string Y_o;
+        std::string Indices_o;
 
         binding_descriptor   binding;
 
@@ -82,7 +82,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _kernel_shape,  int _auto_pad,  int _ceil_mode,  Shape_t _dilations,  Shape_t _pads,  int _storage_order,  Shape_t _strides); 
-        void bind(std::string _X_input, std::string _Y_output, std::string _Indices_output_opt); 
+        void bind(std::string _X_i, std::string _Y_o, std::string _Indices_o); 
 
         ~MaxPool() {}
     };

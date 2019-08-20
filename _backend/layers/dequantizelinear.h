@@ -20,9 +20,9 @@ output: N-D full precision output tensor. It has same shape as input 'x'.
 */
 
 //DequantizeLinear
-//INPUTS:                   x_input, x_scale_input
-//OPTIONAL_INPUTS:          x_zero_point_input_opt
-//OUTPUS:                   y_output
+//INPUTS:                   x_i, x_scale_i
+//OPTIONAL_INPUTS:          x_zero_point_i
+//OUTPUS:                   y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -36,16 +36,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t x_input; Shape_t x_scale_input;
-            Shape_t x_zero_point_input_opt;
-            Shape_t y_output;
+            Shape_t x_i; Shape_t x_scale_i;
+            Shape_t x_zero_point_i;
+            Shape_t y_o;
             
         } binding_descriptor;
 
         
-        std::string x_input; std::string x_scale_input;
-        std::string x_zero_point_input_opt;
-        std::string y_output;
+        std::string x_i; std::string x_scale_i;
+        std::string x_zero_point_i;
+        std::string y_o;
         
 
         binding_descriptor   binding;
@@ -59,7 +59,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _x_input, std::string _x_scale_input, std::string _x_zero_point_input_opt, std::string _y_output); 
+        void bind(std::string _x_i, std::string _x_scale_i, std::string _x_zero_point_i, std::string _y_o); 
 
         ~DequantizeLinear() {}
     };

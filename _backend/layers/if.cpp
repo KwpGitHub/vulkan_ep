@@ -15,9 +15,9 @@ namespace backend {
   
     }
     
-    void If::bind(std::string _cond_input){
-        cond_input = _cond_input;
-		binding.cond_input = tensor_dict[cond_input]->shape();
+    void If::bind(std::string _cond_i){
+        cond_i = _cond_i;
+		binding.cond_i = tensor_dict[cond_i]->shape();
  
 
 		binding.else_branch = else_branch;
@@ -27,7 +27,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/if.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[cond_input]->data());
+        //program->bind(binding, *tensor_dict[cond_i]->data());
     }
 
 }

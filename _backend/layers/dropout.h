@@ -21,10 +21,10 @@ output: The output mask.
 */
 
 //Dropout
-//INPUTS:                   data_input
+//INPUTS:                   data_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
-//OPTIONAL_OUTPUTS:         mask_output_opt
+//OUTPUS:                   output_o
+//OPTIONAL_OUTPUTS:         mask_o
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      ratio
@@ -37,17 +37,17 @@ namespace backend {
         typedef struct {
             float ratio;
 			
-            Shape_t data_input;
+            Shape_t data_i;
             
-            Shape_t output_output;
-            Shape_t mask_output_opt;
+            Shape_t output_o;
+            Shape_t mask_o;
         } binding_descriptor;
 
         float ratio;
-        std::string data_input;
+        std::string data_i;
         
-        std::string output_output;
-        std::string mask_output_opt;
+        std::string output_o;
+        std::string mask_o;
 
         binding_descriptor   binding;
 
@@ -60,7 +60,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( float _ratio); 
-        void bind(std::string _data_input, std::string _output_output, std::string _mask_output_opt); 
+        void bind(std::string _data_i, std::string _output_o, std::string _mask_o); 
 
         ~Dropout() {}
     };

@@ -130,7 +130,7 @@ output: Final N loop carried dependency values then K scan_outputs
 
 //Loop
 //INPUTS:                   
-//OPTIONAL_INPUTS:          M_input_opt, cond_input_opt
+//OPTIONAL_INPUTS:          M_i, cond_i
 //OUTPUS:                   
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               body
@@ -146,14 +146,14 @@ namespace backend {
             int body;
 			
             
-            Shape_t M_input_opt; Shape_t cond_input_opt;
+            Shape_t M_i; Shape_t cond_i;
             
             
         } binding_descriptor;
 
         int body;
         
-        std::string M_input_opt; std::string cond_input_opt;
+        std::string M_i; std::string cond_i;
         
         
 
@@ -168,7 +168,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _body); 
-        void bind(std::string _M_input_opt, std::string _cond_input_opt); 
+        void bind(std::string _M_i, std::string _cond_i); 
 
         ~Loop() {}
     };

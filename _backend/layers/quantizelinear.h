@@ -19,9 +19,9 @@ output: N-D quantized output tensor. It has same shape as input 'x'.
 */
 
 //QuantizeLinear
-//INPUTS:                   x_input, y_scale_input
-//OPTIONAL_INPUTS:          y_zero_point_input_opt
-//OUTPUS:                   y_output
+//INPUTS:                   x_i, y_scale_i
+//OPTIONAL_INPUTS:          y_zero_point_i
+//OUTPUS:                   y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -35,16 +35,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t x_input; Shape_t y_scale_input;
-            Shape_t y_zero_point_input_opt;
-            Shape_t y_output;
+            Shape_t x_i; Shape_t y_scale_i;
+            Shape_t y_zero_point_i;
+            Shape_t y_o;
             
         } binding_descriptor;
 
         
-        std::string x_input; std::string y_scale_input;
-        std::string y_zero_point_input_opt;
-        std::string y_output;
+        std::string x_i; std::string y_scale_i;
+        std::string y_zero_point_i;
+        std::string y_o;
         
 
         binding_descriptor   binding;
@@ -58,7 +58,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _x_input, std::string _y_scale_input, std::string _y_zero_point_input_opt, std::string _y_output); 
+        void bind(std::string _x_i, std::string _y_scale_i, std::string _y_zero_point_i, std::string _y_o); 
 
         ~QuantizeLinear() {}
     };

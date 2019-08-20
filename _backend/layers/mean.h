@@ -19,7 +19,7 @@ output: Output tensor.
 //Mean
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   mean_output
+//OUTPUS:                   mean_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -35,14 +35,14 @@ namespace backend {
 			
             
             
-            Shape_t mean_output;
+            Shape_t mean_o;
             
         } binding_descriptor;
 
         
         
         
-        std::string mean_output;
+        std::string mean_o;
         
 
         binding_descriptor   binding;
@@ -56,7 +56,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _mean_output); 
+        void bind(std::string _mean_o); 
 
         ~Mean() {}
     };

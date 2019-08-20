@@ -29,9 +29,9 @@ output: Output data tensor that contains the result of the convolution. The outp
 */
 
 //ConvTranspose
-//INPUTS:                   X_input, W_input
-//OPTIONAL_INPUTS:          B_input_opt
-//OUTPUS:                   Y_output
+//INPUTS:                   X_i, W_i
+//OPTIONAL_INPUTS:          B_i
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -45,16 +45,16 @@ namespace backend {
         typedef struct {
             int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t output_padding; Shape_t output_shape; Shape_t pads; Shape_t strides;
 			
-            Shape_t X_input; Shape_t W_input;
-            Shape_t B_input_opt;
-            Shape_t Y_output;
+            Shape_t X_i; Shape_t W_i;
+            Shape_t B_i;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t output_padding; Shape_t output_shape; Shape_t pads; Shape_t strides;
-        std::string X_input; std::string W_input;
-        std::string B_input_opt;
-        std::string Y_output;
+        std::string X_i; std::string W_i;
+        std::string B_i;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -68,7 +68,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _auto_pad,  Shape_t _dilations,  int _group,  Shape_t _kernel_shape,  Shape_t _output_padding,  Shape_t _output_shape,  Shape_t _pads,  Shape_t _strides); 
-        void bind(std::string _X_input, std::string _W_input, std::string _B_input_opt, std::string _Y_output); 
+        void bind(std::string _X_i, std::string _W_i, std::string _B_i, std::string _Y_o); 
 
         ~ConvTranspose() {}
     };

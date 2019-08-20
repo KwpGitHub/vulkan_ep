@@ -26,9 +26,9 @@ output: selected indices from the boxes tensor. [num_selected_indices, 3], the s
 */
 
 //NonMaxSuppression
-//INPUTS:                   boxes_input, scores_input
-//OPTIONAL_INPUTS:          max_output_boxes_per_class_input_opt, iou_threshold_input_opt, score_threshold_input_opt
-//OUTPUS:                   selected_indices_output
+//INPUTS:                   boxes_i, scores_i
+//OPTIONAL_INPUTS:          max_output_boxes_per_class_i, iou_threshold_i, score_threshold_i
+//OUTPUS:                   selected_indices_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -42,16 +42,16 @@ namespace backend {
         typedef struct {
             int center_point_box;
 			
-            Shape_t boxes_input; Shape_t scores_input;
-            Shape_t max_output_boxes_per_class_input_opt; Shape_t iou_threshold_input_opt; Shape_t score_threshold_input_opt;
-            Shape_t selected_indices_output;
+            Shape_t boxes_i; Shape_t scores_i;
+            Shape_t max_output_boxes_per_class_i; Shape_t iou_threshold_i; Shape_t score_threshold_i;
+            Shape_t selected_indices_o;
             
         } binding_descriptor;
 
         int center_point_box;
-        std::string boxes_input; std::string scores_input;
-        std::string max_output_boxes_per_class_input_opt; std::string iou_threshold_input_opt; std::string score_threshold_input_opt;
-        std::string selected_indices_output;
+        std::string boxes_i; std::string scores_i;
+        std::string max_output_boxes_per_class_i; std::string iou_threshold_i; std::string score_threshold_i;
+        std::string selected_indices_o;
         
 
         binding_descriptor   binding;
@@ -65,7 +65,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _center_point_box); 
-        void bind(std::string _boxes_input, std::string _scores_input, std::string _max_output_boxes_per_class_input_opt, std::string _iou_threshold_input_opt, std::string _score_threshold_input_opt, std::string _selected_indices_output); 
+        void bind(std::string _boxes_i, std::string _scores_i, std::string _max_output_boxes_per_class_i, std::string _iou_threshold_i, std::string _score_threshold_i, std::string _selected_indices_o); 
 
         ~NonMaxSuppression() {}
     };

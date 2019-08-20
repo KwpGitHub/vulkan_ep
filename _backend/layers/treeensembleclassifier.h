@@ -24,9 +24,9 @@ output: The class score for each class, for each point, a tensor of shape [N,E].
 */
 
 //TreeEnsembleClassifier
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output, Z_output
+//OUTPUS:                   Y_o, Z_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -40,16 +40,16 @@ namespace backend {
         typedef struct {
             Shape_t class_ids; Shape_t class_nodeids; Shape_t class_treeids; Shape_t classlabels_int64s; Shape_t nodes_falsenodeids; Shape_t nodes_featureids; Shape_t nodes_missing_value_tracks_true; Shape_t nodes_nodeids; Shape_t nodes_treeids; Shape_t nodes_truenodeids; int post_transform;
 			Shape_t base_values; Shape_t class_weights; Shape_t classlabels_strings; Shape_t nodes_hitrates; Shape_t nodes_modes; Shape_t nodes_values;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output; Shape_t Z_output;
+            Shape_t Y_o; Shape_t Z_o;
             
         } binding_descriptor;
 
         Shape_t class_ids; Shape_t class_nodeids; Shape_t class_treeids; Shape_t classlabels_int64s; Shape_t nodes_falsenodeids; Shape_t nodes_featureids; Shape_t nodes_missing_value_tracks_true; Shape_t nodes_nodeids; Shape_t nodes_treeids; Shape_t nodes_truenodeids; int post_transform; std::string base_values; std::string class_weights; std::string classlabels_strings; std::string nodes_hitrates; std::string nodes_modes; std::string nodes_values;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output; std::string Z_output;
+        std::string Y_o; std::string Z_o;
         
 
         binding_descriptor   binding;
@@ -63,7 +63,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _class_ids,  Shape_t _class_nodeids,  Shape_t _class_treeids,  Shape_t _classlabels_int64s,  Shape_t _nodes_falsenodeids,  Shape_t _nodes_featureids,  Shape_t _nodes_missing_value_tracks_true,  Shape_t _nodes_nodeids,  Shape_t _nodes_treeids,  Shape_t _nodes_truenodeids,  int _post_transform); 
-        void bind(std::string _base_values, std::string _class_weights, std::string _classlabels_strings, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _X_input, std::string _Y_output, std::string _Z_output); 
+        void bind(std::string _base_values, std::string _class_weights, std::string _classlabels_strings, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _X_i, std::string _Y_o, std::string _Z_o); 
 
         ~TreeEnsembleClassifier() {}
     };

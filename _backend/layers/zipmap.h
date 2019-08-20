@@ -18,9 +18,9 @@ output: The output map
 */
 
 //ZipMap
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Z_output
+//OUTPUS:                   Z_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -34,16 +34,16 @@ namespace backend {
         typedef struct {
             Shape_t classlabels_int64s;
 			Shape_t classlabels_strings;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Z_output;
+            Shape_t Z_o;
             
         } binding_descriptor;
 
         Shape_t classlabels_int64s; std::string classlabels_strings;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Z_output;
+        std::string Z_o;
         
 
         binding_descriptor   binding;
@@ -57,7 +57,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _classlabels_int64s); 
-        void bind(std::string _classlabels_strings, std::string _X_input, std::string _Z_output); 
+        void bind(std::string _classlabels_strings, std::string _X_i, std::string _Z_o); 
 
         ~ZipMap() {}
     };

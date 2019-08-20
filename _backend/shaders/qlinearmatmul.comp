@@ -10,38 +10,38 @@ layout(push_constant) uniform Parameters {
     
 			
 //input
-    Shape_t a_input; Shape_t a_scale_input; Shape_t a_zero_point_input; Shape_t b_input; Shape_t b_scale_input; Shape_t b_zero_point_input; Shape_t y_scale_input; Shape_t y_zero_point_input;
+    Shape_t a_i; Shape_t a_scale_i; Shape_t a_zero_point_i; Shape_t b_i; Shape_t b_scale_i; Shape_t b_zero_point_i; Shape_t y_scale_i; Shape_t y_zero_point_i;
     
 //output
-    Shape_t y_output;
+    Shape_t y_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float a_input[]; };
-layout(std430, binding = 1) buffer lay1 { float a_scale_input[]; };
-layout(std430, binding = 2) buffer lay2 { float a_zero_point_input[]; };
-layout(std430, binding = 3) buffer lay3 { float b_input[]; };
-layout(std430, binding = 4) buffer lay4 { float b_scale_input[]; };
-layout(std430, binding = 5) buffer lay5 { float b_zero_point_input[]; };
-layout(std430, binding = 6) buffer lay6 { float y_scale_input[]; };
-layout(std430, binding = 7) buffer lay7 { float y_zero_point_input[]; };
-layout(std430, binding = 8) buffer lay8 { float y_output[]; };
+layout(std430, binding = 0) buffer lay0 { float a_i[]; };
+layout(std430, binding = 1) buffer lay1 { float a_scale_i[]; };
+layout(std430, binding = 2) buffer lay2 { float a_zero_point_i[]; };
+layout(std430, binding = 3) buffer lay3 { float b_i[]; };
+layout(std430, binding = 4) buffer lay4 { float b_scale_i[]; };
+layout(std430, binding = 5) buffer lay5 { float b_zero_point_i[]; };
+layout(std430, binding = 6) buffer lay6 { float y_scale_i[]; };
+layout(std430, binding = 7) buffer lay7 { float y_zero_point_i[]; };
+layout(std430, binding = 8) buffer lay8 { float y_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     
-    const uint a_input_size = params.a_input.n * params.a_input.c * params.a_input.d * params.a_input.w * params.a_input.h;
-	const uint a_scale_input_size = params.a_scale_input.n * params.a_scale_input.c * params.a_scale_input.d * params.a_scale_input.w * params.a_scale_input.h;
-	const uint a_zero_point_input_size = params.a_zero_point_input.n * params.a_zero_point_input.c * params.a_zero_point_input.d * params.a_zero_point_input.w * params.a_zero_point_input.h;
-	const uint b_input_size = params.b_input.n * params.b_input.c * params.b_input.d * params.b_input.w * params.b_input.h;
-	const uint b_scale_input_size = params.b_scale_input.n * params.b_scale_input.c * params.b_scale_input.d * params.b_scale_input.w * params.b_scale_input.h;
-	const uint b_zero_point_input_size = params.b_zero_point_input.n * params.b_zero_point_input.c * params.b_zero_point_input.d * params.b_zero_point_input.w * params.b_zero_point_input.h;
-	const uint y_scale_input_size = params.y_scale_input.n * params.y_scale_input.c * params.y_scale_input.d * params.y_scale_input.w * params.y_scale_input.h;
-	const uint y_zero_point_input_size = params.y_zero_point_input.n * params.y_zero_point_input.c * params.y_zero_point_input.d * params.y_zero_point_input.w * params.y_zero_point_input.h;
+    const uint a_i_size = params.a_i.n * params.a_i.c * params.a_i.d * params.a_i.w * params.a_i.h;
+	const uint a_scale_i_size = params.a_scale_i.n * params.a_scale_i.c * params.a_scale_i.d * params.a_scale_i.w * params.a_scale_i.h;
+	const uint a_zero_point_i_size = params.a_zero_point_i.n * params.a_zero_point_i.c * params.a_zero_point_i.d * params.a_zero_point_i.w * params.a_zero_point_i.h;
+	const uint b_i_size = params.b_i.n * params.b_i.c * params.b_i.d * params.b_i.w * params.b_i.h;
+	const uint b_scale_i_size = params.b_scale_i.n * params.b_scale_i.c * params.b_scale_i.d * params.b_scale_i.w * params.b_scale_i.h;
+	const uint b_zero_point_i_size = params.b_zero_point_i.n * params.b_zero_point_i.c * params.b_zero_point_i.d * params.b_zero_point_i.w * params.b_zero_point_i.h;
+	const uint y_scale_i_size = params.y_scale_i.n * params.y_scale_i.c * params.y_scale_i.d * params.y_scale_i.w * params.y_scale_i.h;
+	const uint y_zero_point_i_size = params.y_zero_point_i.n * params.y_zero_point_i.c * params.y_zero_point_i.d * params.y_zero_point_i.w * params.y_zero_point_i.h;
     
-    const uint y_output_size = params.y_output.n * params.y_output.c * params.y_output.d * params.y_output.w * params.y_output.h;
+    const uint y_o_size = params.y_o.n * params.y_o.c * params.y_o.d * params.y_o.w * params.y_o.h;
     
 
     if(size <= idx) {

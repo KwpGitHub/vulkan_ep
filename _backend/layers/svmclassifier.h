@@ -16,9 +16,9 @@ output: Class scores (one per class per example), if prob_a and prob_b are provi
 */
 
 //SVMClassifier
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output, Z_output
+//OUTPUS:                   Y_o, Z_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -32,16 +32,16 @@ namespace backend {
         typedef struct {
             Shape_t classlabels_ints; int kernel_type; int post_transform; Shape_t vectors_per_class;
 			Shape_t classlabels_strings; Shape_t coefficients; Shape_t kernel_params; Shape_t prob_a; Shape_t prob_b; Shape_t rho; Shape_t support_vectors;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output; Shape_t Z_output;
+            Shape_t Y_o; Shape_t Z_o;
             
         } binding_descriptor;
 
         Shape_t classlabels_ints; int kernel_type; int post_transform; Shape_t vectors_per_class; std::string classlabels_strings; std::string coefficients; std::string kernel_params; std::string prob_a; std::string prob_b; std::string rho; std::string support_vectors;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output; std::string Z_output;
+        std::string Y_o; std::string Z_o;
         
 
         binding_descriptor   binding;
@@ -55,7 +55,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _classlabels_ints,  int _kernel_type,  int _post_transform,  Shape_t _vectors_per_class); 
-        void bind(std::string _classlabels_strings, std::string _coefficients, std::string _kernel_params, std::string _prob_a, std::string _prob_b, std::string _rho, std::string _support_vectors, std::string _X_input, std::string _Y_output, std::string _Z_output); 
+        void bind(std::string _classlabels_strings, std::string _coefficients, std::string _kernel_params, std::string _prob_a, std::string _prob_b, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o, std::string _Z_o); 
 
         ~SVMClassifier() {}
     };

@@ -13,11 +13,11 @@ layout(push_constant) uniform Parameters {
     
     
 //output
-    Shape_t max_output;
+    Shape_t max_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float max_output[]; };
+layout(std430, binding = 0) buffer lay0 { float max_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -26,7 +26,7 @@ void main(){
     
     
     
-    const uint max_output_size = params.max_output.n * params.max_output.c * params.max_output.d * params.max_output.w * params.max_output.h;
+    const uint max_o_size = params.max_o.n * params.max_o.c * params.max_o.d * params.max_o.w * params.max_o.h;
     
 
     if(size <= idx) {

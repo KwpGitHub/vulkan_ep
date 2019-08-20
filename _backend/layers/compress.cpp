@@ -14,12 +14,12 @@ namespace backend {
   
     }
     
-    void Compress::bind(std::string _input_input, std::string _condition_input, std::string _output_output){
-        input_input = _input_input; condition_input = _condition_input; output_output = _output_output;
-		binding.input_input = tensor_dict[input_input]->shape();
-  		binding.condition_input = tensor_dict[condition_input]->shape();
+    void Compress::bind(std::string _input_i, std::string _condition_i, std::string _output_o){
+        input_i = _input_i; condition_i = _condition_i; output_o = _output_o;
+		binding.input_i = tensor_dict[input_i]->shape();
+  		binding.condition_i = tensor_dict[condition_i]->shape();
  
-		binding.output_output = tensor_dict[output_output]->shape();
+		binding.output_o = tensor_dict[output_o]->shape();
  
 		binding.axis = axis;
  
@@ -27,7 +27,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/compress.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[condition_input]->data(), *tensor_dict[output_output]->data());
+        //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[condition_i]->data(), *tensor_dict[output_o]->data());
     }
 
 }

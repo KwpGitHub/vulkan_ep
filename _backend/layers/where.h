@@ -20,9 +20,9 @@ output: Tensor of shape equal to the broadcasted shape of condition, X, and Y.
 */
 
 //Where
-//INPUTS:                   condition_input, X_input, Y_input
+//INPUTS:                   condition_i, X_i, Y_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   output_output
+//OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -36,16 +36,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t condition_input; Shape_t X_input; Shape_t Y_input;
+            Shape_t condition_i; Shape_t X_i; Shape_t Y_i;
             
-            Shape_t output_output;
+            Shape_t output_o;
             
         } binding_descriptor;
 
         
-        std::string condition_input; std::string X_input; std::string Y_input;
+        std::string condition_i; std::string X_i; std::string Y_i;
         
-        std::string output_output;
+        std::string output_o;
         
 
         binding_descriptor   binding;
@@ -59,7 +59,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _condition_input, std::string _X_input, std::string _Y_input, std::string _output_output); 
+        void bind(std::string _condition_i, std::string _X_i, std::string _Y_i, std::string _output_o); 
 
         ~Where() {}
     };

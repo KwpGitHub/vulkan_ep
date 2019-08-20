@@ -41,9 +41,9 @@ output: Ngram results
 */
 
 //TfIdfVectorizer
-//INPUTS:                   X_input
+//INPUTS:                   X_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               max_gram_length, max_skip_count, min_gram_length, mode, ngram_counts, ngram_indexes
 //PARAMETER_TYPES:          int, int, int, int, Shape_t, Shape_t
@@ -57,16 +57,16 @@ namespace backend {
         typedef struct {
             int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s;
 			Shape_t pool_strings; Shape_t weights;
-            Shape_t X_input;
+            Shape_t X_i;
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s; std::string pool_strings; std::string weights;
-        std::string X_input;
+        std::string X_i;
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -80,7 +80,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( int _max_gram_length,  int _max_skip_count,  int _min_gram_length,  int _mode,  Shape_t _ngram_counts,  Shape_t _ngram_indexes,  Shape_t _pool_int64s); 
-        void bind(std::string _pool_strings, std::string _weights, std::string _X_input, std::string _Y_output); 
+        void bind(std::string _pool_strings, std::string _weights, std::string _X_i, std::string _Y_o); 
 
         ~TfIdfVectorizer() {}
     };

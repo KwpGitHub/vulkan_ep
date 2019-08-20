@@ -15,11 +15,11 @@ namespace backend {
   
     }
     
-    void ReduceMin::bind(std::string _data_input, std::string _reduced_output){
-        data_input = _data_input; reduced_output = _reduced_output;
-		binding.data_input = tensor_dict[data_input]->shape();
+    void ReduceMin::bind(std::string _data_i, std::string _reduced_o){
+        data_i = _data_i; reduced_o = _reduced_o;
+		binding.data_i = tensor_dict[data_i]->shape();
  
-		binding.reduced_output = tensor_dict[reduced_output]->shape();
+		binding.reduced_o = tensor_dict[reduced_o]->shape();
  
 		binding.axes = axes;
   		binding.keepdims = keepdims;
@@ -28,7 +28,7 @@ namespace backend {
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reducemin.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[reduced_output]->data());
+        //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[reduced_o]->data());
     }
 
 }

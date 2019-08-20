@@ -20,7 +20,7 @@ output: The output array, elements ordered as the inputs.
 //FeatureVectorizer
 //INPUTS:                   
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   Y_output
+//OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -36,14 +36,14 @@ namespace backend {
 			
             
             
-            Shape_t Y_output;
+            Shape_t Y_o;
             
         } binding_descriptor;
 
         Shape_t inputdimensions;
         
         
-        std::string Y_output;
+        std::string Y_o;
         
 
         binding_descriptor   binding;
@@ -57,7 +57,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init( Shape_t _inputdimensions); 
-        void bind(std::string _Y_output); 
+        void bind(std::string _Y_o); 
 
         ~FeatureVectorizer() {}
     };

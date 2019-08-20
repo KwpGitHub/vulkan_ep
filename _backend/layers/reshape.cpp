@@ -13,19 +13,19 @@ namespace backend {
   
     }
     
-    void Reshape::bind(std::string _data_input, std::string _shape_input, std::string _reshaped_output){
-        data_input = _data_input; shape_input = _shape_input; reshaped_output = _reshaped_output;
-		binding.data_input = tensor_dict[data_input]->shape();
-  		binding.shape_input = tensor_dict[shape_input]->shape();
+    void Reshape::bind(std::string _data_i, std::string _shape_i, std::string _reshaped_o){
+        data_i = _data_i; shape_i = _shape_i; reshaped_o = _reshaped_o;
+		binding.data_i = tensor_dict[data_i]->shape();
+  		binding.shape_i = tensor_dict[shape_i]->shape();
  
-		binding.reshaped_output = tensor_dict[reshaped_output]->shape();
+		binding.reshaped_o = tensor_dict[reshaped_o]->shape();
  
 
 
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reshape.spv")).c_str());
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
         program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[shape_input]->data(), *tensor_dict[reshaped_output]->data());
+        //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[shape_i]->data(), *tensor_dict[reshaped_o]->data());
     }
 
 }

@@ -20,9 +20,9 @@ output: Reshaped data.
 */
 
 //Reshape
-//INPUTS:                   data_input, shape_input
+//INPUTS:                   data_i, shape_i
 //OPTIONAL_INPUTS:          
-//OUTPUS:                   reshaped_output
+//OUTPUS:                   reshaped_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               
 //PARAMETER_TYPES:          
@@ -36,16 +36,16 @@ namespace backend {
         typedef struct {
             
 			
-            Shape_t data_input; Shape_t shape_input;
+            Shape_t data_i; Shape_t shape_i;
             
-            Shape_t reshaped_output;
+            Shape_t reshaped_o;
             
         } binding_descriptor;
 
         
-        std::string data_input; std::string shape_input;
+        std::string data_i; std::string shape_i;
         
-        std::string reshaped_output;
+        std::string reshaped_o;
         
 
         binding_descriptor   binding;
@@ -59,7 +59,7 @@ namespace backend {
         void forward() { program->run(); }
         
         void init(); 
-        void bind(std::string _data_input, std::string _shape_input, std::string _reshaped_output); 
+        void bind(std::string _data_i, std::string _shape_i, std::string _reshaped_o); 
 
         ~Reshape() {}
     };
