@@ -62,7 +62,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Mod();
+        Mod(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -72,14 +72,7 @@ namespace backend {
         ~Mod() {}
     };
 
-    
-    void init_layer_Mod(py::module& m) {
-        // py::class_(m, "Mod");
-    }
-    
-
 }
-
 
 #endif
 

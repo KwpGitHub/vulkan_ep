@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Less::Less() : Layer() { }
+    Less::Less(const std::string& name) : Layer(name) { }
        
     vuh::Device* Less::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
     }
 
-
-
 }
-
-
 

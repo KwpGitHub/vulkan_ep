@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Div();
+        Div(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Div() {}
     };
 
-    
-    void init_layer_Div(py::module& m) {
-        // py::class_(m, "Div");
-    }
-    
-
 }
-
 
 #endif
 

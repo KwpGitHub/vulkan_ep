@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    DequantizeLinear::DequantizeLinear() : Layer() { }
+    DequantizeLinear::DequantizeLinear(const std::string& name) : Layer(name) { }
        
     vuh::Device* DequantizeLinear::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[x_input]->data(), *tensor_dict[x_scale_input]->data(), *tensor_dict[x_zero_point_input_opt]->data(), *tensor_dict[y_output]->data());
     }
 
-
-
 }
-
-
 

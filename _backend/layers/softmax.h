@@ -63,7 +63,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Softmax();
+        Softmax(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -73,14 +73,7 @@ namespace backend {
         ~Softmax() {}
     };
 
-    
-    void init_layer_Softmax(py::module& m) {
-        // py::class_(m, "Softmax");
-    }
-    
-
 }
-
 
 #endif
 

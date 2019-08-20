@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Less();
+        Less(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~Less() {}
     };
 
-    
-    void init_layer_Less(py::module& m) {
-        // py::class_(m, "Less");
-    }
-    
-
 }
-
 
 #endif
 

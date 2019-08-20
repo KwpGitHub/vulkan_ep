@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sqrt();
+        Sqrt(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Sqrt() {}
     };
 
-    
-    void init_layer_Sqrt(py::module& m) {
-        // py::class_(m, "Sqrt");
-    }
-    
-
 }
-
 
 #endif
 

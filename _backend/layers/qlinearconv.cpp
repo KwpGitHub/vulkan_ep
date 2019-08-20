@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    QLinearConv::QLinearConv() : Layer() { }
+    QLinearConv::QLinearConv(const std::string& name) : Layer(name) { }
        
     vuh::Device* QLinearConv::_get_device() {
         
@@ -47,9 +47,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[x_input]->data(), *tensor_dict[x_scale_input]->data(), *tensor_dict[x_zero_point_input]->data(), *tensor_dict[w_input]->data(), *tensor_dict[w_scale_input]->data(), *tensor_dict[w_zero_point_input]->data(), *tensor_dict[y_scale_input]->data(), *tensor_dict[y_zero_point_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[y_output]->data());
     }
 
-
-
 }
-
-
 

@@ -59,7 +59,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DictVectorizer();
+        DictVectorizer(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -69,14 +69,7 @@ namespace backend {
         ~DictVectorizer() {}
     };
 
-    
-    void init_layer_DictVectorizer(py::module& m) {
-        // py::class_(m, "DictVectorizer");
-    }
-    
-
 }
-
 
 #endif
 

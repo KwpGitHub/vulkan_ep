@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Slice::Slice() : Layer() { }
+    Slice::Slice(const std::string& name) : Layer(name) { }
        
     vuh::Device* Slice::_get_device() {
         
@@ -31,9 +31,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[starts_input]->data(), *tensor_dict[ends_input]->data(), *tensor_dict[axes_input_opt]->data(), *tensor_dict[steps_input_opt]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

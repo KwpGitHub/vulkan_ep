@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Xor();
+        Xor(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~Xor() {}
     };
 
-    
-    void init_layer_Xor(py::module& m) {
-        // py::class_(m, "Xor");
-    }
-    
-
 }
-
 
 #endif
 

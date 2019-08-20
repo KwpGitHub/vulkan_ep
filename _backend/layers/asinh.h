@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Asinh();
+        Asinh(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Asinh() {}
     };
 
-    
-    void init_layer_Asinh(py::module& m) {
-        // py::class_(m, "Asinh");
-    }
-    
-
 }
-
 
 #endif
 

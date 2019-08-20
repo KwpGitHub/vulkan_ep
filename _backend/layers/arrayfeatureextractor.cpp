@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ArrayFeatureExtractor::ArrayFeatureExtractor() : Layer() { }
+    ArrayFeatureExtractor::ArrayFeatureExtractor(const std::string& name) : Layer(name) { }
        
     vuh::Device* ArrayFeatureExtractor::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_input]->data(), *tensor_dict[Z_output]->data());
     }
 
-
-
 }
-
-
 

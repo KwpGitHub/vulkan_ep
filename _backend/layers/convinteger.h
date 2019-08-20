@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ConvInteger();
+        ConvInteger(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~ConvInteger() {}
     };
 
-    
-    void init_layer_ConvInteger(py::module& m) {
-        // py::class_(m, "ConvInteger");
-    }
-    
-
 }
-
 
 #endif
 

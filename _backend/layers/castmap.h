@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        CastMap();
+        CastMap(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~CastMap() {}
     };
 
-    
-    void init_layer_CastMap(py::module& m) {
-        // py::class_(m, "CastMap");
-    }
-    
-
 }
-
 
 #endif
 

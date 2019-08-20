@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Softsign();
+        Softsign(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Softsign() {}
     };
 
-    
-    void init_layer_Softsign(py::module& m) {
-        // py::class_(m, "Softsign");
-    }
-    
-
 }
-
 
 #endif
 

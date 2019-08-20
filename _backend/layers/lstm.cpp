@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    LSTM::LSTM() : Layer() { }
+    LSTM::LSTM(const std::string& name) : Layer(name) { }
        
     vuh::Device* LSTM::_get_device() {
         
@@ -47,9 +47,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[activation_alpha]->data(), *tensor_dict[activation_beta]->data(), *tensor_dict[activations]->data(), *tensor_dict[X_input]->data(), *tensor_dict[W_input]->data(), *tensor_dict[R_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[sequence_lens_input_opt]->data(), *tensor_dict[initial_h_input_opt]->data(), *tensor_dict[initial_c_input_opt]->data(), *tensor_dict[P_input_opt]->data(), *tensor_dict[Y_output_opt]->data(), *tensor_dict[Y_h_output_opt]->data(), *tensor_dict[Y_c_output_opt]->data());
     }
 
-
-
 }
-
-
 

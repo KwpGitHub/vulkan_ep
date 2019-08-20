@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ZipMap();
+        ZipMap(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~ZipMap() {}
     };
 
-    
-    void init_layer_ZipMap(py::module& m) {
-        // py::class_(m, "ZipMap");
-    }
-    
-
 }
-
 
 #endif
 

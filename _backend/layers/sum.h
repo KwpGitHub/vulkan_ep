@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sum();
+        Sum(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Sum() {}
     };
 
-    
-    void init_layer_Sum(py::module& m) {
-        // py::class_(m, "Sum");
-    }
-    
-
 }
-
 
 #endif
 

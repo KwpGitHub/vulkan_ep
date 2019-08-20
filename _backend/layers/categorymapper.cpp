@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    CategoryMapper::CategoryMapper() : Layer() { }
+    CategoryMapper::CategoryMapper(const std::string& name) : Layer(name) { }
        
     vuh::Device* CategoryMapper::_get_device() {
         
@@ -34,9 +34,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[cats_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

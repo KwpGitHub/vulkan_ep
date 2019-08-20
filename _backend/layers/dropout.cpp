@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Dropout::Dropout() : Layer() { }
+    Dropout::Dropout(const std::string& name) : Layer(name) { }
        
     vuh::Device* Dropout::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[output_output]->data(), *tensor_dict[mask_output_opt]->data());
     }
 
-
-
 }
-
-
 

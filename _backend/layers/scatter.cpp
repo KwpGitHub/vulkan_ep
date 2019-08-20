@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Scatter::Scatter() : Layer() { }
+    Scatter::Scatter(const std::string& name) : Layer(name) { }
        
     vuh::Device* Scatter::_get_device() {
         
@@ -31,9 +31,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[indices_input]->data(), *tensor_dict[updates_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

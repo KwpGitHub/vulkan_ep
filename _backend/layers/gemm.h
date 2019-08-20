@@ -60,7 +60,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Gemm();
+        Gemm(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -70,14 +70,7 @@ namespace backend {
         ~Gemm() {}
     };
 
-    
-    void init_layer_Gemm(py::module& m) {
-        // py::class_(m, "Gemm");
-    }
-    
-
 }
-
 
 #endif
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    CastMap::CastMap() : Layer() { }
+    CastMap::CastMap(const std::string& name) : Layer(name) { }
        
     vuh::Device* CastMap::_get_device() {
         
@@ -33,9 +33,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

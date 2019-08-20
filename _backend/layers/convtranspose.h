@@ -63,7 +63,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ConvTranspose();
+        ConvTranspose(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -73,14 +73,7 @@ namespace backend {
         ~ConvTranspose() {}
     };
 
-    
-    void init_layer_ConvTranspose(py::module& m) {
-        // py::class_(m, "ConvTranspose");
-    }
-    
-
 }
-
 
 #endif
 

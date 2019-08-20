@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Sum::Sum() : Layer() { }
+    Sum::Sum(const std::string& name) : Layer(name) { }
        
     vuh::Device* Sum::_get_device() {
         
@@ -26,9 +26,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[sum_output]->data());
     }
 
-
-
 }
-
-
 

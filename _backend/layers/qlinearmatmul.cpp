@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    QLinearMatMul::QLinearMatMul() : Layer() { }
+    QLinearMatMul::QLinearMatMul(const std::string& name) : Layer(name) { }
        
     vuh::Device* QLinearMatMul::_get_device() {
         
@@ -34,9 +34,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[a_input]->data(), *tensor_dict[a_scale_input]->data(), *tensor_dict[a_zero_point_input]->data(), *tensor_dict[b_input]->data(), *tensor_dict[b_scale_input]->data(), *tensor_dict[b_zero_point_input]->data(), *tensor_dict[y_scale_input]->data(), *tensor_dict[y_zero_point_input]->data(), *tensor_dict[y_output]->data());
     }
 
-
-
 }
-
-
 

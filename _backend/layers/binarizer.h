@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Binarizer();
+        Binarizer(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Binarizer() {}
     };
 
-    
-    void init_layer_Binarizer(py::module& m) {
-        // py::class_(m, "Binarizer");
-    }
-    
-
 }
-
 
 #endif
 

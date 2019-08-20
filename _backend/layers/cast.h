@@ -67,7 +67,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Cast();
+        Cast(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -77,14 +77,7 @@ namespace backend {
         ~Cast() {}
     };
 
-    
-    void init_layer_Cast(py::module& m) {
-        // py::class_(m, "Cast");
-    }
-    
-
 }
-
 
 #endif
 

@@ -50,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        GlobalLpPool();
+        GlobalLpPool(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -60,14 +60,7 @@ namespace backend {
         ~GlobalLpPool() {}
     };
 
-    
-    void init_layer_GlobalLpPool(py::module& m) {
-        // py::class_(m, "GlobalLpPool");
-    }
-    
-
 }
-
 
 #endif
 

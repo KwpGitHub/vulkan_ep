@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceMin();
+        ReduceMin(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~ReduceMin() {}
     };
 
-    
-    void init_layer_ReduceMin(py::module& m) {
-        // py::class_(m, "ReduceMin");
-    }
-    
-
 }
-
 
 #endif
 

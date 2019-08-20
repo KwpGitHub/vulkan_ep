@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceLogSum();
+        ReduceLogSum(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~ReduceLogSum() {}
     };
 
-    
-    void init_layer_ReduceLogSum(py::module& m) {
-        // py::class_(m, "ReduceLogSum");
-    }
-    
-
 }
-
 
 #endif
 

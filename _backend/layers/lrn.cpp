@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    LRN::LRN() : Layer() { }
+    LRN::LRN(const std::string& name) : Layer(name) { }
        
     vuh::Device* LRN::_get_device() {
         
@@ -35,9 +35,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

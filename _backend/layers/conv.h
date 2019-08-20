@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Conv();
+        Conv(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Conv() {}
     };
 
-    
-    void init_layer_Conv(py::module& m) {
-        // py::class_(m, "Conv");
-    }
-    
-
 }
-
 
 #endif
 

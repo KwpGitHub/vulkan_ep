@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Add();
+        Add(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Add() {}
     };
 
-    
-    void init_layer_Add(py::module& m) {
-        // py::class_(m, "Add");
-    }
-    
-
 }
-
 
 #endif
 

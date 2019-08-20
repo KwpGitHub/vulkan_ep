@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Mul();
+        Mul(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Mul() {}
     };
 
-    
-    void init_layer_Mul(py::module& m) {
-        // py::class_(m, "Mul");
-    }
-    
-
 }
-
 
 #endif
 

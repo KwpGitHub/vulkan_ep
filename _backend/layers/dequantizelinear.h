@@ -54,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DequantizeLinear();
+        DequantizeLinear(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -64,14 +64,7 @@ namespace backend {
         ~DequantizeLinear() {}
     };
 
-    
-    void init_layer_DequantizeLinear(py::module& m) {
-        // py::class_(m, "DequantizeLinear");
-    }
-    
-
 }
-
 
 #endif
 

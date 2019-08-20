@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxRoiPool();
+        MaxRoiPool(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~MaxRoiPool() {}
     };
 
-    
-    void init_layer_MaxRoiPool(py::module& m) {
-        // py::class_(m, "MaxRoiPool");
-    }
-    
-
 }
-
 
 #endif
 

@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Cosh();
+        Cosh(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Cosh() {}
     };
 
-    
-    void init_layer_Cosh(py::module& m) {
-        // py::class_(m, "Cosh");
-    }
-    
-
 }
-
 
 #endif
 

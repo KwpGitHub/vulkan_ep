@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MatMulInteger();
+        MatMulInteger(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~MatMulInteger() {}
     };
 
-    
-    void init_layer_MatMulInteger(py::module& m) {
-        // py::class_(m, "MatMulInteger");
-    }
-    
-
 }
-
 
 #endif
 

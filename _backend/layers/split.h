@@ -50,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Split();
+        Split(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -60,14 +60,7 @@ namespace backend {
         ~Split() {}
     };
 
-    
-    void init_layer_Split(py::module& m) {
-        // py::class_(m, "Split");
-    }
-    
-
 }
-
 
 #endif
 

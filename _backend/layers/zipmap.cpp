@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ZipMap::ZipMap() : Layer() { }
+    ZipMap::ZipMap(const std::string& name) : Layer(name) { }
        
     vuh::Device* ZipMap::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Z_output]->data());
     }
 
-
-
 }
-
-
 

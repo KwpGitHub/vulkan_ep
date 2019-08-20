@@ -55,7 +55,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Dropout();
+        Dropout(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -65,14 +65,7 @@ namespace backend {
         ~Dropout() {}
     };
 
-    
-    void init_layer_Dropout(py::module& m) {
-        // py::class_(m, "Dropout");
-    }
-    
-
 }
-
 
 #endif
 

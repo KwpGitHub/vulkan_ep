@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ConvTranspose::ConvTranspose() : Layer() { }
+    ConvTranspose::ConvTranspose(const std::string& name) : Layer(name) { }
        
     vuh::Device* ConvTranspose::_get_device() {
         
@@ -45,9 +45,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[W_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

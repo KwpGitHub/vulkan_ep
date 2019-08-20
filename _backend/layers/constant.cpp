@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Constant::Constant() : Layer() { }
+    Constant::Constant(const std::string& name) : Layer(name) { }
        
     vuh::Device* Constant::_get_device() {
         
@@ -27,9 +27,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[value]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

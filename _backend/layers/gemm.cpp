@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Gemm::Gemm() : Layer() { }
+    Gemm::Gemm(const std::string& name) : Layer(name) { }
        
     vuh::Device* Gemm::_get_device() {
         
@@ -37,9 +37,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

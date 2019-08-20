@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    QuantizeLinear::QuantizeLinear() : Layer() { }
+    QuantizeLinear::QuantizeLinear(const std::string& name) : Layer(name) { }
        
     vuh::Device* QuantizeLinear::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[x_input]->data(), *tensor_dict[y_scale_input]->data(), *tensor_dict[y_zero_point_input_opt]->data(), *tensor_dict[y_output]->data());
     }
 
-
-
 }
-
-
 

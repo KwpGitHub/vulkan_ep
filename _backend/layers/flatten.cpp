@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Flatten::Flatten() : Layer() { }
+    Flatten::Flatten(const std::string& name) : Layer(name) { }
        
     vuh::Device* Flatten::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

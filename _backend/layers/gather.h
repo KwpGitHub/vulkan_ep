@@ -89,7 +89,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Gather();
+        Gather(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -99,14 +99,7 @@ namespace backend {
         ~Gather() {}
     };
 
-    
-    void init_layer_Gather(py::module& m) {
-        // py::class_(m, "Gather");
-    }
-    
-
 }
-
 
 #endif
 

@@ -54,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomUniform();
+        RandomUniform(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -64,14 +64,7 @@ namespace backend {
         ~RandomUniform() {}
     };
 
-    
-    void init_layer_RandomUniform(py::module& m) {
-        // py::class_(m, "RandomUniform");
-    }
-    
-
 }
-
 
 #endif
 

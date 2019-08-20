@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Compress();
+        Compress(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Compress() {}
     };
 
-    
-    void init_layer_Compress(py::module& m) {
-        // py::class_(m, "Compress");
-    }
-    
-
 }
-
 
 #endif
 

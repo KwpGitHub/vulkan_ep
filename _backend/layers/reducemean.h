@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceMean();
+        ReduceMean(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~ReduceMean() {}
     };
 
-    
-    void init_layer_ReduceMean(py::module& m) {
-        // py::class_(m, "ReduceMean");
-    }
-    
-
 }
-
 
 #endif
 

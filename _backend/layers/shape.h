@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Shape();
+        Shape(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Shape() {}
     };
 
-    
-    void init_layer_Shape(py::module& m) {
-        // py::class_(m, "Shape");
-    }
-    
-
 }
-
 
 #endif
 

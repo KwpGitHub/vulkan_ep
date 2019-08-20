@@ -1,11 +1,10 @@
+#pragma once
 #include "tensor.h"
-
 #ifndef LAYER_H
 #define LAYER_H
 #include <map>
 #include <vector>
 #include <pybind11/pybind11.h>
-
 
 namespace py = pybind11;
 
@@ -25,7 +24,7 @@ namespace backend {
 	class Layer
 	{
 	public:
-		Layer() {}
+		Layer(const std::string& name) : name(name) {}
 		virtual ~Layer() {}
 		virtual void forward() {}
 		virtual void init() {}

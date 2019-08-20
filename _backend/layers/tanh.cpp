@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Tanh::Tanh() : Layer() { }
+    Tanh::Tanh(const std::string& name) : Layer(name) { }
        
     vuh::Device* Tanh::_get_device() {
         
@@ -27,9 +27,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

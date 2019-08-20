@@ -60,7 +60,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        NonMaxSuppression();
+        NonMaxSuppression(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -70,14 +70,7 @@ namespace backend {
         ~NonMaxSuppression() {}
     };
 
-    
-    void init_layer_NonMaxSuppression(py::module& m) {
-        // py::class_(m, "NonMaxSuppression");
-    }
-    
-
 }
-
 
 #endif
 

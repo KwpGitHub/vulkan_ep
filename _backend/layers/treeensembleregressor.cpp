@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    TreeEnsembleRegressor::TreeEnsembleRegressor() : Layer() { }
+    TreeEnsembleRegressor::TreeEnsembleRegressor(const std::string& name) : Layer(name) { }
        
     vuh::Device* TreeEnsembleRegressor::_get_device() {
         
@@ -56,9 +56,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[base_values]->data(), *tensor_dict[nodes_hitrates]->data(), *tensor_dict[nodes_modes]->data(), *tensor_dict[nodes_values]->data(), *tensor_dict[target_weights]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

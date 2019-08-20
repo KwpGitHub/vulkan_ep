@@ -56,7 +56,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        InstanceNormalization();
+        InstanceNormalization(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -66,14 +66,7 @@ namespace backend {
         ~InstanceNormalization() {}
     };
 
-    
-    void init_layer_InstanceNormalization(py::module& m) {
-        // py::class_(m, "InstanceNormalization");
-    }
-    
-
 }
-
 
 #endif
 

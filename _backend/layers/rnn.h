@@ -115,7 +115,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RNN();
+        RNN(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -125,14 +125,7 @@ namespace backend {
         ~RNN() {}
     };
 
-    
-    void init_layer_RNN(py::module& m) {
-        // py::class_(m, "RNN");
-    }
-    
-
 }
-
 
 #endif
 

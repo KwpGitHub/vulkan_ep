@@ -50,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sign();
+        Sign(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -60,14 +60,7 @@ namespace backend {
         ~Sign() {}
     };
 
-    
-    void init_layer_Sign(py::module& m) {
-        // py::class_(m, "Sign");
-    }
-    
-
 }
-
 
 #endif
 

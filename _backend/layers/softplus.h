@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Softplus();
+        Softplus(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Softplus() {}
     };
 
-    
-    void init_layer_Softplus(py::module& m) {
-        // py::class_(m, "Softplus");
-    }
-    
-
 }
-
 
 #endif
 

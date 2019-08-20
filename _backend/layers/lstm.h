@@ -138,7 +138,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LSTM();
+        LSTM(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -148,14 +148,7 @@ namespace backend {
         ~LSTM() {}
     };
 
-    
-    void init_layer_LSTM(py::module& m) {
-        // py::class_(m, "LSTM");
-    }
-    
-
 }
-
 
 #endif
 

@@ -58,7 +58,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TreeEnsembleClassifier();
+        TreeEnsembleClassifier(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -68,14 +68,7 @@ namespace backend {
         ~TreeEnsembleClassifier() {}
     };
 
-    
-    void init_layer_TreeEnsembleClassifier(py::module& m) {
-        // py::class_(m, "TreeEnsembleClassifier");
-    }
-    
-
 }
-
 
 #endif
 

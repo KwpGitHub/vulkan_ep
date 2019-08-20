@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Scan::Scan() : Layer() { }
+    Scan::Scan(const std::string& name) : Layer(name) { }
        
     vuh::Device* Scan::_get_device() {
         
@@ -37,9 +37,5 @@ namespace backend {
         //program->bind(binding);
     }
 
-
-
 }
-
-
 

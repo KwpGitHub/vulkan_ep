@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Abs();
+        Abs(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Abs() {}
     };
 
-    
-    void init_layer_Abs(py::module& m) {
-        // py::class_(m, "Abs");
-    }
-    
-
 }
-
 
 #endif
 

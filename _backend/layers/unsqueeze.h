@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Unsqueeze();
+        Unsqueeze(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~Unsqueeze() {}
     };
 
-    
-    void init_layer_Unsqueeze(py::module& m) {
-        // py::class_(m, "Unsqueeze");
-    }
-    
-
 }
-
 
 #endif
 

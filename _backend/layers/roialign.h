@@ -61,7 +61,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RoiAlign();
+        RoiAlign(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -71,14 +71,7 @@ namespace backend {
         ~RoiAlign() {}
     };
 
-    
-    void init_layer_RoiAlign(py::module& m) {
-        // py::class_(m, "RoiAlign");
-    }
-    
-
 }
-
 
 #endif
 

@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Resize();
+        Resize(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Resize() {}
     };
 
-    
-    void init_layer_Resize(py::module& m) {
-        // py::class_(m, "Resize");
-    }
-    
-
 }
-
 
 #endif
 

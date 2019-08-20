@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    NonMaxSuppression::NonMaxSuppression() : Layer() { }
+    NonMaxSuppression::NonMaxSuppression(const std::string& name) : Layer(name) { }
        
     vuh::Device* NonMaxSuppression::_get_device() {
         
@@ -33,9 +33,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[boxes_input]->data(), *tensor_dict[scores_input]->data(), *tensor_dict[max_output_boxes_per_class_input_opt]->data(), *tensor_dict[iou_threshold_input_opt]->data(), *tensor_dict[score_threshold_input_opt]->data(), *tensor_dict[selected_indices_output]->data());
     }
 
-
-
 }
-
-
 

@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Erf();
+        Erf(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Erf() {}
     };
 
-    
-    void init_layer_Erf(py::module& m) {
-        // py::class_(m, "Erf");
-    }
-    
-
 }
-
 
 #endif
 

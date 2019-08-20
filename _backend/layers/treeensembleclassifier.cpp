@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    TreeEnsembleClassifier::TreeEnsembleClassifier() : Layer() { }
+    TreeEnsembleClassifier::TreeEnsembleClassifier(const std::string& name) : Layer(name) { }
        
     vuh::Device* TreeEnsembleClassifier::_get_device() {
         
@@ -56,9 +56,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[base_values]->data(), *tensor_dict[class_weights]->data(), *tensor_dict[classlabels_strings]->data(), *tensor_dict[nodes_hitrates]->data(), *tensor_dict[nodes_modes]->data(), *tensor_dict[nodes_values]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data(), *tensor_dict[Z_output]->data());
     }
 
-
-
 }
-
-
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    PRelu::PRelu() : Layer() { }
+    PRelu::PRelu(const std::string& name) : Layer(name) { }
        
     vuh::Device* PRelu::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[slope_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

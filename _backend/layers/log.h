@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Log();
+        Log(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Log() {}
     };
 
-    
-    void init_layer_Log(py::module& m) {
-        // py::class_(m, "Log");
-    }
-    
-
 }
-
 
 #endif
 

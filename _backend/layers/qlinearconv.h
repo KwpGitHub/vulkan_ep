@@ -61,7 +61,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        QLinearConv();
+        QLinearConv(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -71,14 +71,7 @@ namespace backend {
         ~QLinearConv() {}
     };
 
-    
-    void init_layer_QLinearConv(py::module& m) {
-        // py::class_(m, "QLinearConv");
-    }
-    
-
 }
-
 
 #endif
 

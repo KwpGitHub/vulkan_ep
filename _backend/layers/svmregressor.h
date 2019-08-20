@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMRegressor();
+        SVMRegressor(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~SVMRegressor() {}
     };
 
-    
-    void init_layer_SVMRegressor(py::module& m) {
-        // py::class_(m, "SVMRegressor");
-    }
-    
-
 }
-
 
 #endif
 

@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceSumSquare();
+        ReduceSumSquare(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~ReduceSumSquare() {}
     };
 
-    
-    void init_layer_ReduceSumSquare(py::module& m) {
-        // py::class_(m, "ReduceSumSquare");
-    }
-    
-
 }
-
 
 #endif
 

@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ConstantOfShape();
+        ConstantOfShape(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~ConstantOfShape() {}
     };
 
-    
-    void init_layer_ConstantOfShape(py::module& m) {
-        // py::class_(m, "ConstantOfShape");
-    }
-    
-
 }
-
 
 #endif
 

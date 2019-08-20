@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Loop::Loop() : Layer() { }
+    Loop::Loop(const std::string& name) : Layer(name) { }
        
     vuh::Device* Loop::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[M_input_opt]->data(), *tensor_dict[cond_input_opt]->data());
     }
 
-
-
 }
-
-
 

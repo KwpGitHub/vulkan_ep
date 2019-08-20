@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Sub::Sub() : Layer() { }
+    Sub::Sub(const std::string& name) : Layer(name) { }
        
     vuh::Device* Sub::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
     }
 
-
-
 }
-
-
 

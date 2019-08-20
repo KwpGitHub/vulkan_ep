@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    MatMulInteger::MatMulInteger() : Layer() { }
+    MatMulInteger::MatMulInteger(const std::string& name) : Layer(name) { }
        
     vuh::Device* MatMulInteger::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[a_zero_point_input_opt]->data(), *tensor_dict[b_zero_point_input_opt]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

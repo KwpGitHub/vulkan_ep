@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Cos();
+        Cos(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Cos() {}
     };
 
-    
-    void init_layer_Cos(py::module& m) {
-        // py::class_(m, "Cos");
-    }
-    
-
 }
-
 
 #endif
 

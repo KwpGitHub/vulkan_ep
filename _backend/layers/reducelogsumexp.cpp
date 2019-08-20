@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ReduceLogSumExp::ReduceLogSumExp() : Layer() { }
+    ReduceLogSumExp::ReduceLogSumExp(const std::string& name) : Layer(name) { }
        
     vuh::Device* ReduceLogSumExp::_get_device() {
         
@@ -31,9 +31,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[reduced_output]->data());
     }
 
-
-
 }
-
-
 

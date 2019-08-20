@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        QuantizeLinear();
+        QuantizeLinear(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~QuantizeLinear() {}
     };
 
-    
-    void init_layer_QuantizeLinear(py::module& m) {
-        // py::class_(m, "QuantizeLinear");
-    }
-    
-
 }
-
 
 #endif
 

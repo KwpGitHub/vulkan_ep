@@ -47,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        IsInf();
+        IsInf(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -57,14 +57,7 @@ namespace backend {
         ~IsInf() {}
     };
 
-    
-    void init_layer_IsInf(py::module& m) {
-        // py::class_(m, "IsInf");
-    }
-    
-
 }
-
 
 #endif
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ReduceL2::ReduceL2() : Layer() { }
+    ReduceL2::ReduceL2(const std::string& name) : Layer(name) { }
        
     vuh::Device* ReduceL2::_get_device() {
         
@@ -31,9 +31,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[reduced_output]->data());
     }
 
-
-
 }
-
-
 

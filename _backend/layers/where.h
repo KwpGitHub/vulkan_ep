@@ -54,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Where();
+        Where(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -64,14 +64,7 @@ namespace backend {
         ~Where() {}
     };
 
-    
-    void init_layer_Where(py::module& m) {
-        // py::class_(m, "Where");
-    }
-    
-
 }
-
 
 #endif
 

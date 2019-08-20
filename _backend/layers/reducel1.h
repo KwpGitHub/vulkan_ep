@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReduceL1();
+        ReduceL1(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~ReduceL1() {}
     };
 
-    
-    void init_layer_ReduceL1(py::module& m) {
-        // py::class_(m, "ReduceL1");
-    }
-    
-
 }
-
 
 #endif
 

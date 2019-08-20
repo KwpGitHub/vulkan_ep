@@ -50,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SpaceToDepth();
+        SpaceToDepth(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -60,14 +60,7 @@ namespace backend {
         ~SpaceToDepth() {}
     };
 
-    
-    void init_layer_SpaceToDepth(py::module& m) {
-        // py::class_(m, "SpaceToDepth");
-    }
-    
-
 }
-
 
 #endif
 

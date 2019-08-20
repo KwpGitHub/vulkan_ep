@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    DictVectorizer::DictVectorizer() : Layer() { }
+    DictVectorizer::DictVectorizer(const std::string& name) : Layer(name) { }
        
     vuh::Device* DictVectorizer::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[string_vocabulary]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        PRelu();
+        PRelu(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~PRelu() {}
     };
 
-    
-    void init_layer_PRelu(py::module& m) {
-        // py::class_(m, "PRelu");
-    }
-    
-
 }
-
 
 #endif
 

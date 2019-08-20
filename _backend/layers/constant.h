@@ -47,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Constant();
+        Constant(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -57,14 +57,7 @@ namespace backend {
         ~Constant() {}
     };
 
-    
-    void init_layer_Constant(py::module& m) {
-        // py::class_(m, "Constant");
-    }
-    
-
 }
-
 
 #endif
 

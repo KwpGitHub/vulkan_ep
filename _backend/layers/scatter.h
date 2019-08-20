@@ -83,7 +83,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scatter();
+        Scatter(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -93,14 +93,7 @@ namespace backend {
         ~Scatter() {}
     };
 
-    
-    void init_layer_Scatter(py::module& m) {
-        // py::class_(m, "Scatter");
-    }
-    
-
 }
-
 
 #endif
 

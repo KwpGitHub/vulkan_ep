@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    LabelEncoder::LabelEncoder() : Layer() { }
+    LabelEncoder::LabelEncoder(const std::string& name) : Layer(name) { }
        
     vuh::Device* LabelEncoder::_get_device() {
         
@@ -41,9 +41,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[keys_floats]->data(), *tensor_dict[keys_strings]->data(), *tensor_dict[values_floats]->data(), *tensor_dict[values_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

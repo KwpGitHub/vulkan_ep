@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Atanh();
+        Atanh(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Atanh() {}
     };
 
-    
-    void init_layer_Atanh(py::module& m) {
-        // py::class_(m, "Atanh");
-    }
-    
-
 }
-
 
 #endif
 

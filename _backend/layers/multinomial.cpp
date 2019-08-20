@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Multinomial::Multinomial() : Layer() { }
+    Multinomial::Multinomial(const std::string& name) : Layer(name) { }
        
     vuh::Device* Multinomial::_get_device() {
         
@@ -33,9 +33,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

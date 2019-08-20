@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Selu();
+        Selu(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Selu() {}
     };
 
-    
-    void init_layer_Selu(py::module& m) {
-        // py::class_(m, "Selu");
-    }
-    
-
 }
-
 
 #endif
 

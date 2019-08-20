@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    MaxUnpool::MaxUnpool() : Layer() { }
+    MaxUnpool::MaxUnpool(const std::string& name) : Layer(name) { }
        
     vuh::Device* MaxUnpool::_get_device() {
         
@@ -35,9 +35,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[I_input]->data(), *tensor_dict[output_shape_input_opt]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

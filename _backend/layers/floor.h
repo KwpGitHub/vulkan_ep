@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Floor();
+        Floor(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Floor() {}
     };
 
-    
-    void init_layer_Floor(py::module& m) {
-        // py::class_(m, "Floor");
-    }
-    
-
 }
-
 
 #endif
 

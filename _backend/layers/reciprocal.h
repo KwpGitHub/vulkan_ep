@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Reciprocal();
+        Reciprocal(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Reciprocal() {}
     };
 
-    
-    void init_layer_Reciprocal(py::module& m) {
-        // py::class_(m, "Reciprocal");
-    }
-    
-
 }
-
 
 #endif
 

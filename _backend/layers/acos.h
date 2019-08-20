@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Acos();
+        Acos(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Acos() {}
     };
 
-    
-    void init_layer_Acos(py::module& m) {
-        // py::class_(m, "Acos");
-    }
-    
-
 }
-
 
 #endif
 

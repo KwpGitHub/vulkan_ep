@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Cast::Cast() : Layer() { }
+    Cast::Cast(const std::string& name) : Layer(name) { }
        
     vuh::Device* Cast::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

@@ -127,7 +127,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        GRU();
+        GRU(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -137,14 +137,7 @@ namespace backend {
         ~GRU() {}
     };
 
-    
-    void init_layer_GRU(py::module& m) {
-        // py::class_(m, "GRU");
-    }
-    
-
 }
-
 
 #endif
 

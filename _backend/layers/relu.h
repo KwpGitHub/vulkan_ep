@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Relu();
+        Relu(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Relu() {}
     };
 
-    
-    void init_layer_Relu(py::module& m) {
-        // py::class_(m, "Relu");
-    }
-    
-
 }
-
 
 #endif
 

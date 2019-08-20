@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Min::Min() : Layer() { }
+    Min::Min(const std::string& name) : Layer(name) { }
        
     vuh::Device* Min::_get_device() {
         
@@ -26,9 +26,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[min_output]->data());
     }
 
-
-
 }
-
-
 

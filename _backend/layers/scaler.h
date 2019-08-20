@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scaler();
+        Scaler(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Scaler() {}
     };
 
-    
-    void init_layer_Scaler(py::module& m) {
-        // py::class_(m, "Scaler");
-    }
-    
-
 }
-
 
 #endif
 

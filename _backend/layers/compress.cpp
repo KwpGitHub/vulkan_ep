@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Compress::Compress() : Layer() { }
+    Compress::Compress(const std::string& name) : Layer(name) { }
        
     vuh::Device* Compress::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[condition_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

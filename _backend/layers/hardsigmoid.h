@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        HardSigmoid();
+        HardSigmoid(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~HardSigmoid() {}
     };
 
-    
-    void init_layer_HardSigmoid(py::module& m) {
-        // py::class_(m, "HardSigmoid");
-    }
-    
-
 }
-
 
 #endif
 

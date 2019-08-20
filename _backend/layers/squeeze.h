@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Squeeze();
+        Squeeze(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Squeeze() {}
     };
 
-    
-    void init_layer_Squeeze(py::module& m) {
-        // py::class_(m, "Squeeze");
-    }
-    
-
 }
-
 
 #endif
 

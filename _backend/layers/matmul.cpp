@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    MatMul::MatMul() : Layer() { }
+    MatMul::MatMul(const std::string& name) : Layer(name) { }
        
     vuh::Device* MatMul::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

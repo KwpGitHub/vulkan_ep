@@ -65,7 +65,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LabelEncoder();
+        LabelEncoder(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -75,14 +75,7 @@ namespace backend {
         ~LabelEncoder() {}
     };
 
-    
-    void init_layer_LabelEncoder(py::module& m) {
-        // py::class_(m, "LabelEncoder");
-    }
-    
-
 }
-
 
 #endif
 

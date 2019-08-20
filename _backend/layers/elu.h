@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Elu();
+        Elu(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Elu() {}
     };
 
-    
-    void init_layer_Elu(py::module& m) {
-        // py::class_(m, "Elu");
-    }
-    
-
 }
-
 
 #endif
 

@@ -63,7 +63,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Hardmax();
+        Hardmax(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -73,14 +73,7 @@ namespace backend {
         ~Hardmax() {}
     };
 
-    
-    void init_layer_Hardmax(py::module& m) {
-        // py::class_(m, "Hardmax");
-    }
-    
-
 }
-
 
 #endif
 

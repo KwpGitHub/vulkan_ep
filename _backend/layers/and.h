@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        And();
+        And(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~And() {}
     };
 
-    
-    void init_layer_And(py::module& m) {
-        // py::class_(m, "And");
-    }
-    
-
 }
-
 
 #endif
 

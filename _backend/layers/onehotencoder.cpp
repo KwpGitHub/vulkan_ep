@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    OneHotEncoder::OneHotEncoder() : Layer() { }
+    OneHotEncoder::OneHotEncoder(const std::string& name) : Layer(name) { }
        
     vuh::Device* OneHotEncoder::_get_device() {
         
@@ -32,9 +32,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[cats_strings]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

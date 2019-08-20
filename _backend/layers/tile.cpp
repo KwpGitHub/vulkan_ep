@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Tile::Tile() : Layer() { }
+    Tile::Tile(const std::string& name) : Layer(name) { }
        
     vuh::Device* Tile::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[repeats_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Split::Split() : Layer() { }
+    Split::Split(const std::string& name) : Layer(name) { }
        
     vuh::Device* Split::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data());
     }
 
-
-
 }
-
-
 

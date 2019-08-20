@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Exp();
+        Exp(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Exp() {}
     };
 
-    
-    void init_layer_Exp(py::module& m) {
-        // py::class_(m, "Exp");
-    }
-    
-
 }
-
 
 #endif
 

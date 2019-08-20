@@ -47,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Concat();
+        Concat(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -57,14 +57,7 @@ namespace backend {
         ~Concat() {}
     };
 
-    
-    void init_layer_Concat(py::module& m) {
-        // py::class_(m, "Concat");
-    }
-    
-
 }
-
 
 #endif
 

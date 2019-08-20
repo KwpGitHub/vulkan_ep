@@ -47,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Identity();
+        Identity(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -57,14 +57,7 @@ namespace backend {
         ~Identity() {}
     };
 
-    
-    void init_layer_Identity(py::module& m) {
-        // py::class_(m, "Identity");
-    }
-    
-
 }
-
 
 #endif
 

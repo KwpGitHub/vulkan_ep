@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Not();
+        Not(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Not() {}
     };
 
-    
-    void init_layer_Not(py::module& m) {
-        // py::class_(m, "Not");
-    }
-    
-
 }
-
 
 #endif
 

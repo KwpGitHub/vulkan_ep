@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Transpose();
+        Transpose(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Transpose() {}
     };
 
-    
-    void init_layer_Transpose(py::module& m) {
-        // py::class_(m, "Transpose");
-    }
-    
-
 }
-
 
 #endif
 

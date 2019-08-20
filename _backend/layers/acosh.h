@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Acosh();
+        Acosh(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Acosh() {}
     };
 
-    
-    void init_layer_Acosh(py::module& m) {
-        // py::class_(m, "Acosh");
-    }
-    
-
 }
-
 
 #endif
 

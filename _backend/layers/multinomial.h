@@ -50,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Multinomial();
+        Multinomial(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -60,14 +60,7 @@ namespace backend {
         ~Multinomial() {}
     };
 
-    
-    void init_layer_Multinomial(py::module& m) {
-        // py::class_(m, "Multinomial");
-    }
-    
-
 }
-
 
 #endif
 

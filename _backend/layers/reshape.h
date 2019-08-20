@@ -54,7 +54,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Reshape();
+        Reshape(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -64,14 +64,7 @@ namespace backend {
         ~Reshape() {}
     };
 
-    
-    void init_layer_Reshape(py::module& m) {
-        // py::class_(m, "Reshape");
-    }
-    
-
 }
-
 
 #endif
 

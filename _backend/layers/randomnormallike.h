@@ -55,7 +55,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomNormalLike();
+        RandomNormalLike(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -65,14 +65,7 @@ namespace backend {
         ~RandomNormalLike() {}
     };
 
-    
-    void init_layer_RandomNormalLike(py::module& m) {
-        // py::class_(m, "RandomNormalLike");
-    }
-    
-
 }
-
 
 #endif
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Mod::Mod() : Layer() { }
+    Mod::Mod(const std::string& name) : Layer(name) { }
        
     vuh::Device* Mod::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
     }
 
-
-
 }
-
-
 

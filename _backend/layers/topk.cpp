@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    TopK::TopK() : Layer() { }
+    TopK::TopK(const std::string& name) : Layer(name) { }
        
     vuh::Device* TopK::_get_device() {
         
@@ -31,9 +31,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[K_input]->data(), *tensor_dict[Values_output]->data(), *tensor_dict[Indices_output]->data());
     }
 
-
-
 }
-
-
 

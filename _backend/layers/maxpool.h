@@ -77,7 +77,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxPool();
+        MaxPool(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -87,14 +87,7 @@ namespace backend {
         ~MaxPool() {}
     };
 
-    
-    void init_layer_MaxPool(py::module& m) {
-        // py::class_(m, "MaxPool");
-    }
-    
-
 }
-
 
 #endif
 

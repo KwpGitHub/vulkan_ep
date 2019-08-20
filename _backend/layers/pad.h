@@ -64,7 +64,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Pad();
+        Pad(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -74,14 +74,7 @@ namespace backend {
         ~Pad() {}
     };
 
-    
-    void init_layer_Pad(py::module& m) {
-        // py::class_(m, "Pad");
-    }
-    
-
 }
-
 
 #endif
 

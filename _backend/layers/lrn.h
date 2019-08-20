@@ -58,7 +58,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LRN();
+        LRN(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -68,14 +68,7 @@ namespace backend {
         ~LRN() {}
     };
 
-    
-    void init_layer_LRN(py::module& m) {
-        // py::class_(m, "LRN");
-    }
-    
-
 }
-
 
 #endif
 

@@ -169,7 +169,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scan();
+        Scan(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -179,14 +179,7 @@ namespace backend {
         ~Scan() {}
     };
 
-    
-    void init_layer_Scan(py::module& m) {
-        // py::class_(m, "Scan");
-    }
-    
-
 }
-
 
 #endif
 

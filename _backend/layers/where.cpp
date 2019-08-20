@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Where::Where() : Layer() { }
+    Where::Where(const std::string& name) : Layer(name) { }
        
     vuh::Device* Where::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[condition_input]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

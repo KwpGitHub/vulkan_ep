@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ReduceMax::ReduceMax() : Layer() { }
+    ReduceMax::ReduceMax(const std::string& name) : Layer(name) { }
        
     vuh::Device* ReduceMax::_get_device() {
         
@@ -31,9 +31,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[reduced_output]->data());
     }
 
-
-
 }
-
-
 

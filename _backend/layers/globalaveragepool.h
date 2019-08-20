@@ -50,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        GlobalAveragePool();
+        GlobalAveragePool(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -60,14 +60,7 @@ namespace backend {
         ~GlobalAveragePool() {}
     };
 
-    
-    void init_layer_GlobalAveragePool(py::module& m) {
-        // py::class_(m, "GlobalAveragePool");
-    }
-    
-
 }
-
 
 #endif
 

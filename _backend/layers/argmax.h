@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ArgMax();
+        ArgMax(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~ArgMax() {}
     };
 
-    
-    void init_layer_ArgMax(py::module& m) {
-        // py::class_(m, "ArgMax");
-    }
-    
-
 }
-
 
 #endif
 

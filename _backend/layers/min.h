@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Min();
+        Min(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Min() {}
     };
 
-    
-    void init_layer_Min(py::module& m) {
-        // py::class_(m, "Min");
-    }
-    
-
 }
-
 
 #endif
 

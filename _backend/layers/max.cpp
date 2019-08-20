@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Max::Max() : Layer() { }
+    Max::Max(const std::string& name) : Layer(name) { }
        
     vuh::Device* Max::_get_device() {
         
@@ -26,9 +26,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[max_output]->data());
     }
 
-
-
 }
-
-
 

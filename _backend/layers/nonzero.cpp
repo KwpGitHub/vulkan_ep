@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    NonZero::NonZero() : Layer() { }
+    NonZero::NonZero(const std::string& name) : Layer(name) { }
        
     vuh::Device* NonZero::_get_device() {
         
@@ -27,9 +27,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

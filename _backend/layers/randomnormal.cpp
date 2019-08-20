@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    RandomNormal::RandomNormal() : Layer() { }
+    RandomNormal::RandomNormal(const std::string& name) : Layer(name) { }
        
     vuh::Device* RandomNormal::_get_device() {
         
@@ -36,9 +36,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

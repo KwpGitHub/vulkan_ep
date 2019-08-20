@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ConvInteger::ConvInteger() : Layer() { }
+    ConvInteger::ConvInteger(const std::string& name) : Layer(name) { }
        
     vuh::Device* ConvInteger::_get_device() {
         
@@ -42,9 +42,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[x_input]->data(), *tensor_dict[w_input]->data(), *tensor_dict[x_zero_point_input_opt]->data(), *tensor_dict[w_zero_point_input_opt]->data(), *tensor_dict[y_output]->data());
     }
 
-
-
 }
-
-
 

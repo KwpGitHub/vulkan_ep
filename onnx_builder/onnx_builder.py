@@ -44,7 +44,12 @@ std::map<std::string, std::map<std::string, std::string> > parameter_map = {{
 }}
     """.format
 
-
+layers_file_str = '''
+void init_layer_{norm}(py::module& m){{
+    py::class_<backend::{norm}>(m, "_{norm}").def(py::init<const std::string&>());
+        //.def("init", &backend::{norm}::init)
+        //.def("bind", &backend::{norm}::bind); 
+}}\n'''.format_map
 
 class_h_str = """#ifndef {upper}_H
 #define {upper}_H 
@@ -92,7 +97,7 @@ namespace backend {{
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        {norm}();
+        {norm}(const std::string& name);
     
         void forward() {{ program->run(); }}
         
@@ -102,14 +107,7 @@ namespace backend {{
         ~{norm}() {{}}
     }};
 
-    
-    void init_layer_{norm}(py::module& m) {{
-        // py::class_(m, "{norm}");
-    }}
-    
-
 }}
-
 
 #endif
 
@@ -119,7 +117,7 @@ cpp_class_str = """#include "{norm}.h"
 //cpp stuff
 namespace backend {{    
    
-    {norm}::{norm}() : Layer() {{ }}
+    {norm}::{norm}(const std::string& name) : Layer(name) {{ }}
        
     vuh::Device* {norm}::_get_device() {{
         
@@ -142,16 +140,12 @@ namespace backend {{
         //program->bind(binding{bind_param_lst}{bind_input_lst}{bind_output_lst});
     }}
 
-
-
 }}
-
-
 
 """.format_map
 
 python_class_str = """
-#from _backend.nn import {norm} as c_{norm}
+
 class {norm}:
     name = None
 {python_variables}
@@ -159,7 +153,7 @@ class {norm}:
 {python_parameters}
     def __init__(self, name):
         self.name = name
-
+        self.Module = nn._{norm}(name)
     def input(self, *args):
         inpts = [{python_inputs_func}]
         for i, x in enumerate(args):
@@ -353,7 +347,7 @@ def onnx_proto():
             elif(op_name not in activation and op_name not in elementwise and op_name not in math_op):
                 complex_element.append(op_name)
 
-            pybind_modules.append('backend::init_layer_{norm}(nn);'.format_map(mapt) )
+            pybind_modules.append('init_layer_{norm}(nn);'.format_map(mapt) )
 
             f = open('../_backend/layers/'+op_name.lower()+'.h', 'w')
             f.write(class_h_str(mapt))
@@ -364,7 +358,7 @@ def onnx_proto():
             s_cpp = open('../_backend/shaders/' + op_name.lower() + '.comp', 'w')
             s_cpp.write(class_shader_str(mapt))
             s_cpp.close()
-            layers_lst.append('#include "./layers/' + op_name.lower() + '.h"\n')
+            layers_lst.append( 'void init_layer_{norm}(py::module&);\n#include "./layers/{lower}.h"'.format_map(mapt) + layers_file_str(mapt) )
             layer_map.append('	{{ "{0}", &createInstance<{0}>}}'.format(op_name))
             parameter_map.append('{{ "{0}", {{{1}}} }}'.format(op_name, ', '.join(['{0}'.format(i) for k, i in p_map.items() if(i != '') ] )))
 
@@ -373,7 +367,8 @@ def onnx_proto():
     layers.writelines(layers_lst)
     op_file.close()
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
-    py_layers.write('layer_map = {}' + '\n\n'.join(py_layers_map))
+    py_layers.write('import _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
+
     print(single_element)
     print(double_element)
     print(single_input)

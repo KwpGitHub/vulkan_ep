@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    TfIdfVectorizer::TfIdfVectorizer() : Layer() { }
+    TfIdfVectorizer::TfIdfVectorizer(const std::string& name) : Layer(name) { }
        
     vuh::Device* TfIdfVectorizer::_get_device() {
         
@@ -43,9 +43,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[pool_strings]->data(), *tensor_dict[weights]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

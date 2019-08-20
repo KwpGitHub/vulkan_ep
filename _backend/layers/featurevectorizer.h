@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        FeatureVectorizer();
+        FeatureVectorizer(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~FeatureVectorizer() {}
     };
 
-    
-    void init_layer_FeatureVectorizer(py::module& m) {
-        // py::class_(m, "FeatureVectorizer");
-    }
-    
-
 }
-
 
 #endif
 

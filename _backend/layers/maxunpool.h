@@ -68,7 +68,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxUnpool();
+        MaxUnpool(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -78,14 +78,7 @@ namespace backend {
         ~MaxUnpool() {}
     };
 
-    
-    void init_layer_MaxUnpool(py::module& m) {
-        // py::class_(m, "MaxUnpool");
-    }
-    
-
 }
-
 
 #endif
 

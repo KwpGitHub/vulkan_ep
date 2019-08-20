@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Pad::Pad() : Layer() { }
+    Pad::Pad(const std::string& name) : Layer(name) { }
        
     vuh::Device* Pad::_get_device() {
         
@@ -33,9 +33,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

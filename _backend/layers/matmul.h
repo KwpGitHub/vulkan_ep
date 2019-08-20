@@ -50,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MatMul();
+        MatMul(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -60,14 +60,7 @@ namespace backend {
         ~MatMul() {}
     };
 
-    
-    void init_layer_MatMul(py::module& m) {
-        // py::class_(m, "MatMul");
-    }
-    
-
 }
-
 
 #endif
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Resize::Resize() : Layer() { }
+    Resize::Resize(const std::string& name) : Layer(name) { }
        
     vuh::Device* Resize::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[scales_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

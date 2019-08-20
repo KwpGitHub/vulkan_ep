@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    FeatureVectorizer::FeatureVectorizer() : Layer() { }
+    FeatureVectorizer::FeatureVectorizer(const std::string& name) : Layer(name) { }
        
     vuh::Device* FeatureVectorizer::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

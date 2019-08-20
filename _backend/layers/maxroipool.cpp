@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    MaxRoiPool::MaxRoiPool() : Layer() { }
+    MaxRoiPool::MaxRoiPool(const std::string& name) : Layer(name) { }
        
     vuh::Device* MaxRoiPool::_get_device() {
         
@@ -32,9 +32,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[rois_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

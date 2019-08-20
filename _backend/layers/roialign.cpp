@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    RoiAlign::RoiAlign() : Layer() { }
+    RoiAlign::RoiAlign(const std::string& name) : Layer(name) { }
        
     vuh::Device* RoiAlign::_get_device() {
         
@@ -39,9 +39,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[rois_input]->data(), *tensor_dict[batch_indices_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

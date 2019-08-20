@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Mean::Mean() : Layer() { }
+    Mean::Mean(const std::string& name) : Layer(name) { }
        
     vuh::Device* Mean::_get_device() {
         
@@ -26,9 +26,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[mean_output]->data());
     }
 
-
-
 }
-
-
 

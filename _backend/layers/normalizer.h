@@ -58,7 +58,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Normalizer();
+        Normalizer(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -68,14 +68,7 @@ namespace backend {
         ~Normalizer() {}
     };
 
-    
-    void init_layer_Normalizer(py::module& m) {
-        // py::class_(m, "Normalizer");
-    }
-    
-
 }
-
 
 #endif
 

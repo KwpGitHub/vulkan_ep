@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LpNormalization();
+        LpNormalization(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~LpNormalization() {}
     };
 
-    
-    void init_layer_LpNormalization(py::module& m) {
-        // py::class_(m, "LpNormalization");
-    }
-    
-
 }
-
 
 #endif
 

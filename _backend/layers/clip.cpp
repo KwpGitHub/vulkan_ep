@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Clip::Clip() : Layer() { }
+    Clip::Clip(const std::string& name) : Layer(name) { }
        
     vuh::Device* Clip::_get_device() {
         
@@ -31,9 +31,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

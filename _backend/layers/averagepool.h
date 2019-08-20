@@ -76,7 +76,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        AveragePool();
+        AveragePool(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -86,14 +86,7 @@ namespace backend {
         ~AveragePool() {}
     };
 
-    
-    void init_layer_AveragePool(py::module& m) {
-        // py::class_(m, "AveragePool");
-    }
-    
-
 }
-
 
 #endif
 

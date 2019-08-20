@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LeakyRelu();
+        LeakyRelu(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~LeakyRelu() {}
     };
 
-    
-    void init_layer_LeakyRelu(py::module& m) {
-        // py::class_(m, "LeakyRelu");
-    }
-    
-
 }
-
 
 #endif
 

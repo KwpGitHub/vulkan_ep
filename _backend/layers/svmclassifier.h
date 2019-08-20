@@ -50,7 +50,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMClassifier();
+        SVMClassifier(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -60,14 +60,7 @@ namespace backend {
         ~SVMClassifier() {}
     };
 
-    
-    void init_layer_SVMClassifier(py::module& m) {
-        // py::class_(m, "SVMClassifier");
-    }
-    
-
 }
-
 
 #endif
 

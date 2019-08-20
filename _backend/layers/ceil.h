@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Ceil();
+        Ceil(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Ceil() {}
     };
 
-    
-    void init_layer_Ceil(py::module& m) {
-        // py::class_(m, "Ceil");
-    }
-    
-
 }
-
 
 #endif
 

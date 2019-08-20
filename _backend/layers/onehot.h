@@ -62,7 +62,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        OneHot();
+        OneHot(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -72,14 +72,7 @@ namespace backend {
         ~OneHot() {}
     };
 
-    
-    void init_layer_OneHot(py::module& m) {
-        // py::class_(m, "OneHot");
-    }
-    
-
 }
-
 
 #endif
 

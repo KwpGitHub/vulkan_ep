@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Cos::Cos() : Layer() { }
+    Cos::Cos(const std::string& name) : Layer(name) { }
        
     vuh::Device* Cos::_get_device() {
         
@@ -27,9 +27,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

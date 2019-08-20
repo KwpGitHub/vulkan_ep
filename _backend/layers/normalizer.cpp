@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Normalizer::Normalizer() : Layer() { }
+    Normalizer::Normalizer(const std::string& name) : Layer(name) { }
        
     vuh::Device* Normalizer::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

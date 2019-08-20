@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Shape::Shape() : Layer() { }
+    Shape::Shape(const std::string& name) : Layer(name) { }
        
     vuh::Device* Shape::_get_device() {
         
@@ -27,9 +27,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[shape_output]->data());
     }
 
-
-
 }
-
-
 

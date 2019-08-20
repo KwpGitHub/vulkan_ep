@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Max();
+        Max(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Max() {}
     };
 
-    
-    void init_layer_Max(py::module& m) {
-        // py::class_(m, "Max");
-    }
-    
-
 }
-
 
 #endif
 

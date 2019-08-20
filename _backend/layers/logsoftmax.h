@@ -63,7 +63,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LogSoftmax();
+        LogSoftmax(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -73,14 +73,7 @@ namespace backend {
         ~LogSoftmax() {}
     };
 
-    
-    void init_layer_LogSoftmax(py::module& m) {
-        // py::class_(m, "LogSoftmax");
-    }
-    
-
 }
-
 
 #endif
 

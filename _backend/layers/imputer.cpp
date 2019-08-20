@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Imputer::Imputer() : Layer() { }
+    Imputer::Imputer(const std::string& name) : Layer(name) { }
        
     vuh::Device* Imputer::_get_device() {
         
@@ -34,9 +34,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[imputed_value_floats]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

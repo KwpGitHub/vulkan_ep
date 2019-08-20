@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    MaxPool::MaxPool() : Layer() { }
+    MaxPool::MaxPool(const std::string& name) : Layer(name) { }
        
     vuh::Device* MaxPool::_get_device() {
         
@@ -42,9 +42,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data(), *tensor_dict[Indices_output_opt]->data());
     }
 
-
-
 }
-
-
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ReverseSequence::ReverseSequence() : Layer() { }
+    ReverseSequence::ReverseSequence(const std::string& name) : Layer(name) { }
        
     vuh::Device* ReverseSequence::_get_device() {
         
@@ -32,9 +32,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[sequence_lens_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

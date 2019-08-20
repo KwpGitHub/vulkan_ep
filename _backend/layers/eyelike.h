@@ -55,7 +55,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        EyeLike();
+        EyeLike(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -65,14 +65,7 @@ namespace backend {
         ~EyeLike() {}
     };
 
-    
-    void init_layer_EyeLike(py::module& m) {
-        // py::class_(m, "EyeLike");
-    }
-    
-
 }
-
 
 #endif
 

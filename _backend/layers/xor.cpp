@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Xor::Xor() : Layer() { }
+    Xor::Xor(const std::string& name) : Layer(name) { }
        
     vuh::Device* Xor::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[A_input]->data(), *tensor_dict[B_input]->data(), *tensor_dict[C_output]->data());
     }
 
-
-
 }
-
-
 

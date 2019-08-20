@@ -56,7 +56,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Imputer();
+        Imputer(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -66,14 +66,7 @@ namespace backend {
         ~Imputer() {}
     };
 
-    
-    void init_layer_Imputer(py::module& m) {
-        // py::class_(m, "Imputer");
-    }
-    
-
 }
-
 
 #endif
 

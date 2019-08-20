@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Squeeze::Squeeze() : Layer() { }
+    Squeeze::Squeeze(const std::string& name) : Layer(name) { }
        
     vuh::Device* Squeeze::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[squeezed_output]->data());
     }
 
-
-
 }
-
-
 

@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Tanh();
+        Tanh(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Tanh() {}
     };
 
-    
-    void init_layer_Tanh(py::module& m) {
-        // py::class_(m, "Tanh");
-    }
-    
-
 }
-
 
 #endif
 

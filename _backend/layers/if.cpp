@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    If::If() : Layer() { }
+    If::If(const std::string& name) : Layer(name) { }
        
     vuh::Device* If::_get_device() {
         
@@ -30,9 +30,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[cond_input]->data());
     }
 
-
-
 }
-
-
 

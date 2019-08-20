@@ -75,7 +75,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TfIdfVectorizer();
+        TfIdfVectorizer(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -85,14 +85,7 @@ namespace backend {
         ~TfIdfVectorizer() {}
     };
 
-    
-    void init_layer_TfIdfVectorizer(py::module& m) {
-        // py::class_(m, "TfIdfVectorizer");
-    }
-    
-
 }
-
 
 #endif
 

@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LpPool();
+        LpPool(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~LpPool() {}
     };
 
-    
-    void init_layer_LpPool(py::module& m) {
-        // py::class_(m, "LpPool");
-    }
-    
-
 }
-
 
 #endif
 

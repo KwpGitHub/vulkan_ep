@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Greater();
+        Greater(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~Greater() {}
     };
 
-    
-    void init_layer_Greater(py::module& m) {
-        // py::class_(m, "Greater");
-    }
-    
-
 }
-
 
 #endif
 

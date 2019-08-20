@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Concat::Concat() : Layer() { }
+    Concat::Concat(const std::string& name) : Layer(name) { }
        
     vuh::Device* Concat::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[concat_result_output]->data());
     }
 
-
-
 }
-
-
 

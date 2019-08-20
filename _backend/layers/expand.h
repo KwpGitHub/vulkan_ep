@@ -57,7 +57,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Expand();
+        Expand(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -67,14 +67,7 @@ namespace backend {
         ~Expand() {}
     };
 
-    
-    void init_layer_Expand(py::module& m) {
-        // py::class_(m, "Expand");
-    }
-    
-
 }
-
 
 #endif
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    GRU::GRU() : Layer() { }
+    GRU::GRU(const std::string& name) : Layer(name) { }
        
     vuh::Device* GRU::_get_device() {
         
@@ -44,9 +44,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[activation_alpha]->data(), *tensor_dict[activation_beta]->data(), *tensor_dict[activations]->data(), *tensor_dict[X_input]->data(), *tensor_dict[W_input]->data(), *tensor_dict[R_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[sequence_lens_input_opt]->data(), *tensor_dict[initial_h_input_opt]->data(), *tensor_dict[Y_output_opt]->data(), *tensor_dict[Y_h_output_opt]->data());
     }
 
-
-
 }
-
-
 

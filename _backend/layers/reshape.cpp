@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Reshape::Reshape() : Layer() { }
+    Reshape::Reshape(const std::string& name) : Layer(name) { }
        
     vuh::Device* Reshape::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[data_input]->data(), *tensor_dict[shape_input]->data(), *tensor_dict[reshaped_output]->data());
     }
 
-
-
 }
-
-
 

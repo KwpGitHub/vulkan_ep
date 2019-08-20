@@ -82,7 +82,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReverseSequence();
+        ReverseSequence(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -92,14 +92,7 @@ namespace backend {
         ~ReverseSequence() {}
     };
 
-    
-    void init_layer_ReverseSequence(py::module& m) {
-        // py::class_(m, "ReverseSequence");
-    }
-    
-
 }
-
 
 #endif
 

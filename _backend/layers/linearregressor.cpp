@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    LinearRegressor::LinearRegressor() : Layer() { }
+    LinearRegressor::LinearRegressor(const std::string& name) : Layer(name) { }
        
     vuh::Device* LinearRegressor::_get_device() {
         
@@ -33,9 +33,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

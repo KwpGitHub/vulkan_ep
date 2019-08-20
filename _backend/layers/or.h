@@ -53,7 +53,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Or();
+        Or(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -63,14 +63,7 @@ namespace backend {
         ~Or() {}
     };
 
-    
-    void init_layer_Or(py::module& m) {
-        // py::class_(m, "Or");
-    }
-    
-
 }
-
 
 #endif
 

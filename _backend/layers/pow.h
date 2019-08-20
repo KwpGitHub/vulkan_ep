@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Pow();
+        Pow(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Pow() {}
     };
 
-    
-    void init_layer_Pow(py::module& m) {
-        // py::class_(m, "Pow");
-    }
-    
-
 }
-
 
 #endif
 

@@ -49,7 +49,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sinh();
+        Sinh(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -59,14 +59,7 @@ namespace backend {
         ~Sinh() {}
     };
 
-    
-    void init_layer_Sinh(py::module& m) {
-        // py::class_(m, "Sinh");
-    }
-    
-
 }
-
 
 #endif
 

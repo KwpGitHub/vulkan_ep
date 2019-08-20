@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Expand::Expand() : Layer() { }
+    Expand::Expand(const std::string& name) : Layer(name) { }
        
     vuh::Device* Expand::_get_device() {
         
@@ -28,9 +28,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[input_input]->data(), *tensor_dict[shape_input]->data(), *tensor_dict[output_output]->data());
     }
 
-
-
 }
-
-
 

@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    RNN::RNN() : Layer() { }
+    RNN::RNN(const std::string& name) : Layer(name) { }
        
     vuh::Device* RNN::_get_device() {
         
@@ -42,9 +42,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[activation_alpha]->data(), *tensor_dict[activation_beta]->data(), *tensor_dict[activations]->data(), *tensor_dict[X_input]->data(), *tensor_dict[W_input]->data(), *tensor_dict[R_input]->data(), *tensor_dict[B_input_opt]->data(), *tensor_dict[sequence_lens_input_opt]->data(), *tensor_dict[initial_h_input_opt]->data(), *tensor_dict[Y_output_opt]->data(), *tensor_dict[Y_h_output_opt]->data());
     }
 
-
-
 }
-
-
 

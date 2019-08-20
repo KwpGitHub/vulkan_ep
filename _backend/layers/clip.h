@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Clip();
+        Clip(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~Clip() {}
     };
 
-    
-    void init_layer_Clip(py::module& m) {
-        // py::class_(m, "Clip");
-    }
-    
-
 }
-
 
 #endif
 

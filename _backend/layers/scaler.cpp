@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Scaler::Scaler() : Layer() { }
+    Scaler::Scaler(const std::string& name) : Layer(name) { }
        
     vuh::Device* Scaler::_get_device() {
         
@@ -29,9 +29,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[offset]->data(), *tensor_dict[scale]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

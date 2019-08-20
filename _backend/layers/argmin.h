@@ -51,7 +51,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ArgMin();
+        ArgMin(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -61,14 +61,7 @@ namespace backend {
         ~ArgMin() {}
     };
 
-    
-    void init_layer_ArgMin(py::module& m) {
-        // py::class_(m, "ArgMin");
-    }
-    
-
 }
-
 
 #endif
 

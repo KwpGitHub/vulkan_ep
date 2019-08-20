@@ -52,7 +52,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sub();
+        Sub(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -62,14 +62,7 @@ namespace backend {
         ~Sub() {}
     };
 
-    
-    void init_layer_Sub(py::module& m) {
-        // py::class_(m, "Sub");
-    }
-    
-
 }
-
 
 #endif
 

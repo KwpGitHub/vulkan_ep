@@ -66,7 +66,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        BatchNormalization();
+        BatchNormalization(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -76,14 +76,7 @@ namespace backend {
         ~BatchNormalization() {}
     };
 
-    
-    void init_layer_BatchNormalization(py::module& m) {
-        // py::class_(m, "BatchNormalization");
-    }
-    
-
 }
-
 
 #endif
 

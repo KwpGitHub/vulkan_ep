@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    SVMRegressor::SVMRegressor() : Layer() { }
+    SVMRegressor::SVMRegressor(const std::string& name) : Layer(name) { }
        
     vuh::Device* SVMRegressor::_get_device() {
         
@@ -39,9 +39,5 @@ namespace backend {
         //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[kernel_params]->data(), *tensor_dict[rho]->data(), *tensor_dict[support_vectors]->data(), *tensor_dict[X_input]->data(), *tensor_dict[Y_output]->data());
     }
 
-
-
 }
-
-
 

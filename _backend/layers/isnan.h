@@ -47,7 +47,7 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        IsNaN();
+        IsNaN(const std::string& name);
     
         void forward() { program->run(); }
         
@@ -57,14 +57,7 @@ namespace backend {
         ~IsNaN() {}
     };
 
-    
-    void init_layer_IsNaN(py::module& m) {
-        // py::class_(m, "IsNaN");
-    }
-    
-
 }
-
 
 #endif
 
