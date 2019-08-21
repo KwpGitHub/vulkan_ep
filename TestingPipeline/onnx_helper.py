@@ -55,6 +55,7 @@ class OnnxNode(object):
 class OnnxGraph:
     def __init__(self, filename):
         _backend.create_instance(os.getcwd())
+        _backend.test()
         model = onnx.load(filename)
         graph = model.graph
         self.nodes = list()

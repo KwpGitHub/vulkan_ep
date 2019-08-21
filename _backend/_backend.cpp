@@ -15,7 +15,6 @@ namespace py = pybind11;
 #include "layers.h"
 
 
-
 void test() {
 	auto y = std::vector<float>(128, 1.0f);
 	auto x = std::vector<float>(128, 2.0f);

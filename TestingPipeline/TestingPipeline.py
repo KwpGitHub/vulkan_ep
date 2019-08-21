@@ -4,8 +4,6 @@ import onnx
 import json
 import os
 import onnx_helper
-#import _backend as backend
-#from layers import *
 
 def graph_def_info(onnx_file):
     onnx_model_str =  MessageToJson(onnx.load(onnx_file))

@@ -4297,46 +4297,6 @@ layer_map['Unsqueeze'] = Unsqueeze
 
 
 
-class Upsample:
-    name = None
-    X_i = str()
-    scales_i = str()
-    Y_o = str()
-
-    #parameters
-    mode = int()
-
-    input_params = ["X_i", "scales_i"]
-    output_params = ["Y_o"]
-    attribute_params = ["mode"]
-
-    def __init__(self, name):
-        self.name = name
-        self.Module = nn._Upsample 
-
-    def input(self, *args):
-        for i, x in enumerate(args):
-            self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
-        for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
-    def attribute(self, **kwargs):
-        self.__dict__.update(kwargs)
-
-    def build(self):
-        self.Module(self.name, self.mode, self.X_i, self.scales_i, self.Y_o)
-
-    def call(self):
-        pass
-
-layer_map['Upsample'] = Upsample
-
-
-
-
-
 class SVMClassifier:
     name = None
     classlabels_strings = str()
