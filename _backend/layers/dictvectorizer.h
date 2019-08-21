@@ -34,6 +34,7 @@ output: A 1-D tensor holding values from the input dictionary.
 //OPTIONAL_PARAMETERS:      int64_vocabulary, string_vocabulary
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*
 
+
 //class stuff
 namespace backend {   
 
@@ -59,17 +60,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        DictVectorizer(const std::string& name);
+        DictVectorizer(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _int64_vocabulary); 
-        void bind(std::string _string_vocabulary, std::string _X_i, std::string _Y_o); 
+        virtual void init( Shape_t _int64_vocabulary); 
+        virtual void bind(std::string _string_vocabulary, std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/dictvectorizer.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[string_vocabulary]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~DictVectorizer() {}
     };
-
+   
 }
-
 #endif
 

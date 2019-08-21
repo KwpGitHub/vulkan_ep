@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    RNN::RNN(const std::string& name) : Layer(name) { }
+    RNN::RNN(std::string name) : Layer(name) { }
        
     vuh::Device* RNN::_get_device() {
         
@@ -18,6 +18,7 @@ namespace backend {
     
     void RNN::bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_i, std::string _W_i, std::string _R_i, std::string _B_i, std::string _sequence_lens_i, std::string _initial_h_i, std::string _Y_o, std::string _Y_h_o){
         activation_alpha = _activation_alpha; activation_beta = _activation_beta; activations = _activations; X_i = _X_i; W_i = _W_i; R_i = _R_i; B_i = _B_i; sequence_lens_i = _sequence_lens_i; initial_h_i = _initial_h_i; Y_o = _Y_o; Y_h_o = _Y_h_o;
+
 		binding.X_i = tensor_dict[X_i]->shape();
   		binding.W_i = tensor_dict[W_i]->shape();
   		binding.R_i = tensor_dict[R_i]->shape();
@@ -36,11 +37,7 @@ namespace backend {
   		binding.activation_beta = tensor_dict[activation_beta]->shape();
   		binding.activations = tensor_dict[activations]->shape();
  
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/rnn.spv")).c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-        program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[activation_alpha]->data(), *tensor_dict[activation_beta]->data(), *tensor_dict[activations]->data(), *tensor_dict[X_i]->data(), *tensor_dict[W_i]->data(), *tensor_dict[R_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[sequence_lens_i]->data(), *tensor_dict[initial_h_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Y_h_o]->data());
+        
     }
-
 }
 

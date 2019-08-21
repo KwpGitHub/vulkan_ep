@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    RandomUniform::RandomUniform(const std::string& name) : Layer(name) { }
+    RandomUniform::RandomUniform(std::string name) : Layer(name) { }
        
     vuh::Device* RandomUniform::_get_device() {
         
@@ -21,6 +21,7 @@ namespace backend {
     void RandomUniform::bind(std::string _output_o){
         output_o = _output_o;
 
+
 		binding.output_o = tensor_dict[output_o]->shape();
  
 		binding.shape = shape;
@@ -30,11 +31,7 @@ namespace backend {
   		binding.seed = seed;
  
 
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomuniform.spv")).c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-        program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[output_o]->data());
+        
     }
-
 }
 

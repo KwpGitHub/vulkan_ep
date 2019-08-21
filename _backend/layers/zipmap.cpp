@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    ZipMap::ZipMap(const std::string& name) : Layer(name) { }
+    ZipMap::ZipMap(std::string name) : Layer(name) { }
        
     vuh::Device* ZipMap::_get_device() {
         
@@ -16,6 +16,7 @@ namespace backend {
     
     void ZipMap::bind(std::string _classlabels_strings, std::string _X_i, std::string _Z_o){
         classlabels_strings = _classlabels_strings; X_i = _X_i; Z_o = _Z_o;
+
 		binding.X_i = tensor_dict[X_i]->shape();
  
 		binding.Z_o = tensor_dict[Z_o]->shape();
@@ -24,11 +25,7 @@ namespace backend {
  
 		binding.classlabels_strings = tensor_dict[classlabels_strings]->shape();
  
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/zipmap.spv")).c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-        program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Z_o]->data());
+        
     }
-
 }
 

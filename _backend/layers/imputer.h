@@ -31,6 +31,7 @@ output: Imputed output data
 //OPTIONAL_PARAMETERS:      imputed_value_floats, imputed_value_int64s, replaced_value_float, replaced_value_int64
 //OPTIONAL_PARAMETERS_TYPE: Tensor*, Shape_t, float, int
 
+
 //class stuff
 namespace backend {   
 
@@ -56,17 +57,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Imputer(const std::string& name);
+        Imputer(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _imputed_value_int64s,  float _replaced_value_float,  int _replaced_value_int64); 
-        void bind(std::string _imputed_value_floats, std::string _X_i, std::string _Y_o); 
+        virtual void init( Shape_t _imputed_value_int64s,  float _replaced_value_float,  int _replaced_value_int64); 
+        virtual void bind(std::string _imputed_value_floats, std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/imputer.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[imputed_value_floats]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~Imputer() {}
     };
-
+   
 }
-
 #endif
 

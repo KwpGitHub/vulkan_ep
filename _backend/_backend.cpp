@@ -14,9 +14,7 @@ namespace py = pybind11;
 #include "layer.h"
 #include "layers.h"
 
-namespace backend {
-	std::map<std::string, Layer*> layer_dict;
-}
+
 
 void test() {
 	auto y = std::vector<float>(128, 1.0f);
@@ -86,7 +84,7 @@ void create_tensor_from_numpy(py::str name, py::array_t<float> input){
 	case 5: _shape = { s[0], s[1], s[2], s[3], s[4] };
 	}
 
-	std::cout << "UNINIT_TENSOR ::: " << name << std::endl;
+	std::cout << "NP_TENSOR ::: " << name << std::endl;
 	backend::Tensor* x = new backend::Tensor(data, _shape);
 	backend::tensor_dict.insert(std::pair<std::string, backend::Tensor*>(std::string(name), x));
 

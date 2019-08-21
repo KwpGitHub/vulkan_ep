@@ -24,6 +24,7 @@ output: The arccosine of the input tensor computed element-wise
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -49,17 +50,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Acos(const std::string& name);
+        Acos(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _input_i, std::string _output_o); 
+        virtual void init(); 
+        virtual void bind(std::string _input_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/acos.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~Acos() {}
     };
-
+   
 }
-
 #endif
 

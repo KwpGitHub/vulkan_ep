@@ -28,6 +28,7 @@ output: Result tensor.
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -53,17 +54,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        And(const std::string& name);
+        And(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _A_i, std::string _B_i, std::string _C_o); 
+        virtual void init(); 
+        virtual void bind(std::string _A_i, std::string _B_i, std::string _C_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/and.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[A_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[C_o]->data());
+        }
 
         ~And() {}
     };
-
+   
 }
-
 #endif
 

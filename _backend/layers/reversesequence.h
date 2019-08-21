@@ -57,6 +57,7 @@ output: Tensor with same shape of input.
 //OPTIONAL_PARAMETERS:      batch_axis, time_axis
 //OPTIONAL_PARAMETERS_TYPE: int, int
 
+
 //class stuff
 namespace backend {   
 
@@ -82,17 +83,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ReverseSequence(const std::string& name);
+        ReverseSequence(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _batch_axis,  int _time_axis); 
-        void bind(std::string _input_i, std::string _sequence_lens_i, std::string _Y_o); 
+        virtual void init( int _batch_axis,  int _time_axis); 
+        virtual void bind(std::string _input_i, std::string _sequence_lens_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reversesequence.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[sequence_lens_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~ReverseSequence() {}
     };
-
+   
 }
-
 #endif
 

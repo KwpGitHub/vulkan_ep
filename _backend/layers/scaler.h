@@ -24,6 +24,7 @@ output: Scaled output data.
 //OPTIONAL_PARAMETERS:      offset, scale
 //OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*
 
+
 //class stuff
 namespace backend {   
 
@@ -49,17 +50,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scaler(const std::string& name);
+        Scaler(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _offset, std::string _scale, std::string _X_i, std::string _Y_o); 
+        virtual void init(); 
+        virtual void bind(std::string _offset, std::string _scale, std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scaler.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[offset]->data(), *tensor_dict[scale]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~Scaler() {}
     };
-
+   
 }
-
 #endif
 

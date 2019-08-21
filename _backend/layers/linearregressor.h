@@ -29,6 +29,7 @@ output: Regression outputs (one per target, per example).
 //OPTIONAL_PARAMETERS:      coefficients, intercepts, post_transform, targets
 //OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, int, int
 
+
 //class stuff
 namespace backend {   
 
@@ -54,17 +55,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LinearRegressor(const std::string& name);
+        LinearRegressor(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _post_transform,  int _targets); 
-        void bind(std::string _coefficients, std::string _intercepts, std::string _X_i, std::string _Y_o); 
+        virtual void init( int _post_transform,  int _targets); 
+        virtual void bind(std::string _coefficients, std::string _intercepts, std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearregressor.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~LinearRegressor() {}
     };
-
+   
 }
-
 #endif
 

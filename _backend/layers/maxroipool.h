@@ -26,6 +26,7 @@ output: RoI pooled output 4-D tensor of shape (num_rois, channels, pooled_shape[
 //OPTIONAL_PARAMETERS:      spatial_scale
 //OPTIONAL_PARAMETERS_TYPE: float
 
+
 //class stuff
 namespace backend {   
 
@@ -51,17 +52,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxRoiPool(const std::string& name);
+        MaxRoiPool(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _pooled_shape,  float _spatial_scale); 
-        void bind(std::string _X_i, std::string _rois_i, std::string _Y_o); 
+        virtual void init( Shape_t _pooled_shape,  float _spatial_scale); 
+        virtual void bind(std::string _X_i, std::string _rois_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxroipool.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[rois_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~MaxRoiPool() {}
     };
-
+   
 }
-
 #endif
 

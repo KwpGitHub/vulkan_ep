@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    SVMClassifier::SVMClassifier(const std::string& name) : Layer(name) { }
+    SVMClassifier::SVMClassifier(std::string name) : Layer(name) { }
        
     vuh::Device* SVMClassifier::_get_device() {
         
@@ -19,6 +19,7 @@ namespace backend {
     
     void SVMClassifier::bind(std::string _classlabels_strings, std::string _coefficients, std::string _kernel_params, std::string _prob_a, std::string _prob_b, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o, std::string _Z_o){
         classlabels_strings = _classlabels_strings; coefficients = _coefficients; kernel_params = _kernel_params; prob_a = _prob_a; prob_b = _prob_b; rho = _rho; support_vectors = _support_vectors; X_i = _X_i; Y_o = _Y_o; Z_o = _Z_o;
+
 		binding.X_i = tensor_dict[X_i]->shape();
  
 		binding.Y_o = tensor_dict[Y_o]->shape();
@@ -37,11 +38,7 @@ namespace backend {
   		binding.rho = tensor_dict[rho]->shape();
   		binding.support_vectors = tensor_dict[support_vectors]->shape();
  
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/svmclassifier.spv")).c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-        program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[coefficients]->data(), *tensor_dict[kernel_params]->data(), *tensor_dict[prob_a]->data(), *tensor_dict[prob_b]->data(), *tensor_dict[rho]->data(), *tensor_dict[support_vectors]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Z_o]->data());
+        
     }
-
 }
 

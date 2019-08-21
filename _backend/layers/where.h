@@ -29,6 +29,7 @@ output: Tensor of shape equal to the broadcasted shape of condition, X, and Y.
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -54,17 +55,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Where(const std::string& name);
+        Where(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _condition_i, std::string _X_i, std::string _Y_i, std::string _output_o); 
+        virtual void init(); 
+        virtual void bind(std::string _condition_i, std::string _X_i, std::string _Y_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/where.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[condition_i]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~Where() {}
     };
-
+   
 }
-
 #endif
 

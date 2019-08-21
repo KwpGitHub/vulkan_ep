@@ -28,6 +28,7 @@ output: N-D quantized output tensor. It has same shape as input 'x'.
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -53,17 +54,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        QuantizeLinear(const std::string& name);
+        QuantizeLinear(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _x_i, std::string _y_scale_i, std::string _y_zero_point_i, std::string _y_o); 
+        virtual void init(); 
+        virtual void bind(std::string _x_i, std::string _y_scale_i, std::string _y_zero_point_i, std::string _y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/quantizelinear.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[x_i]->data(), *tensor_dict[y_scale_i]->data(), *tensor_dict[y_zero_point_i]->data(), *tensor_dict[y_o]->data());
+        }
 
         ~QuantizeLinear() {}
     };
-
+   
 }
-
 #endif
 

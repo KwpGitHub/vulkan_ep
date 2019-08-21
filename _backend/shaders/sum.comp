@@ -11,13 +11,45 @@ layout(push_constant) uniform Parameters {
 			
 //input
     
-    
+    Shape_t x0_i; Shape_t x1_i; Shape_t x2_i; Shape_t x3_i; Shape_t x4_i; Shape_t x5_i; Shape_t x6_i; Shape_t x7_i; Shape_t x8_i; Shape_t x9_i; Shape_t x10_i; Shape_t x11_i; Shape_t x12_i; Shape_t x13_i; Shape_t x14_i; Shape_t x15_i; Shape_t x16_i; Shape_t x17_i; Shape_t x18_i; Shape_t x19_i; Shape_t x20_i; Shape_t x21_i; Shape_t x22_i; Shape_t x23_i; Shape_t x24_i; Shape_t x25_i; Shape_t x26_i; Shape_t x27_i; Shape_t x28_i; Shape_t x29_i; Shape_t x30_i; Shape_t x31_i;
 //output
     Shape_t sum_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float sum_o[]; };
+layout(std430, binding = 0) buffer lay0 { float x0_i[]; };
+layout(std430, binding = 1) buffer lay1 { float x1_i[]; };
+layout(std430, binding = 2) buffer lay2 { float x2_i[]; };
+layout(std430, binding = 3) buffer lay3 { float x3_i[]; };
+layout(std430, binding = 4) buffer lay4 { float x4_i[]; };
+layout(std430, binding = 5) buffer lay5 { float x5_i[]; };
+layout(std430, binding = 6) buffer lay6 { float x6_i[]; };
+layout(std430, binding = 7) buffer lay7 { float x7_i[]; };
+layout(std430, binding = 8) buffer lay8 { float x8_i[]; };
+layout(std430, binding = 9) buffer lay9 { float x9_i[]; };
+layout(std430, binding = 10) buffer lay10 { float x10_i[]; };
+layout(std430, binding = 11) buffer lay11 { float x11_i[]; };
+layout(std430, binding = 12) buffer lay12 { float x12_i[]; };
+layout(std430, binding = 13) buffer lay13 { float x13_i[]; };
+layout(std430, binding = 14) buffer lay14 { float x14_i[]; };
+layout(std430, binding = 15) buffer lay15 { float x15_i[]; };
+layout(std430, binding = 16) buffer lay16 { float x16_i[]; };
+layout(std430, binding = 17) buffer lay17 { float x17_i[]; };
+layout(std430, binding = 18) buffer lay18 { float x18_i[]; };
+layout(std430, binding = 19) buffer lay19 { float x19_i[]; };
+layout(std430, binding = 20) buffer lay20 { float x20_i[]; };
+layout(std430, binding = 21) buffer lay21 { float x21_i[]; };
+layout(std430, binding = 22) buffer lay22 { float x22_i[]; };
+layout(std430, binding = 23) buffer lay23 { float x23_i[]; };
+layout(std430, binding = 24) buffer lay24 { float x24_i[]; };
+layout(std430, binding = 25) buffer lay25 { float x25_i[]; };
+layout(std430, binding = 26) buffer lay26 { float x26_i[]; };
+layout(std430, binding = 27) buffer lay27 { float x27_i[]; };
+layout(std430, binding = 28) buffer lay28 { float x28_i[]; };
+layout(std430, binding = 29) buffer lay29 { float x29_i[]; };
+layout(std430, binding = 30) buffer lay30 { float x30_i[]; };
+layout(std430, binding = 31) buffer lay31 { float x31_i[]; };
+layout(std430, binding = 32) buffer lay32 { float sum_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
@@ -25,7 +57,38 @@ void main(){
     const uint idz = gl_GlobalInvocationID.z;
     
     
-    
+    const uint x0_i_size = params.x0_i.n * params.x0_i.c * params.x0_i.d * params.x0_i.w * params.x0_i.h;
+	const uint x1_i_size = params.x1_i.n * params.x1_i.c * params.x1_i.d * params.x1_i.w * params.x1_i.h;
+	const uint x2_i_size = params.x2_i.n * params.x2_i.c * params.x2_i.d * params.x2_i.w * params.x2_i.h;
+	const uint x3_i_size = params.x3_i.n * params.x3_i.c * params.x3_i.d * params.x3_i.w * params.x3_i.h;
+	const uint x4_i_size = params.x4_i.n * params.x4_i.c * params.x4_i.d * params.x4_i.w * params.x4_i.h;
+	const uint x5_i_size = params.x5_i.n * params.x5_i.c * params.x5_i.d * params.x5_i.w * params.x5_i.h;
+	const uint x6_i_size = params.x6_i.n * params.x6_i.c * params.x6_i.d * params.x6_i.w * params.x6_i.h;
+	const uint x7_i_size = params.x7_i.n * params.x7_i.c * params.x7_i.d * params.x7_i.w * params.x7_i.h;
+	const uint x8_i_size = params.x8_i.n * params.x8_i.c * params.x8_i.d * params.x8_i.w * params.x8_i.h;
+	const uint x9_i_size = params.x9_i.n * params.x9_i.c * params.x9_i.d * params.x9_i.w * params.x9_i.h;
+	const uint x10_i_size = params.x10_i.n * params.x10_i.c * params.x10_i.d * params.x10_i.w * params.x10_i.h;
+	const uint x11_i_size = params.x11_i.n * params.x11_i.c * params.x11_i.d * params.x11_i.w * params.x11_i.h;
+	const uint x12_i_size = params.x12_i.n * params.x12_i.c * params.x12_i.d * params.x12_i.w * params.x12_i.h;
+	const uint x13_i_size = params.x13_i.n * params.x13_i.c * params.x13_i.d * params.x13_i.w * params.x13_i.h;
+	const uint x14_i_size = params.x14_i.n * params.x14_i.c * params.x14_i.d * params.x14_i.w * params.x14_i.h;
+	const uint x15_i_size = params.x15_i.n * params.x15_i.c * params.x15_i.d * params.x15_i.w * params.x15_i.h;
+	const uint x16_i_size = params.x16_i.n * params.x16_i.c * params.x16_i.d * params.x16_i.w * params.x16_i.h;
+	const uint x17_i_size = params.x17_i.n * params.x17_i.c * params.x17_i.d * params.x17_i.w * params.x17_i.h;
+	const uint x18_i_size = params.x18_i.n * params.x18_i.c * params.x18_i.d * params.x18_i.w * params.x18_i.h;
+	const uint x19_i_size = params.x19_i.n * params.x19_i.c * params.x19_i.d * params.x19_i.w * params.x19_i.h;
+	const uint x20_i_size = params.x20_i.n * params.x20_i.c * params.x20_i.d * params.x20_i.w * params.x20_i.h;
+	const uint x21_i_size = params.x21_i.n * params.x21_i.c * params.x21_i.d * params.x21_i.w * params.x21_i.h;
+	const uint x22_i_size = params.x22_i.n * params.x22_i.c * params.x22_i.d * params.x22_i.w * params.x22_i.h;
+	const uint x23_i_size = params.x23_i.n * params.x23_i.c * params.x23_i.d * params.x23_i.w * params.x23_i.h;
+	const uint x24_i_size = params.x24_i.n * params.x24_i.c * params.x24_i.d * params.x24_i.w * params.x24_i.h;
+	const uint x25_i_size = params.x25_i.n * params.x25_i.c * params.x25_i.d * params.x25_i.w * params.x25_i.h;
+	const uint x26_i_size = params.x26_i.n * params.x26_i.c * params.x26_i.d * params.x26_i.w * params.x26_i.h;
+	const uint x27_i_size = params.x27_i.n * params.x27_i.c * params.x27_i.d * params.x27_i.w * params.x27_i.h;
+	const uint x28_i_size = params.x28_i.n * params.x28_i.c * params.x28_i.d * params.x28_i.w * params.x28_i.h;
+	const uint x29_i_size = params.x29_i.n * params.x29_i.c * params.x29_i.d * params.x29_i.w * params.x29_i.h;
+	const uint x30_i_size = params.x30_i.n * params.x30_i.c * params.x30_i.d * params.x30_i.w * params.x30_i.h;
+	const uint x31_i_size = params.x31_i.n * params.x31_i.c * params.x31_i.d * params.x31_i.w * params.x31_i.h;
     const uint sum_o_size = params.sum_o.n * params.sum_o.c * params.sum_o.d * params.sum_o.w * params.sum_o.h;
     
 

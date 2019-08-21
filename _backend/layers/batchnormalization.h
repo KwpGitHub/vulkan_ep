@@ -41,6 +41,7 @@ output: Saved variance used during training to speed up gradient computation.
 //OPTIONAL_PARAMETERS:      epsilon, momentum
 //OPTIONAL_PARAMETERS_TYPE: float, float
 
+
 //class stuff
 namespace backend {   
 
@@ -66,17 +67,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        BatchNormalization(const std::string& name);
+        BatchNormalization(std::string name);
     
         void forward() { program->run(); }
         
-        void init( float _epsilon,  float _momentum); 
-        void bind(std::string _X_i, std::string _scale_i, std::string _B_i, std::string _mean_i, std::string _var_i, std::string _Y_o, std::string _mean_o, std::string _var_o, std::string _saved_mean_o, std::string _saved_var_o); 
+        virtual void init( float _epsilon,  float _momentum); 
+        virtual void bind(std::string _X_i, std::string _scale_i, std::string _B_i, std::string _mean_i, std::string _var_i, std::string _Y_o, std::string _mean_o, std::string _var_o, std::string _saved_mean_o, std::string _saved_var_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/batchnormalization.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[scale_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[mean_i]->data(), *tensor_dict[var_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[mean_o]->data(), *tensor_dict[var_o]->data(), *tensor_dict[saved_mean_o]->data(), *tensor_dict[saved_var_o]->data());
+        }
 
         ~BatchNormalization() {}
     };
-
+   
 }
-
 #endif
 

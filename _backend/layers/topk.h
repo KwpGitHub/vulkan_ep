@@ -35,6 +35,7 @@ output: Tensor of shape [a_1, a_2, ..., a_{axis-1}, k, a_{axis+1}, ... a_n] cont
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
 
+
 //class stuff
 namespace backend {   
 
@@ -60,17 +61,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TopK(const std::string& name);
+        TopK(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _axis); 
-        void bind(std::string _X_i, std::string _K_i, std::string _Values_o, std::string _Indices_o); 
+        virtual void init( int _axis); 
+        virtual void bind(std::string _X_i, std::string _K_i, std::string _Values_o, std::string _Indices_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/topk.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[K_i]->data(), *tensor_dict[Values_o]->data(), *tensor_dict[Indices_o]->data());
+        }
 
         ~TopK() {}
     };
-
+   
 }
-
 #endif
 

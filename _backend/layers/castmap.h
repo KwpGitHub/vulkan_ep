@@ -26,6 +26,7 @@ output: A tensor representing the same data as the input map, ordered by their k
 //OPTIONAL_PARAMETERS:      cast_to, map_form, max_map
 //OPTIONAL_PARAMETERS_TYPE: int, int, int
 
+
 //class stuff
 namespace backend {   
 
@@ -51,17 +52,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        CastMap(const std::string& name);
+        CastMap(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _cast_to,  int _map_form,  int _max_map); 
-        void bind(std::string _X_i, std::string _Y_o); 
+        virtual void init( int _cast_to,  int _map_form,  int _max_map); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/castmap.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~CastMap() {}
     };
-
+   
 }
-
 #endif
 

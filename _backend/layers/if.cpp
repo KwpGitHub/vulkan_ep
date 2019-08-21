@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    If::If(const std::string& name) : Layer(name) { }
+    If::If(std::string name) : Layer(name) { }
        
     vuh::Device* If::_get_device() {
         
@@ -17,6 +17,7 @@ namespace backend {
     
     void If::bind(std::string _cond_i){
         cond_i = _cond_i;
+
 		binding.cond_i = tensor_dict[cond_i]->shape();
  
 
@@ -24,11 +25,7 @@ namespace backend {
   		binding.then_branch = then_branch;
  
 
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/if.spv")).c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-        program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[cond_i]->data());
+        
     }
-
 }
 

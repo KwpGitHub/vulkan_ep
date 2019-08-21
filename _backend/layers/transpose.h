@@ -26,6 +26,7 @@ output: Transposed output.
 //OPTIONAL_PARAMETERS:      perm
 //OPTIONAL_PARAMETERS_TYPE: Shape_t
 
+
 //class stuff
 namespace backend {   
 
@@ -51,17 +52,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Transpose(const std::string& name);
+        Transpose(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _perm); 
-        void bind(std::string _data_i, std::string _transposed_o); 
+        virtual void init( Shape_t _perm); 
+        virtual void bind(std::string _data_i, std::string _transposed_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/transpose.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[transposed_o]->data());
+        }
 
         ~Transpose() {}
     };
-
+   
 }
-
 #endif
 

@@ -25,6 +25,7 @@ output: Classification scores ([N,E] - one score for each class and example
 //OPTIONAL_PARAMETERS:      classlabels_ints, classlabels_strings, intercepts, multi_class, post_transform
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, Tensor*, int, int
 
+
 //class stuff
 namespace backend {   
 
@@ -50,17 +51,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LinearClassifier(const std::string& name);
+        LinearClassifier(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _classlabels_ints,  int _multi_class,  int _post_transform); 
-        void bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_i, std::string _Y_o, std::string _Z_o); 
+        virtual void init( Shape_t _classlabels_ints,  int _multi_class,  int _post_transform); 
+        virtual void bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_i, std::string _Y_o, std::string _Z_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearclassifier.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[classlabels_strings]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Z_o]->data());
+        }
 
         ~LinearClassifier() {}
     };
-
+   
 }
-
 #endif
 

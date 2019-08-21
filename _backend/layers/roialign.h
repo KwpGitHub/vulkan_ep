@@ -36,6 +36,7 @@ output: RoI pooled output, 4-D tensor of shape (num_rois, C, output_height, outp
 //OPTIONAL_PARAMETERS:      mode, output_height, output_width, sampling_ratio, spatial_scale
 //OPTIONAL_PARAMETERS_TYPE: int, int, int, int, float
 
+
 //class stuff
 namespace backend {   
 
@@ -61,17 +62,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RoiAlign(const std::string& name);
+        RoiAlign(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale); 
-        void bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o); 
+        virtual void init( int _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale); 
+        virtual void bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/roialign.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[rois_i]->data(), *tensor_dict[batch_indices_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~RoiAlign() {}
     };
-
+   
 }
-
 #endif
 

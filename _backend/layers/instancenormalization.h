@@ -31,6 +31,7 @@ output: The output tensor of the same shape as input.
 //OPTIONAL_PARAMETERS:      epsilon
 //OPTIONAL_PARAMETERS_TYPE: float
 
+
 //class stuff
 namespace backend {   
 
@@ -56,17 +57,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        InstanceNormalization(const std::string& name);
+        InstanceNormalization(std::string name);
     
         void forward() { program->run(); }
         
-        void init( float _epsilon); 
-        void bind(std::string _input_i, std::string _scale_i, std::string _B_i, std::string _output_o); 
+        virtual void init( float _epsilon); 
+        virtual void bind(std::string _input_i, std::string _scale_i, std::string _B_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/instancenormalization.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[scale_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~InstanceNormalization() {}
     };
-
+   
 }
-
 #endif
 

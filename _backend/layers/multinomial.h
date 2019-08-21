@@ -25,6 +25,7 @@ output: Output tensor with shape [batch_size, sample_size], where sample_size is
 //OPTIONAL_PARAMETERS:      dtype, sample_size, seed
 //OPTIONAL_PARAMETERS_TYPE: int, int, float
 
+
 //class stuff
 namespace backend {   
 
@@ -50,17 +51,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Multinomial(const std::string& name);
+        Multinomial(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _dtype,  int _sample_size,  float _seed); 
-        void bind(std::string _input_i, std::string _output_o); 
+        virtual void init( int _dtype,  int _sample_size,  float _seed); 
+        virtual void bind(std::string _input_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/multinomial.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~Multinomial() {}
     };
-
+   
 }
-
 #endif
 

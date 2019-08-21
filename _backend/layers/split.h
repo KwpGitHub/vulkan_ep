@@ -25,6 +25,7 @@ output: One or more outputs forming list of tensors after splitting
 //OPTIONAL_PARAMETERS:      axis, split
 //OPTIONAL_PARAMETERS_TYPE: int, Shape_t
 
+
 //class stuff
 namespace backend {   
 
@@ -50,17 +51,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Split(const std::string& name);
+        Split(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _axis,  Shape_t _split); 
-        void bind(std::string _input_i); 
+        virtual void init( int _axis,  Shape_t _split); 
+        virtual void bind(std::string _input_i); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/split.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data());
+        }
 
         ~Split() {}
     };
-
+   
 }
-
 #endif
 

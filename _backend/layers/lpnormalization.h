@@ -24,6 +24,7 @@ output: Matrix after normalization
 //OPTIONAL_PARAMETERS:      axis, p
 //OPTIONAL_PARAMETERS_TYPE: int, int
 
+
 //class stuff
 namespace backend {   
 
@@ -49,17 +50,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        LpNormalization(const std::string& name);
+        LpNormalization(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _axis,  int _p); 
-        void bind(std::string _input_i, std::string _output_o); 
+        virtual void init( int _axis,  int _p); 
+        virtual void bind(std::string _input_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/lpnormalization.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~LpNormalization() {}
     };
-
+   
 }
-
 #endif
 

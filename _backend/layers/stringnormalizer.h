@@ -32,6 +32,7 @@ output: UTF-8 Normalized strings
 //OPTIONAL_PARAMETERS:      case_change_action, is_case_sensitive, locale, stopwords
 //OPTIONAL_PARAMETERS_TYPE: int, int, int, Tensor*
 
+
 //class stuff
 namespace backend {   
 
@@ -57,17 +58,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        StringNormalizer(const std::string& name);
+        StringNormalizer(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _case_change_action,  int _is_case_sensitive,  int _locale); 
-        void bind(std::string _stopwords, std::string _X_i, std::string _Y_o); 
+        virtual void init( int _case_change_action,  int _is_case_sensitive,  int _locale); 
+        virtual void bind(std::string _stopwords, std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/stringnormalizer.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[stopwords]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~StringNormalizer() {}
     };
-
+   
 }
-
 #endif
 

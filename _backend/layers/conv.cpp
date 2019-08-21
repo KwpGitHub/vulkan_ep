@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    Conv::Conv(const std::string& name) : Layer(name) { }
+    Conv::Conv(std::string name) : Layer(name) { }
        
     vuh::Device* Conv::_get_device() {
         
@@ -21,6 +21,7 @@ namespace backend {
     
     void Conv::bind(std::string _X_i, std::string _W_i, std::string _B_i, std::string _Y_o){
         X_i = _X_i; W_i = _W_i; B_i = _B_i; Y_o = _Y_o;
+
 		binding.X_i = tensor_dict[X_i]->shape();
   		binding.W_i = tensor_dict[W_i]->shape();
   		binding.B_i = tensor_dict[B_i]->shape();
@@ -35,11 +36,7 @@ namespace backend {
   		binding.strides = strides;
  
 
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/conv.spv")).c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-        program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[W_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[Y_o]->data());
+        
     }
-
 }
 

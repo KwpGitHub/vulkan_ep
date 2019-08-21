@@ -27,6 +27,7 @@ output: Reshaped tensor with same data as input.
 //OPTIONAL_PARAMETERS:      axes
 //OPTIONAL_PARAMETERS_TYPE: Shape_t
 
+
 //class stuff
 namespace backend {   
 
@@ -52,17 +53,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Squeeze(const std::string& name);
+        Squeeze(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _axes); 
-        void bind(std::string _data_i, std::string _squeezed_o); 
+        virtual void init( Shape_t _axes); 
+        virtual void bind(std::string _data_i, std::string _squeezed_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/squeeze.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[squeezed_o]->data());
+        }
 
         ~Squeeze() {}
     };
-
+   
 }
-
 #endif
 

@@ -31,6 +31,7 @@ output: Encoded output data, having one more dimension than X.
 //OPTIONAL_PARAMETERS:      cats_int64s, cats_strings, zeros
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, int
 
+
 //class stuff
 namespace backend {   
 
@@ -56,17 +57,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        OneHotEncoder(const std::string& name);
+        OneHotEncoder(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _cats_int64s,  int _zeros); 
-        void bind(std::string _cats_strings, std::string _X_i, std::string _Y_o); 
+        virtual void init( Shape_t _cats_int64s,  int _zeros); 
+        virtual void bind(std::string _cats_strings, std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/onehotencoder.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[cats_strings]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~OneHotEncoder() {}
     };
-
+   
 }
-
 #endif
 

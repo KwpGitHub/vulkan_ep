@@ -7,7 +7,9 @@ import onnx.shape_inference
 import onnx.utils
 from onnx.backend.base import Backend, Device, DeviceType, namedtupledict
 
+import os
 import layers
+import _backend
 
 class OnnxAttributes(dict):
     @staticmethod
@@ -52,6 +54,7 @@ class OnnxNode(object):
 
 class OnnxGraph:
     def __init__(self, filename):
+        _backend.create_instance(os.getcwd())
         model = onnx.load(filename)
         graph = model.graph
         self.nodes = list()
@@ -60,7 +63,7 @@ class OnnxGraph:
         for init_val in graph.initializer:
             name, data = self._create_tensor_filling_op(init_val)            
             self.init_vals[name] = data
-
+            _backend.create_tensor_from_numpy(name, data)
         for n in graph.node:
             self.nodes.append(OnnxNode(n))
     def build(self):
@@ -69,6 +72,7 @@ class OnnxGraph:
             l.input(*nodes.inputs)
             l.output(*nodes.outputs)
             l.attribute(**nodes.attrs)
+            l.build()
             self.layer.append(l)
             
 
@@ -80,18 +84,7 @@ class OnnxGraph:
             def tensor2list(onnx_tensor):
                 # Use the onnx.numpy_helper because the data may be raw
                 return onnx.numpy_helper.to_array(onnx_tensor).flatten()
-            def new_shape(shape):               
-                if(len(shape) == 1):
-                    return [shape[0], 1, 1, 1, 1]
-                elif(len(shape) == 4):
-                    return [shape[0], shape[1], 1, shape[2], shape[3]]
-                elif(len(shape) == 3):
-                    return [shape[0], 1, 1, shape[1], shape[2]]
-                elif(len(shape) == 2):
-                    return [shape[0], shape[1], 1, 1, 1]
-                else:
-                    return shape
-
+            
             if onnx_tensor.data_type == TensorProto.FLOAT:
                 pass
             elif onnx_tensor.data_type == TensorProto.DOUBLE:
@@ -116,9 +109,10 @@ class OnnxGraph:
                 pass
             else:
                 raise RuntimeError("unrecognized tensor type {}".format(onnx_tensor.data_type))
-
-            shape = new_shape(onnx_tensor.dims)
-            data = tensor2list(onnx_tensor).reshape(*shape)
+    
+            if(onnx_tensor.dims == []):
+                return (name, tensor2list(onnx_tensor))
+            data = tensor2list(onnx_tensor).reshape(*onnx_tensor.dims)
             
             return (name, data)
         

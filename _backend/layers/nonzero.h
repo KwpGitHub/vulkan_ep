@@ -27,6 +27,7 @@ output: output (always 2D tensor)
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -52,17 +53,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        NonZero(const std::string& name);
+        NonZero(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _X_i, std::string _Y_o); 
+        virtual void init(); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/nonzero.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~NonZero() {}
     };
-
+   
 }
-
 #endif
 

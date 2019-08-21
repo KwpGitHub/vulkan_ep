@@ -30,6 +30,7 @@ output: Output tensor of random values drawn from normal distribution
 //OPTIONAL_PARAMETERS:      dtype, mean, scale, seed
 //OPTIONAL_PARAMETERS_TYPE: int, float, float, float
 
+
 //class stuff
 namespace backend {   
 
@@ -55,17 +56,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        RandomNormalLike(const std::string& name);
+        RandomNormalLike(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _dtype,  float _mean,  float _scale,  float _seed); 
-        void bind(std::string _input_i, std::string _output_o); 
+        virtual void init( int _dtype,  float _mean,  float _scale,  float _seed); 
+        virtual void bind(std::string _input_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomnormallike.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~RandomNormalLike() {}
     };
-
+   
 }
-
 #endif
 

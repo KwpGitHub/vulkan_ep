@@ -33,6 +33,7 @@ output: Encoded output data
 //OPTIONAL_PARAMETERS:      norm
 //OPTIONAL_PARAMETERS_TYPE: int
 
+
 //class stuff
 namespace backend {   
 
@@ -58,17 +59,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Normalizer(const std::string& name);
+        Normalizer(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _norm); 
-        void bind(std::string _X_i, std::string _Y_o); 
+        virtual void init( int _norm); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/normalizer.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~Normalizer() {}
     };
-
+   
 }
-
 #endif
 

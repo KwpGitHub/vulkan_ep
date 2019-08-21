@@ -27,6 +27,7 @@ output: The output map
 //OPTIONAL_PARAMETERS:      classlabels_int64s, classlabels_strings
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*
 
+
 //class stuff
 namespace backend {   
 
@@ -52,17 +53,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ZipMap(const std::string& name);
+        ZipMap(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _classlabels_int64s); 
-        void bind(std::string _classlabels_strings, std::string _X_i, std::string _Z_o); 
+        virtual void init( Shape_t _classlabels_int64s); 
+        virtual void bind(std::string _classlabels_strings, std::string _X_i, std::string _Z_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/zipmap.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Z_o]->data());
+        }
 
         ~ZipMap() {}
     };
-
+   
 }
-
 #endif
 

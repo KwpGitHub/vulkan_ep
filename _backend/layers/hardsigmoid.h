@@ -26,6 +26,7 @@ output: Output tensor
 //OPTIONAL_PARAMETERS:      alpha, beta
 //OPTIONAL_PARAMETERS_TYPE: float, float
 
+
 //class stuff
 namespace backend {   
 
@@ -51,17 +52,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        HardSigmoid(const std::string& name);
+        HardSigmoid(std::string name);
     
         void forward() { program->run(); }
         
-        void init( float _alpha,  float _beta); 
-        void bind(std::string _X_i, std::string _Y_o); 
+        virtual void init( float _alpha,  float _beta); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/hardsigmoid.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~HardSigmoid() {}
     };
-
+   
 }
-
 #endif
 

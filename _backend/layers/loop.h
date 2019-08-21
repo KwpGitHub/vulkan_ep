@@ -138,6 +138,7 @@ output: Final N loop carried dependency values then K scan_outputs
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -163,17 +164,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Loop(const std::string& name);
+        Loop(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _body); 
-        void bind(std::string _M_i, std::string _cond_i); 
+        virtual void init( int _body); 
+        virtual void bind(std::string _M_i, std::string _cond_i); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/loop.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[M_i]->data(), *tensor_dict[cond_i]->data());
+        }
 
         ~Loop() {}
     };
-
+   
 }
-
 #endif
 

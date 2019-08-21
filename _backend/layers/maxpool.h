@@ -52,6 +52,7 @@ output: Indices tensor from max pooling across the input tensor. The dimensions 
 //OPTIONAL_PARAMETERS:      auto_pad, ceil_mode, dilations, pads, storage_order, strides
 //OPTIONAL_PARAMETERS_TYPE: int, int, Shape_t, Shape_t, int, Shape_t
 
+
 //class stuff
 namespace backend {   
 
@@ -77,17 +78,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxPool(const std::string& name);
+        MaxPool(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _kernel_shape,  int _auto_pad,  int _ceil_mode,  Shape_t _dilations,  Shape_t _pads,  int _storage_order,  Shape_t _strides); 
-        void bind(std::string _X_i, std::string _Y_o, std::string _Indices_o); 
+        virtual void init( Shape_t _kernel_shape,  int _auto_pad,  int _ceil_mode,  Shape_t _dilations,  Shape_t _pads,  int _storage_order,  Shape_t _strides); 
+        virtual void bind(std::string _X_i, std::string _Y_o, std::string _Indices_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxpool.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Indices_o]->data());
+        }
 
         ~MaxPool() {}
     };
-
+   
 }
-
 #endif
 

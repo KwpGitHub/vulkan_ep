@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    PRelu::PRelu(const std::string& name) : Layer(name) { }
+    PRelu::PRelu(std::string name) : Layer(name) { }
        
     vuh::Device* PRelu::_get_device() {
         
@@ -15,6 +15,7 @@ namespace backend {
     
     void PRelu::bind(std::string _X_i, std::string _slope_i, std::string _Y_o){
         X_i = _X_i; slope_i = _slope_i; Y_o = _Y_o;
+
 		binding.X_i = tensor_dict[X_i]->shape();
   		binding.slope_i = tensor_dict[slope_i]->shape();
  
@@ -22,11 +23,7 @@ namespace backend {
  
 
 
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/prelu.spv")).c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-        program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[slope_i]->data(), *tensor_dict[Y_o]->data());
+        
     }
-
 }
 

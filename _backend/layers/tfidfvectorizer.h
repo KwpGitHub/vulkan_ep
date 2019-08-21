@@ -50,6 +50,7 @@ output: Ngram results
 //OPTIONAL_PARAMETERS:      pool_int64s, pool_strings, weights
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, Tensor*
 
+
 //class stuff
 namespace backend {   
 
@@ -75,17 +76,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TfIdfVectorizer(const std::string& name);
+        TfIdfVectorizer(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _max_gram_length,  int _max_skip_count,  int _min_gram_length,  int _mode,  Shape_t _ngram_counts,  Shape_t _ngram_indexes,  Shape_t _pool_int64s); 
-        void bind(std::string _pool_strings, std::string _weights, std::string _X_i, std::string _Y_o); 
+        virtual void init( int _max_gram_length,  int _max_skip_count,  int _min_gram_length,  int _mode,  Shape_t _ngram_counts,  Shape_t _ngram_indexes,  Shape_t _pool_int64s); 
+        virtual void bind(std::string _pool_strings, std::string _weights, std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tfidfvectorizer.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[pool_strings]->data(), *tensor_dict[weights]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~TfIdfVectorizer() {}
     };
-
+   
 }
-
 #endif
 

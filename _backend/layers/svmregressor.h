@@ -24,6 +24,7 @@ output: Regression outputs (one score per target per example).
 //OPTIONAL_PARAMETERS:      coefficients, kernel_params, kernel_type, n_supports, one_class, post_transform, rho, support_vectors
 //OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, int, int, int, int, Tensor*, Tensor*
 
+
 //class stuff
 namespace backend {   
 
@@ -49,17 +50,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMRegressor(const std::string& name);
+        SVMRegressor(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _kernel_type,  int _n_supports,  int _one_class,  int _post_transform); 
-        void bind(std::string _coefficients, std::string _kernel_params, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o); 
+        virtual void init( int _kernel_type,  int _n_supports,  int _one_class,  int _post_transform); 
+        virtual void bind(std::string _coefficients, std::string _kernel_params, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/svmregressor.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[kernel_params]->data(), *tensor_dict[rho]->data(), *tensor_dict[support_vectors]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~SVMRegressor() {}
     };
-
+   
 }
-
 #endif
 

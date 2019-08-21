@@ -33,6 +33,7 @@ output: The class score for each class, for each point, a tensor of shape [N,E].
 //OPTIONAL_PARAMETERS:      base_values, class_ids, class_nodeids, class_treeids, class_weights, classlabels_int64s, classlabels_strings, nodes_falsenodeids, nodes_featureids, nodes_hitrates, nodes_missing_value_tracks_true, nodes_modes, nodes_nodeids, nodes_treeids, nodes_truenodeids, nodes_values, post_transform
 //OPTIONAL_PARAMETERS_TYPE: Tensor*, Shape_t, Shape_t, Shape_t, Tensor*, Shape_t, Tensor*, Shape_t, Shape_t, Tensor*, Shape_t, Tensor*, Shape_t, Shape_t, Shape_t, Tensor*, int
 
+
 //class stuff
 namespace backend {   
 
@@ -58,17 +59,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        TreeEnsembleClassifier(const std::string& name);
+        TreeEnsembleClassifier(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _class_ids,  Shape_t _class_nodeids,  Shape_t _class_treeids,  Shape_t _classlabels_int64s,  Shape_t _nodes_falsenodeids,  Shape_t _nodes_featureids,  Shape_t _nodes_missing_value_tracks_true,  Shape_t _nodes_nodeids,  Shape_t _nodes_treeids,  Shape_t _nodes_truenodeids,  int _post_transform); 
-        void bind(std::string _base_values, std::string _class_weights, std::string _classlabels_strings, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _X_i, std::string _Y_o, std::string _Z_o); 
+        virtual void init( Shape_t _class_ids,  Shape_t _class_nodeids,  Shape_t _class_treeids,  Shape_t _classlabels_int64s,  Shape_t _nodes_falsenodeids,  Shape_t _nodes_featureids,  Shape_t _nodes_missing_value_tracks_true,  Shape_t _nodes_nodeids,  Shape_t _nodes_treeids,  Shape_t _nodes_truenodeids,  int _post_transform); 
+        virtual void bind(std::string _base_values, std::string _class_weights, std::string _classlabels_strings, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _X_i, std::string _Y_o, std::string _Z_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/treeensembleclassifier.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[base_values]->data(), *tensor_dict[class_weights]->data(), *tensor_dict[classlabels_strings]->data(), *tensor_dict[nodes_hitrates]->data(), *tensor_dict[nodes_modes]->data(), *tensor_dict[nodes_values]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Z_o]->data());
+        }
 
         ~TreeEnsembleClassifier() {}
     };
-
+   
 }
-
 #endif
 

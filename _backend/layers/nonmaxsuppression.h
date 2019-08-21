@@ -35,6 +35,7 @@ output: selected indices from the boxes tensor. [num_selected_indices, 3], the s
 //OPTIONAL_PARAMETERS:      center_point_box
 //OPTIONAL_PARAMETERS_TYPE: int
 
+
 //class stuff
 namespace backend {   
 
@@ -60,17 +61,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        NonMaxSuppression(const std::string& name);
+        NonMaxSuppression(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _center_point_box); 
-        void bind(std::string _boxes_i, std::string _scores_i, std::string _max_output_boxes_per_class_i, std::string _iou_threshold_i, std::string _score_threshold_i, std::string _selected_indices_o); 
+        virtual void init( int _center_point_box); 
+        virtual void bind(std::string _boxes_i, std::string _scores_i, std::string _max_output_boxes_per_class_i, std::string _iou_threshold_i, std::string _score_threshold_i, std::string _selected_indices_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/nonmaxsuppression.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[boxes_i]->data(), *tensor_dict[scores_i]->data(), *tensor_dict[max_output_boxes_per_class_i]->data(), *tensor_dict[iou_threshold_i]->data(), *tensor_dict[score_threshold_i]->data(), *tensor_dict[selected_indices_o]->data());
+        }
 
         ~NonMaxSuppression() {}
     };
-
+   
 }
-
 #endif
 

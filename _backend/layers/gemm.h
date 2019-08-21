@@ -35,6 +35,7 @@ output: Output tensor of shape (M, N).
 //OPTIONAL_PARAMETERS:      alpha, beta, transA, transB
 //OPTIONAL_PARAMETERS_TYPE: float, float, int, int
 
+
 //class stuff
 namespace backend {   
 
@@ -60,17 +61,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Gemm(const std::string& name);
+        Gemm(std::string name);
     
         void forward() { program->run(); }
         
-        void init( float _alpha,  float _beta,  int _transA,  int _transB); 
-        void bind(std::string _A_i, std::string _B_i, std::string _C_i, std::string _Y_o); 
+        virtual void init( float _alpha,  float _beta,  int _transA,  int _transB); 
+        virtual void bind(std::string _A_i, std::string _B_i, std::string _C_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/gemm.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[A_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[C_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~Gemm() {}
     };
-
+   
 }
-
 #endif
 

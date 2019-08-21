@@ -2,7 +2,7 @@
 //cpp stuff
 namespace backend {    
    
-    TfIdfVectorizer::TfIdfVectorizer(const std::string& name) : Layer(name) { }
+    TfIdfVectorizer::TfIdfVectorizer(std::string name) : Layer(name) { }
        
     vuh::Device* TfIdfVectorizer::_get_device() {
         
@@ -22,6 +22,7 @@ namespace backend {
     
     void TfIdfVectorizer::bind(std::string _pool_strings, std::string _weights, std::string _X_i, std::string _Y_o){
         pool_strings = _pool_strings; weights = _weights; X_i = _X_i; Y_o = _Y_o;
+
 		binding.X_i = tensor_dict[X_i]->shape();
  
 		binding.Y_o = tensor_dict[Y_o]->shape();
@@ -37,11 +38,7 @@ namespace backend {
 		binding.pool_strings = tensor_dict[pool_strings]->shape();
   		binding.weights = tensor_dict[weights]->shape();
  
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tfidfvectorizer.spv")).c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-        program->spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[pool_strings]->data(), *tensor_dict[weights]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        
     }
-
 }
 

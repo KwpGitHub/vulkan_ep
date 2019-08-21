@@ -43,6 +43,7 @@ output: Output data tensor that contains the result of the unpooling.
 //OPTIONAL_PARAMETERS:      pads, strides
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, Shape_t
 
+
 //class stuff
 namespace backend {   
 
@@ -68,17 +69,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        MaxUnpool(const std::string& name);
+        MaxUnpool(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _kernel_shape,  Shape_t _pads,  Shape_t _strides); 
-        void bind(std::string _X_i, std::string _I_i, std::string _output_shape_i, std::string _output_o); 
+        virtual void init( Shape_t _kernel_shape,  Shape_t _pads,  Shape_t _strides); 
+        virtual void bind(std::string _X_i, std::string _I_i, std::string _output_shape_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxunpool.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[I_i]->data(), *tensor_dict[output_shape_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~MaxUnpool() {}
     };
-
+   
 }
-
 #endif
 

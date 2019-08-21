@@ -61,6 +61,7 @@ output: Sliced data tensor.
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -86,17 +87,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Slice(const std::string& name);
+        Slice(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _data_i, std::string _starts_i, std::string _ends_i, std::string _axes_i, std::string _steps_i, std::string _output_o); 
+        virtual void init(); 
+        virtual void bind(std::string _data_i, std::string _starts_i, std::string _ends_i, std::string _axes_i, std::string _steps_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/slice.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[starts_i]->data(), *tensor_dict[ends_i]->data(), *tensor_dict[axes_i]->data(), *tensor_dict[steps_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~Slice() {}
     };
-
+   
 }
-
 #endif
 

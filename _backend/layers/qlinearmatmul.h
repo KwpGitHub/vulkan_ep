@@ -38,6 +38,7 @@ output: Quantized matrix multiply results from a * b
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -63,17 +64,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        QLinearMatMul(const std::string& name);
+        QLinearMatMul(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _a_i, std::string _a_scale_i, std::string _a_zero_point_i, std::string _b_i, std::string _b_scale_i, std::string _b_zero_point_i, std::string _y_scale_i, std::string _y_zero_point_i, std::string _y_o); 
+        virtual void init(); 
+        virtual void bind(std::string _a_i, std::string _a_scale_i, std::string _a_zero_point_i, std::string _b_i, std::string _b_scale_i, std::string _b_zero_point_i, std::string _y_scale_i, std::string _y_zero_point_i, std::string _y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/qlinearmatmul.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[a_i]->data(), *tensor_dict[a_scale_i]->data(), *tensor_dict[a_zero_point_i]->data(), *tensor_dict[b_i]->data(), *tensor_dict[b_scale_i]->data(), *tensor_dict[b_zero_point_i]->data(), *tensor_dict[y_scale_i]->data(), *tensor_dict[y_zero_point_i]->data(), *tensor_dict[y_o]->data());
+        }
 
         ~QLinearMatMul() {}
     };
-
+   
 }
-
 #endif
 

@@ -1,1078 +1,1540 @@
 void init_layer_LSTM(py::module&);
 #include "./layers/lstm.h"
 void init_layer_LSTM(py::module& m){
-    py::class_<backend::LSTM>(m, "_LSTM").def(py::init<const std::string&>());
-        //.def("init", &backend::LSTM::init)
-        //.def("bind", &backend::LSTM::bind); 
+    m.def("_LSTM", [](py::str name, float _clip , int _direction , int _hidden_size , int _input_forget , py::str _activation_alpha , py::str _activation_beta , py::str _activations , py::str _X_i , py::str _W_i , py::str _R_i , py::str _B_i , py::str _sequence_lens_i , py::str _initial_h_i , py::str _initial_c_i , py::str _P_i , py::str _Y_o , py::str _Y_h_o , py::str _Y_c_o) {
+        auto layer = backend::createInstance<backend::LSTM>(std::string(name));
+        //layer->init(_clip, _direction, _hidden_size, _input_forget);    
+        //layer->bind(_activation_alpha, _activation_beta, _activations, _X_i, _W_i, _R_i, _B_i, _sequence_lens_i, _initial_h_i, _initial_c_i, _P_i, _Y_o, _Y_h_o, _Y_c_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Identity(py::module&);
 #include "./layers/identity.h"
 void init_layer_Identity(py::module& m){
-    py::class_<backend::Identity>(m, "_Identity").def(py::init<const std::string&>());
-        //.def("init", &backend::Identity::init)
-        //.def("bind", &backend::Identity::bind); 
+    m.def("_Identity", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Identity>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Abs(py::module&);
 #include "./layers/abs.h"
 void init_layer_Abs(py::module& m){
-    py::class_<backend::Abs>(m, "_Abs").def(py::init<const std::string&>());
-        //.def("init", &backend::Abs::init)
-        //.def("bind", &backend::Abs::bind); 
+    m.def("_Abs", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Abs>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_BatchNormalization(py::module&);
 #include "./layers/batchnormalization.h"
 void init_layer_BatchNormalization(py::module& m){
-    py::class_<backend::BatchNormalization>(m, "_BatchNormalization").def(py::init<const std::string&>());
-        //.def("init", &backend::BatchNormalization::init)
-        //.def("bind", &backend::BatchNormalization::bind); 
+    m.def("_BatchNormalization", [](py::str name, float _epsilon , float _momentum , py::str _X_i , py::str _scale_i , py::str _B_i , py::str _mean_i , py::str _var_i , py::str _Y_o , py::str _mean_o , py::str _var_o , py::str _saved_mean_o , py::str _saved_var_o) {
+        auto layer = backend::createInstance<backend::BatchNormalization>(std::string(name));
+        //layer->init(_epsilon, _momentum);    
+        //layer->bind(_X_i, _scale_i, _B_i, _mean_i, _var_i, _Y_o, _mean_o, _var_o, _saved_mean_o, _saved_var_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Mean(py::module&);
 #include "./layers/mean.h"
 void init_layer_Mean(py::module& m){
-    py::class_<backend::Mean>(m, "_Mean").def(py::init<const std::string&>());
-        //.def("init", &backend::Mean::init)
-        //.def("bind", &backend::Mean::bind); 
+    m.def("_Mean", [](py::str name, py::str _mean_o) {
+        auto layer = backend::createInstance<backend::Mean>(std::string(name));
+        //layer->init();    
+        //layer->bind(_mean_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Add(py::module&);
 #include "./layers/add.h"
 void init_layer_Add(py::module& m){
-    py::class_<backend::Add>(m, "_Add").def(py::init<const std::string&>());
-        //.def("init", &backend::Add::init)
-        //.def("bind", &backend::Add::bind); 
+    m.def("_Add", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Add>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_GlobalMaxPool(py::module&);
 #include "./layers/globalmaxpool.h"
 void init_layer_GlobalMaxPool(py::module& m){
-    py::class_<backend::GlobalMaxPool>(m, "_GlobalMaxPool").def(py::init<const std::string&>());
-        //.def("init", &backend::GlobalMaxPool::init)
-        //.def("bind", &backend::GlobalMaxPool::bind); 
+    m.def("_GlobalMaxPool", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::GlobalMaxPool>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Cast(py::module&);
 #include "./layers/cast.h"
 void init_layer_Cast(py::module& m){
-    py::class_<backend::Cast>(m, "_Cast").def(py::init<const std::string&>());
-        //.def("init", &backend::Cast::init)
-        //.def("bind", &backend::Cast::bind); 
+    m.def("_Cast", [](py::str name, int _to , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Cast>(std::string(name));
+        //layer->init(_to);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_AveragePool(py::module&);
 #include "./layers/averagepool.h"
 void init_layer_AveragePool(py::module& m){
-    py::class_<backend::AveragePool>(m, "_AveragePool").def(py::init<const std::string&>());
-        //.def("init", &backend::AveragePool::init)
-        //.def("bind", &backend::AveragePool::bind); 
+    m.def("_AveragePool", [](py::str name, py::list _kernel_shape , int _auto_pad , int _ceil_mode , int _count_include_pad , py::list _pads , py::list _strides , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::AveragePool>(std::string(name));
+        //layer->init(_kernel_shape, _auto_pad, _ceil_mode, _count_include_pad, _pads, _strides);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_And(py::module&);
 #include "./layers/and.h"
 void init_layer_And(py::module& m){
-    py::class_<backend::And>(m, "_And").def(py::init<const std::string&>());
-        //.def("init", &backend::And::init)
-        //.def("bind", &backend::And::bind); 
+    m.def("_And", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::And>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_LRN(py::module&);
 #include "./layers/lrn.h"
 void init_layer_LRN(py::module& m){
-    py::class_<backend::LRN>(m, "_LRN").def(py::init<const std::string&>());
-        //.def("init", &backend::LRN::init)
-        //.def("bind", &backend::LRN::bind); 
+    m.def("_LRN", [](py::str name, int _size , float _alpha , float _beta , float _bias , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::LRN>(std::string(name));
+        //layer->init(_size, _alpha, _beta, _bias);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ArgMax(py::module&);
 #include "./layers/argmax.h"
 void init_layer_ArgMax(py::module& m){
-    py::class_<backend::ArgMax>(m, "_ArgMax").def(py::init<const std::string&>());
-        //.def("init", &backend::ArgMax::init)
-        //.def("bind", &backend::ArgMax::bind); 
+    m.def("_ArgMax", [](py::str name, int _axis , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ArgMax>(std::string(name));
+        //layer->init(_axis, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Resize(py::module&);
 #include "./layers/resize.h"
 void init_layer_Resize(py::module& m){
-    py::class_<backend::Resize>(m, "_Resize").def(py::init<const std::string&>());
-        //.def("init", &backend::Resize::init)
-        //.def("bind", &backend::Resize::bind); 
+    m.def("_Resize", [](py::str name, int _mode , py::str _X_i , py::str _scales_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Resize>(std::string(name));
+        //layer->init(_mode);    
+        //layer->bind(_X_i, _scales_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Expand(py::module&);
 #include "./layers/expand.h"
 void init_layer_Expand(py::module& m){
-    py::class_<backend::Expand>(m, "_Expand").def(py::init<const std::string&>());
-        //.def("init", &backend::Expand::init)
-        //.def("bind", &backend::Expand::bind); 
+    m.def("_Expand", [](py::str name, py::str _input_i , py::str _shape_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Expand>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _shape_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Neg(py::module&);
 #include "./layers/neg.h"
 void init_layer_Neg(py::module& m){
-    py::class_<backend::Neg>(m, "_Neg").def(py::init<const std::string&>());
-        //.def("init", &backend::Neg::init)
-        //.def("bind", &backend::Neg::bind); 
+    m.def("_Neg", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Neg>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Mul(py::module&);
 #include "./layers/mul.h"
 void init_layer_Mul(py::module& m){
-    py::class_<backend::Mul>(m, "_Mul").def(py::init<const std::string&>());
-        //.def("init", &backend::Mul::init)
-        //.def("bind", &backend::Mul::bind); 
+    m.def("_Mul", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Mul>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ArgMin(py::module&);
 #include "./layers/argmin.h"
 void init_layer_ArgMin(py::module& m){
-    py::class_<backend::ArgMin>(m, "_ArgMin").def(py::init<const std::string&>());
-        //.def("init", &backend::ArgMin::init)
-        //.def("bind", &backend::ArgMin::bind); 
+    m.def("_ArgMin", [](py::str name, int _axis , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ArgMin>(std::string(name));
+        //layer->init(_axis, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_CastMap(py::module&);
 #include "./layers/castmap.h"
 void init_layer_CastMap(py::module& m){
-    py::class_<backend::CastMap>(m, "_CastMap").def(py::init<const std::string&>());
-        //.def("init", &backend::CastMap::init)
-        //.def("bind", &backend::CastMap::bind); 
+    m.def("_CastMap", [](py::str name, int _cast_to , int _map_form , int _max_map , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::CastMap>(std::string(name));
+        //layer->init(_cast_to, _map_form, _max_map);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Exp(py::module&);
 #include "./layers/exp.h"
 void init_layer_Exp(py::module& m){
-    py::class_<backend::Exp>(m, "_Exp").def(py::init<const std::string&>());
-        //.def("init", &backend::Exp::init)
-        //.def("bind", &backend::Exp::bind); 
+    m.def("_Exp", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Exp>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Div(py::module&);
 #include "./layers/div.h"
 void init_layer_Div(py::module& m){
-    py::class_<backend::Div>(m, "_Div").def(py::init<const std::string&>());
-        //.def("init", &backend::Div::init)
-        //.def("bind", &backend::Div::bind); 
+    m.def("_Div", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Div>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReverseSequence(py::module&);
 #include "./layers/reversesequence.h"
 void init_layer_ReverseSequence(py::module& m){
-    py::class_<backend::ReverseSequence>(m, "_ReverseSequence").def(py::init<const std::string&>());
-        //.def("init", &backend::ReverseSequence::init)
-        //.def("bind", &backend::ReverseSequence::bind); 
+    m.def("_ReverseSequence", [](py::str name, int _batch_axis , int _time_axis , py::str _input_i , py::str _sequence_lens_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::ReverseSequence>(std::string(name));
+        //layer->init(_batch_axis, _time_axis);    
+        //layer->bind(_input_i, _sequence_lens_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Ceil(py::module&);
 #include "./layers/ceil.h"
 void init_layer_Ceil(py::module& m){
-    py::class_<backend::Ceil>(m, "_Ceil").def(py::init<const std::string&>());
-        //.def("init", &backend::Ceil::init)
-        //.def("bind", &backend::Ceil::bind); 
+    m.def("_Ceil", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Ceil>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_DepthToSpace(py::module&);
 #include "./layers/depthtospace.h"
 void init_layer_DepthToSpace(py::module& m){
-    py::class_<backend::DepthToSpace>(m, "_DepthToSpace").def(py::init<const std::string&>());
-        //.def("init", &backend::DepthToSpace::init)
-        //.def("bind", &backend::DepthToSpace::bind); 
+    m.def("_DepthToSpace", [](py::str name, int _blocksize , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::DepthToSpace>(std::string(name));
+        //layer->init(_blocksize);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Clip(py::module&);
 #include "./layers/clip.h"
 void init_layer_Clip(py::module& m){
-    py::class_<backend::Clip>(m, "_Clip").def(py::init<const std::string&>());
-        //.def("init", &backend::Clip::init)
-        //.def("bind", &backend::Clip::bind); 
+    m.def("_Clip", [](py::str name, float _max , float _min , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Clip>(std::string(name));
+        //layer->init(_max, _min);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_RNN(py::module&);
 #include "./layers/rnn.h"
 void init_layer_RNN(py::module& m){
-    py::class_<backend::RNN>(m, "_RNN").def(py::init<const std::string&>());
-        //.def("init", &backend::RNN::init)
-        //.def("bind", &backend::RNN::bind); 
+    m.def("_RNN", [](py::str name, float _clip , int _direction , int _hidden_size , py::str _activation_alpha , py::str _activation_beta , py::str _activations , py::str _X_i , py::str _W_i , py::str _R_i , py::str _B_i , py::str _sequence_lens_i , py::str _initial_h_i , py::str _Y_o , py::str _Y_h_o) {
+        auto layer = backend::createInstance<backend::RNN>(std::string(name));
+        //layer->init(_clip, _direction, _hidden_size);    
+        //layer->bind(_activation_alpha, _activation_beta, _activations, _X_i, _W_i, _R_i, _B_i, _sequence_lens_i, _initial_h_i, _Y_o, _Y_h_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Concat(py::module&);
 #include "./layers/concat.h"
 void init_layer_Concat(py::module& m){
-    py::class_<backend::Concat>(m, "_Concat").def(py::init<const std::string&>());
-        //.def("init", &backend::Concat::init)
-        //.def("bind", &backend::Concat::bind); 
+    m.def("_Concat", [](py::str name, int _axis , py::str _x0_i , py::str _x1_i , py::str _x2_i , py::str _x3_i , py::str _x4_i , py::str _x5_i , py::str _x6_i , py::str _x7_i , py::str _x8_i , py::str _x9_i , py::str _x10_i , py::str _x11_i , py::str _x12_i , py::str _x13_i , py::str _x14_i , py::str _x15_i , py::str _x16_i , py::str _x17_i , py::str _x18_i , py::str _x19_i , py::str _x20_i , py::str _x21_i , py::str _x22_i , py::str _x23_i , py::str _x24_i , py::str _x25_i , py::str _x26_i , py::str _x27_i , py::str _x28_i , py::str _x29_i , py::str _x30_i , py::str _x31_i , py::str _concat_result_o) {
+        auto layer = backend::createInstance<backend::Concat>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_x0_i, _x1_i, _x2_i, _x3_i, _x4_i, _x5_i, _x6_i, _x7_i, _x8_i, _x9_i, _x10_i, _x11_i, _x12_i, _x13_i, _x14_i, _x15_i, _x16_i, _x17_i, _x18_i, _x19_i, _x20_i, _x21_i, _x22_i, _x23_i, _x24_i, _x25_i, _x26_i, _x27_i, _x28_i, _x29_i, _x30_i, _x31_i, _concat_result_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Constant(py::module&);
 #include "./layers/constant.h"
 void init_layer_Constant(py::module& m){
-    py::class_<backend::Constant>(m, "_Constant").def(py::init<const std::string&>());
-        //.def("init", &backend::Constant::init)
-        //.def("bind", &backend::Constant::bind); 
+    m.def("_Constant", [](py::str name, py::str _value , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Constant>(std::string(name));
+        //layer->init();    
+        //layer->bind(_value, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_LpPool(py::module&);
 #include "./layers/lppool.h"
 void init_layer_LpPool(py::module& m){
-    py::class_<backend::LpPool>(m, "_LpPool").def(py::init<const std::string&>());
-        //.def("init", &backend::LpPool::init)
-        //.def("bind", &backend::LpPool::bind); 
+    m.def("_LpPool", [](py::str name, py::list _kernel_shape , int _auto_pad , int _p , py::list _pads , py::list _strides , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::LpPool>(std::string(name));
+        //layer->init(_kernel_shape, _auto_pad, _p, _pads, _strides);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Conv(py::module&);
 #include "./layers/conv.h"
 void init_layer_Conv(py::module& m){
-    py::class_<backend::Conv>(m, "_Conv").def(py::init<const std::string&>());
-        //.def("init", &backend::Conv::init)
-        //.def("bind", &backend::Conv::bind); 
+    m.def("_Conv", [](py::str name, int _auto_pad , py::list _dilations , int _group , py::list _kernel_shape , py::list _pads , py::list _strides , py::str _X_i , py::str _W_i , py::str _B_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Conv>(std::string(name));
+        //layer->init(_auto_pad, _dilations, _group, _kernel_shape, _pads, _strides);    
+        //layer->bind(_X_i, _W_i, _B_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Not(py::module&);
 #include "./layers/not.h"
 void init_layer_Not(py::module& m){
-    py::class_<backend::Not>(m, "_Not").def(py::init<const std::string&>());
-        //.def("init", &backend::Not::init)
-        //.def("bind", &backend::Not::bind); 
+    m.def("_Not", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Not>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Gather(py::module&);
 #include "./layers/gather.h"
 void init_layer_Gather(py::module& m){
-    py::class_<backend::Gather>(m, "_Gather").def(py::init<const std::string&>());
-        //.def("init", &backend::Gather::init)
-        //.def("bind", &backend::Gather::bind); 
+    m.def("_Gather", [](py::str name, int _axis , py::str _data_i , py::str _indices_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Gather>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_data_i, _indices_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ConvTranspose(py::module&);
 #include "./layers/convtranspose.h"
 void init_layer_ConvTranspose(py::module& m){
-    py::class_<backend::ConvTranspose>(m, "_ConvTranspose").def(py::init<const std::string&>());
-        //.def("init", &backend::ConvTranspose::init)
-        //.def("bind", &backend::ConvTranspose::bind); 
+    m.def("_ConvTranspose", [](py::str name, int _auto_pad , py::list _dilations , int _group , py::list _kernel_shape , py::list _output_padding , py::list _output_shape , py::list _pads , py::list _strides , py::str _X_i , py::str _W_i , py::str _B_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::ConvTranspose>(std::string(name));
+        //layer->init(_auto_pad, _dilations, _group, _kernel_shape, _output_padding, _output_shape, _pads, _strides);    
+        //layer->bind(_X_i, _W_i, _B_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Dropout(py::module&);
 #include "./layers/dropout.h"
 void init_layer_Dropout(py::module& m){
-    py::class_<backend::Dropout>(m, "_Dropout").def(py::init<const std::string&>());
-        //.def("init", &backend::Dropout::init)
-        //.def("bind", &backend::Dropout::bind); 
+    m.def("_Dropout", [](py::str name, float _ratio , py::str _data_i , py::str _output_o , py::str _mask_o) {
+        auto layer = backend::createInstance<backend::Dropout>(std::string(name));
+        //layer->init(_ratio);    
+        //layer->bind(_data_i, _output_o, _mask_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_LeakyRelu(py::module&);
 #include "./layers/leakyrelu.h"
 void init_layer_LeakyRelu(py::module& m){
-    py::class_<backend::LeakyRelu>(m, "_LeakyRelu").def(py::init<const std::string&>());
-        //.def("init", &backend::LeakyRelu::init)
-        //.def("bind", &backend::LeakyRelu::bind); 
+    m.def("_LeakyRelu", [](py::str name, float _alpha , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::LeakyRelu>(std::string(name));
+        //layer->init(_alpha);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Elu(py::module&);
 #include "./layers/elu.h"
 void init_layer_Elu(py::module& m){
-    py::class_<backend::Elu>(m, "_Elu").def(py::init<const std::string&>());
-        //.def("init", &backend::Elu::init)
-        //.def("bind", &backend::Elu::bind); 
+    m.def("_Elu", [](py::str name, float _alpha , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Elu>(std::string(name));
+        //layer->init(_alpha);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_GlobalAveragePool(py::module&);
 #include "./layers/globalaveragepool.h"
 void init_layer_GlobalAveragePool(py::module& m){
-    py::class_<backend::GlobalAveragePool>(m, "_GlobalAveragePool").def(py::init<const std::string&>());
-        //.def("init", &backend::GlobalAveragePool::init)
-        //.def("bind", &backend::GlobalAveragePool::bind); 
+    m.def("_GlobalAveragePool", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::GlobalAveragePool>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Gemm(py::module&);
 #include "./layers/gemm.h"
 void init_layer_Gemm(py::module& m){
-    py::class_<backend::Gemm>(m, "_Gemm").def(py::init<const std::string&>());
-        //.def("init", &backend::Gemm::init)
-        //.def("bind", &backend::Gemm::bind); 
+    m.def("_Gemm", [](py::str name, float _alpha , float _beta , int _transA , int _transB , py::str _A_i , py::str _B_i , py::str _C_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Gemm>(std::string(name));
+        //layer->init(_alpha, _beta, _transA, _transB);    
+        //layer->bind(_A_i, _B_i, _C_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_MaxPool(py::module&);
 #include "./layers/maxpool.h"
 void init_layer_MaxPool(py::module& m){
-    py::class_<backend::MaxPool>(m, "_MaxPool").def(py::init<const std::string&>());
-        //.def("init", &backend::MaxPool::init)
-        //.def("bind", &backend::MaxPool::bind); 
+    m.def("_MaxPool", [](py::str name, py::list _kernel_shape , int _auto_pad , int _ceil_mode , py::list _dilations , py::list _pads , int _storage_order , py::list _strides , py::str _X_i , py::str _Y_o , py::str _Indices_o) {
+        auto layer = backend::createInstance<backend::MaxPool>(std::string(name));
+        //layer->init(_kernel_shape, _auto_pad, _ceil_mode, _dilations, _pads, _storage_order, _strides);    
+        //layer->bind(_X_i, _Y_o, _Indices_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Equal(py::module&);
 #include "./layers/equal.h"
 void init_layer_Equal(py::module& m){
-    py::class_<backend::Equal>(m, "_Equal").def(py::init<const std::string&>());
-        //.def("init", &backend::Equal::init)
-        //.def("bind", &backend::Equal::bind); 
+    m.def("_Equal", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Equal>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Tile(py::module&);
 #include "./layers/tile.h"
 void init_layer_Tile(py::module& m){
-    py::class_<backend::Tile>(m, "_Tile").def(py::init<const std::string&>());
-        //.def("init", &backend::Tile::init)
-        //.def("bind", &backend::Tile::bind); 
+    m.def("_Tile", [](py::str name, py::str _input_i , py::str _repeats_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Tile>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _repeats_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Flatten(py::module&);
 #include "./layers/flatten.h"
 void init_layer_Flatten(py::module& m){
-    py::class_<backend::Flatten>(m, "_Flatten").def(py::init<const std::string&>());
-        //.def("init", &backend::Flatten::init)
-        //.def("bind", &backend::Flatten::bind); 
+    m.def("_Flatten", [](py::str name, int _axis , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Flatten>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Floor(py::module&);
 #include "./layers/floor.h"
 void init_layer_Floor(py::module& m){
-    py::class_<backend::Floor>(m, "_Floor").def(py::init<const std::string&>());
-        //.def("init", &backend::Floor::init)
-        //.def("bind", &backend::Floor::bind); 
+    m.def("_Floor", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Floor>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_GRU(py::module&);
 #include "./layers/gru.h"
 void init_layer_GRU(py::module& m){
-    py::class_<backend::GRU>(m, "_GRU").def(py::init<const std::string&>());
-        //.def("init", &backend::GRU::init)
-        //.def("bind", &backend::GRU::bind); 
+    m.def("_GRU", [](py::str name, float _clip , int _direction , int _hidden_size , int _linear_before_reset , py::str _activation_alpha , py::str _activation_beta , py::str _activations , py::str _X_i , py::str _W_i , py::str _R_i , py::str _B_i , py::str _sequence_lens_i , py::str _initial_h_i , py::str _Y_o , py::str _Y_h_o) {
+        auto layer = backend::createInstance<backend::GRU>(std::string(name));
+        //layer->init(_clip, _direction, _hidden_size, _linear_before_reset);    
+        //layer->bind(_activation_alpha, _activation_beta, _activations, _X_i, _W_i, _R_i, _B_i, _sequence_lens_i, _initial_h_i, _Y_o, _Y_h_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_GlobalLpPool(py::module&);
 #include "./layers/globallppool.h"
 void init_layer_GlobalLpPool(py::module& m){
-    py::class_<backend::GlobalLpPool>(m, "_GlobalLpPool").def(py::init<const std::string&>());
-        //.def("init", &backend::GlobalLpPool::init)
-        //.def("bind", &backend::GlobalLpPool::bind); 
+    m.def("_GlobalLpPool", [](py::str name, int _p , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::GlobalLpPool>(std::string(name));
+        //layer->init(_p);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Greater(py::module&);
 #include "./layers/greater.h"
 void init_layer_Greater(py::module& m){
-    py::class_<backend::Greater>(m, "_Greater").def(py::init<const std::string&>());
-        //.def("init", &backend::Greater::init)
-        //.def("bind", &backend::Greater::bind); 
+    m.def("_Greater", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Greater>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_HardSigmoid(py::module&);
 #include "./layers/hardsigmoid.h"
 void init_layer_HardSigmoid(py::module& m){
-    py::class_<backend::HardSigmoid>(m, "_HardSigmoid").def(py::init<const std::string&>());
-        //.def("init", &backend::HardSigmoid::init)
-        //.def("bind", &backend::HardSigmoid::bind); 
+    m.def("_HardSigmoid", [](py::str name, float _alpha , float _beta , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::HardSigmoid>(std::string(name));
+        //layer->init(_alpha, _beta);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Selu(py::module&);
 #include "./layers/selu.h"
 void init_layer_Selu(py::module& m){
-    py::class_<backend::Selu>(m, "_Selu").def(py::init<const std::string&>());
-        //.def("init", &backend::Selu::init)
-        //.def("bind", &backend::Selu::bind); 
+    m.def("_Selu", [](py::str name, float _alpha , float _gamma , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Selu>(std::string(name));
+        //layer->init(_alpha, _gamma);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Hardmax(py::module&);
 #include "./layers/hardmax.h"
 void init_layer_Hardmax(py::module& m){
-    py::class_<backend::Hardmax>(m, "_Hardmax").def(py::init<const std::string&>());
-        //.def("init", &backend::Hardmax::init)
-        //.def("bind", &backend::Hardmax::bind); 
+    m.def("_Hardmax", [](py::str name, int _axis , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Hardmax>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_If(py::module&);
 #include "./layers/if.h"
 void init_layer_If(py::module& m){
-    py::class_<backend::If>(m, "_If").def(py::init<const std::string&>());
-        //.def("init", &backend::If::init)
-        //.def("bind", &backend::If::bind); 
+    m.def("_If", [](py::str name, int _else_branch , int _then_branch , py::str _cond_i) {
+        auto layer = backend::createInstance<backend::If>(std::string(name));
+        //layer->init(_else_branch, _then_branch);    
+        //layer->bind(_cond_i); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Min(py::module&);
 #include "./layers/min.h"
 void init_layer_Min(py::module& m){
-    py::class_<backend::Min>(m, "_Min").def(py::init<const std::string&>());
-        //.def("init", &backend::Min::init)
-        //.def("bind", &backend::Min::bind); 
+    m.def("_Min", [](py::str name, py::str _min_o) {
+        auto layer = backend::createInstance<backend::Min>(std::string(name));
+        //layer->init();    
+        //layer->bind(_min_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_InstanceNormalization(py::module&);
 #include "./layers/instancenormalization.h"
 void init_layer_InstanceNormalization(py::module& m){
-    py::class_<backend::InstanceNormalization>(m, "_InstanceNormalization").def(py::init<const std::string&>());
-        //.def("init", &backend::InstanceNormalization::init)
-        //.def("bind", &backend::InstanceNormalization::bind); 
+    m.def("_InstanceNormalization", [](py::str name, float _epsilon , py::str _input_i , py::str _scale_i , py::str _B_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::InstanceNormalization>(std::string(name));
+        //layer->init(_epsilon);    
+        //layer->bind(_input_i, _scale_i, _B_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Less(py::module&);
 #include "./layers/less.h"
 void init_layer_Less(py::module& m){
-    py::class_<backend::Less>(m, "_Less").def(py::init<const std::string&>());
-        //.def("init", &backend::Less::init)
-        //.def("bind", &backend::Less::bind); 
+    m.def("_Less", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Less>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_EyeLike(py::module&);
 #include "./layers/eyelike.h"
 void init_layer_EyeLike(py::module& m){
-    py::class_<backend::EyeLike>(m, "_EyeLike").def(py::init<const std::string&>());
-        //.def("init", &backend::EyeLike::init)
-        //.def("bind", &backend::EyeLike::bind); 
+    m.def("_EyeLike", [](py::str name, int _dtype , int _k , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::EyeLike>(std::string(name));
+        //layer->init(_dtype, _k);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_RandomNormal(py::module&);
 #include "./layers/randomnormal.h"
 void init_layer_RandomNormal(py::module& m){
-    py::class_<backend::RandomNormal>(m, "_RandomNormal").def(py::init<const std::string&>());
-        //.def("init", &backend::RandomNormal::init)
-        //.def("bind", &backend::RandomNormal::bind); 
+    m.def("_RandomNormal", [](py::str name, py::list _shape , int _dtype , float _mean , float _scale , float _seed , py::str _output_o) {
+        auto layer = backend::createInstance<backend::RandomNormal>(std::string(name));
+        //layer->init(_shape, _dtype, _mean, _scale, _seed);    
+        //layer->bind(_output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Slice(py::module&);
 #include "./layers/slice.h"
 void init_layer_Slice(py::module& m){
-    py::class_<backend::Slice>(m, "_Slice").def(py::init<const std::string&>());
-        //.def("init", &backend::Slice::init)
-        //.def("bind", &backend::Slice::bind); 
+    m.def("_Slice", [](py::str name, py::str _data_i , py::str _starts_i , py::str _ends_i , py::str _axes_i , py::str _steps_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Slice>(std::string(name));
+        //layer->init();    
+        //layer->bind(_data_i, _starts_i, _ends_i, _axes_i, _steps_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_PRelu(py::module&);
 #include "./layers/prelu.h"
 void init_layer_PRelu(py::module& m){
-    py::class_<backend::PRelu>(m, "_PRelu").def(py::init<const std::string&>());
-        //.def("init", &backend::PRelu::init)
-        //.def("bind", &backend::PRelu::bind); 
+    m.def("_PRelu", [](py::str name, py::str _X_i , py::str _slope_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::PRelu>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _slope_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Log(py::module&);
 #include "./layers/log.h"
 void init_layer_Log(py::module& m){
-    py::class_<backend::Log>(m, "_Log").def(py::init<const std::string&>());
-        //.def("init", &backend::Log::init)
-        //.def("bind", &backend::Log::bind); 
+    m.def("_Log", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Log>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_LogSoftmax(py::module&);
 #include "./layers/logsoftmax.h"
 void init_layer_LogSoftmax(py::module& m){
-    py::class_<backend::LogSoftmax>(m, "_LogSoftmax").def(py::init<const std::string&>());
-        //.def("init", &backend::LogSoftmax::init)
-        //.def("bind", &backend::LogSoftmax::bind); 
+    m.def("_LogSoftmax", [](py::str name, int _axis , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::LogSoftmax>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Loop(py::module&);
 #include "./layers/loop.h"
 void init_layer_Loop(py::module& m){
-    py::class_<backend::Loop>(m, "_Loop").def(py::init<const std::string&>());
-        //.def("init", &backend::Loop::init)
-        //.def("bind", &backend::Loop::bind); 
+    m.def("_Loop", [](py::str name, int _body , py::str _M_i , py::str _cond_i) {
+        auto layer = backend::createInstance<backend::Loop>(std::string(name));
+        //layer->init(_body);    
+        //layer->bind(_M_i, _cond_i); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_LpNormalization(py::module&);
 #include "./layers/lpnormalization.h"
 void init_layer_LpNormalization(py::module& m){
-    py::class_<backend::LpNormalization>(m, "_LpNormalization").def(py::init<const std::string&>());
-        //.def("init", &backend::LpNormalization::init)
-        //.def("bind", &backend::LpNormalization::bind); 
+    m.def("_LpNormalization", [](py::str name, int _axis , int _p , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::LpNormalization>(std::string(name));
+        //layer->init(_axis, _p);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_MatMul(py::module&);
 #include "./layers/matmul.h"
 void init_layer_MatMul(py::module& m){
-    py::class_<backend::MatMul>(m, "_MatMul").def(py::init<const std::string&>());
-        //.def("init", &backend::MatMul::init)
-        //.def("bind", &backend::MatMul::bind); 
+    m.def("_MatMul", [](py::str name, py::str _A_i , py::str _B_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::MatMul>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceL2(py::module&);
 #include "./layers/reducel2.h"
 void init_layer_ReduceL2(py::module& m){
-    py::class_<backend::ReduceL2>(m, "_ReduceL2").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceL2::init)
-        //.def("bind", &backend::ReduceL2::bind); 
+    m.def("_ReduceL2", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceL2>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Max(py::module&);
 #include "./layers/max.h"
 void init_layer_Max(py::module& m){
-    py::class_<backend::Max>(m, "_Max").def(py::init<const std::string&>());
-        //.def("init", &backend::Max::init)
-        //.def("bind", &backend::Max::bind); 
+    m.def("_Max", [](py::str name, py::str _max_o) {
+        auto layer = backend::createInstance<backend::Max>(std::string(name));
+        //layer->init();    
+        //layer->bind(_max_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_MaxRoiPool(py::module&);
 #include "./layers/maxroipool.h"
 void init_layer_MaxRoiPool(py::module& m){
-    py::class_<backend::MaxRoiPool>(m, "_MaxRoiPool").def(py::init<const std::string&>());
-        //.def("init", &backend::MaxRoiPool::init)
-        //.def("bind", &backend::MaxRoiPool::bind); 
+    m.def("_MaxRoiPool", [](py::str name, py::list _pooled_shape , float _spatial_scale , py::str _X_i , py::str _rois_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::MaxRoiPool>(std::string(name));
+        //layer->init(_pooled_shape, _spatial_scale);    
+        //layer->bind(_X_i, _rois_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Or(py::module&);
 #include "./layers/or.h"
 void init_layer_Or(py::module& m){
-    py::class_<backend::Or>(m, "_Or").def(py::init<const std::string&>());
-        //.def("init", &backend::Or::init)
-        //.def("bind", &backend::Or::bind); 
+    m.def("_Or", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Or>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Pad(py::module&);
 #include "./layers/pad.h"
 void init_layer_Pad(py::module& m){
-    py::class_<backend::Pad>(m, "_Pad").def(py::init<const std::string&>());
-        //.def("init", &backend::Pad::init)
-        //.def("bind", &backend::Pad::bind); 
+    m.def("_Pad", [](py::str name, py::list _pads , int _mode , float _value , py::str _data_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Pad>(std::string(name));
+        //layer->init(_pads, _mode, _value);    
+        //layer->bind(_data_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_RandomUniformLike(py::module&);
 #include "./layers/randomuniformlike.h"
 void init_layer_RandomUniformLike(py::module& m){
-    py::class_<backend::RandomUniformLike>(m, "_RandomUniformLike").def(py::init<const std::string&>());
-        //.def("init", &backend::RandomUniformLike::init)
-        //.def("bind", &backend::RandomUniformLike::bind); 
+    m.def("_RandomUniformLike", [](py::str name, int _dtype , float _high , float _low , float _seed , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::RandomUniformLike>(std::string(name));
+        //layer->init(_dtype, _high, _low, _seed);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Reciprocal(py::module&);
 #include "./layers/reciprocal.h"
 void init_layer_Reciprocal(py::module& m){
-    py::class_<backend::Reciprocal>(m, "_Reciprocal").def(py::init<const std::string&>());
-        //.def("init", &backend::Reciprocal::init)
-        //.def("bind", &backend::Reciprocal::bind); 
+    m.def("_Reciprocal", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Reciprocal>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Pow(py::module&);
 #include "./layers/pow.h"
 void init_layer_Pow(py::module& m){
-    py::class_<backend::Pow>(m, "_Pow").def(py::init<const std::string&>());
-        //.def("init", &backend::Pow::init)
-        //.def("bind", &backend::Pow::bind); 
+    m.def("_Pow", [](py::str name, py::str _X_i , py::str _Y_i , py::str _Z_o) {
+        auto layer = backend::createInstance<backend::Pow>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_i, _Z_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_RandomNormalLike(py::module&);
 #include "./layers/randomnormallike.h"
 void init_layer_RandomNormalLike(py::module& m){
-    py::class_<backend::RandomNormalLike>(m, "_RandomNormalLike").def(py::init<const std::string&>());
-        //.def("init", &backend::RandomNormalLike::init)
-        //.def("bind", &backend::RandomNormalLike::bind); 
+    m.def("_RandomNormalLike", [](py::str name, int _dtype , float _mean , float _scale , float _seed , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::RandomNormalLike>(std::string(name));
+        //layer->init(_dtype, _mean, _scale, _seed);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_OneHot(py::module&);
 #include "./layers/onehot.h"
 void init_layer_OneHot(py::module& m){
-    py::class_<backend::OneHot>(m, "_OneHot").def(py::init<const std::string&>());
-        //.def("init", &backend::OneHot::init)
-        //.def("bind", &backend::OneHot::bind); 
+    m.def("_OneHot", [](py::str name, int _axis , py::str _indices_i , py::str _depth_i , py::str _values_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::OneHot>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_indices_i, _depth_i, _values_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_RandomUniform(py::module&);
 #include "./layers/randomuniform.h"
 void init_layer_RandomUniform(py::module& m){
-    py::class_<backend::RandomUniform>(m, "_RandomUniform").def(py::init<const std::string&>());
-        //.def("init", &backend::RandomUniform::init)
-        //.def("bind", &backend::RandomUniform::bind); 
+    m.def("_RandomUniform", [](py::str name, py::list _shape , int _dtype , float _high , float _low , float _seed , py::str _output_o) {
+        auto layer = backend::createInstance<backend::RandomUniform>(std::string(name));
+        //layer->init(_shape, _dtype, _high, _low, _seed);    
+        //layer->bind(_output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceL1(py::module&);
 #include "./layers/reducel1.h"
 void init_layer_ReduceL1(py::module& m){
-    py::class_<backend::ReduceL1>(m, "_ReduceL1").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceL1::init)
-        //.def("bind", &backend::ReduceL1::bind); 
+    m.def("_ReduceL1", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceL1>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceLogSum(py::module&);
 #include "./layers/reducelogsum.h"
 void init_layer_ReduceLogSum(py::module& m){
-    py::class_<backend::ReduceLogSum>(m, "_ReduceLogSum").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceLogSum::init)
-        //.def("bind", &backend::ReduceLogSum::bind); 
+    m.def("_ReduceLogSum", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceLogSum>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceLogSumExp(py::module&);
 #include "./layers/reducelogsumexp.h"
 void init_layer_ReduceLogSumExp(py::module& m){
-    py::class_<backend::ReduceLogSumExp>(m, "_ReduceLogSumExp").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceLogSumExp::init)
-        //.def("bind", &backend::ReduceLogSumExp::bind); 
+    m.def("_ReduceLogSumExp", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceLogSumExp>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceMax(py::module&);
 #include "./layers/reducemax.h"
 void init_layer_ReduceMax(py::module& m){
-    py::class_<backend::ReduceMax>(m, "_ReduceMax").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceMax::init)
-        //.def("bind", &backend::ReduceMax::bind); 
+    m.def("_ReduceMax", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceMax>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_OneHotEncoder(py::module&);
 #include "./layers/onehotencoder.h"
 void init_layer_OneHotEncoder(py::module& m){
-    py::class_<backend::OneHotEncoder>(m, "_OneHotEncoder").def(py::init<const std::string&>());
-        //.def("init", &backend::OneHotEncoder::init)
-        //.def("bind", &backend::OneHotEncoder::bind); 
+    m.def("_OneHotEncoder", [](py::str name, py::list _cats_int64s , int _zeros , py::str _cats_strings , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::OneHotEncoder>(std::string(name));
+        //layer->init(_cats_int64s, _zeros);    
+        //layer->bind(_cats_strings, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_IsNaN(py::module&);
 #include "./layers/isnan.h"
 void init_layer_IsNaN(py::module& m){
-    py::class_<backend::IsNaN>(m, "_IsNaN").def(py::init<const std::string&>());
-        //.def("init", &backend::IsNaN::init)
-        //.def("bind", &backend::IsNaN::bind); 
+    m.def("_IsNaN", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::IsNaN>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceMean(py::module&);
 #include "./layers/reducemean.h"
 void init_layer_ReduceMean(py::module& m){
-    py::class_<backend::ReduceMean>(m, "_ReduceMean").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceMean::init)
-        //.def("bind", &backend::ReduceMean::bind); 
+    m.def("_ReduceMean", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceMean>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceMin(py::module&);
 #include "./layers/reducemin.h"
 void init_layer_ReduceMin(py::module& m){
-    py::class_<backend::ReduceMin>(m, "_ReduceMin").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceMin::init)
-        //.def("bind", &backend::ReduceMin::bind); 
+    m.def("_ReduceMin", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceMin>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_TreeEnsembleRegressor(py::module&);
 #include "./layers/treeensembleregressor.h"
 void init_layer_TreeEnsembleRegressor(py::module& m){
-    py::class_<backend::TreeEnsembleRegressor>(m, "_TreeEnsembleRegressor").def(py::init<const std::string&>());
-        //.def("init", &backend::TreeEnsembleRegressor::init)
-        //.def("bind", &backend::TreeEnsembleRegressor::bind); 
+    m.def("_TreeEnsembleRegressor", [](py::str name, int _aggregate_function , int _n_targets , py::list _nodes_falsenodeids , py::list _nodes_featureids , py::list _nodes_missing_value_tracks_true , py::list _nodes_nodeids , py::list _nodes_treeids , py::list _nodes_truenodeids , int _post_transform , py::list _target_ids , py::list _target_nodeids , py::list _target_treeids , py::str _base_values , py::str _nodes_hitrates , py::str _nodes_modes , py::str _nodes_values , py::str _target_weights , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::TreeEnsembleRegressor>(std::string(name));
+        //layer->init(_aggregate_function, _n_targets, _nodes_falsenodeids, _nodes_featureids, _nodes_missing_value_tracks_true, _nodes_nodeids, _nodes_treeids, _nodes_truenodeids, _post_transform, _target_ids, _target_nodeids, _target_treeids);    
+        //layer->bind(_base_values, _nodes_hitrates, _nodes_modes, _nodes_values, _target_weights, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceProd(py::module&);
 #include "./layers/reduceprod.h"
 void init_layer_ReduceProd(py::module& m){
-    py::class_<backend::ReduceProd>(m, "_ReduceProd").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceProd::init)
-        //.def("bind", &backend::ReduceProd::bind); 
+    m.def("_ReduceProd", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceProd>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceSum(py::module&);
 #include "./layers/reducesum.h"
 void init_layer_ReduceSum(py::module& m){
-    py::class_<backend::ReduceSum>(m, "_ReduceSum").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceSum::init)
-        //.def("bind", &backend::ReduceSum::bind); 
+    m.def("_ReduceSum", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceSum>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ReduceSumSquare(py::module&);
 #include "./layers/reducesumsquare.h"
 void init_layer_ReduceSumSquare(py::module& m){
-    py::class_<backend::ReduceSumSquare>(m, "_ReduceSumSquare").def(py::init<const std::string&>());
-        //.def("init", &backend::ReduceSumSquare::init)
-        //.def("bind", &backend::ReduceSumSquare::bind); 
+    m.def("_ReduceSumSquare", [](py::str name, py::list _axes , int _keepdims , py::str _data_i , py::str _reduced_o) {
+        auto layer = backend::createInstance<backend::ReduceSumSquare>(std::string(name));
+        //layer->init(_axes, _keepdims);    
+        //layer->bind(_data_i, _reduced_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Relu(py::module&);
 #include "./layers/relu.h"
 void init_layer_Relu(py::module& m){
-    py::class_<backend::Relu>(m, "_Relu").def(py::init<const std::string&>());
-        //.def("init", &backend::Relu::init)
-        //.def("bind", &backend::Relu::bind); 
+    m.def("_Relu", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Relu>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Reshape(py::module&);
 #include "./layers/reshape.h"
 void init_layer_Reshape(py::module& m){
-    py::class_<backend::Reshape>(m, "_Reshape").def(py::init<const std::string&>());
-        //.def("init", &backend::Reshape::init)
-        //.def("bind", &backend::Reshape::bind); 
+    m.def("_Reshape", [](py::str name, py::str _data_i , py::str _shape_i , py::str _reshaped_o) {
+        auto layer = backend::createInstance<backend::Reshape>(std::string(name));
+        //layer->init();    
+        //layer->bind(_data_i, _shape_i, _reshaped_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Shape(py::module&);
 #include "./layers/shape.h"
 void init_layer_Shape(py::module& m){
-    py::class_<backend::Shape>(m, "_Shape").def(py::init<const std::string&>());
-        //.def("init", &backend::Shape::init)
-        //.def("bind", &backend::Shape::bind); 
+    m.def("_Shape", [](py::str name, py::str _data_i , py::str _shape_o) {
+        auto layer = backend::createInstance<backend::Shape>(std::string(name));
+        //layer->init();    
+        //layer->bind(_data_i, _shape_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Sigmoid(py::module&);
 #include "./layers/sigmoid.h"
 void init_layer_Sigmoid(py::module& m){
-    py::class_<backend::Sigmoid>(m, "_Sigmoid").def(py::init<const std::string&>());
-        //.def("init", &backend::Sigmoid::init)
-        //.def("bind", &backend::Sigmoid::bind); 
+    m.def("_Sigmoid", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Sigmoid>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Size(py::module&);
 #include "./layers/size.h"
 void init_layer_Size(py::module& m){
-    py::class_<backend::Size>(m, "_Size").def(py::init<const std::string&>());
-        //.def("init", &backend::Size::init)
-        //.def("bind", &backend::Size::bind); 
+    m.def("_Size", [](py::str name, py::str _data_i , py::str _size_o) {
+        auto layer = backend::createInstance<backend::Size>(std::string(name));
+        //layer->init();    
+        //layer->bind(_data_i, _size_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Softmax(py::module&);
 #include "./layers/softmax.h"
 void init_layer_Softmax(py::module& m){
-    py::class_<backend::Softmax>(m, "_Softmax").def(py::init<const std::string&>());
-        //.def("init", &backend::Softmax::init)
-        //.def("bind", &backend::Softmax::bind); 
+    m.def("_Softmax", [](py::str name, int _axis , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Softmax>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Softplus(py::module&);
 #include "./layers/softplus.h"
 void init_layer_Softplus(py::module& m){
-    py::class_<backend::Softplus>(m, "_Softplus").def(py::init<const std::string&>());
-        //.def("init", &backend::Softplus::init)
-        //.def("bind", &backend::Softplus::bind); 
+    m.def("_Softplus", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Softplus>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Softsign(py::module&);
 #include "./layers/softsign.h"
 void init_layer_Softsign(py::module& m){
-    py::class_<backend::Softsign>(m, "_Softsign").def(py::init<const std::string&>());
-        //.def("init", &backend::Softsign::init)
-        //.def("bind", &backend::Softsign::bind); 
+    m.def("_Softsign", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Softsign>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_SpaceToDepth(py::module&);
 #include "./layers/spacetodepth.h"
 void init_layer_SpaceToDepth(py::module& m){
-    py::class_<backend::SpaceToDepth>(m, "_SpaceToDepth").def(py::init<const std::string&>());
-        //.def("init", &backend::SpaceToDepth::init)
-        //.def("bind", &backend::SpaceToDepth::bind); 
+    m.def("_SpaceToDepth", [](py::str name, int _blocksize , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::SpaceToDepth>(std::string(name));
+        //layer->init(_blocksize);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_TfIdfVectorizer(py::module&);
 #include "./layers/tfidfvectorizer.h"
 void init_layer_TfIdfVectorizer(py::module& m){
-    py::class_<backend::TfIdfVectorizer>(m, "_TfIdfVectorizer").def(py::init<const std::string&>());
-        //.def("init", &backend::TfIdfVectorizer::init)
-        //.def("bind", &backend::TfIdfVectorizer::bind); 
+    m.def("_TfIdfVectorizer", [](py::str name, int _max_gram_length , int _max_skip_count , int _min_gram_length , int _mode , py::list _ngram_counts , py::list _ngram_indexes , py::list _pool_int64s , py::str _pool_strings , py::str _weights , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::TfIdfVectorizer>(std::string(name));
+        //layer->init(_max_gram_length, _max_skip_count, _min_gram_length, _mode, _ngram_counts, _ngram_indexes, _pool_int64s);    
+        //layer->bind(_pool_strings, _weights, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Split(py::module&);
 #include "./layers/split.h"
 void init_layer_Split(py::module& m){
-    py::class_<backend::Split>(m, "_Split").def(py::init<const std::string&>());
-        //.def("init", &backend::Split::init)
-        //.def("bind", &backend::Split::bind); 
+    m.def("_Split", [](py::str name, int _axis , py::list _split , py::str _input_i) {
+        auto layer = backend::createInstance<backend::Split>(std::string(name));
+        //layer->init(_axis, _split);    
+        //layer->bind(_input_i); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Imputer(py::module&);
 #include "./layers/imputer.h"
 void init_layer_Imputer(py::module& m){
-    py::class_<backend::Imputer>(m, "_Imputer").def(py::init<const std::string&>());
-        //.def("init", &backend::Imputer::init)
-        //.def("bind", &backend::Imputer::bind); 
+    m.def("_Imputer", [](py::str name, py::list _imputed_value_int64s , float _replaced_value_float , int _replaced_value_int64 , py::str _imputed_value_floats , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Imputer>(std::string(name));
+        //layer->init(_imputed_value_int64s, _replaced_value_float, _replaced_value_int64);    
+        //layer->bind(_imputed_value_floats, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Sqrt(py::module&);
 #include "./layers/sqrt.h"
 void init_layer_Sqrt(py::module& m){
-    py::class_<backend::Sqrt>(m, "_Sqrt").def(py::init<const std::string&>());
-        //.def("init", &backend::Sqrt::init)
-        //.def("bind", &backend::Sqrt::bind); 
+    m.def("_Sqrt", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Sqrt>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Squeeze(py::module&);
 #include "./layers/squeeze.h"
 void init_layer_Squeeze(py::module& m){
-    py::class_<backend::Squeeze>(m, "_Squeeze").def(py::init<const std::string&>());
-        //.def("init", &backend::Squeeze::init)
-        //.def("bind", &backend::Squeeze::bind); 
+    m.def("_Squeeze", [](py::str name, py::list _axes , py::str _data_i , py::str _squeezed_o) {
+        auto layer = backend::createInstance<backend::Squeeze>(std::string(name));
+        //layer->init(_axes);    
+        //layer->bind(_data_i, _squeezed_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_TopK(py::module&);
 #include "./layers/topk.h"
 void init_layer_TopK(py::module& m){
-    py::class_<backend::TopK>(m, "_TopK").def(py::init<const std::string&>());
-        //.def("init", &backend::TopK::init)
-        //.def("bind", &backend::TopK::bind); 
+    m.def("_TopK", [](py::str name, int _axis , py::str _X_i , py::str _K_i , py::str _Values_o , py::str _Indices_o) {
+        auto layer = backend::createInstance<backend::TopK>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_X_i, _K_i, _Values_o, _Indices_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Sub(py::module&);
 #include "./layers/sub.h"
 void init_layer_Sub(py::module& m){
-    py::class_<backend::Sub>(m, "_Sub").def(py::init<const std::string&>());
-        //.def("init", &backend::Sub::init)
-        //.def("bind", &backend::Sub::bind); 
+    m.def("_Sub", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Sub>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Sum(py::module&);
 #include "./layers/sum.h"
 void init_layer_Sum(py::module& m){
-    py::class_<backend::Sum>(m, "_Sum").def(py::init<const std::string&>());
-        //.def("init", &backend::Sum::init)
-        //.def("bind", &backend::Sum::bind); 
+    m.def("_Sum", [](py::str name, py::str _x0_i , py::str _x1_i , py::str _x2_i , py::str _x3_i , py::str _x4_i , py::str _x5_i , py::str _x6_i , py::str _x7_i , py::str _x8_i , py::str _x9_i , py::str _x10_i , py::str _x11_i , py::str _x12_i , py::str _x13_i , py::str _x14_i , py::str _x15_i , py::str _x16_i , py::str _x17_i , py::str _x18_i , py::str _x19_i , py::str _x20_i , py::str _x21_i , py::str _x22_i , py::str _x23_i , py::str _x24_i , py::str _x25_i , py::str _x26_i , py::str _x27_i , py::str _x28_i , py::str _x29_i , py::str _x30_i , py::str _x31_i , py::str _sum_o) {
+        auto layer = backend::createInstance<backend::Sum>(std::string(name));
+        //layer->init();    
+        //layer->bind(_x0_i, _x1_i, _x2_i, _x3_i, _x4_i, _x5_i, _x6_i, _x7_i, _x8_i, _x9_i, _x10_i, _x11_i, _x12_i, _x13_i, _x14_i, _x15_i, _x16_i, _x17_i, _x18_i, _x19_i, _x20_i, _x21_i, _x22_i, _x23_i, _x24_i, _x25_i, _x26_i, _x27_i, _x28_i, _x29_i, _x30_i, _x31_i, _sum_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Shrink(py::module&);
 #include "./layers/shrink.h"
 void init_layer_Shrink(py::module& m){
-    py::class_<backend::Shrink>(m, "_Shrink").def(py::init<const std::string&>());
-        //.def("init", &backend::Shrink::init)
-        //.def("bind", &backend::Shrink::bind); 
+    m.def("_Shrink", [](py::str name, float _bias , float _lambd , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Shrink>(std::string(name));
+        //layer->init(_bias, _lambd);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Tanh(py::module&);
 #include "./layers/tanh.h"
 void init_layer_Tanh(py::module& m){
-    py::class_<backend::Tanh>(m, "_Tanh").def(py::init<const std::string&>());
-        //.def("init", &backend::Tanh::init)
-        //.def("bind", &backend::Tanh::bind); 
+    m.def("_Tanh", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Tanh>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Transpose(py::module&);
 #include "./layers/transpose.h"
 void init_layer_Transpose(py::module& m){
-    py::class_<backend::Transpose>(m, "_Transpose").def(py::init<const std::string&>());
-        //.def("init", &backend::Transpose::init)
-        //.def("bind", &backend::Transpose::bind); 
+    m.def("_Transpose", [](py::str name, py::list _perm , py::str _data_i , py::str _transposed_o) {
+        auto layer = backend::createInstance<backend::Transpose>(std::string(name));
+        //layer->init(_perm);    
+        //layer->bind(_data_i, _transposed_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Unsqueeze(py::module&);
 #include "./layers/unsqueeze.h"
 void init_layer_Unsqueeze(py::module& m){
-    py::class_<backend::Unsqueeze>(m, "_Unsqueeze").def(py::init<const std::string&>());
-        //.def("init", &backend::Unsqueeze::init)
-        //.def("bind", &backend::Unsqueeze::bind); 
+    m.def("_Unsqueeze", [](py::str name, py::list _axes , py::str _data_i , py::str _expanded_o) {
+        auto layer = backend::createInstance<backend::Unsqueeze>(std::string(name));
+        //layer->init(_axes);    
+        //layer->bind(_data_i, _expanded_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_SVMClassifier(py::module&);
 #include "./layers/svmclassifier.h"
 void init_layer_SVMClassifier(py::module& m){
-    py::class_<backend::SVMClassifier>(m, "_SVMClassifier").def(py::init<const std::string&>());
-        //.def("init", &backend::SVMClassifier::init)
-        //.def("bind", &backend::SVMClassifier::bind); 
+    m.def("_SVMClassifier", [](py::str name, py::list _classlabels_ints , int _kernel_type , int _post_transform , py::list _vectors_per_class , py::str _classlabels_strings , py::str _coefficients , py::str _kernel_params , py::str _prob_a , py::str _prob_b , py::str _rho , py::str _support_vectors , py::str _X_i , py::str _Y_o , py::str _Z_o) {
+        auto layer = backend::createInstance<backend::SVMClassifier>(std::string(name));
+        //layer->init(_classlabels_ints, _kernel_type, _post_transform, _vectors_per_class);    
+        //layer->bind(_classlabels_strings, _coefficients, _kernel_params, _prob_a, _prob_b, _rho, _support_vectors, _X_i, _Y_o, _Z_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Xor(py::module&);
 #include "./layers/xor.h"
 void init_layer_Xor(py::module& m){
-    py::class_<backend::Xor>(m, "_Xor").def(py::init<const std::string&>());
-        //.def("init", &backend::Xor::init)
-        //.def("bind", &backend::Xor::bind); 
+    m.def("_Xor", [](py::str name, py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Xor>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Acos(py::module&);
 #include "./layers/acos.h"
 void init_layer_Acos(py::module& m){
-    py::class_<backend::Acos>(m, "_Acos").def(py::init<const std::string&>());
-        //.def("init", &backend::Acos::init)
-        //.def("bind", &backend::Acos::bind); 
+    m.def("_Acos", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Acos>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Asin(py::module&);
 #include "./layers/asin.h"
 void init_layer_Asin(py::module& m){
-    py::class_<backend::Asin>(m, "_Asin").def(py::init<const std::string&>());
-        //.def("init", &backend::Asin::init)
-        //.def("bind", &backend::Asin::bind); 
+    m.def("_Asin", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Asin>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Atan(py::module&);
 #include "./layers/atan.h"
 void init_layer_Atan(py::module& m){
-    py::class_<backend::Atan>(m, "_Atan").def(py::init<const std::string&>());
-        //.def("init", &backend::Atan::init)
-        //.def("bind", &backend::Atan::bind); 
+    m.def("_Atan", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Atan>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Cos(py::module&);
 #include "./layers/cos.h"
 void init_layer_Cos(py::module& m){
-    py::class_<backend::Cos>(m, "_Cos").def(py::init<const std::string&>());
-        //.def("init", &backend::Cos::init)
-        //.def("bind", &backend::Cos::bind); 
+    m.def("_Cos", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Cos>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Sin(py::module&);
 #include "./layers/sin.h"
 void init_layer_Sin(py::module& m){
-    py::class_<backend::Sin>(m, "_Sin").def(py::init<const std::string&>());
-        //.def("init", &backend::Sin::init)
-        //.def("bind", &backend::Sin::bind); 
+    m.def("_Sin", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Sin>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Tan(py::module&);
 #include "./layers/tan.h"
 void init_layer_Tan(py::module& m){
-    py::class_<backend::Tan>(m, "_Tan").def(py::init<const std::string&>());
-        //.def("init", &backend::Tan::init)
-        //.def("bind", &backend::Tan::bind); 
+    m.def("_Tan", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Tan>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Multinomial(py::module&);
 #include "./layers/multinomial.h"
 void init_layer_Multinomial(py::module& m){
-    py::class_<backend::Multinomial>(m, "_Multinomial").def(py::init<const std::string&>());
-        //.def("init", &backend::Multinomial::init)
-        //.def("bind", &backend::Multinomial::bind); 
+    m.def("_Multinomial", [](py::str name, int _dtype , int _sample_size , float _seed , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Multinomial>(std::string(name));
+        //layer->init(_dtype, _sample_size, _seed);    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Scan(py::module&);
 #include "./layers/scan.h"
 void init_layer_Scan(py::module& m){
-    py::class_<backend::Scan>(m, "_Scan").def(py::init<const std::string&>());
-        //.def("init", &backend::Scan::init)
-        //.def("bind", &backend::Scan::bind); 
+    m.def("_Scan", [](py::str name, int _body , int _num_scan_inputs , py::list _scan_input_axes , py::list _scan_input_directions , py::list _scan_output_axes , py::list _scan_output_directions , py::str _x0_i , py::str _x1_i , py::str _x2_i , py::str _x3_i , py::str _x4_i , py::str _x5_i , py::str _x6_i , py::str _x7_i , py::str _x8_i , py::str _x9_i , py::str _x10_i , py::str _x11_i , py::str _x12_i , py::str _x13_i , py::str _x14_i , py::str _x15_i , py::str _x16_i , py::str _x17_i , py::str _x18_i , py::str _x19_i , py::str _x20_i , py::str _x21_i , py::str _x22_i , py::str _x23_i , py::str _x24_i , py::str _x25_i , py::str _x26_i , py::str _x27_i , py::str _x28_i , py::str _x29_i , py::str _x30_i , py::str _x31_i , py::str _y0_o , py::str _y1_o , py::str _y2_o , py::str _y3_o , py::str _y4_o , py::str _y5_o , py::str _y6_o , py::str _y7_o , py::str _y8_o , py::str _y9_o , py::str _y10_o , py::str _y11_o , py::str _y12_o , py::str _y13_o , py::str _y14_o , py::str _y15_o , py::str _y16_o , py::str _y17_o , py::str _y18_o , py::str _y19_o , py::str _y20_o , py::str _y21_o , py::str _y22_o , py::str _y23_o , py::str _y24_o , py::str _y25_o , py::str _y26_o , py::str _y27_o , py::str _y28_o , py::str _y29_o , py::str _y30_o , py::str _y31_o) {
+        auto layer = backend::createInstance<backend::Scan>(std::string(name));
+        //layer->init(_body, _num_scan_inputs, _scan_input_axes, _scan_input_directions, _scan_output_axes, _scan_output_directions);    
+        //layer->bind(_x0_i, _x1_i, _x2_i, _x3_i, _x4_i, _x5_i, _x6_i, _x7_i, _x8_i, _x9_i, _x10_i, _x11_i, _x12_i, _x13_i, _x14_i, _x15_i, _x16_i, _x17_i, _x18_i, _x19_i, _x20_i, _x21_i, _x22_i, _x23_i, _x24_i, _x25_i, _x26_i, _x27_i, _x28_i, _x29_i, _x30_i, _x31_i, _y0_o, _y1_o, _y2_o, _y3_o, _y4_o, _y5_o, _y6_o, _y7_o, _y8_o, _y9_o, _y10_o, _y11_o, _y12_o, _y13_o, _y14_o, _y15_o, _y16_o, _y17_o, _y18_o, _y19_o, _y20_o, _y21_o, _y22_o, _y23_o, _y24_o, _y25_o, _y26_o, _y27_o, _y28_o, _y29_o, _y30_o, _y31_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Compress(py::module&);
 #include "./layers/compress.h"
 void init_layer_Compress(py::module& m){
-    py::class_<backend::Compress>(m, "_Compress").def(py::init<const std::string&>());
-        //.def("init", &backend::Compress::init)
-        //.def("bind", &backend::Compress::bind); 
+    m.def("_Compress", [](py::str name, int _axis , py::str _input_i , py::str _condition_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Compress>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_input_i, _condition_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ConstantOfShape(py::module&);
 #include "./layers/constantofshape.h"
 void init_layer_ConstantOfShape(py::module& m){
-    py::class_<backend::ConstantOfShape>(m, "_ConstantOfShape").def(py::init<const std::string&>());
-        //.def("init", &backend::ConstantOfShape::init)
-        //.def("bind", &backend::ConstantOfShape::bind); 
+    m.def("_ConstantOfShape", [](py::str name, py::str _value , py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::ConstantOfShape>(std::string(name));
+        //layer->init();    
+        //layer->bind(_value, _input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_MaxUnpool(py::module&);
 #include "./layers/maxunpool.h"
 void init_layer_MaxUnpool(py::module& m){
-    py::class_<backend::MaxUnpool>(m, "_MaxUnpool").def(py::init<const std::string&>());
-        //.def("init", &backend::MaxUnpool::init)
-        //.def("bind", &backend::MaxUnpool::bind); 
+    m.def("_MaxUnpool", [](py::str name, py::list _kernel_shape , py::list _pads , py::list _strides , py::str _X_i , py::str _I_i , py::str _output_shape_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::MaxUnpool>(std::string(name));
+        //layer->init(_kernel_shape, _pads, _strides);    
+        //layer->bind(_X_i, _I_i, _output_shape_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Scatter(py::module&);
 #include "./layers/scatter.h"
 void init_layer_Scatter(py::module& m){
-    py::class_<backend::Scatter>(m, "_Scatter").def(py::init<const std::string&>());
-        //.def("init", &backend::Scatter::init)
-        //.def("bind", &backend::Scatter::bind); 
+    m.def("_Scatter", [](py::str name, int _axis , py::str _data_i , py::str _indices_i , py::str _updates_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Scatter>(std::string(name));
+        //layer->init(_axis);    
+        //layer->bind(_data_i, _indices_i, _updates_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Sinh(py::module&);
 #include "./layers/sinh.h"
 void init_layer_Sinh(py::module& m){
-    py::class_<backend::Sinh>(m, "_Sinh").def(py::init<const std::string&>());
-        //.def("init", &backend::Sinh::init)
-        //.def("bind", &backend::Sinh::bind); 
+    m.def("_Sinh", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Sinh>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Cosh(py::module&);
 #include "./layers/cosh.h"
 void init_layer_Cosh(py::module& m){
-    py::class_<backend::Cosh>(m, "_Cosh").def(py::init<const std::string&>());
-        //.def("init", &backend::Cosh::init)
-        //.def("bind", &backend::Cosh::bind); 
+    m.def("_Cosh", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Cosh>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Asinh(py::module&);
 #include "./layers/asinh.h"
 void init_layer_Asinh(py::module& m){
-    py::class_<backend::Asinh>(m, "_Asinh").def(py::init<const std::string&>());
-        //.def("init", &backend::Asinh::init)
-        //.def("bind", &backend::Asinh::bind); 
+    m.def("_Asinh", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Asinh>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Acosh(py::module&);
 #include "./layers/acosh.h"
 void init_layer_Acosh(py::module& m){
-    py::class_<backend::Acosh>(m, "_Acosh").def(py::init<const std::string&>());
-        //.def("init", &backend::Acosh::init)
-        //.def("bind", &backend::Acosh::bind); 
+    m.def("_Acosh", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Acosh>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_NonMaxSuppression(py::module&);
 #include "./layers/nonmaxsuppression.h"
 void init_layer_NonMaxSuppression(py::module& m){
-    py::class_<backend::NonMaxSuppression>(m, "_NonMaxSuppression").def(py::init<const std::string&>());
-        //.def("init", &backend::NonMaxSuppression::init)
-        //.def("bind", &backend::NonMaxSuppression::bind); 
+    m.def("_NonMaxSuppression", [](py::str name, int _center_point_box , py::str _boxes_i , py::str _scores_i , py::str _max_output_boxes_per_class_i , py::str _iou_threshold_i , py::str _score_threshold_i , py::str _selected_indices_o) {
+        auto layer = backend::createInstance<backend::NonMaxSuppression>(std::string(name));
+        //layer->init(_center_point_box);    
+        //layer->bind(_boxes_i, _scores_i, _max_output_boxes_per_class_i, _iou_threshold_i, _score_threshold_i, _selected_indices_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Atanh(py::module&);
 #include "./layers/atanh.h"
 void init_layer_Atanh(py::module& m){
-    py::class_<backend::Atanh>(m, "_Atanh").def(py::init<const std::string&>());
-        //.def("init", &backend::Atanh::init)
-        //.def("bind", &backend::Atanh::bind); 
+    m.def("_Atanh", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Atanh>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Sign(py::module&);
 #include "./layers/sign.h"
 void init_layer_Sign(py::module& m){
-    py::class_<backend::Sign>(m, "_Sign").def(py::init<const std::string&>());
-        //.def("init", &backend::Sign::init)
-        //.def("bind", &backend::Sign::bind); 
+    m.def("_Sign", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Sign>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Erf(py::module&);
 #include "./layers/erf.h"
 void init_layer_Erf(py::module& m){
-    py::class_<backend::Erf>(m, "_Erf").def(py::init<const std::string&>());
-        //.def("init", &backend::Erf::init)
-        //.def("bind", &backend::Erf::bind); 
+    m.def("_Erf", [](py::str name, py::str _input_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Erf>(std::string(name));
+        //layer->init();    
+        //layer->bind(_input_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Where(py::module&);
 #include "./layers/where.h"
 void init_layer_Where(py::module& m){
-    py::class_<backend::Where>(m, "_Where").def(py::init<const std::string&>());
-        //.def("init", &backend::Where::init)
-        //.def("bind", &backend::Where::bind); 
+    m.def("_Where", [](py::str name, py::str _condition_i , py::str _X_i , py::str _Y_i , py::str _output_o) {
+        auto layer = backend::createInstance<backend::Where>(std::string(name));
+        //layer->init();    
+        //layer->bind(_condition_i, _X_i, _Y_i, _output_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_NonZero(py::module&);
 #include "./layers/nonzero.h"
 void init_layer_NonZero(py::module& m){
-    py::class_<backend::NonZero>(m, "_NonZero").def(py::init<const std::string&>());
-        //.def("init", &backend::NonZero::init)
-        //.def("bind", &backend::NonZero::bind); 
+    m.def("_NonZero", [](py::str name, py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::NonZero>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_MeanVarianceNormalization(py::module&);
 #include "./layers/meanvariancenormalization.h"
 void init_layer_MeanVarianceNormalization(py::module& m){
-    py::class_<backend::MeanVarianceNormalization>(m, "_MeanVarianceNormalization").def(py::init<const std::string&>());
-        //.def("init", &backend::MeanVarianceNormalization::init)
-        //.def("bind", &backend::MeanVarianceNormalization::bind); 
+    m.def("_MeanVarianceNormalization", [](py::str name, py::list _axes , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::MeanVarianceNormalization>(std::string(name));
+        //layer->init(_axes);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_StringNormalizer(py::module&);
 #include "./layers/stringnormalizer.h"
 void init_layer_StringNormalizer(py::module& m){
-    py::class_<backend::StringNormalizer>(m, "_StringNormalizer").def(py::init<const std::string&>());
-        //.def("init", &backend::StringNormalizer::init)
-        //.def("bind", &backend::StringNormalizer::bind); 
+    m.def("_StringNormalizer", [](py::str name, int _case_change_action , int _is_case_sensitive , int _locale , py::str _stopwords , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::StringNormalizer>(std::string(name));
+        //layer->init(_case_change_action, _is_case_sensitive, _locale);    
+        //layer->bind(_stopwords, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Mod(py::module&);
 #include "./layers/mod.h"
 void init_layer_Mod(py::module& m){
-    py::class_<backend::Mod>(m, "_Mod").def(py::init<const std::string&>());
-        //.def("init", &backend::Mod::init)
-        //.def("bind", &backend::Mod::bind); 
+    m.def("_Mod", [](py::str name, int _fmod , py::str _A_i , py::str _B_i , py::str _C_o) {
+        auto layer = backend::createInstance<backend::Mod>(std::string(name));
+        //layer->init(_fmod);    
+        //layer->bind(_A_i, _B_i, _C_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ThresholdedRelu(py::module&);
 #include "./layers/thresholdedrelu.h"
 void init_layer_ThresholdedRelu(py::module& m){
-    py::class_<backend::ThresholdedRelu>(m, "_ThresholdedRelu").def(py::init<const std::string&>());
-        //.def("init", &backend::ThresholdedRelu::init)
-        //.def("bind", &backend::ThresholdedRelu::bind); 
+    m.def("_ThresholdedRelu", [](py::str name, float _alpha , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::ThresholdedRelu>(std::string(name));
+        //layer->init(_alpha);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_MatMulInteger(py::module&);
 #include "./layers/matmulinteger.h"
 void init_layer_MatMulInteger(py::module& m){
-    py::class_<backend::MatMulInteger>(m, "_MatMulInteger").def(py::init<const std::string&>());
-        //.def("init", &backend::MatMulInteger::init)
-        //.def("bind", &backend::MatMulInteger::bind); 
+    m.def("_MatMulInteger", [](py::str name, py::str _A_i , py::str _B_i , py::str _a_zero_point_i , py::str _b_zero_point_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::MatMulInteger>(std::string(name));
+        //layer->init();    
+        //layer->bind(_A_i, _B_i, _a_zero_point_i, _b_zero_point_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_QLinearMatMul(py::module&);
 #include "./layers/qlinearmatmul.h"
 void init_layer_QLinearMatMul(py::module& m){
-    py::class_<backend::QLinearMatMul>(m, "_QLinearMatMul").def(py::init<const std::string&>());
-        //.def("init", &backend::QLinearMatMul::init)
-        //.def("bind", &backend::QLinearMatMul::bind); 
+    m.def("_QLinearMatMul", [](py::str name, py::str _a_i , py::str _a_scale_i , py::str _a_zero_point_i , py::str _b_i , py::str _b_scale_i , py::str _b_zero_point_i , py::str _y_scale_i , py::str _y_zero_point_i , py::str _y_o) {
+        auto layer = backend::createInstance<backend::QLinearMatMul>(std::string(name));
+        //layer->init();    
+        //layer->bind(_a_i, _a_scale_i, _a_zero_point_i, _b_i, _b_scale_i, _b_zero_point_i, _y_scale_i, _y_zero_point_i, _y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ConvInteger(py::module&);
 #include "./layers/convinteger.h"
 void init_layer_ConvInteger(py::module& m){
-    py::class_<backend::ConvInteger>(m, "_ConvInteger").def(py::init<const std::string&>());
-        //.def("init", &backend::ConvInteger::init)
-        //.def("bind", &backend::ConvInteger::bind); 
+    m.def("_ConvInteger", [](py::str name, int _auto_pad , py::list _dilations , int _group , py::list _kernel_shape , py::list _pads , py::list _strides , py::str _x_i , py::str _w_i , py::str _x_zero_point_i , py::str _w_zero_point_i , py::str _y_o) {
+        auto layer = backend::createInstance<backend::ConvInteger>(std::string(name));
+        //layer->init(_auto_pad, _dilations, _group, _kernel_shape, _pads, _strides);    
+        //layer->bind(_x_i, _w_i, _x_zero_point_i, _w_zero_point_i, _y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_QLinearConv(py::module&);
 #include "./layers/qlinearconv.h"
 void init_layer_QLinearConv(py::module& m){
-    py::class_<backend::QLinearConv>(m, "_QLinearConv").def(py::init<const std::string&>());
-        //.def("init", &backend::QLinearConv::init)
-        //.def("bind", &backend::QLinearConv::bind); 
+    m.def("_QLinearConv", [](py::str name, int _auto_pad , py::list _dilations , int _group , py::list _kernel_shape , py::list _pads , py::list _strides , py::str _x_i , py::str _x_scale_i , py::str _x_zero_point_i , py::str _w_i , py::str _w_scale_i , py::str _w_zero_point_i , py::str _y_scale_i , py::str _y_zero_point_i , py::str _B_i , py::str _y_o) {
+        auto layer = backend::createInstance<backend::QLinearConv>(std::string(name));
+        //layer->init(_auto_pad, _dilations, _group, _kernel_shape, _pads, _strides);    
+        //layer->bind(_x_i, _x_scale_i, _x_zero_point_i, _w_i, _w_scale_i, _w_zero_point_i, _y_scale_i, _y_zero_point_i, _B_i, _y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_QuantizeLinear(py::module&);
 #include "./layers/quantizelinear.h"
 void init_layer_QuantizeLinear(py::module& m){
-    py::class_<backend::QuantizeLinear>(m, "_QuantizeLinear").def(py::init<const std::string&>());
-        //.def("init", &backend::QuantizeLinear::init)
-        //.def("bind", &backend::QuantizeLinear::bind); 
+    m.def("_QuantizeLinear", [](py::str name, py::str _x_i , py::str _y_scale_i , py::str _y_zero_point_i , py::str _y_o) {
+        auto layer = backend::createInstance<backend::QuantizeLinear>(std::string(name));
+        //layer->init();    
+        //layer->bind(_x_i, _y_scale_i, _y_zero_point_i, _y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_DequantizeLinear(py::module&);
 #include "./layers/dequantizelinear.h"
 void init_layer_DequantizeLinear(py::module& m){
-    py::class_<backend::DequantizeLinear>(m, "_DequantizeLinear").def(py::init<const std::string&>());
-        //.def("init", &backend::DequantizeLinear::init)
-        //.def("bind", &backend::DequantizeLinear::bind); 
+    m.def("_DequantizeLinear", [](py::str name, py::str _x_i , py::str _x_scale_i , py::str _x_zero_point_i , py::str _y_o) {
+        auto layer = backend::createInstance<backend::DequantizeLinear>(std::string(name));
+        //layer->init();    
+        //layer->bind(_x_i, _x_scale_i, _x_zero_point_i, _y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_IsInf(py::module&);
 #include "./layers/isinf.h"
 void init_layer_IsInf(py::module& m){
-    py::class_<backend::IsInf>(m, "_IsInf").def(py::init<const std::string&>());
-        //.def("init", &backend::IsInf::init)
-        //.def("bind", &backend::IsInf::bind); 
+    m.def("_IsInf", [](py::str name, int _detect_negative , int _detect_positive , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::IsInf>(std::string(name));
+        //layer->init(_detect_negative, _detect_positive);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_RoiAlign(py::module&);
 #include "./layers/roialign.h"
 void init_layer_RoiAlign(py::module& m){
-    py::class_<backend::RoiAlign>(m, "_RoiAlign").def(py::init<const std::string&>());
-        //.def("init", &backend::RoiAlign::init)
-        //.def("bind", &backend::RoiAlign::bind); 
+    m.def("_RoiAlign", [](py::str name, int _mode , int _output_height , int _output_width , int _sampling_ratio , float _spatial_scale , py::str _X_i , py::str _rois_i , py::str _batch_indices_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::RoiAlign>(std::string(name));
+        //layer->init(_mode, _output_height, _output_width, _sampling_ratio, _spatial_scale);    
+        //layer->bind(_X_i, _rois_i, _batch_indices_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ArrayFeatureExtractor(py::module&);
 #include "./layers/arrayfeatureextractor.h"
 void init_layer_ArrayFeatureExtractor(py::module& m){
-    py::class_<backend::ArrayFeatureExtractor>(m, "_ArrayFeatureExtractor").def(py::init<const std::string&>());
-        //.def("init", &backend::ArrayFeatureExtractor::init)
-        //.def("bind", &backend::ArrayFeatureExtractor::bind); 
+    m.def("_ArrayFeatureExtractor", [](py::str name, py::str _X_i , py::str _Y_i , py::str _Z_o) {
+        auto layer = backend::createInstance<backend::ArrayFeatureExtractor>(std::string(name));
+        //layer->init();    
+        //layer->bind(_X_i, _Y_i, _Z_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Binarizer(py::module&);
 #include "./layers/binarizer.h"
 void init_layer_Binarizer(py::module& m){
-    py::class_<backend::Binarizer>(m, "_Binarizer").def(py::init<const std::string&>());
-        //.def("init", &backend::Binarizer::init)
-        //.def("bind", &backend::Binarizer::bind); 
+    m.def("_Binarizer", [](py::str name, float _threshold , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Binarizer>(std::string(name));
+        //layer->init(_threshold);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_CategoryMapper(py::module&);
 #include "./layers/categorymapper.h"
 void init_layer_CategoryMapper(py::module& m){
-    py::class_<backend::CategoryMapper>(m, "_CategoryMapper").def(py::init<const std::string&>());
-        //.def("init", &backend::CategoryMapper::init)
-        //.def("bind", &backend::CategoryMapper::bind); 
+    m.def("_CategoryMapper", [](py::str name, py::list _cats_int64s , int _default_int64 , int _default_string , py::str _cats_strings , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::CategoryMapper>(std::string(name));
+        //layer->init(_cats_int64s, _default_int64, _default_string);    
+        //layer->bind(_cats_strings, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_DictVectorizer(py::module&);
 #include "./layers/dictvectorizer.h"
 void init_layer_DictVectorizer(py::module& m){
-    py::class_<backend::DictVectorizer>(m, "_DictVectorizer").def(py::init<const std::string&>());
-        //.def("init", &backend::DictVectorizer::init)
-        //.def("bind", &backend::DictVectorizer::bind); 
+    m.def("_DictVectorizer", [](py::str name, py::list _int64_vocabulary , py::str _string_vocabulary , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::DictVectorizer>(std::string(name));
+        //layer->init(_int64_vocabulary);    
+        //layer->bind(_string_vocabulary, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_FeatureVectorizer(py::module&);
 #include "./layers/featurevectorizer.h"
 void init_layer_FeatureVectorizer(py::module& m){
-    py::class_<backend::FeatureVectorizer>(m, "_FeatureVectorizer").def(py::init<const std::string&>());
-        //.def("init", &backend::FeatureVectorizer::init)
-        //.def("bind", &backend::FeatureVectorizer::bind); 
+    m.def("_FeatureVectorizer", [](py::str name, py::list _inputdimensions , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::FeatureVectorizer>(std::string(name));
+        //layer->init(_inputdimensions);    
+        //layer->bind(_Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_LabelEncoder(py::module&);
 #include "./layers/labelencoder.h"
 void init_layer_LabelEncoder(py::module& m){
-    py::class_<backend::LabelEncoder>(m, "_LabelEncoder").def(py::init<const std::string&>());
-        //.def("init", &backend::LabelEncoder::init)
-        //.def("bind", &backend::LabelEncoder::bind); 
+    m.def("_LabelEncoder", [](py::str name, float _default_float , int _default_int64 , int _default_string , py::list _keys_int64s , py::list _values_int64s , py::str _keys_floats , py::str _keys_strings , py::str _values_floats , py::str _values_strings , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::LabelEncoder>(std::string(name));
+        //layer->init(_default_float, _default_int64, _default_string, _keys_int64s, _values_int64s);    
+        //layer->bind(_keys_floats, _keys_strings, _values_floats, _values_strings, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_LinearClassifier(py::module&);
 #include "./layers/linearclassifier.h"
 void init_layer_LinearClassifier(py::module& m){
-    py::class_<backend::LinearClassifier>(m, "_LinearClassifier").def(py::init<const std::string&>());
-        //.def("init", &backend::LinearClassifier::init)
-        //.def("bind", &backend::LinearClassifier::bind); 
+    m.def("_LinearClassifier", [](py::str name, py::list _classlabels_ints , int _multi_class , int _post_transform , py::str _coefficients , py::str _classlabels_strings , py::str _intercepts , py::str _X_i , py::str _Y_o , py::str _Z_o) {
+        auto layer = backend::createInstance<backend::LinearClassifier>(std::string(name));
+        //layer->init(_classlabels_ints, _multi_class, _post_transform);    
+        //layer->bind(_coefficients, _classlabels_strings, _intercepts, _X_i, _Y_o, _Z_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_LinearRegressor(py::module&);
 #include "./layers/linearregressor.h"
 void init_layer_LinearRegressor(py::module& m){
-    py::class_<backend::LinearRegressor>(m, "_LinearRegressor").def(py::init<const std::string&>());
-        //.def("init", &backend::LinearRegressor::init)
-        //.def("bind", &backend::LinearRegressor::bind); 
+    m.def("_LinearRegressor", [](py::str name, int _post_transform , int _targets , py::str _coefficients , py::str _intercepts , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::LinearRegressor>(std::string(name));
+        //layer->init(_post_transform, _targets);    
+        //layer->bind(_coefficients, _intercepts, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Normalizer(py::module&);
 #include "./layers/normalizer.h"
 void init_layer_Normalizer(py::module& m){
-    py::class_<backend::Normalizer>(m, "_Normalizer").def(py::init<const std::string&>());
-        //.def("init", &backend::Normalizer::init)
-        //.def("bind", &backend::Normalizer::bind); 
+    m.def("_Normalizer", [](py::str name, int _norm , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Normalizer>(std::string(name));
+        //layer->init(_norm);    
+        //layer->bind(_X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_SVMRegressor(py::module&);
 #include "./layers/svmregressor.h"
 void init_layer_SVMRegressor(py::module& m){
-    py::class_<backend::SVMRegressor>(m, "_SVMRegressor").def(py::init<const std::string&>());
-        //.def("init", &backend::SVMRegressor::init)
-        //.def("bind", &backend::SVMRegressor::bind); 
+    m.def("_SVMRegressor", [](py::str name, int _kernel_type , int _n_supports , int _one_class , int _post_transform , py::str _coefficients , py::str _kernel_params , py::str _rho , py::str _support_vectors , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::SVMRegressor>(std::string(name));
+        //layer->init(_kernel_type, _n_supports, _one_class, _post_transform);    
+        //layer->bind(_coefficients, _kernel_params, _rho, _support_vectors, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_Scaler(py::module&);
 #include "./layers/scaler.h"
 void init_layer_Scaler(py::module& m){
-    py::class_<backend::Scaler>(m, "_Scaler").def(py::init<const std::string&>());
-        //.def("init", &backend::Scaler::init)
-        //.def("bind", &backend::Scaler::bind); 
+    m.def("_Scaler", [](py::str name, py::str _offset , py::str _scale , py::str _X_i , py::str _Y_o) {
+        auto layer = backend::createInstance<backend::Scaler>(std::string(name));
+        //layer->init();    
+        //layer->bind(_offset, _scale, _X_i, _Y_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_TreeEnsembleClassifier(py::module&);
 #include "./layers/treeensembleclassifier.h"
 void init_layer_TreeEnsembleClassifier(py::module& m){
-    py::class_<backend::TreeEnsembleClassifier>(m, "_TreeEnsembleClassifier").def(py::init<const std::string&>());
-        //.def("init", &backend::TreeEnsembleClassifier::init)
-        //.def("bind", &backend::TreeEnsembleClassifier::bind); 
+    m.def("_TreeEnsembleClassifier", [](py::str name, py::list _class_ids , py::list _class_nodeids , py::list _class_treeids , py::list _classlabels_int64s , py::list _nodes_falsenodeids , py::list _nodes_featureids , py::list _nodes_missing_value_tracks_true , py::list _nodes_nodeids , py::list _nodes_treeids , py::list _nodes_truenodeids , int _post_transform , py::str _base_values , py::str _class_weights , py::str _classlabels_strings , py::str _nodes_hitrates , py::str _nodes_modes , py::str _nodes_values , py::str _X_i , py::str _Y_o , py::str _Z_o) {
+        auto layer = backend::createInstance<backend::TreeEnsembleClassifier>(std::string(name));
+        //layer->init(_class_ids, _class_nodeids, _class_treeids, _classlabels_int64s, _nodes_falsenodeids, _nodes_featureids, _nodes_missing_value_tracks_true, _nodes_nodeids, _nodes_treeids, _nodes_truenodeids, _post_transform);    
+        //layer->bind(_base_values, _class_weights, _classlabels_strings, _nodes_hitrates, _nodes_modes, _nodes_values, _X_i, _Y_o, _Z_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }
 void init_layer_ZipMap(py::module&);
 #include "./layers/zipmap.h"
 void init_layer_ZipMap(py::module& m){
-    py::class_<backend::ZipMap>(m, "_ZipMap").def(py::init<const std::string&>());
-        //.def("init", &backend::ZipMap::init)
-        //.def("bind", &backend::ZipMap::bind); 
+    m.def("_ZipMap", [](py::str name, py::list _classlabels_int64s , py::str _classlabels_strings , py::str _X_i , py::str _Z_o) {
+        auto layer = backend::createInstance<backend::ZipMap>(std::string(name));
+        //layer->init(_classlabels_int64s);    
+        //layer->bind(_classlabels_strings, _X_i, _Z_o); 
+        backend::layer_dict[std::string(name)] = layer;
+    });
 }

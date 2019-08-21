@@ -24,6 +24,7 @@ output: Binarized output data
 //OPTIONAL_PARAMETERS:      threshold
 //OPTIONAL_PARAMETERS_TYPE: float
 
+
 //class stuff
 namespace backend {   
 
@@ -49,17 +50,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Binarizer(const std::string& name);
+        Binarizer(std::string name);
     
         void forward() { program->run(); }
         
-        void init( float _threshold); 
-        void bind(std::string _X_i, std::string _Y_o); 
+        virtual void init( float _threshold); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/binarizer.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+        }
 
         ~Binarizer() {}
     };
-
+   
 }
-
 #endif
 

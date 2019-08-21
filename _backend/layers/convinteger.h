@@ -28,6 +28,7 @@ output: Output data tensor that contains the result of the convolution. The outp
 //OPTIONAL_PARAMETERS:      auto_pad, dilations, group, kernel_shape, pads, strides
 //OPTIONAL_PARAMETERS_TYPE: int, Shape_t, int, Shape_t, Shape_t, Shape_t
 
+
 //class stuff
 namespace backend {   
 
@@ -53,17 +54,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        ConvInteger(const std::string& name);
+        ConvInteger(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _auto_pad,  Shape_t _dilations,  int _group,  Shape_t _kernel_shape,  Shape_t _pads,  Shape_t _strides); 
-        void bind(std::string _x_i, std::string _w_i, std::string _x_zero_point_i, std::string _w_zero_point_i, std::string _y_o); 
+        virtual void init( int _auto_pad,  Shape_t _dilations,  int _group,  Shape_t _kernel_shape,  Shape_t _pads,  Shape_t _strides); 
+        virtual void bind(std::string _x_i, std::string _w_i, std::string _x_zero_point_i, std::string _w_zero_point_i, std::string _y_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/convinteger.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[x_i]->data(), *tensor_dict[w_i]->data(), *tensor_dict[x_zero_point_i]->data(), *tensor_dict[w_zero_point_i]->data(), *tensor_dict[y_o]->data());
+        }
 
         ~ConvInteger() {}
     };
-
+   
 }
-
 #endif
 

@@ -25,6 +25,7 @@ output: The sign of the input tensor computed element-wise. It has the same shap
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
+
 //class stuff
 namespace backend {   
 
@@ -50,17 +51,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Sign(const std::string& name);
+        Sign(std::string name);
     
         void forward() { program->run(); }
         
-        void init(); 
-        void bind(std::string _input_i, std::string _output_o); 
+        virtual void init(); 
+        virtual void bind(std::string _input_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/sign.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~Sign() {}
     };
-
+   
 }
-
 #endif
 

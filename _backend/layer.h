@@ -11,23 +11,21 @@ namespace py = pybind11;
 #include "kernel/vuh.h"
 
 namespace backend {
-
+	
 	static char static_execution = 0;
 	static py::module nn;
-
-	template<typename T> void init_Layer(py::module& m, std::string l) {
-		
-	}
-
+	
 #define PROCESSKERNEL_SIZE 32
 	
 	class Layer
 	{
 	public:
-		Layer(const std::string& name) : name(name) {}
+		Layer(std::string name) : name(name) {}
 		virtual ~Layer() {}
-		virtual void forward() {}
+		//virtual void forward() {}
 		virtual void init() {}
+		virtual void bind() {}
+		virtual void build() {}
 	protected:
 		//virtual void parameter_proc(std::map<std::string, std::vector<std::string>> a()) {}
 		std::vector<std::string> inputs;
@@ -38,6 +36,10 @@ namespace backend {
 	};
 }
 
+namespace backend {
+	template<typename T> Layer* createInstance(std::string n) { { return new T(n); } }
+	static std::map<std::string, Layer*> layer_dict;
+}
 
 
 #endif //!LAYER_H

@@ -58,6 +58,7 @@ output: Tensor of rank r >= 1 (same rank as input).
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
 
+
 //class stuff
 namespace backend {   
 
@@ -83,17 +84,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Scatter(const std::string& name);
+        Scatter(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _axis); 
-        void bind(std::string _data_i, std::string _indices_i, std::string _updates_i, std::string _output_o); 
+        virtual void init( int _axis); 
+        virtual void bind(std::string _data_i, std::string _indices_i, std::string _updates_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scatter.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[indices_i]->data(), *tensor_dict[updates_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~Scatter() {}
     };
-
+   
 }
-
 #endif
 

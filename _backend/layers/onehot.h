@@ -37,6 +37,7 @@ output: Tensor of rank one greater than input tensor 'indices', i.e. rank(output
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
 
+
 //class stuff
 namespace backend {   
 
@@ -62,17 +63,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        OneHot(const std::string& name);
+        OneHot(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _axis); 
-        void bind(std::string _indices_i, std::string _depth_i, std::string _values_i, std::string _output_o); 
+        virtual void init( int _axis); 
+        virtual void bind(std::string _indices_i, std::string _depth_i, std::string _values_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/onehot.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[indices_i]->data(), *tensor_dict[depth_i]->data(), *tensor_dict[values_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~OneHot() {}
     };
-
+   
 }
-
 #endif
 

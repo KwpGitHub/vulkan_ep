@@ -25,6 +25,7 @@ output: Class scores (one per class per example), if prob_a and prob_b are provi
 //OPTIONAL_PARAMETERS:      classlabels_ints, classlabels_strings, coefficients, kernel_params, kernel_type, post_transform, prob_a, prob_b, rho, support_vectors, vectors_per_class
 //OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, Tensor*, Tensor*, int, int, Tensor*, Tensor*, Tensor*, Tensor*, Shape_t
 
+
 //class stuff
 namespace backend {   
 
@@ -50,17 +51,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        SVMClassifier(const std::string& name);
+        SVMClassifier(std::string name);
     
         void forward() { program->run(); }
         
-        void init( Shape_t _classlabels_ints,  int _kernel_type,  int _post_transform,  Shape_t _vectors_per_class); 
-        void bind(std::string _classlabels_strings, std::string _coefficients, std::string _kernel_params, std::string _prob_a, std::string _prob_b, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o, std::string _Z_o); 
+        virtual void init( Shape_t _classlabels_ints,  int _kernel_type,  int _post_transform,  Shape_t _vectors_per_class); 
+        virtual void bind(std::string _classlabels_strings, std::string _coefficients, std::string _kernel_params, std::string _prob_a, std::string _prob_b, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o, std::string _Z_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/svmclassifier.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[coefficients]->data(), *tensor_dict[kernel_params]->data(), *tensor_dict[prob_a]->data(), *tensor_dict[prob_b]->data(), *tensor_dict[rho]->data(), *tensor_dict[support_vectors]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Z_o]->data());
+        }
 
         ~SVMClassifier() {}
     };
-
+   
 }
-
 #endif
 

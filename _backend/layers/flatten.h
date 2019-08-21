@@ -26,6 +26,7 @@ output: A 2D tensor with the contents of the input tensor, with input dimensions
 //OPTIONAL_PARAMETERS:      axis
 //OPTIONAL_PARAMETERS_TYPE: int
 
+
 //class stuff
 namespace backend {   
 
@@ -51,17 +52,23 @@ namespace backend {
         vuh::Program<Specs, binding_descriptor>* program;        
 
     public:
-        Flatten(const std::string& name);
+        Flatten(std::string name);
     
         void forward() { program->run(); }
         
-        void init( int _axis); 
-        void bind(std::string _input_i, std::string _output_o); 
+        virtual void init( int _axis); 
+        virtual void bind(std::string _input_i, std::string _output_o); 
+
+        virtual void build(){
+            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/flatten.spv")).c_str());
+            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+            program->spec(64, 64, 64);
+            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
+        }
 
         ~Flatten() {}
     };
-
+   
 }
-
 #endif
 
