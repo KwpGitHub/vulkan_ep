@@ -1,6 +1,7 @@
 #ifndef TENSOR_H
 #define TENSOR_H
 #include <vector>
+#include <string>
 #include <numeric>
 #include <map>
 
@@ -45,7 +46,6 @@ namespace backend {
 	*/
 	static vuh::Instance* instance;
 	static vuh::Device* device;
-	static std::string file_path;
 
 	class Tensor {		
 		
@@ -110,6 +110,7 @@ namespace backend {
 
 namespace backend {
 	static std::map<std::string, Tensor*> tensor_dict;
+	static const char* file_path = "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend\\";
 }
 
 #endif

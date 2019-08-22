@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Filter out boxes that have high intersection-over-union (IOU) overlap with previously selected boxes.
@@ -37,17 +34,16 @@ output: selected indices from the boxes tensor. [num_selected_indices, 3], the s
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class NonMaxSuppression : public Layer {
-        typedef struct {
-            int center_point_box;
-			
-            Shape_t boxes_i; Shape_t scores_i;
-            Shape_t max_output_boxes_per_class_i; Shape_t iou_threshold_i; Shape_t score_threshold_i;
-            Shape_t selected_indices_o;
+    class NonMaxSuppression : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t boxes_i; backend::Shape_t scores_i;
+            backend::Shape_t max_output_boxes_per_class_i; backend::Shape_t iou_threshold_i; backend::Shape_t score_threshold_i;
+            backend::Shape_t selected_indices_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         int center_point_box;
         std::string boxes_i; std::string scores_i;
@@ -67,13 +63,7 @@ namespace backend {
         
         virtual void init( int _center_point_box); 
         virtual void bind(std::string _boxes_i, std::string _scores_i, std::string _max_output_boxes_per_class_i, std::string _iou_threshold_i, std::string _score_threshold_i, std::string _selected_indices_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/nonmaxsuppression.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[boxes_i]->data(), *tensor_dict[scores_i]->data(), *tensor_dict[max_output_boxes_per_class_i]->data(), *tensor_dict[iou_threshold_i]->data(), *tensor_dict[score_threshold_i]->data(), *tensor_dict[selected_indices_o]->data());
-        }
+        virtual void build();
 
         ~NonMaxSuppression() {}
     };

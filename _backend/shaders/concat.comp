@@ -7,13 +7,12 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    int axis;
-			
+  
 //input
     
-    Shape_t x0_i; Shape_t x1_i; Shape_t x2_i; Shape_t x3_i; Shape_t x4_i; Shape_t x5_i; Shape_t x6_i; Shape_t x7_i; Shape_t x8_i; Shape_t x9_i; Shape_t x10_i; Shape_t x11_i; Shape_t x12_i; Shape_t x13_i; Shape_t x14_i; Shape_t x15_i; Shape_t x16_i; Shape_t x17_i; Shape_t x18_i; Shape_t x19_i; Shape_t x20_i; Shape_t x21_i; Shape_t x22_i; Shape_t x23_i; Shape_t x24_i; Shape_t x25_i; Shape_t x26_i; Shape_t x27_i; Shape_t x28_i; Shape_t x29_i; Shape_t x30_i; Shape_t x31_i;
+    backend::Shape_t x0_i; backend::Shape_t x1_i; backend::Shape_t x2_i; backend::Shape_t x3_i; backend::Shape_t x4_i; backend::Shape_t x5_i; backend::Shape_t x6_i; backend::Shape_t x7_i; backend::Shape_t x8_i; backend::Shape_t x9_i; backend::Shape_t x10_i; backend::Shape_t x11_i; backend::Shape_t x12_i; backend::Shape_t x13_i; backend::Shape_t x14_i; backend::Shape_t x15_i; backend::Shape_t x16_i; backend::Shape_t x17_i; backend::Shape_t x18_i; backend::Shape_t x19_i; backend::Shape_t x20_i; backend::Shape_t x21_i; backend::Shape_t x22_i; backend::Shape_t x23_i; backend::Shape_t x24_i; backend::Shape_t x25_i; backend::Shape_t x26_i; backend::Shape_t x27_i; backend::Shape_t x28_i; backend::Shape_t x29_i; backend::Shape_t x30_i; backend::Shape_t x31_i;
 //output
-    Shape_t concat_result_o;
+    backend::Shape_t concat_result_o;
     
 } params;
 
@@ -55,9 +54,8 @@ void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
-    
-    const uint x0_i_size = params.x0_i.n * params.x0_i.c * params.x0_i.d * params.x0_i.w * params.x0_i.h;
+    //
+    //const uint x0_i_size = params.x0_i.n * params.x0_i.c * params.x0_i.d * params.x0_i.w * params.x0_i.h;
 	const uint x1_i_size = params.x1_i.n * params.x1_i.c * params.x1_i.d * params.x1_i.w * params.x1_i.h;
 	const uint x2_i_size = params.x2_i.n * params.x2_i.c * params.x2_i.d * params.x2_i.w * params.x2_i.h;
 	const uint x3_i_size = params.x3_i.n * params.x3_i.c * params.x3_i.d * params.x3_i.w * params.x3_i.h;
@@ -89,10 +87,10 @@ void main(){
 	const uint x29_i_size = params.x29_i.n * params.x29_i.c * params.x29_i.d * params.x29_i.w * params.x29_i.h;
 	const uint x30_i_size = params.x30_i.n * params.x30_i.c * params.x30_i.d * params.x30_i.w * params.x30_i.h;
 	const uint x31_i_size = params.x31_i.n * params.x31_i.c * params.x31_i.d * params.x31_i.w * params.x31_i.h;
-    const uint concat_result_o_size = params.concat_result_o.n * params.concat_result_o.c * params.concat_result_o.d * params.concat_result_o.w * params.concat_result_o.h;
-    
+    //const uint concat_result_o_size = params.concat_result_o.n * params.concat_result_o.c * params.concat_result_o.d * params.concat_result_o.w * params.concat_result_o.h;
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

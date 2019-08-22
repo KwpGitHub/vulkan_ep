@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Generate a tensor with random values drawn from a normal distribution. The shape
@@ -26,25 +23,24 @@ output: Output tensor of random values drawn from normal distribution
 //OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               shape
-//PARAMETER_TYPES:          Shape_t
+//PARAMETER_TYPES:          std::vector<int>
 //OPTIONAL_PARAMETERS:      dtype, mean, scale, seed
 //OPTIONAL_PARAMETERS_TYPE: int, float, float, float
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class RandomNormal : public Layer {
-        typedef struct {
-            Shape_t shape; int dtype; float mean; float scale; float seed;
-			
+    class RandomNormal : public backend::Layer {
+        typedef struct {          
             
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        Shape_t shape; int dtype; float mean; float scale; float seed;
+        std::vector<int> shape; int dtype; float mean; float scale; float seed;
         
         
         std::string output_o;
@@ -60,15 +56,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _shape,  int _dtype,  float _mean,  float _scale,  float _seed); 
+        virtual void init( std::vector<int> _shape,  int _dtype,  float _mean,  float _scale,  float _seed); 
         virtual void bind(std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/randomnormal.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~RandomNormal() {}
     };

@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Takes a tensor as input and outputs a int64 scalar that equals to the total number of elements of the input tensor.
@@ -26,17 +23,16 @@ output: Total number of elements of the input tensor
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Size : public Layer {
-        typedef struct {
+    class Size : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i;
             
-			
-            Shape_t data_i;
-            
-            Shape_t size_o;
+            backend::Shape_t size_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         
         std::string data_i;
@@ -56,13 +52,7 @@ namespace backend {
         
         virtual void init(); 
         virtual void bind(std::string _data_i, std::string _size_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/size.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[size_o]->data());
-        }
+        virtual void build();
 
         ~Size() {}
     };

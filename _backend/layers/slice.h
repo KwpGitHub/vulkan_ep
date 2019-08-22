@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Produces a slice of the input tensor along multiple axes. Similar to numpy:
@@ -63,17 +60,16 @@ output: Sliced data tensor.
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Slice : public Layer {
-        typedef struct {
-            
-			
-            Shape_t data_i; Shape_t starts_i; Shape_t ends_i;
-            Shape_t axes_i; Shape_t steps_i;
-            Shape_t output_o;
+    class Slice : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i; backend::Shape_t starts_i; backend::Shape_t ends_i;
+            backend::Shape_t axes_i; backend::Shape_t steps_i;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         
         std::string data_i; std::string starts_i; std::string ends_i;
@@ -93,13 +89,7 @@ namespace backend {
         
         virtual void init(); 
         virtual void bind(std::string _data_i, std::string _starts_i, std::string _ends_i, std::string _axes_i, std::string _steps_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/slice.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[starts_i]->data(), *tensor_dict[ends_i]->data(), *tensor_dict[axes_i]->data(), *tensor_dict[steps_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Slice() {}
     };

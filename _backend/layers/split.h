@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 Split a tensor into a list of tensors, along the specified
 'axis'. Lengths of the parts can be specified using argument 'split'.
@@ -23,23 +20,22 @@ output: One or more outputs forming list of tensors after splitting
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axis, split
-//OPTIONAL_PARAMETERS_TYPE: int, Shape_t
+//OPTIONAL_PARAMETERS_TYPE: int, std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Split : public Layer {
-        typedef struct {
-            int axis; Shape_t split;
-			
-            Shape_t input_i;
+    class Split : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i;
             
             
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int axis; Shape_t split;
+        int axis; std::vector<int> split;
         std::string input_i;
         
         
@@ -55,15 +51,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _axis,  Shape_t _split); 
+        virtual void init( int _axis,  std::vector<int> _split); 
         virtual void bind(std::string _input_i); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/split.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data());
-        }
+        virtual void build();
 
         ~Split() {}
     };

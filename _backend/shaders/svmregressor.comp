@@ -7,37 +7,28 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    int kernel_type; int n_supports; int one_class; int post_transform;
-			Shape_t coefficients; Shape_t kernel_params; Shape_t rho; Shape_t support_vectors;
+  
 //input
-    Shape_t X_i;
+    backend::Shape_t X_i;
     
 //output
-    Shape_t Y_o;
+    backend::Shape_t Y_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float coefficients[]; };
-layout(std430, binding = 1) buffer lay1 { float kernel_params[]; };
-layout(std430, binding = 2) buffer lay2 { float rho[]; };
-layout(std430, binding = 3) buffer lay3 { float support_vectors[]; };
-layout(std430, binding = 4) buffer lay4 { float X_i[]; };
-layout(std430, binding = 5) buffer lay5 { float Y_o[]; };
+layout(std430, binding = 0) buffer lay0 { float X_i[]; };
+layout(std430, binding = 1) buffer lay1 { float Y_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint coefficients_size = params.coefficients.n * params.coefficients.c * params.coefficients.d * params.coefficients.w * params.coefficients.h;
-	const uint kernel_params_size = params.kernel_params.n * params.kernel_params.c * params.kernel_params.d * params.kernel_params.w * params.kernel_params.h;
-	const uint rho_size = params.rho.n * params.rho.c * params.rho.d * params.rho.w * params.rho.h;
-	const uint support_vectors_size = params.support_vectors.n * params.support_vectors.c * params.support_vectors.d * params.support_vectors.w * params.support_vectors.h;
-    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
-    
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
-    
+    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+    //
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

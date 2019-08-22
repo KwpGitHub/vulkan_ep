@@ -7,13 +7,12 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-			
+  
 //input
-    Shape_t X_i; Shape_t W_i;
-    Shape_t B_i;
+    backend::Shape_t X_i; backend::Shape_t W_i;
+    backend::Shape_t B_i;
 //output
-    Shape_t Y_o;
+    backend::Shape_t Y_o;
     
 } params;
 
@@ -26,14 +25,13 @@ void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
-    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
 	const uint W_i_size = params.W_i.n * params.W_i.c * params.W_i.d * params.W_i.w * params.W_i.h;
-    const uint B_i_size = params.B_i.n * params.B_i.c * params.B_i.d * params.B_i.w * params.B_i.h;
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
-    
+    //const uint B_i_size = params.B_i.n * params.B_i.c * params.B_i.d * params.B_i.w * params.B_i.h;
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Given `data` tensor of rank r >= 1, and `indices` tensor of rank q, gather
@@ -66,17 +63,16 @@ output: Tensor of rank q + (r - 1).
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Gather : public Layer {
-        typedef struct {
-            int axis;
-			
-            Shape_t data_i; Shape_t indices_i;
+    class Gather : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i; backend::Shape_t indices_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         int axis;
         std::string data_i; std::string indices_i;
@@ -96,13 +92,7 @@ namespace backend {
         
         virtual void init( int _axis); 
         virtual void bind(std::string _data_i, std::string _indices_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/gather.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[indices_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Gather() {}
     };

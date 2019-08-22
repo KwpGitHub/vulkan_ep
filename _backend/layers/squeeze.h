@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Remove single-dimensional entries from the shape of a tensor.
@@ -25,23 +22,22 @@ output: Reshaped tensor with same data as input.
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axes
-//OPTIONAL_PARAMETERS_TYPE: Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Squeeze : public Layer {
-        typedef struct {
-            Shape_t axes;
-			
-            Shape_t data_i;
+    class Squeeze : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i;
             
-            Shape_t squeezed_o;
+            backend::Shape_t squeezed_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        Shape_t axes;
+        std::vector<int> axes;
         std::string data_i;
         
         std::string squeezed_o;
@@ -57,15 +53,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _axes); 
+        virtual void init( std::vector<int> _axes); 
         virtual void bind(std::string _data_i, std::string _squeezed_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/squeeze.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[squeezed_o]->data());
-        }
+        virtual void build();
 
         ~Squeeze() {}
     };

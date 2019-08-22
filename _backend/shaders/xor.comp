@@ -7,13 +7,12 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    
-			
+  
 //input
-    Shape_t A_i; Shape_t B_i;
+    backend::Shape_t A_i; backend::Shape_t B_i;
     
 //output
-    Shape_t C_o;
+    backend::Shape_t C_o;
     
 } params;
 
@@ -25,14 +24,13 @@ void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
-    const uint A_i_size = params.A_i.n * params.A_i.c * params.A_i.d * params.A_i.w * params.A_i.h;
+    //const uint A_i_size = params.A_i.n * params.A_i.c * params.A_i.d * params.A_i.w * params.A_i.h;
 	const uint B_i_size = params.B_i.n * params.B_i.c * params.B_i.d * params.B_i.w * params.B_i.h;
-    
-    const uint C_o_size = params.C_o.n * params.C_o.c * params.C_o.d * params.C_o.w * params.C_o.h;
-    
+    //
+    //const uint C_o_size = params.C_o.n * params.C_o.c * params.C_o.d * params.C_o.w * params.C_o.h;
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

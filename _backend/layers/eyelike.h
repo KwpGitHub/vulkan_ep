@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Generate a 2D tensor (matrix) with ones on the diagonal and zeros everywhere else. Only 2D
@@ -32,17 +29,16 @@ output: Output tensor, same shape as input tensor T1.
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class EyeLike : public Layer {
-        typedef struct {
-            int dtype; int k;
-			
-            Shape_t input_i;
+    class EyeLike : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         int dtype; int k;
         std::string input_i;
@@ -62,13 +58,7 @@ namespace backend {
         
         virtual void init( int _dtype,  int _k); 
         virtual void bind(std::string _input_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/eyelike.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~EyeLike() {}
     };

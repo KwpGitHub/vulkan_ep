@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Produces a one-hot tensor based on inputs.
@@ -39,17 +36,16 @@ output: Tensor of rank one greater than input tensor 'indices', i.e. rank(output
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class OneHot : public Layer {
-        typedef struct {
-            int axis;
-			
-            Shape_t indices_i; Shape_t depth_i; Shape_t values_i;
+    class OneHot : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t indices_i; backend::Shape_t depth_i; backend::Shape_t values_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         int axis;
         std::string indices_i; std::string depth_i; std::string values_i;
@@ -69,13 +65,7 @@ namespace backend {
         
         virtual void init( int _axis); 
         virtual void bind(std::string _indices_i, std::string _depth_i, std::string _values_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/onehot.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[indices_i]->data(), *tensor_dict[depth_i]->data(), *tensor_dict[values_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~OneHot() {}
     };

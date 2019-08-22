@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Reverse batch of sequences having different lengths specified by `sequence_lens`.
@@ -59,17 +56,16 @@ output: Tensor with same shape of input.
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class ReverseSequence : public Layer {
-        typedef struct {
-            int batch_axis; int time_axis;
-			
-            Shape_t input_i; Shape_t sequence_lens_i;
+    class ReverseSequence : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i; backend::Shape_t sequence_lens_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         int batch_axis; int time_axis;
         std::string input_i; std::string sequence_lens_i;
@@ -89,13 +85,7 @@ namespace backend {
         
         virtual void init( int _batch_axis,  int _time_axis); 
         virtual void bind(std::string _input_i, std::string _sequence_lens_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reversesequence.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[sequence_lens_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~ReverseSequence() {}
     };

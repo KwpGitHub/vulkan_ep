@@ -7,13 +7,12 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    int batch_axis; int time_axis;
-			
+  
 //input
-    Shape_t input_i; Shape_t sequence_lens_i;
+    backend::Shape_t input_i; backend::Shape_t sequence_lens_i;
     
 //output
-    Shape_t Y_o;
+    backend::Shape_t Y_o;
     
 } params;
 
@@ -25,14 +24,13 @@ void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
-    const uint input_i_size = params.input_i.n * params.input_i.c * params.input_i.d * params.input_i.w * params.input_i.h;
+    //const uint input_i_size = params.input_i.n * params.input_i.c * params.input_i.d * params.input_i.w * params.input_i.h;
 	const uint sequence_lens_i_size = params.sequence_lens_i.n * params.sequence_lens_i.c * params.sequence_lens_i.d * params.sequence_lens_i.w * params.sequence_lens_i.h;
-    
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
-    
+    //
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

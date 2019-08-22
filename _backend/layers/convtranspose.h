@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 The convolution transpose operator consumes an input tensor and a filter,
@@ -36,23 +33,22 @@ output: Output data tensor that contains the result of the convolution. The outp
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      auto_pad, dilations, group, kernel_shape, output_padding, output_shape, pads, strides
-//OPTIONAL_PARAMETERS_TYPE: int, Shape_t, int, Shape_t, Shape_t, Shape_t, Shape_t, Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::string, std::vector<int>, int, std::vector<int>, std::vector<int>, std::vector<int>, std::vector<int>, std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class ConvTranspose : public Layer {
-        typedef struct {
-            int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t output_padding; Shape_t output_shape; Shape_t pads; Shape_t strides;
-			
-            Shape_t X_i; Shape_t W_i;
-            Shape_t B_i;
-            Shape_t Y_o;
+    class ConvTranspose : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i; backend::Shape_t W_i;
+            backend::Shape_t B_i;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t output_padding; Shape_t output_shape; Shape_t pads; Shape_t strides;
+        std::string auto_pad; std::vector<int> dilations; int group; std::vector<int> kernel_shape; std::vector<int> output_padding; std::vector<int> output_shape; std::vector<int> pads; std::vector<int> strides;
         std::string X_i; std::string W_i;
         std::string B_i;
         std::string Y_o;
@@ -68,15 +64,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _auto_pad,  Shape_t _dilations,  int _group,  Shape_t _kernel_shape,  Shape_t _output_padding,  Shape_t _output_shape,  Shape_t _pads,  Shape_t _strides); 
+        virtual void init( std::string _auto_pad,  std::vector<int> _dilations,  int _group,  std::vector<int> _kernel_shape,  std::vector<int> _output_padding,  std::vector<int> _output_shape,  std::vector<int> _pads,  std::vector<int> _strides); 
         virtual void bind(std::string _X_i, std::string _W_i, std::string _B_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/convtranspose.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[W_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~ConvTranspose() {}
     };

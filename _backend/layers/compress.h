@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Selects slices from an input tensor along a given axis where condition evaluates to True for each axis index.
@@ -29,17 +26,16 @@ output: Tensor of rank r if axis is specified. Otherwise output is a Tensor of r
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Compress : public Layer {
-        typedef struct {
-            int axis;
-			
-            Shape_t input_i; Shape_t condition_i;
+    class Compress : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i; backend::Shape_t condition_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         int axis;
         std::string input_i; std::string condition_i;
@@ -59,13 +55,7 @@ namespace backend {
         
         virtual void init( int _axis); 
         virtual void bind(std::string _input_i, std::string _condition_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/compress.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[condition_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Compress() {}
     };

@@ -1,15 +1,20 @@
-#include "ReduceLogSumExp.h"
+#include "reducelogsumexp.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    ReduceLogSumExp::ReduceLogSumExp(std::string name) : Layer(name) { }
+    ReduceLogSumExp::ReduceLogSumExp(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders\\bin\\reducelogsumexp.spv");
+        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+    }
        
     vuh::Device* ReduceLogSumExp::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
-    void ReduceLogSumExp::init( Shape_t _axes,  int _keepdims) {      
+    void ReduceLogSumExp::init( std::vector<int> _axes,  int _keepdims) {      
 		 axes = _axes; 
  		 keepdims = _keepdims; 
   
@@ -18,15 +23,20 @@ namespace backend {
     void ReduceLogSumExp::bind(std::string _data_i, std::string _reduced_o){
         data_i = _data_i; reduced_o = _reduced_o;
 
-		binding.data_i = tensor_dict[data_i]->shape();
+		//binding.data_i = tensor_dict[data_i]->shape();
  
-		binding.reduced_o = tensor_dict[reduced_o]->shape();
+		//binding.reduced_o = tensor_dict[reduced_o]->shape();
  
-		binding.axes = axes;
-  		binding.keepdims = keepdims;
- 
-
-        
+		//binding.axes = axes;
+  		//binding.keepdims = keepdims;
+         
     }
+
+    void ReduceLogSumExp::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[reduced_o]->data());
+    }
+
 }
 

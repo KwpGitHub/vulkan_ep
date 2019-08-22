@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Maps the values of the input tensor to either 0 or 1, element-wise, based on the outcome of a comparison against a threshold value.
@@ -26,17 +23,16 @@ output: Binarized output data
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Binarizer : public Layer {
-        typedef struct {
-            float threshold;
-			
-            Shape_t X_i;
+    class Binarizer : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         float threshold;
         std::string X_i;
@@ -56,13 +52,7 @@ namespace backend {
         
         virtual void init( float _threshold); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/binarizer.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~Binarizer() {}
     };

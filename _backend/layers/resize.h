@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Resize the input tensor.
@@ -25,23 +22,22 @@ output: N-D tensor after resizing
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      mode
-//OPTIONAL_PARAMETERS_TYPE: int
+//OPTIONAL_PARAMETERS_TYPE: std::string
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Resize : public Layer {
-        typedef struct {
-            int mode;
-			
-            Shape_t X_i; Shape_t scales_i;
+    class Resize : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i; backend::Shape_t scales_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int mode;
+        std::string mode;
         std::string X_i; std::string scales_i;
         
         std::string Y_o;
@@ -57,15 +53,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _mode); 
+        virtual void init( std::string _mode); 
         virtual void bind(std::string _X_i, std::string _scales_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/resize.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[scales_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~Resize() {}
     };

@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Replace each input element with an array of ones and zeros, where a single
@@ -29,23 +26,22 @@ output: Encoded output data, having one more dimension than X.
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      cats_int64s, cats_strings, zeros
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, int
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<std::string>, int
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class OneHotEncoder : public Layer {
-        typedef struct {
-            Shape_t cats_int64s; int zeros;
-			Shape_t cats_strings;
-            Shape_t X_i;
+    class OneHotEncoder : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        Shape_t cats_int64s; int zeros; std::string cats_strings;
+        std::vector<int> cats_int64s; std::vector<std::string> cats_strings; int zeros;
         std::string X_i;
         
         std::string Y_o;
@@ -61,15 +57,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _cats_int64s,  int _zeros); 
-        virtual void bind(std::string _cats_strings, std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/onehotencoder.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[cats_strings]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void init( std::vector<int> _cats_int64s,  std::vector<std::string> _cats_strings,  int _zeros); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+        virtual void build();
 
         ~OneHotEncoder() {}
     };

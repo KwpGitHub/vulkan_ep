@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 General Matrix multiplication:
 https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms#Level_3
@@ -37,17 +34,16 @@ output: Output tensor of shape (M, N).
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Gemm : public Layer {
-        typedef struct {
-            float alpha; float beta; int transA; int transB;
-			
-            Shape_t A_i; Shape_t B_i; Shape_t C_i;
+    class Gemm : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t A_i; backend::Shape_t B_i; backend::Shape_t C_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         float alpha; float beta; int transA; int transB;
         std::string A_i; std::string B_i; std::string C_i;
@@ -67,13 +63,7 @@ namespace backend {
         
         virtual void init( float _alpha,  float _beta,  int _transA,  int _transB); 
         virtual void bind(std::string _A_i, std::string _B_i, std::string _C_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/gemm.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[A_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[C_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~Gemm() {}
     };

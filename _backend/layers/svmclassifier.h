@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Support Vector Machine classifier
@@ -23,23 +20,22 @@ output: Class scores (one per class per example), if prob_a and prob_b are provi
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      classlabels_ints, classlabels_strings, coefficients, kernel_params, kernel_type, post_transform, prob_a, prob_b, rho, support_vectors, vectors_per_class
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, Tensor*, Tensor*, int, int, Tensor*, Tensor*, Tensor*, Tensor*, Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<std::string>, std::vector<float>, std::vector<float>, std::string, std::string, std::vector<float>, std::vector<float>, std::vector<float>, std::vector<float>, std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class SVMClassifier : public Layer {
-        typedef struct {
-            Shape_t classlabels_ints; int kernel_type; int post_transform; Shape_t vectors_per_class;
-			Shape_t classlabels_strings; Shape_t coefficients; Shape_t kernel_params; Shape_t prob_a; Shape_t prob_b; Shape_t rho; Shape_t support_vectors;
-            Shape_t X_i;
+    class SVMClassifier : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o; Shape_t Z_o;
+            backend::Shape_t Y_o; backend::Shape_t Z_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        Shape_t classlabels_ints; int kernel_type; int post_transform; Shape_t vectors_per_class; std::string classlabels_strings; std::string coefficients; std::string kernel_params; std::string prob_a; std::string prob_b; std::string rho; std::string support_vectors;
+        std::vector<int> classlabels_ints; std::vector<std::string> classlabels_strings; std::vector<float> coefficients; std::vector<float> kernel_params; std::string kernel_type; std::string post_transform; std::vector<float> prob_a; std::vector<float> prob_b; std::vector<float> rho; std::vector<float> support_vectors; std::vector<int> vectors_per_class;
         std::string X_i;
         
         std::string Y_o; std::string Z_o;
@@ -55,15 +51,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _classlabels_ints,  int _kernel_type,  int _post_transform,  Shape_t _vectors_per_class); 
-        virtual void bind(std::string _classlabels_strings, std::string _coefficients, std::string _kernel_params, std::string _prob_a, std::string _prob_b, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o, std::string _Z_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/svmclassifier.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[coefficients]->data(), *tensor_dict[kernel_params]->data(), *tensor_dict[prob_a]->data(), *tensor_dict[prob_b]->data(), *tensor_dict[rho]->data(), *tensor_dict[support_vectors]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Z_o]->data());
-        }
+        virtual void init( std::vector<int> _classlabels_ints,  std::vector<std::string> _classlabels_strings,  std::vector<float> _coefficients,  std::vector<float> _kernel_params,  std::string _kernel_type,  std::string _post_transform,  std::vector<float> _prob_a,  std::vector<float> _prob_b,  std::vector<float> _rho,  std::vector<float> _support_vectors,  std::vector<int> _vectors_per_class); 
+        virtual void bind(std::string _X_i, std::string _Y_o, std::string _Z_o); 
+        virtual void build();
 
         ~SVMClassifier() {}
     };

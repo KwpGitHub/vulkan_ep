@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Region of Interest (RoI) align operation described in the
@@ -34,23 +31,22 @@ output: RoI pooled output, 4-D tensor of shape (num_rois, C, output_height, outp
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      mode, output_height, output_width, sampling_ratio, spatial_scale
-//OPTIONAL_PARAMETERS_TYPE: int, int, int, int, float
+//OPTIONAL_PARAMETERS_TYPE: std::string, int, int, int, float
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class RoiAlign : public Layer {
-        typedef struct {
-            int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
-			
-            Shape_t X_i; Shape_t rois_i; Shape_t batch_indices_i;
+    class RoiAlign : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i; backend::Shape_t rois_i; backend::Shape_t batch_indices_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
+        std::string mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
         std::string X_i; std::string rois_i; std::string batch_indices_i;
         
         std::string Y_o;
@@ -66,15 +62,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale); 
+        virtual void init( std::string _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale); 
         virtual void bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/roialign.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[rois_i]->data(), *tensor_dict[batch_indices_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~RoiAlign() {}
     };

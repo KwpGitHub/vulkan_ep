@@ -7,14 +7,13 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    float epsilon; float momentum;
-			
+  
 //input
-    Shape_t X_i; Shape_t scale_i; Shape_t B_i; Shape_t mean_i; Shape_t var_i;
+    backend::Shape_t X_i; backend::Shape_t scale_i; backend::Shape_t B_i; backend::Shape_t mean_i; backend::Shape_t var_i;
     
 //output
-    Shape_t Y_o;
-    Shape_t mean_o; Shape_t var_o; Shape_t saved_mean_o; Shape_t saved_var_o;
+    backend::Shape_t Y_o;
+    backend::Shape_t mean_o; backend::Shape_t var_o; backend::Shape_t saved_mean_o; backend::Shape_t saved_var_o;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { float X_i[]; };
@@ -32,20 +31,19 @@ void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
-    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
 	const uint scale_i_size = params.scale_i.n * params.scale_i.c * params.scale_i.d * params.scale_i.w * params.scale_i.h;
 	const uint B_i_size = params.B_i.n * params.B_i.c * params.B_i.d * params.B_i.w * params.B_i.h;
 	const uint mean_i_size = params.mean_i.n * params.mean_i.c * params.mean_i.d * params.mean_i.w * params.mean_i.h;
 	const uint var_i_size = params.var_i.n * params.var_i.c * params.var_i.d * params.var_i.w * params.var_i.h;
-    
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
-    const uint mean_o_size = params.mean_o.n * params.mean_o.c * params.mean_o.d * params.mean_o.w * params.mean_o.h;
+    //
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //const uint mean_o_size = params.mean_o.n * params.mean_o.c * params.mean_o.d * params.mean_o.w * params.mean_o.h;
 	const uint var_o_size = params.var_o.n * params.var_o.c * params.var_o.d * params.var_o.w * params.var_o.h;
 	const uint saved_mean_o_size = params.saved_mean_o.n * params.saved_mean_o.c * params.saved_mean_o.d * params.saved_mean_o.w * params.saved_mean_o.h;
 	const uint saved_var_o_size = params.saved_var_o.n * params.saved_var_o.c * params.saved_var_o.d * params.saved_var_o.w * params.saved_var_o.h;
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

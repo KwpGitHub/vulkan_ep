@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 The operator computes the logsoftmax (log of softmax) values for each layer in the batch
@@ -40,17 +37,16 @@ output: The output values with the same shape as input tensor (the original size
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class LogSoftmax : public Layer {
-        typedef struct {
-            int axis;
-			
-            Shape_t input_i;
+    class LogSoftmax : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         int axis;
         std::string input_i;
@@ -70,13 +66,7 @@ namespace backend {
         
         virtual void init( int _axis); 
         virtual void bind(std::string _input_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/logsoftmax.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~LogSoftmax() {}
     };

@@ -1,57 +1,72 @@
-#include "TreeEnsembleRegressor.h"
+#include "treeensembleregressor.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    TreeEnsembleRegressor::TreeEnsembleRegressor(std::string name) : Layer(name) { }
+    TreeEnsembleRegressor::TreeEnsembleRegressor(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders\\bin\\treeensembleregressor.spv");
+        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+    }
        
     vuh::Device* TreeEnsembleRegressor::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
-    void TreeEnsembleRegressor::init( int _aggregate_function,  int _n_targets,  Shape_t _nodes_falsenodeids,  Shape_t _nodes_featureids,  Shape_t _nodes_missing_value_tracks_true,  Shape_t _nodes_nodeids,  Shape_t _nodes_treeids,  Shape_t _nodes_truenodeids,  int _post_transform,  Shape_t _target_ids,  Shape_t _target_nodeids,  Shape_t _target_treeids) {      
+    void TreeEnsembleRegressor::init( std::string _aggregate_function,  std::vector<float> _base_values,  int _n_targets,  std::vector<int> _nodes_falsenodeids,  std::vector<int> _nodes_featureids,  std::vector<float> _nodes_hitrates,  std::vector<int> _nodes_missing_value_tracks_true,  std::vector<std::string> _nodes_modes,  std::vector<int> _nodes_nodeids,  std::vector<int> _nodes_treeids,  std::vector<int> _nodes_truenodeids,  std::vector<float> _nodes_values,  std::string _post_transform,  std::vector<int> _target_ids,  std::vector<int> _target_nodeids,  std::vector<int> _target_treeids,  std::vector<float> _target_weights) {      
 		 aggregate_function = _aggregate_function; 
+ 		 base_values = _base_values; 
  		 n_targets = _n_targets; 
  		 nodes_falsenodeids = _nodes_falsenodeids; 
  		 nodes_featureids = _nodes_featureids; 
+ 		 nodes_hitrates = _nodes_hitrates; 
  		 nodes_missing_value_tracks_true = _nodes_missing_value_tracks_true; 
+ 		 nodes_modes = _nodes_modes; 
  		 nodes_nodeids = _nodes_nodeids; 
  		 nodes_treeids = _nodes_treeids; 
  		 nodes_truenodeids = _nodes_truenodeids; 
+ 		 nodes_values = _nodes_values; 
  		 post_transform = _post_transform; 
  		 target_ids = _target_ids; 
  		 target_nodeids = _target_nodeids; 
  		 target_treeids = _target_treeids; 
+ 		 target_weights = _target_weights; 
   
     }
     
-    void TreeEnsembleRegressor::bind(std::string _base_values, std::string _nodes_hitrates, std::string _nodes_modes, std::string _nodes_values, std::string _target_weights, std::string _X_i, std::string _Y_o){
-        base_values = _base_values; nodes_hitrates = _nodes_hitrates; nodes_modes = _nodes_modes; nodes_values = _nodes_values; target_weights = _target_weights; X_i = _X_i; Y_o = _Y_o;
+    void TreeEnsembleRegressor::bind(std::string _X_i, std::string _Y_o){
+        X_i = _X_i; Y_o = _Y_o;
 
-		binding.X_i = tensor_dict[X_i]->shape();
+		//binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_o = tensor_dict[Y_o]->shape();
+		//binding.Y_o = tensor_dict[Y_o]->shape();
  
-		binding.aggregate_function = aggregate_function;
-  		binding.n_targets = n_targets;
-  		binding.nodes_falsenodeids = nodes_falsenodeids;
-  		binding.nodes_featureids = nodes_featureids;
-  		binding.nodes_missing_value_tracks_true = nodes_missing_value_tracks_true;
-  		binding.nodes_nodeids = nodes_nodeids;
-  		binding.nodes_treeids = nodes_treeids;
-  		binding.nodes_truenodeids = nodes_truenodeids;
-  		binding.post_transform = post_transform;
-  		binding.target_ids = target_ids;
-  		binding.target_nodeids = target_nodeids;
-  		binding.target_treeids = target_treeids;
- 
-		binding.base_values = tensor_dict[base_values]->shape();
-  		binding.nodes_hitrates = tensor_dict[nodes_hitrates]->shape();
-  		binding.nodes_modes = tensor_dict[nodes_modes]->shape();
-  		binding.nodes_values = tensor_dict[nodes_values]->shape();
-  		binding.target_weights = tensor_dict[target_weights]->shape();
- 
-        
+		//binding.aggregate_function = aggregate_function;
+  		//binding.base_values = base_values;
+  		//binding.n_targets = n_targets;
+  		//binding.nodes_falsenodeids = nodes_falsenodeids;
+  		//binding.nodes_featureids = nodes_featureids;
+  		//binding.nodes_hitrates = nodes_hitrates;
+  		//binding.nodes_missing_value_tracks_true = nodes_missing_value_tracks_true;
+  		//binding.nodes_modes = nodes_modes;
+  		//binding.nodes_nodeids = nodes_nodeids;
+  		//binding.nodes_treeids = nodes_treeids;
+  		//binding.nodes_truenodeids = nodes_truenodeids;
+  		//binding.nodes_values = nodes_values;
+  		//binding.post_transform = post_transform;
+  		//binding.target_ids = target_ids;
+  		//binding.target_nodeids = target_nodeids;
+  		//binding.target_treeids = target_treeids;
+  		//binding.target_weights = target_weights;
+         
     }
+
+    void TreeEnsembleRegressor::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+    }
+
 }
 

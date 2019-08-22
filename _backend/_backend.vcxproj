@@ -41,8 +41,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -143,7 +143,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)\Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -183,6 +183,7 @@
       <AdditionalIncludeDirectories>$(PythonHome)\Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -210,6 +211,7 @@
     <ClCompile Include="layers\asinh.cpp" />
     <ClCompile Include="layers\atan.cpp" />
     <ClCompile Include="layers\atanh.cpp" />
+    <ClCompile Include="layers\averagepool.cpp" />
     <ClCompile Include="layers\batchnormalization.cpp" />
     <ClCompile Include="layers\binarizer.cpp" />
     <ClCompile Include="layers\cast.cpp" />
@@ -222,12 +224,15 @@
     <ClCompile Include="layers\constant.cpp" />
     <ClCompile Include="layers\constantofshape.cpp" />
     <ClCompile Include="layers\conv.cpp" />
+    <ClCompile Include="layers\convinteger.cpp" />
     <ClCompile Include="layers\convtranspose.cpp" />
     <ClCompile Include="layers\cos.cpp" />
     <ClCompile Include="layers\cosh.cpp" />
     <ClCompile Include="layers\depthtospace.cpp" />
+    <ClCompile Include="layers\dequantizelinear.cpp" />
     <ClCompile Include="layers\dictvectorizer.cpp" />
     <ClCompile Include="layers\div.cpp" />
+    <ClCompile Include="layers\dropout.cpp" />
     <ClCompile Include="layers\elu.cpp" />
     <ClCompile Include="layers\equal.cpp" />
     <ClCompile Include="layers\erf.cpp" />
@@ -250,6 +255,7 @@
     <ClCompile Include="layers\if.cpp" />
     <ClCompile Include="layers\imputer.cpp" />
     <ClCompile Include="layers\instancenormalization.cpp" />
+    <ClCompile Include="layers\isinf.cpp" />
     <ClCompile Include="layers\isnan.cpp" />
     <ClCompile Include="layers\labelencoder.cpp" />
     <ClCompile Include="layers\leakyrelu.cpp" />
@@ -264,15 +270,19 @@
     <ClCompile Include="layers\lrn.cpp" />
     <ClCompile Include="layers\lstm.cpp" />
     <ClCompile Include="layers\matmul.cpp" />
+    <ClCompile Include="layers\matmulinteger.cpp" />
     <ClCompile Include="layers\max.cpp" />
+    <ClCompile Include="layers\maxpool.cpp" />
     <ClCompile Include="layers\maxroipool.cpp" />
     <ClCompile Include="layers\maxunpool.cpp" />
     <ClCompile Include="layers\mean.cpp" />
     <ClCompile Include="layers\meanvariancenormalization.cpp" />
     <ClCompile Include="layers\min.cpp" />
+    <ClCompile Include="layers\mod.cpp" />
     <ClCompile Include="layers\mul.cpp" />
     <ClCompile Include="layers\multinomial.cpp" />
     <ClCompile Include="layers\neg.cpp" />
+    <ClCompile Include="layers\nonmaxsuppression.cpp" />
     <ClCompile Include="layers\nonzero.cpp" />
     <ClCompile Include="layers\normalizer.cpp" />
     <ClCompile Include="layers\not.cpp" />
@@ -282,6 +292,9 @@
     <ClCompile Include="layers\pad.cpp" />
     <ClCompile Include="layers\pow.cpp" />
     <ClCompile Include="layers\prelu.cpp" />
+    <ClCompile Include="layers\qlinearconv.cpp" />
+    <ClCompile Include="layers\qlinearmatmul.cpp" />
+    <ClCompile Include="layers\quantizelinear.cpp" />
     <ClCompile Include="layers\randomnormal.cpp" />
     <ClCompile Include="layers\randomnormallike.cpp" />
     <ClCompile Include="layers\randomuniform.cpp" />
@@ -299,7 +312,10 @@
     <ClCompile Include="layers\reducesumsquare.cpp" />
     <ClCompile Include="layers\relu.cpp" />
     <ClCompile Include="layers\reshape.cpp" />
+    <ClCompile Include="layers\resize.cpp" />
+    <ClCompile Include="layers\reversesequence.cpp" />
     <ClCompile Include="layers\rnn.cpp" />
+    <ClCompile Include="layers\roialign.cpp" />
     <ClCompile Include="layers\scaler.cpp" />
     <ClCompile Include="layers\scan.cpp" />
     <ClCompile Include="layers\scatter.cpp" />
@@ -311,6 +327,7 @@
     <ClCompile Include="layers\sin.cpp" />
     <ClCompile Include="layers\sinh.cpp" />
     <ClCompile Include="layers\size.cpp" />
+    <ClCompile Include="layers\slice.cpp" />
     <ClCompile Include="layers\softmax.cpp" />
     <ClCompile Include="layers\softplus.cpp" />
     <ClCompile Include="layers\softsign.cpp" />
@@ -318,6 +335,7 @@
     <ClCompile Include="layers\split.cpp" />
     <ClCompile Include="layers\sqrt.cpp" />
     <ClCompile Include="layers\squeeze.cpp" />
+    <ClCompile Include="layers\stringnormalizer.cpp" />
     <ClCompile Include="layers\sub.cpp" />
     <ClCompile Include="layers\sum.cpp" />
     <ClCompile Include="layers\svmclassifier.cpp" />
@@ -325,7 +343,9 @@
     <ClCompile Include="layers\tan.cpp" />
     <ClCompile Include="layers\tanh.cpp" />
     <ClCompile Include="layers\tfidfvectorizer.cpp" />
+    <ClCompile Include="layers\thresholdedrelu.cpp" />
     <ClCompile Include="layers\tile.cpp" />
+    <ClCompile Include="layers\topk.cpp" />
     <ClCompile Include="layers\transpose.cpp" />
     <ClCompile Include="layers\treeensembleclassifier.cpp" />
     <ClCompile Include="layers\treeensembleregressor.cpp" />

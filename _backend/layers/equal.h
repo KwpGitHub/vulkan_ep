@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Returns the tensor resulted from performing the `equal` logical operation
@@ -30,17 +27,16 @@ output: Result tensor.
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Equal : public Layer {
-        typedef struct {
+    class Equal : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t A_i; backend::Shape_t B_i;
             
-			
-            Shape_t A_i; Shape_t B_i;
-            
-            Shape_t C_o;
+            backend::Shape_t C_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         
         std::string A_i; std::string B_i;
@@ -60,13 +56,7 @@ namespace backend {
         
         virtual void init(); 
         virtual void bind(std::string _A_i, std::string _B_i, std::string _C_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/equal.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[A_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[C_o]->data());
-        }
+        virtual void build();
 
         ~Equal() {}
     };

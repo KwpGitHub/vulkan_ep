@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 StringNormalization performs string operations for basic cleaning.
@@ -30,23 +27,22 @@ output: UTF-8 Normalized strings
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      case_change_action, is_case_sensitive, locale, stopwords
-//OPTIONAL_PARAMETERS_TYPE: int, int, int, Tensor*
+//OPTIONAL_PARAMETERS_TYPE: std::string, int, std::string, std::vector<std::string>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class StringNormalizer : public Layer {
-        typedef struct {
-            int case_change_action; int is_case_sensitive; int locale;
-			Shape_t stopwords;
-            Shape_t X_i;
+    class StringNormalizer : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int case_change_action; int is_case_sensitive; int locale; std::string stopwords;
+        std::string case_change_action; int is_case_sensitive; std::string locale; std::vector<std::string> stopwords;
         std::string X_i;
         
         std::string Y_o;
@@ -62,15 +58,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _case_change_action,  int _is_case_sensitive,  int _locale); 
-        virtual void bind(std::string _stopwords, std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/stringnormalizer.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[stopwords]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void init( std::string _case_change_action,  int _is_case_sensitive,  std::string _locale,  std::vector<std::string> _stopwords); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+        virtual void build();
 
         ~StringNormalizer() {}
     };

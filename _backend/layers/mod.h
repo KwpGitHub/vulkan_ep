@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
   Performs element-wise binary modulus (with Numpy-style broadcasting support). 
@@ -39,17 +36,16 @@ output: Remainder tensor
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Mod : public Layer {
-        typedef struct {
-            int fmod;
-			
-            Shape_t A_i; Shape_t B_i;
+    class Mod : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t A_i; backend::Shape_t B_i;
             
-            Shape_t C_o;
+            backend::Shape_t C_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         int fmod;
         std::string A_i; std::string B_i;
@@ -69,13 +65,7 @@ namespace backend {
         
         virtual void init( int _fmod); 
         virtual void bind(std::string _A_i, std::string _B_i, std::string _C_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/mod.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[A_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[C_o]->data());
-        }
+        virtual void build();
 
         ~Mod() {}
     };

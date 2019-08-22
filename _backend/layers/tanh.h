@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Calculates the hyperbolic tangent of the given input tensor element-wise.
@@ -26,17 +23,16 @@ output: The hyperbolic tangent values of the input tensor computed element-wise
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Tanh : public Layer {
-        typedef struct {
+    class Tanh : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i;
             
-			
-            Shape_t input_i;
-            
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         
         std::string input_i;
@@ -56,13 +52,7 @@ namespace backend {
         
         virtual void init(); 
         virtual void bind(std::string _input_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tanh.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Tanh() {}
     };

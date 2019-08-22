@@ -1,15 +1,20 @@
-#include "RandomUniform.h"
+#include "randomuniform.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    RandomUniform::RandomUniform(std::string name) : Layer(name) { }
+    RandomUniform::RandomUniform(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders\\bin\\randomuniform.spv");
+        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+    }
        
     vuh::Device* RandomUniform::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
-    void RandomUniform::init( Shape_t _shape,  int _dtype,  float _high,  float _low,  float _seed) {      
+    void RandomUniform::init( std::vector<int> _shape,  int _dtype,  float _high,  float _low,  float _seed) {      
 		 shape = _shape; 
  		 dtype = _dtype; 
  		 high = _high; 
@@ -22,16 +27,21 @@ namespace backend {
         output_o = _output_o;
 
 
-		binding.output_o = tensor_dict[output_o]->shape();
+		//binding.output_o = tensor_dict[output_o]->shape();
  
-		binding.shape = shape;
-  		binding.dtype = dtype;
-  		binding.high = high;
-  		binding.low = low;
-  		binding.seed = seed;
- 
-
-        
+		//binding.shape = shape;
+  		//binding.dtype = dtype;
+  		//binding.high = high;
+  		//binding.low = low;
+  		//binding.seed = seed;
+         
     }
+
+    void RandomUniform::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[output_o]->data());
+    }
+
 }
 

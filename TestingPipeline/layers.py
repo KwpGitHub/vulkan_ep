@@ -4,9 +4,6 @@ layer_map = {}
 
 class LSTM:
     name = None
-    activation_alpha = str()
-    activation_beta = str()
-    activations = str()
     X_i = str()
     W_i = str()
     R_i = str()
@@ -20,8 +17,11 @@ class LSTM:
     Y_c_o = str()
 
     #parameters
+    activation_alpha = list()
+    activation_beta = list()
+    activations = list()
     clip = float()
-    direction = int()
+    direction = str()
     hidden_size = int()
     input_forget = int()
 
@@ -340,7 +340,7 @@ class AveragePool:
 
     #parameters
     kernel_shape = list()
-    auto_pad = int()
+    auto_pad = str()
     ceil_mode = int()
     count_include_pad = int()
     pads = list()
@@ -505,7 +505,7 @@ class Resize:
     Y_o = str()
 
     #parameters
-    mode = int()
+    mode = str()
 
     input_params = ["X_i", "scales_i"]
     output_params = ["Y_o"]
@@ -700,8 +700,8 @@ class CastMap:
     Y_o = str()
 
     #parameters
-    cast_to = int()
-    map_form = int()
+    cast_to = str()
+    map_form = str()
     max_map = int()
 
     input_params = ["X_i"]
@@ -972,9 +972,6 @@ layer_map['Clip'] = Clip
 
 class RNN:
     name = None
-    activation_alpha = str()
-    activation_beta = str()
-    activations = str()
     X_i = str()
     W_i = str()
     R_i = str()
@@ -985,8 +982,11 @@ class RNN:
     Y_h_o = str()
 
     #parameters
+    activation_alpha = list()
+    activation_beta = list()
+    activations = list()
     clip = float()
-    direction = int()
+    direction = str()
     hidden_size = int()
 
     input_params = ["X_i", "W_i", "R_i", "B_i", "sequence_lens_i", "initial_h_i"]
@@ -1092,10 +1092,10 @@ layer_map['Concat'] = Concat
 
 class Constant:
     name = None
-    value = str()
     output_o = str()
 
     #parameters
+    value = list()
 
     input_params = []
     output_params = ["output_o"]
@@ -1135,7 +1135,7 @@ class LpPool:
 
     #parameters
     kernel_shape = list()
-    auto_pad = int()
+    auto_pad = str()
     p = int()
     pads = list()
     strides = list()
@@ -1179,7 +1179,7 @@ class Conv:
     Y_o = str()
 
     #parameters
-    auto_pad = int()
+    auto_pad = str()
     dilations = list()
     group = int()
     kernel_shape = list()
@@ -1303,7 +1303,7 @@ class ConvTranspose:
     Y_o = str()
 
     #parameters
-    auto_pad = int()
+    auto_pad = str()
     dilations = list()
     group = int()
     kernel_shape = list()
@@ -1551,7 +1551,7 @@ class MaxPool:
 
     #parameters
     kernel_shape = list()
-    auto_pad = int()
+    auto_pad = str()
     ceil_mode = int()
     dilations = list()
     pads = list()
@@ -1746,9 +1746,6 @@ layer_map['Floor'] = Floor
 
 class GRU:
     name = None
-    activation_alpha = str()
-    activation_beta = str()
-    activations = str()
     X_i = str()
     W_i = str()
     R_i = str()
@@ -1759,8 +1756,11 @@ class GRU:
     Y_h_o = str()
 
     #parameters
+    activation_alpha = list()
+    activation_beta = list()
+    activations = list()
     clip = float()
-    direction = int()
+    direction = str()
     hidden_size = int()
     linear_before_reset = int()
 
@@ -2670,7 +2670,7 @@ class Pad:
 
     #parameters
     pads = list()
-    mode = int()
+    mode = str()
     value = float()
 
     input_params = ["data_i"]
@@ -3110,12 +3110,12 @@ layer_map['ReduceMax'] = ReduceMax
 
 class OneHotEncoder:
     name = None
-    cats_strings = str()
     X_i = str()
     Y_o = str()
 
     #parameters
     cats_int64s = list()
+    cats_strings = list()
     zeros = int()
 
     input_params = ["X_i"]
@@ -3269,27 +3269,27 @@ layer_map['ReduceMin'] = ReduceMin
 
 class TreeEnsembleRegressor:
     name = None
-    base_values = str()
-    nodes_hitrates = str()
-    nodes_modes = str()
-    nodes_values = str()
-    target_weights = str()
     X_i = str()
     Y_o = str()
 
     #parameters
-    aggregate_function = int()
+    aggregate_function = str()
+    base_values = list()
     n_targets = int()
     nodes_falsenodeids = list()
     nodes_featureids = list()
+    nodes_hitrates = list()
     nodes_missing_value_tracks_true = list()
+    nodes_modes = list()
     nodes_nodeids = list()
     nodes_treeids = list()
     nodes_truenodeids = list()
-    post_transform = int()
+    nodes_values = list()
+    post_transform = str()
     target_ids = list()
     target_nodeids = list()
     target_treeids = list()
+    target_weights = list()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -3789,8 +3789,6 @@ layer_map['SpaceToDepth'] = SpaceToDepth
 
 class TfIdfVectorizer:
     name = None
-    pool_strings = str()
-    weights = str()
     X_i = str()
     Y_o = str()
 
@@ -3798,10 +3796,12 @@ class TfIdfVectorizer:
     max_gram_length = int()
     max_skip_count = int()
     min_gram_length = int()
-    mode = int()
+    mode = str()
     ngram_counts = list()
     ngram_indexes = list()
     pool_int64s = list()
+    pool_strings = list()
+    weights = list()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -3875,11 +3875,11 @@ layer_map['Split'] = Split
 
 class Imputer:
     name = None
-    imputed_value_floats = str()
     X_i = str()
     Y_o = str()
 
     #parameters
+    imputed_value_floats = list()
     imputed_value_int64s = list()
     replaced_value_float = float()
     replaced_value_int64 = int()
@@ -4304,7 +4304,7 @@ class Upsample:
     Y_o = str()
 
     #parameters
-    mode = int()
+    mode = str()
 
     input_params = ["X_i", "scales_i"]
     output_params = ["Y_o"]
@@ -4339,21 +4339,21 @@ layer_map['Upsample'] = Upsample
 
 class SVMClassifier:
     name = None
-    classlabels_strings = str()
-    coefficients = str()
-    kernel_params = str()
-    prob_a = str()
-    prob_b = str()
-    rho = str()
-    support_vectors = str()
     X_i = str()
     Y_o = str()
     Z_o = str()
 
     #parameters
     classlabels_ints = list()
-    kernel_type = int()
-    post_transform = int()
+    classlabels_strings = list()
+    coefficients = list()
+    kernel_params = list()
+    kernel_type = str()
+    post_transform = str()
+    prob_a = list()
+    prob_b = list()
+    rho = list()
+    support_vectors = list()
     vectors_per_class = list()
 
     input_params = ["X_i"]
@@ -4843,11 +4843,11 @@ layer_map['Compress'] = Compress
 
 class ConstantOfShape:
     name = None
-    value = str()
     input_i = str()
     output_o = str()
 
     #parameters
+    value = list()
 
     input_params = ["input_i"]
     output_params = ["output_o"]
@@ -5392,14 +5392,14 @@ layer_map['MeanVarianceNormalization'] = MeanVarianceNormalization
 
 class StringNormalizer:
     name = None
-    stopwords = str()
     X_i = str()
     Y_o = str()
 
     #parameters
-    case_change_action = int()
+    case_change_action = str()
     is_case_sensitive = int()
-    locale = int()
+    locale = str()
+    stopwords = list()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -5606,7 +5606,7 @@ class ConvInteger:
     y_o = str()
 
     #parameters
-    auto_pad = int()
+    auto_pad = str()
     dilations = list()
     group = int()
     kernel_shape = list()
@@ -5658,7 +5658,7 @@ class QLinearConv:
     y_o = str()
 
     #parameters
-    auto_pad = int()
+    auto_pad = str()
     dilations = list()
     group = int()
     kernel_shape = list()
@@ -5824,7 +5824,7 @@ class RoiAlign:
     Y_o = str()
 
     #parameters
-    mode = int()
+    mode = str()
     output_height = int()
     output_width = int()
     sampling_ratio = int()
@@ -5941,14 +5941,14 @@ layer_map['Binarizer'] = Binarizer
 
 class CategoryMapper:
     name = None
-    cats_strings = str()
     X_i = str()
     Y_o = str()
 
     #parameters
     cats_int64s = list()
+    cats_strings = list()
     default_int64 = int()
-    default_string = int()
+    default_string = str()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -5983,12 +5983,12 @@ layer_map['CategoryMapper'] = CategoryMapper
 
 class DictVectorizer:
     name = None
-    string_vocabulary = str()
     X_i = str()
     Y_o = str()
 
     #parameters
     int64_vocabulary = list()
+    string_vocabulary = list()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -6061,19 +6061,19 @@ layer_map['FeatureVectorizer'] = FeatureVectorizer
 
 class LabelEncoder:
     name = None
-    keys_floats = str()
-    keys_strings = str()
-    values_floats = str()
-    values_strings = str()
     X_i = str()
     Y_o = str()
 
     #parameters
     default_float = float()
     default_int64 = int()
-    default_string = int()
+    default_string = str()
+    keys_floats = list()
     keys_int64s = list()
+    keys_strings = list()
+    values_floats = list()
     values_int64s = list()
+    values_strings = list()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -6108,17 +6108,17 @@ layer_map['LabelEncoder'] = LabelEncoder
 
 class LinearClassifier:
     name = None
-    coefficients = str()
-    classlabels_strings = str()
-    intercepts = str()
     X_i = str()
     Y_o = str()
     Z_o = str()
 
     #parameters
+    coefficients = list()
     classlabels_ints = list()
+    classlabels_strings = list()
+    intercepts = list()
     multi_class = int()
-    post_transform = int()
+    post_transform = str()
 
     input_params = ["X_i"]
     output_params = ["Y_o", "Z_o"]
@@ -6153,13 +6153,13 @@ layer_map['LinearClassifier'] = LinearClassifier
 
 class LinearRegressor:
     name = None
-    coefficients = str()
-    intercepts = str()
     X_i = str()
     Y_o = str()
 
     #parameters
-    post_transform = int()
+    coefficients = list()
+    intercepts = list()
+    post_transform = str()
     targets = int()
 
     input_params = ["X_i"]
@@ -6199,7 +6199,7 @@ class Normalizer:
     Y_o = str()
 
     #parameters
-    norm = int()
+    norm = str()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -6234,18 +6234,18 @@ layer_map['Normalizer'] = Normalizer
 
 class SVMRegressor:
     name = None
-    coefficients = str()
-    kernel_params = str()
-    rho = str()
-    support_vectors = str()
     X_i = str()
     Y_o = str()
 
     #parameters
-    kernel_type = int()
+    coefficients = list()
+    kernel_params = list()
+    kernel_type = str()
     n_supports = int()
     one_class = int()
-    post_transform = int()
+    post_transform = str()
+    rho = list()
+    support_vectors = list()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -6280,12 +6280,12 @@ layer_map['SVMRegressor'] = SVMRegressor
 
 class Scaler:
     name = None
-    offset = str()
-    scale = str()
     X_i = str()
     Y_o = str()
 
     #parameters
+    offset = list()
+    scale = list()
 
     input_params = ["X_i"]
     output_params = ["Y_o"]
@@ -6320,28 +6320,28 @@ layer_map['Scaler'] = Scaler
 
 class TreeEnsembleClassifier:
     name = None
-    base_values = str()
-    class_weights = str()
-    classlabels_strings = str()
-    nodes_hitrates = str()
-    nodes_modes = str()
-    nodes_values = str()
     X_i = str()
     Y_o = str()
     Z_o = str()
 
     #parameters
+    base_values = list()
     class_ids = list()
     class_nodeids = list()
     class_treeids = list()
+    class_weights = list()
     classlabels_int64s = list()
+    classlabels_strings = list()
     nodes_falsenodeids = list()
     nodes_featureids = list()
+    nodes_hitrates = list()
     nodes_missing_value_tracks_true = list()
+    nodes_modes = list()
     nodes_nodeids = list()
     nodes_treeids = list()
     nodes_truenodeids = list()
-    post_transform = int()
+    nodes_values = list()
+    post_transform = str()
 
     input_params = ["X_i"]
     output_params = ["Y_o", "Z_o"]
@@ -6376,12 +6376,12 @@ layer_map['TreeEnsembleClassifier'] = TreeEnsembleClassifier
 
 class ZipMap:
     name = None
-    classlabels_strings = str()
     X_i = str()
     Z_o = str()
 
     #parameters
     classlabels_int64s = list()
+    classlabels_strings = list()
 
     input_params = ["X_i"]
     output_params = ["Z_o"]

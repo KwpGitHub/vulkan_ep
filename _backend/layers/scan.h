@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Scan can be used to iterate over one or more scan_input tensors,
@@ -142,23 +139,22 @@ output: Final values of the loop's N state variables followed by K scan_outputs
 //PARAMETERS:               body, num_scan_inputs
 //PARAMETER_TYPES:          int, int
 //OPTIONAL_PARAMETERS:      scan_input_axes, scan_input_directions, scan_output_axes, scan_output_directions
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Shape_t, Shape_t, Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<int>, std::vector<int>, std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Scan : public Layer {
-        typedef struct {
-            int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
-			
+    class Scan : public backend::Layer {
+        typedef struct {          
             
-            Shape_t x0_i; Shape_t x1_i; Shape_t x2_i; Shape_t x3_i; Shape_t x4_i; Shape_t x5_i; Shape_t x6_i; Shape_t x7_i; Shape_t x8_i; Shape_t x9_i; Shape_t x10_i; Shape_t x11_i; Shape_t x12_i; Shape_t x13_i; Shape_t x14_i; Shape_t x15_i; Shape_t x16_i; Shape_t x17_i; Shape_t x18_i; Shape_t x19_i; Shape_t x20_i; Shape_t x21_i; Shape_t x22_i; Shape_t x23_i; Shape_t x24_i; Shape_t x25_i; Shape_t x26_i; Shape_t x27_i; Shape_t x28_i; Shape_t x29_i; Shape_t x30_i; Shape_t x31_i;
+            backend::Shape_t x0_i; backend::Shape_t x1_i; backend::Shape_t x2_i; backend::Shape_t x3_i; backend::Shape_t x4_i; backend::Shape_t x5_i; backend::Shape_t x6_i; backend::Shape_t x7_i; backend::Shape_t x8_i; backend::Shape_t x9_i; backend::Shape_t x10_i; backend::Shape_t x11_i; backend::Shape_t x12_i; backend::Shape_t x13_i; backend::Shape_t x14_i; backend::Shape_t x15_i; backend::Shape_t x16_i; backend::Shape_t x17_i; backend::Shape_t x18_i; backend::Shape_t x19_i; backend::Shape_t x20_i; backend::Shape_t x21_i; backend::Shape_t x22_i; backend::Shape_t x23_i; backend::Shape_t x24_i; backend::Shape_t x25_i; backend::Shape_t x26_i; backend::Shape_t x27_i; backend::Shape_t x28_i; backend::Shape_t x29_i; backend::Shape_t x30_i; backend::Shape_t x31_i;
             
-            Shape_t y0_o; Shape_t y1_o; Shape_t y2_o; Shape_t y3_o; Shape_t y4_o; Shape_t y5_o; Shape_t y6_o; Shape_t y7_o; Shape_t y8_o; Shape_t y9_o; Shape_t y10_o; Shape_t y11_o; Shape_t y12_o; Shape_t y13_o; Shape_t y14_o; Shape_t y15_o; Shape_t y16_o; Shape_t y17_o; Shape_t y18_o; Shape_t y19_o; Shape_t y20_o; Shape_t y21_o; Shape_t y22_o; Shape_t y23_o; Shape_t y24_o; Shape_t y25_o; Shape_t y26_o; Shape_t y27_o; Shape_t y28_o; Shape_t y29_o; Shape_t y30_o; Shape_t y31_o;
+            backend::Shape_t y0_o; backend::Shape_t y1_o; backend::Shape_t y2_o; backend::Shape_t y3_o; backend::Shape_t y4_o; backend::Shape_t y5_o; backend::Shape_t y6_o; backend::Shape_t y7_o; backend::Shape_t y8_o; backend::Shape_t y9_o; backend::Shape_t y10_o; backend::Shape_t y11_o; backend::Shape_t y12_o; backend::Shape_t y13_o; backend::Shape_t y14_o; backend::Shape_t y15_o; backend::Shape_t y16_o; backend::Shape_t y17_o; backend::Shape_t y18_o; backend::Shape_t y19_o; backend::Shape_t y20_o; backend::Shape_t y21_o; backend::Shape_t y22_o; backend::Shape_t y23_o; backend::Shape_t y24_o; backend::Shape_t y25_o; backend::Shape_t y26_o; backend::Shape_t y27_o; backend::Shape_t y28_o; backend::Shape_t y29_o; backend::Shape_t y30_o; backend::Shape_t y31_o;
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int body; int num_scan_inputs; Shape_t scan_input_axes; Shape_t scan_input_directions; Shape_t scan_output_axes; Shape_t scan_output_directions;
+        int body; int num_scan_inputs; std::vector<int> scan_input_axes; std::vector<int> scan_input_directions; std::vector<int> scan_output_axes; std::vector<int> scan_output_directions;
         
         std::string x0_i; std::string x1_i; std::string x2_i; std::string x3_i; std::string x4_i; std::string x5_i; std::string x6_i; std::string x7_i; std::string x8_i; std::string x9_i; std::string x10_i; std::string x11_i; std::string x12_i; std::string x13_i; std::string x14_i; std::string x15_i; std::string x16_i; std::string x17_i; std::string x18_i; std::string x19_i; std::string x20_i; std::string x21_i; std::string x22_i; std::string x23_i; std::string x24_i; std::string x25_i; std::string x26_i; std::string x27_i; std::string x28_i; std::string x29_i; std::string x30_i; std::string x31_i;
         
@@ -174,15 +170,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _body,  int _num_scan_inputs,  Shape_t _scan_input_axes,  Shape_t _scan_input_directions,  Shape_t _scan_output_axes,  Shape_t _scan_output_directions); 
+        virtual void init( int _body,  int _num_scan_inputs,  std::vector<int> _scan_input_axes,  std::vector<int> _scan_input_directions,  std::vector<int> _scan_output_axes,  std::vector<int> _scan_output_directions); 
         virtual void bind(std::string _x0_i, std::string _x1_i, std::string _x2_i, std::string _x3_i, std::string _x4_i, std::string _x5_i, std::string _x6_i, std::string _x7_i, std::string _x8_i, std::string _x9_i, std::string _x10_i, std::string _x11_i, std::string _x12_i, std::string _x13_i, std::string _x14_i, std::string _x15_i, std::string _x16_i, std::string _x17_i, std::string _x18_i, std::string _x19_i, std::string _x20_i, std::string _x21_i, std::string _x22_i, std::string _x23_i, std::string _x24_i, std::string _x25_i, std::string _x26_i, std::string _x27_i, std::string _x28_i, std::string _x29_i, std::string _x30_i, std::string _x31_i, std::string _y0_o, std::string _y1_o, std::string _y2_o, std::string _y3_o, std::string _y4_o, std::string _y5_o, std::string _y6_o, std::string _y7_o, std::string _y8_o, std::string _y9_o, std::string _y10_o, std::string _y11_o, std::string _y12_o, std::string _y13_o, std::string _y14_o, std::string _y15_o, std::string _y16_o, std::string _y17_o, std::string _y18_o, std::string _y19_o, std::string _y20_o, std::string _y21_o, std::string _y22_o, std::string _y23_o, std::string _y24_o, std::string _y25_o, std::string _y26_o, std::string _y27_o, std::string _y28_o, std::string _y29_o, std::string _y30_o, std::string _y31_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/scan.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[x0_i]->data(), *tensor_dict[x1_i]->data(), *tensor_dict[x2_i]->data(), *tensor_dict[x3_i]->data(), *tensor_dict[x4_i]->data(), *tensor_dict[x5_i]->data(), *tensor_dict[x6_i]->data(), *tensor_dict[x7_i]->data(), *tensor_dict[x8_i]->data(), *tensor_dict[x9_i]->data(), *tensor_dict[x10_i]->data(), *tensor_dict[x11_i]->data(), *tensor_dict[x12_i]->data(), *tensor_dict[x13_i]->data(), *tensor_dict[x14_i]->data(), *tensor_dict[x15_i]->data(), *tensor_dict[x16_i]->data(), *tensor_dict[x17_i]->data(), *tensor_dict[x18_i]->data(), *tensor_dict[x19_i]->data(), *tensor_dict[x20_i]->data(), *tensor_dict[x21_i]->data(), *tensor_dict[x22_i]->data(), *tensor_dict[x23_i]->data(), *tensor_dict[x24_i]->data(), *tensor_dict[x25_i]->data(), *tensor_dict[x26_i]->data(), *tensor_dict[x27_i]->data(), *tensor_dict[x28_i]->data(), *tensor_dict[x29_i]->data(), *tensor_dict[x30_i]->data(), *tensor_dict[x31_i]->data(), *tensor_dict[y0_o]->data(), *tensor_dict[y1_o]->data(), *tensor_dict[y2_o]->data(), *tensor_dict[y3_o]->data(), *tensor_dict[y4_o]->data(), *tensor_dict[y5_o]->data(), *tensor_dict[y6_o]->data(), *tensor_dict[y7_o]->data(), *tensor_dict[y8_o]->data(), *tensor_dict[y9_o]->data(), *tensor_dict[y10_o]->data(), *tensor_dict[y11_o]->data(), *tensor_dict[y12_o]->data(), *tensor_dict[y13_o]->data(), *tensor_dict[y14_o]->data(), *tensor_dict[y15_o]->data(), *tensor_dict[y16_o]->data(), *tensor_dict[y17_o]->data(), *tensor_dict[y18_o]->data(), *tensor_dict[y19_o]->data(), *tensor_dict[y20_o]->data(), *tensor_dict[y21_o]->data(), *tensor_dict[y22_o]->data(), *tensor_dict[y23_o]->data(), *tensor_dict[y24_o]->data(), *tensor_dict[y25_o]->data(), *tensor_dict[y26_o]->data(), *tensor_dict[y27_o]->data(), *tensor_dict[y28_o]->data(), *tensor_dict[y29_o]->data(), *tensor_dict[y30_o]->data(), *tensor_dict[y31_o]->data());
-        }
+        virtual void build();
 
         ~Scan() {}
     };

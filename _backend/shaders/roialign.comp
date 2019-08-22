@@ -7,13 +7,12 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    int mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
-			
+  
 //input
-    Shape_t X_i; Shape_t rois_i; Shape_t batch_indices_i;
+    backend::Shape_t X_i; backend::Shape_t rois_i; backend::Shape_t batch_indices_i;
     
 //output
-    Shape_t Y_o;
+    backend::Shape_t Y_o;
     
 } params;
 
@@ -26,15 +25,14 @@ void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    
-    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
 	const uint rois_i_size = params.rois_i.n * params.rois_i.c * params.rois_i.d * params.rois_i.w * params.rois_i.h;
 	const uint batch_indices_i_size = params.batch_indices_i.n * params.batch_indices_i.c * params.batch_indices_i.d * params.batch_indices_i.w * params.batch_indices_i.h;
-    
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
-    
+    //
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

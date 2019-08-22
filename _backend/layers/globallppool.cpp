@@ -1,12 +1,17 @@
-#include "GlobalLpPool.h"
+#include "globallppool.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    GlobalLpPool::GlobalLpPool(std::string name) : Layer(name) { }
+    GlobalLpPool::GlobalLpPool(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders\\bin\\globallppool.spv");
+        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+    }
        
     vuh::Device* GlobalLpPool::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
     void GlobalLpPool::init( int _p) {      
@@ -17,14 +22,19 @@ namespace backend {
     void GlobalLpPool::bind(std::string _X_i, std::string _Y_o){
         X_i = _X_i; Y_o = _Y_o;
 
-		binding.X_i = tensor_dict[X_i]->shape();
+		//binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_o = tensor_dict[Y_o]->shape();
+		//binding.Y_o = tensor_dict[Y_o]->shape();
  
-		binding.p = p;
- 
-
-        
+		//binding.p = p;
+         
     }
+
+    void GlobalLpPool::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+    }
+
 }
 

@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Dropout takes one input floating tensor and produces two tensor outputs,
@@ -32,17 +29,16 @@ output: The output mask.
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Dropout : public Layer {
-        typedef struct {
-            float ratio;
-			
-            Shape_t data_i;
+    class Dropout : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i;
             
-            Shape_t output_o;
-            Shape_t mask_o;
+            backend::Shape_t output_o;
+            backend::Shape_t mask_o;
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         float ratio;
         std::string data_i;
@@ -62,13 +58,7 @@ namespace backend {
         
         virtual void init( float _ratio); 
         virtual void bind(std::string _data_i, std::string _output_o, std::string _mask_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/dropout.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[output_o]->data(), *tensor_dict[mask_o]->data());
-        }
+        virtual void build();
 
         ~Dropout() {}
     };

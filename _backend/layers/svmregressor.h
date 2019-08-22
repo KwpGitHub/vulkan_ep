@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Support Vector Machine regression prediction and one-class SVM anomaly detection.
@@ -22,23 +19,22 @@ output: Regression outputs (one score per target per example).
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      coefficients, kernel_params, kernel_type, n_supports, one_class, post_transform, rho, support_vectors
-//OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, int, int, int, int, Tensor*, Tensor*
+//OPTIONAL_PARAMETERS_TYPE: std::vector<float>, std::vector<float>, std::string, int, int, std::string, std::vector<float>, std::vector<float>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class SVMRegressor : public Layer {
-        typedef struct {
-            int kernel_type; int n_supports; int one_class; int post_transform;
-			Shape_t coefficients; Shape_t kernel_params; Shape_t rho; Shape_t support_vectors;
-            Shape_t X_i;
+    class SVMRegressor : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int kernel_type; int n_supports; int one_class; int post_transform; std::string coefficients; std::string kernel_params; std::string rho; std::string support_vectors;
+        std::vector<float> coefficients; std::vector<float> kernel_params; std::string kernel_type; int n_supports; int one_class; std::string post_transform; std::vector<float> rho; std::vector<float> support_vectors;
         std::string X_i;
         
         std::string Y_o;
@@ -54,15 +50,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _kernel_type,  int _n_supports,  int _one_class,  int _post_transform); 
-        virtual void bind(std::string _coefficients, std::string _kernel_params, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/svmregressor.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[kernel_params]->data(), *tensor_dict[rho]->data(), *tensor_dict[support_vectors]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void init( std::vector<float> _coefficients,  std::vector<float> _kernel_params,  std::string _kernel_type,  int _n_supports,  int _one_class,  std::string _post_transform,  std::vector<float> _rho,  std::vector<float> _support_vectors); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+        virtual void build();
 
         ~SVMRegressor() {}
     };

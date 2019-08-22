@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 The integer convolution operator consumes an input tensor, its zero-point, a filter, and its zero-point,
@@ -26,23 +23,22 @@ output: Output data tensor that contains the result of the convolution. The outp
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      auto_pad, dilations, group, kernel_shape, pads, strides
-//OPTIONAL_PARAMETERS_TYPE: int, Shape_t, int, Shape_t, Shape_t, Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::string, std::vector<int>, int, std::vector<int>, std::vector<int>, std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class ConvInteger : public Layer {
-        typedef struct {
-            int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-			
-            Shape_t x_i; Shape_t w_i;
-            Shape_t x_zero_point_i; Shape_t w_zero_point_i;
-            Shape_t y_o;
+    class ConvInteger : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t x_i; backend::Shape_t w_i;
+            backend::Shape_t x_zero_point_i; backend::Shape_t w_zero_point_i;
+            backend::Shape_t y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int auto_pad; Shape_t dilations; int group; Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+        std::string auto_pad; std::vector<int> dilations; int group; std::vector<int> kernel_shape; std::vector<int> pads; std::vector<int> strides;
         std::string x_i; std::string w_i;
         std::string x_zero_point_i; std::string w_zero_point_i;
         std::string y_o;
@@ -58,15 +54,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _auto_pad,  Shape_t _dilations,  int _group,  Shape_t _kernel_shape,  Shape_t _pads,  Shape_t _strides); 
+        virtual void init( std::string _auto_pad,  std::vector<int> _dilations,  int _group,  std::vector<int> _kernel_shape,  std::vector<int> _pads,  std::vector<int> _strides); 
         virtual void bind(std::string _x_i, std::string _w_i, std::string _x_zero_point_i, std::string _w_zero_point_i, std::string _y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/convinteger.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[x_i]->data(), *tensor_dict[w_i]->data(), *tensor_dict[x_zero_point_i]->data(), *tensor_dict[w_zero_point_i]->data(), *tensor_dict[y_o]->data());
-        }
+        virtual void build();
 
         ~ConvInteger() {}
     };

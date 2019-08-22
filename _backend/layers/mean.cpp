@@ -1,12 +1,17 @@
-#include "Mean.h"
+#include "mean.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    Mean::Mean(std::string name) : Layer(name) { }
+    Mean::Mean(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders\\bin\\mean.spv");
+        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+    }
        
     vuh::Device* Mean::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
     void Mean::init() {      
@@ -17,11 +22,16 @@ namespace backend {
         mean_o = _mean_o;
 
 
-		binding.mean_o = tensor_dict[mean_o]->shape();
+		//binding.mean_o = tensor_dict[mean_o]->shape();
  
-
-
         
     }
+
+    void Mean::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[mean_o]->data());
+    }
+
 }
 

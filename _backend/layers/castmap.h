@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Converts a map to a tensor.<br>The map key must be an int64 and the values will be ordered
@@ -24,23 +21,22 @@ output: A tensor representing the same data as the input map, ordered by their k
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      cast_to, map_form, max_map
-//OPTIONAL_PARAMETERS_TYPE: int, int, int
+//OPTIONAL_PARAMETERS_TYPE: std::string, std::string, int
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class CastMap : public Layer {
-        typedef struct {
-            int cast_to; int map_form; int max_map;
-			
-            Shape_t X_i;
+    class CastMap : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        int cast_to; int map_form; int max_map;
+        std::string cast_to; std::string map_form; int max_map;
         std::string X_i;
         
         std::string Y_o;
@@ -56,15 +52,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( int _cast_to,  int _map_form,  int _max_map); 
+        virtual void init( std::string _cast_to,  std::string _map_form,  int _max_map); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/castmap.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~CastMap() {}
     };

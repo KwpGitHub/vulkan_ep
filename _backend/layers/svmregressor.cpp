@@ -1,40 +1,54 @@
-#include "SVMRegressor.h"
+#include "svmregressor.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    SVMRegressor::SVMRegressor(std::string name) : Layer(name) { }
+    SVMRegressor::SVMRegressor(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders\\bin\\svmregressor.spv");
+        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+    }
        
     vuh::Device* SVMRegressor::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
-    void SVMRegressor::init( int _kernel_type,  int _n_supports,  int _one_class,  int _post_transform) {      
-		 kernel_type = _kernel_type; 
+    void SVMRegressor::init( std::vector<float> _coefficients,  std::vector<float> _kernel_params,  std::string _kernel_type,  int _n_supports,  int _one_class,  std::string _post_transform,  std::vector<float> _rho,  std::vector<float> _support_vectors) {      
+		 coefficients = _coefficients; 
+ 		 kernel_params = _kernel_params; 
+ 		 kernel_type = _kernel_type; 
  		 n_supports = _n_supports; 
  		 one_class = _one_class; 
  		 post_transform = _post_transform; 
+ 		 rho = _rho; 
+ 		 support_vectors = _support_vectors; 
   
     }
     
-    void SVMRegressor::bind(std::string _coefficients, std::string _kernel_params, std::string _rho, std::string _support_vectors, std::string _X_i, std::string _Y_o){
-        coefficients = _coefficients; kernel_params = _kernel_params; rho = _rho; support_vectors = _support_vectors; X_i = _X_i; Y_o = _Y_o;
+    void SVMRegressor::bind(std::string _X_i, std::string _Y_o){
+        X_i = _X_i; Y_o = _Y_o;
 
-		binding.X_i = tensor_dict[X_i]->shape();
+		//binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_o = tensor_dict[Y_o]->shape();
+		//binding.Y_o = tensor_dict[Y_o]->shape();
  
-		binding.kernel_type = kernel_type;
-  		binding.n_supports = n_supports;
-  		binding.one_class = one_class;
-  		binding.post_transform = post_transform;
- 
-		binding.coefficients = tensor_dict[coefficients]->shape();
-  		binding.kernel_params = tensor_dict[kernel_params]->shape();
-  		binding.rho = tensor_dict[rho]->shape();
-  		binding.support_vectors = tensor_dict[support_vectors]->shape();
- 
-        
+		//binding.coefficients = coefficients;
+  		//binding.kernel_params = kernel_params;
+  		//binding.kernel_type = kernel_type;
+  		//binding.n_supports = n_supports;
+  		//binding.one_class = one_class;
+  		//binding.post_transform = post_transform;
+  		//binding.rho = rho;
+  		//binding.support_vectors = support_vectors;
+         
     }
+
+    void SVMRegressor::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+    }
+
 }
 

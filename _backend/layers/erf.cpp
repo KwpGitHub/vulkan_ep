@@ -1,12 +1,17 @@
-#include "Erf.h"
+#include "erf.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    Erf::Erf(std::string name) : Layer(name) { }
+    Erf::Erf(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders\\bin\\erf.spv");
+        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+    }
        
     vuh::Device* Erf::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
     void Erf::init() {      
@@ -16,13 +21,18 @@ namespace backend {
     void Erf::bind(std::string _input_i, std::string _output_o){
         input_i = _input_i; output_o = _output_o;
 
-		binding.input_i = tensor_dict[input_i]->shape();
+		//binding.input_i = tensor_dict[input_i]->shape();
  
-		binding.output_o = tensor_dict[output_o]->shape();
+		//binding.output_o = tensor_dict[output_o]->shape();
  
-
-
         
     }
+
+    void Erf::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
+    }
+
 }
 

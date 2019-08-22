@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Shrink takes one input data (Tensor<numeric>) and produces one Tensor output,
@@ -29,17 +26,16 @@ output: The output.
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Shrink : public Layer {
-        typedef struct {
-            float bias; float lambd;
-			
-            Shape_t input_i;
+    class Shrink : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         float bias; float lambd;
         std::string input_i;
@@ -59,13 +55,7 @@ namespace backend {
         
         virtual void init( float _bias,  float _lambd); 
         virtual void bind(std::string _input_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/shrink.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Shrink() {}
     };

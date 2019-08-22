@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 Constructs a tensor by tiling a given tensor.
 This is the same as function `tile` in Numpy, but no broadcast.
@@ -28,17 +25,16 @@ output: Output tensor of the same dimension and type as tensor input. output_dim
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Tile : public Layer {
-        typedef struct {
+    class Tile : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i; backend::Shape_t repeats_i;
             
-			
-            Shape_t input_i; Shape_t repeats_i;
-            
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
         
         std::string input_i; std::string repeats_i;
@@ -58,13 +54,7 @@ namespace backend {
         
         virtual void init(); 
         virtual void bind(std::string _input_i, std::string _repeats_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tile.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[repeats_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Tile() {}
     };

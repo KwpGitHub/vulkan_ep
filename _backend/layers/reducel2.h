@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Computes the L2 norm of the input tensor's element along the provided axes. The resulted
@@ -26,23 +23,22 @@ output: Reduced output tensor.
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      axes, keepdims
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, int
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, int
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class ReduceL2 : public Layer {
-        typedef struct {
-            Shape_t axes; int keepdims;
-			
-            Shape_t data_i;
+    class ReduceL2 : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i;
             
-            Shape_t reduced_o;
+            backend::Shape_t reduced_o;
             
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        Shape_t axes; int keepdims;
+        std::vector<int> axes; int keepdims;
         std::string data_i;
         
         std::string reduced_o;
@@ -58,15 +54,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _axes,  int _keepdims); 
+        virtual void init( std::vector<int> _axes,  int _keepdims); 
         virtual void bind(std::string _data_i, std::string _reduced_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/reducel2.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[reduced_o]->data());
-        }
+        virtual void build();
 
         ~ReduceL2() {}
     };

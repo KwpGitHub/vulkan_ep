@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Computes an one-layer LSTM. This operator is usually supported via some
@@ -111,23 +108,22 @@ output: The last output value of the cell. It has shape `[num_directions, batch_
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      activation_alpha, activation_beta, activations, clip, direction, hidden_size, input_forget
-//OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, Tensor*, float, int, int, int
+//OPTIONAL_PARAMETERS_TYPE: std::vector<float>, std::vector<float>, std::vector<std::string>, float, std::string, int, int
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class LSTM : public Layer {
-        typedef struct {
-            float clip; int direction; int hidden_size; int input_forget;
-			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
-            Shape_t X_i; Shape_t W_i; Shape_t R_i;
-            Shape_t B_i; Shape_t sequence_lens_i; Shape_t initial_h_i; Shape_t initial_c_i; Shape_t P_i;
+    class LSTM : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i; backend::Shape_t W_i; backend::Shape_t R_i;
+            backend::Shape_t B_i; backend::Shape_t sequence_lens_i; backend::Shape_t initial_h_i; backend::Shape_t initial_c_i; backend::Shape_t P_i;
             
-            Shape_t Y_o; Shape_t Y_h_o; Shape_t Y_c_o;
+            backend::Shape_t Y_o; backend::Shape_t Y_h_o; backend::Shape_t Y_c_o;
         } binding_descriptor;
+        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 
-        float clip; int direction; int hidden_size; int input_forget; std::string activation_alpha; std::string activation_beta; std::string activations;
+        std::vector<float> activation_alpha; std::vector<float> activation_beta; std::vector<std::string> activations; float clip; std::string direction; int hidden_size; int input_forget;
         std::string X_i; std::string W_i; std::string R_i;
         std::string B_i; std::string sequence_lens_i; std::string initial_h_i; std::string initial_c_i; std::string P_i;
         
@@ -143,15 +139,9 @@ namespace backend {
     
         void forward() { program->run(); }
         
-        virtual void init( float _clip,  int _direction,  int _hidden_size,  int _input_forget); 
-        virtual void bind(std::string _activation_alpha, std::string _activation_beta, std::string _activations, std::string _X_i, std::string _W_i, std::string _R_i, std::string _B_i, std::string _sequence_lens_i, std::string _initial_h_i, std::string _initial_c_i, std::string _P_i, std::string _Y_o, std::string _Y_h_o, std::string _Y_c_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/lstm.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[activation_alpha]->data(), *tensor_dict[activation_beta]->data(), *tensor_dict[activations]->data(), *tensor_dict[X_i]->data(), *tensor_dict[W_i]->data(), *tensor_dict[R_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[sequence_lens_i]->data(), *tensor_dict[initial_h_i]->data(), *tensor_dict[initial_c_i]->data(), *tensor_dict[P_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Y_h_o]->data(), *tensor_dict[Y_c_o]->data());
-        }
+        virtual void init( std::vector<float> _activation_alpha,  std::vector<float> _activation_beta,  std::vector<std::string> _activations,  float _clip,  std::string _direction,  int _hidden_size,  int _input_forget); 
+        virtual void bind(std::string _X_i, std::string _W_i, std::string _R_i, std::string _B_i, std::string _sequence_lens_i, std::string _initial_h_i, std::string _initial_c_i, std::string _P_i, std::string _Y_o, std::string _Y_h_o, std::string _Y_c_o); 
+        virtual void build();
 
         ~LSTM() {}
     };

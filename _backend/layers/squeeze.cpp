@@ -1,15 +1,20 @@
-#include "Squeeze.h"
+#include "squeeze.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    Squeeze::Squeeze(std::string name) : Layer(name) { }
+    Squeeze::Squeeze(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders\\bin\\squeeze.spv");
+        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+    }
        
     vuh::Device* Squeeze::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
-    void Squeeze::init( Shape_t _axes) {      
+    void Squeeze::init( std::vector<int> _axes) {      
 		 axes = _axes; 
   
     }
@@ -17,14 +22,19 @@ namespace backend {
     void Squeeze::bind(std::string _data_i, std::string _squeezed_o){
         data_i = _data_i; squeezed_o = _squeezed_o;
 
-		binding.data_i = tensor_dict[data_i]->shape();
+		//binding.data_i = tensor_dict[data_i]->shape();
  
-		binding.squeezed_o = tensor_dict[squeezed_o]->shape();
+		//binding.squeezed_o = tensor_dict[squeezed_o]->shape();
  
-		binding.axes = axes;
- 
-
-        
+		//binding.axes = axes;
+         
     }
+
+    void Squeeze::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[squeezed_o]->data());
+    }
+
 }
 
