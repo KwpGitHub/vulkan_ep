@@ -152,8 +152,8 @@ namespace layers {
             
             backend::Shape_t y0_o; backend::Shape_t y1_o; backend::Shape_t y2_o; backend::Shape_t y3_o; backend::Shape_t y4_o; backend::Shape_t y5_o; backend::Shape_t y6_o; backend::Shape_t y7_o; backend::Shape_t y8_o; backend::Shape_t y9_o; backend::Shape_t y10_o; backend::Shape_t y11_o; backend::Shape_t y12_o; backend::Shape_t y13_o; backend::Shape_t y14_o; backend::Shape_t y15_o; backend::Shape_t y16_o; backend::Shape_t y17_o; backend::Shape_t y18_o; backend::Shape_t y19_o; backend::Shape_t y20_o; backend::Shape_t y21_o; backend::Shape_t y22_o; backend::Shape_t y23_o; backend::Shape_t y24_o; backend::Shape_t y25_o; backend::Shape_t y26_o; backend::Shape_t y27_o; backend::Shape_t y28_o; backend::Shape_t y29_o; backend::Shape_t y30_o; backend::Shape_t y31_o;
         } binding_descriptor;
-        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         int body; int num_scan_inputs; std::vector<int> scan_input_axes; std::vector<int> scan_input_directions; std::vector<int> scan_output_axes; std::vector<int> scan_output_directions;
         
         std::string x0_i; std::string x1_i; std::string x2_i; std::string x3_i; std::string x4_i; std::string x5_i; std::string x6_i; std::string x7_i; std::string x8_i; std::string x9_i; std::string x10_i; std::string x11_i; std::string x12_i; std::string x13_i; std::string x14_i; std::string x15_i; std::string x16_i; std::string x17_i; std::string x18_i; std::string x19_i; std::string x20_i; std::string x21_i; std::string x22_i; std::string x23_i; std::string x24_i; std::string x25_i; std::string x26_i; std::string x27_i; std::string x28_i; std::string x29_i; std::string x30_i; std::string x31_i;
@@ -161,9 +161,12 @@ namespace layers {
         std::string y0_o; std::string y1_o; std::string y2_o; std::string y3_o; std::string y4_o; std::string y5_o; std::string y6_o; std::string y7_o; std::string y8_o; std::string y9_o; std::string y10_o; std::string y11_o; std::string y12_o; std::string y13_o; std::string y14_o; std::string y15_o; std::string y16_o; std::string y17_o; std::string y18_o; std::string y19_o; std::string y20_o; std::string y21_o; std::string y22_o; std::string y23_o; std::string y24_o; std::string y25_o; std::string y26_o; std::string y27_o; std::string y28_o; std::string y29_o; std::string y30_o; std::string y31_o;
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         Scan(std::string name);

@@ -110,8 +110,8 @@ namespace layers {
             
             backend::Shape_t Y_o; backend::Shape_t Y_h_o;
         } binding_descriptor;
-        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         std::vector<float> activation_alpha; std::vector<float> activation_beta; std::vector<std::string> activations; float clip; std::string direction; int hidden_size; int linear_before_reset;
         std::string X_i; std::string W_i; std::string R_i;
         std::string B_i; std::string sequence_lens_i; std::string initial_h_i;
@@ -119,9 +119,12 @@ namespace layers {
         std::string Y_o; std::string Y_h_o;
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         GRU(std::string name);

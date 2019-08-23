@@ -30,8 +30,8 @@ namespace layers {
             backend::Shape_t concat_result_o;
             
         } binding_descriptor;
-        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         int axis;
         
         std::string x0_i; std::string x1_i; std::string x2_i; std::string x3_i; std::string x4_i; std::string x5_i; std::string x6_i; std::string x7_i; std::string x8_i; std::string x9_i; std::string x10_i; std::string x11_i; std::string x12_i; std::string x13_i; std::string x14_i; std::string x15_i; std::string x16_i; std::string x17_i; std::string x18_i; std::string x19_i; std::string x20_i; std::string x21_i; std::string x22_i; std::string x23_i; std::string x24_i; std::string x25_i; std::string x26_i; std::string x27_i; std::string x28_i; std::string x29_i; std::string x30_i; std::string x31_i;
@@ -39,9 +39,12 @@ namespace layers {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         Concat(std::string name);

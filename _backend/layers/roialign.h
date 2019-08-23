@@ -44,8 +44,8 @@ namespace layers {
             backend::Shape_t Y_o;
             
         } binding_descriptor;
-        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         std::string mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
         std::string X_i; std::string rois_i; std::string batch_indices_i;
         
@@ -53,9 +53,12 @@ namespace layers {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         RoiAlign(std::string name);

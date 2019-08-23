@@ -5,8 +5,11 @@ namespace layers {
     Cast::Cast(std::string name) : backend::Layer(name) {    
         std::string file;
         file.append(backend::file_path);
-        file.append("shaders\\bin\\cast.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+        file.append("shaders/bin/cast.spv");
+       
+        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
     vuh::Device* Cast::_get_device() {

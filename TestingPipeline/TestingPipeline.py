@@ -62,7 +62,7 @@ if(__name__=="__main__"):
     mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')
     mobilenet.build()
     print()
-    #bidaf = onnx_helper.OnnxGraph('./bidaf.onnx')
-    #bidaf.build()
+    bidaf = onnx_helper.OnnxGraph('./bidaf.onnx')
+    bidaf.build()
     print()
-    #node_info = graph_def_info('mobilenetv2.onnx')
+    

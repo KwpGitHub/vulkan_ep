@@ -41,8 +41,8 @@ namespace layers {
             backend::Shape_t Y_o; backend::Shape_t Z_o;
             
         } binding_descriptor;
-        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         std::vector<float> base_values; std::vector<int> class_ids; std::vector<int> class_nodeids; std::vector<int> class_treeids; std::vector<float> class_weights; std::vector<int> classlabels_int64s; std::vector<std::string> classlabels_strings; std::vector<int> nodes_falsenodeids; std::vector<int> nodes_featureids; std::vector<float> nodes_hitrates; std::vector<int> nodes_missing_value_tracks_true; std::vector<std::string> nodes_modes; std::vector<int> nodes_nodeids; std::vector<int> nodes_treeids; std::vector<int> nodes_truenodeids; std::vector<float> nodes_values; std::string post_transform;
         std::string X_i;
         
@@ -50,9 +50,12 @@ namespace layers {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         TreeEnsembleClassifier(std::string name);

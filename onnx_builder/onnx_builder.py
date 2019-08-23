@@ -23,7 +23,7 @@ ops = {}
 op_file = open('op_file.h','w')
 
 
-layer_map_str = """#include <map>
+layer_map_str = """/*#include <map>
 #include "layers.h"
 namespace backend {{
 
@@ -41,7 +41,7 @@ std::map<std::string, std::map<std::string, std::string> > parameter_map = {{
 */
 }};
 
-}}
+}}*/
     """.format
 
 layers_file_str = '''
@@ -88,8 +88,8 @@ namespace layers {{
             {output_param_lst}
             {optional_output_param_lst}
         }} binding_descriptor;
-        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         {param_lst}
         {input_lst}
         {optional_input_lst}
@@ -97,9 +97,12 @@ namespace layers {{
         {optional_output_lst}
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params {{ uint32_t size; float a; }};    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         {norm}(std::string name);
@@ -125,8 +128,11 @@ namespace layers {{
     {norm}::{norm}(std::string name) : backend::Layer(name) {{    
         std::string file;
         file.append(backend::file_path);
-        file.append("shaders\\\\bin\\\\{lower}.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*backend::device, file.c_str());
+        file.append("shaders/bin/{lower}.spv");
+       
+        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }}
        
     vuh::Device* {norm}::_get_device() {{

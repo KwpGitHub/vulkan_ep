@@ -5,7 +5,9 @@ import onnx.defs
 import onnx.optimizer
 import onnx.shape_inference
 import onnx.utils
-from onnx.backend.base import Backend, Device, DeviceType, namedtupledict
+from onnx.backend.base import Backend, Device, DeviceType, namedtupledict, BackendRep
+
+from onnx.helper import make_tensor_value_info, make_graph, make_model
 
 import os
 import layers

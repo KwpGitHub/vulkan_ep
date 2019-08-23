@@ -1,5 +1,4 @@
 #pragma once
-#include "tensor.h"
 #ifndef LAYER_H
 #define LAYER_H
 #include <map>
@@ -9,12 +8,11 @@
 #include <pybind11/stl.h>
 namespace py = pybind11;
 
+#include "tensor.h"
 #include "kernel/vuh.h"
 
 namespace backend {
 	
-	
-
 #define PROCESSKERNEL_SIZE 32
 	
 	class Layer
@@ -28,22 +26,22 @@ namespace backend {
 		virtual void bind() {}
 		virtual void build() {}
 	protected:
+		using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
 		//virtual void parameter_proc(std::map<std::string, std::vector<std::string>> a()) {}
-		std::vector<std::string> inputs;
-		std::vector<std::string> outputs;
 	};
 }
 
 namespace backend {
-	static std::map<std::string, Layer*> layer_dict;
+	inline std::map<std::string, Layer*> layer_dict;
+
 	template<typename T> std::vector<T> convert(py::list l) {
 		std::vector<T> x;
 		for (auto i : l)
 			x.push_back(i.cast<T>());
 		return x;
 	}
-	static char static_execution = 0;
-	static py::module nn;
+
+	inline char static_execution = 0;
 }
 
 

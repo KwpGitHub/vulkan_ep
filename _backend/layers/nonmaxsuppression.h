@@ -43,8 +43,8 @@ namespace layers {
             backend::Shape_t selected_indices_o;
             
         } binding_descriptor;
-        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         int center_point_box;
         std::string boxes_i; std::string scores_i;
         std::string max_output_boxes_per_class_i; std::string iou_threshold_i; std::string score_threshold_i;
@@ -52,9 +52,12 @@ namespace layers {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         NonMaxSuppression(std::string name);

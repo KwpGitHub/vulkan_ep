@@ -145,7 +145,8 @@ void init_layer_LRN(py::module& m){
         layers::LRN* layer = new layers::LRN(std::string(name));
         layer->init(_size, _alpha, _beta, _bias);
         layer->bind(_X_i, _Y_o);
-        layer->build();
+        layer
+			->build();
         backend::layer_dict[std::string(name)] = layer;
 
         std::cout<< "Layer ::: LRN" << " Built" << std::endl;

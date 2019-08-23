@@ -15,24 +15,30 @@ namespace py = pybind11;
 #include "layers.h"
 
 
+void create_instance() {
+	backend::instance = new vuh::Instance();
+	backend::device = new vuh::Device(backend::instance->devices().at(0));
+	backend::file_path = "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend\\";
+}
+
 
 void test() {
 	auto y = std::vector<float>(128, 1.0f);
 	auto x = std::vector<float>(128, 2.0f);
 	
 	    // just get the first available device
+	auto device = new vuh::Device(*backend::device);
 
-	auto d_y = vuh::Array<float>(*backend::device, y);   // create device arrays and copy data
-	auto d_x = vuh::Array<float>(*backend::device, x);
+	auto d_y = vuh::Array<float>(*device, y);
+	auto d_x = vuh::Array<float>(*device, x);
 
 	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
 	struct Params { uint32_t size; float a; };    // shader push-constants interface
 
 	vuh::Program<Specs, Params>* program;
 	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
-	program = new vuh::Program<Specs, Params>(*backend::device, std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
-	program->grid(128/64, 1, 1).spec(64, 1, 1).bind({ 128, 0.1f }, d_y, d_x); 
+	program = new vuh::Program<Specs, Params>(*device, std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+	program->grid(128 / 64, 1, 1).spec(64, 1, 1).bind({ 128, 0.1f }, d_y, d_x);
 	program->run();
 
 	d_y.toHost(begin(y));
@@ -50,10 +56,6 @@ void test() {
 	return;
 }
 
-void create_instance() {
-	backend::instance = new vuh::Instance();
-	backend::device = new vuh::Device(backend::instance->devices().at(0));
-}
 
 void create_tensor_from_numpy(py::str name, py::array_t<float> input){
 	py::buffer_info buf = input.request();

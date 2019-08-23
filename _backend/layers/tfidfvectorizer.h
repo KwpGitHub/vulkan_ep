@@ -58,8 +58,8 @@ namespace layers {
             backend::Shape_t Y_o;
             
         } binding_descriptor;
-        using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         int max_gram_length; int max_skip_count; int min_gram_length; std::string mode; std::vector<int> ngram_counts; std::vector<int> ngram_indexes; std::vector<int> pool_int64s; std::vector<std::string> pool_strings; std::vector<float> weights;
         std::string X_i;
         
@@ -67,9 +67,12 @@ namespace layers {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         TfIdfVectorizer(std::string name);
