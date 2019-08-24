@@ -53,7 +53,7 @@ namespace layers {
 
     public:
         Elu(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _alpha); 

@@ -8,7 +8,7 @@ void init_layer_LSTM(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LSTM" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LSTM" <<std::endl;
 
     });
 }
@@ -22,7 +22,7 @@ void init_layer_Identity(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Identity" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Identity" <<std::endl;
 
     });
 }
@@ -36,7 +36,7 @@ void init_layer_Abs(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Abs" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Abs" <<std::endl;
 
     });
 }
@@ -50,7 +50,7 @@ void init_layer_BatchNormalization(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: BatchNormalization" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "BatchNormalization" <<std::endl;
 
     });
 }
@@ -64,7 +64,7 @@ void init_layer_Mean(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Mean" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mean" <<std::endl;
 
     });
 }
@@ -78,7 +78,7 @@ void init_layer_Add(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Add" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Add" <<std::endl;
 
     });
 }
@@ -92,7 +92,7 @@ void init_layer_GlobalMaxPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: GlobalMaxPool" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalMaxPool" <<std::endl;
 
     });
 }
@@ -106,7 +106,7 @@ void init_layer_Cast(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Cast" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cast" <<std::endl;
 
     });
 }
@@ -120,7 +120,7 @@ void init_layer_AveragePool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: AveragePool" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "AveragePool" <<std::endl;
 
     });
 }
@@ -134,7 +134,7 @@ void init_layer_And(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: And" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "And" <<std::endl;
 
     });
 }
@@ -145,11 +145,10 @@ void init_layer_LRN(py::module& m){
         layers::LRN* layer = new layers::LRN(std::string(name));
         layer->init(_size, _alpha, _beta, _bias);
         layer->bind(_X_i, _Y_o);
-        layer
-			->build();
+        layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LRN" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LRN" <<std::endl;
 
     });
 }
@@ -163,7 +162,7 @@ void init_layer_ArgMax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ArgMax" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArgMax" <<std::endl;
 
     });
 }
@@ -177,7 +176,7 @@ void init_layer_Resize(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Resize" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Resize" <<std::endl;
 
     });
 }
@@ -191,7 +190,7 @@ void init_layer_Expand(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Expand" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Expand" <<std::endl;
 
     });
 }
@@ -205,7 +204,7 @@ void init_layer_Neg(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Neg" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Neg" <<std::endl;
 
     });
 }
@@ -219,7 +218,7 @@ void init_layer_Mul(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Mul" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mul" <<std::endl;
 
     });
 }
@@ -233,7 +232,7 @@ void init_layer_ArgMin(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ArgMin" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArgMin" <<std::endl;
 
     });
 }
@@ -247,7 +246,7 @@ void init_layer_CastMap(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: CastMap" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "CastMap" <<std::endl;
 
     });
 }
@@ -261,7 +260,7 @@ void init_layer_Exp(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Exp" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Exp" <<std::endl;
 
     });
 }
@@ -275,7 +274,7 @@ void init_layer_Div(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Div" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Div" <<std::endl;
 
     });
 }
@@ -289,7 +288,7 @@ void init_layer_ReverseSequence(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReverseSequence" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReverseSequence" <<std::endl;
 
     });
 }
@@ -303,7 +302,7 @@ void init_layer_Ceil(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Ceil" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Ceil" <<std::endl;
 
     });
 }
@@ -317,7 +316,7 @@ void init_layer_DepthToSpace(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: DepthToSpace" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DepthToSpace" <<std::endl;
 
     });
 }
@@ -331,7 +330,7 @@ void init_layer_Clip(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Clip" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Clip" <<std::endl;
 
     });
 }
@@ -345,7 +344,7 @@ void init_layer_RNN(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: RNN" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RNN" <<std::endl;
 
     });
 }
@@ -359,7 +358,7 @@ void init_layer_Concat(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Concat" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Concat" <<std::endl;
 
     });
 }
@@ -373,7 +372,7 @@ void init_layer_Constant(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Constant" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Constant" <<std::endl;
 
     });
 }
@@ -387,7 +386,7 @@ void init_layer_LpPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LpPool" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LpPool" <<std::endl;
 
     });
 }
@@ -401,7 +400,7 @@ void init_layer_Conv(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Conv" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Conv" <<std::endl;
 
     });
 }
@@ -415,7 +414,7 @@ void init_layer_Not(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Not" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Not" <<std::endl;
 
     });
 }
@@ -429,7 +428,7 @@ void init_layer_Gather(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Gather" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Gather" <<std::endl;
 
     });
 }
@@ -443,7 +442,7 @@ void init_layer_ConvTranspose(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ConvTranspose" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConvTranspose" <<std::endl;
 
     });
 }
@@ -457,7 +456,7 @@ void init_layer_Dropout(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Dropout" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Dropout" <<std::endl;
 
     });
 }
@@ -471,7 +470,7 @@ void init_layer_LeakyRelu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LeakyRelu" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LeakyRelu" <<std::endl;
 
     });
 }
@@ -485,7 +484,7 @@ void init_layer_Elu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Elu" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Elu" <<std::endl;
 
     });
 }
@@ -499,7 +498,7 @@ void init_layer_GlobalAveragePool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: GlobalAveragePool" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalAveragePool" <<std::endl;
 
     });
 }
@@ -513,7 +512,7 @@ void init_layer_Gemm(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Gemm" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Gemm" <<std::endl;
 
     });
 }
@@ -527,7 +526,7 @@ void init_layer_MaxPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: MaxPool" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxPool" <<std::endl;
 
     });
 }
@@ -541,7 +540,7 @@ void init_layer_Equal(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Equal" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Equal" <<std::endl;
 
     });
 }
@@ -555,7 +554,7 @@ void init_layer_Tile(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Tile" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tile" <<std::endl;
 
     });
 }
@@ -569,7 +568,7 @@ void init_layer_Flatten(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Flatten" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Flatten" <<std::endl;
 
     });
 }
@@ -583,7 +582,7 @@ void init_layer_Floor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Floor" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Floor" <<std::endl;
 
     });
 }
@@ -597,7 +596,7 @@ void init_layer_GRU(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: GRU" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GRU" <<std::endl;
 
     });
 }
@@ -611,7 +610,7 @@ void init_layer_GlobalLpPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: GlobalLpPool" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalLpPool" <<std::endl;
 
     });
 }
@@ -625,7 +624,7 @@ void init_layer_Greater(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Greater" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Greater" <<std::endl;
 
     });
 }
@@ -639,7 +638,7 @@ void init_layer_HardSigmoid(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: HardSigmoid" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "HardSigmoid" <<std::endl;
 
     });
 }
@@ -653,7 +652,7 @@ void init_layer_Selu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Selu" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Selu" <<std::endl;
 
     });
 }
@@ -667,7 +666,7 @@ void init_layer_Hardmax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Hardmax" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Hardmax" <<std::endl;
 
     });
 }
@@ -681,7 +680,7 @@ void init_layer_If(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: If" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "If" <<std::endl;
 
     });
 }
@@ -695,7 +694,7 @@ void init_layer_Min(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Min" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Min" <<std::endl;
 
     });
 }
@@ -709,7 +708,7 @@ void init_layer_InstanceNormalization(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: InstanceNormalization" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "InstanceNormalization" <<std::endl;
 
     });
 }
@@ -723,7 +722,7 @@ void init_layer_Less(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Less" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Less" <<std::endl;
 
     });
 }
@@ -737,7 +736,7 @@ void init_layer_EyeLike(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: EyeLike" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "EyeLike" <<std::endl;
 
     });
 }
@@ -751,7 +750,7 @@ void init_layer_RandomNormal(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: RandomNormal" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomNormal" <<std::endl;
 
     });
 }
@@ -765,7 +764,7 @@ void init_layer_Slice(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Slice" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Slice" <<std::endl;
 
     });
 }
@@ -779,7 +778,7 @@ void init_layer_PRelu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: PRelu" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "PRelu" <<std::endl;
 
     });
 }
@@ -793,7 +792,7 @@ void init_layer_Log(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Log" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Log" <<std::endl;
 
     });
 }
@@ -807,7 +806,7 @@ void init_layer_LogSoftmax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LogSoftmax" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LogSoftmax" <<std::endl;
 
     });
 }
@@ -821,7 +820,7 @@ void init_layer_Loop(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Loop" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Loop" <<std::endl;
 
     });
 }
@@ -835,7 +834,7 @@ void init_layer_LpNormalization(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LpNormalization" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LpNormalization" <<std::endl;
 
     });
 }
@@ -849,7 +848,7 @@ void init_layer_MatMul(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: MatMul" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MatMul" <<std::endl;
 
     });
 }
@@ -863,7 +862,7 @@ void init_layer_ReduceL2(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceL2" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceL2" <<std::endl;
 
     });
 }
@@ -877,7 +876,7 @@ void init_layer_Max(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Max" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Max" <<std::endl;
 
     });
 }
@@ -891,7 +890,7 @@ void init_layer_MaxRoiPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: MaxRoiPool" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxRoiPool" <<std::endl;
 
     });
 }
@@ -905,7 +904,7 @@ void init_layer_Or(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Or" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Or" <<std::endl;
 
     });
 }
@@ -919,7 +918,7 @@ void init_layer_Pad(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Pad" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Pad" <<std::endl;
 
     });
 }
@@ -933,7 +932,7 @@ void init_layer_RandomUniformLike(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: RandomUniformLike" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomUniformLike" <<std::endl;
 
     });
 }
@@ -947,7 +946,7 @@ void init_layer_Reciprocal(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Reciprocal" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Reciprocal" <<std::endl;
 
     });
 }
@@ -961,7 +960,7 @@ void init_layer_Pow(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Pow" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Pow" <<std::endl;
 
     });
 }
@@ -975,7 +974,7 @@ void init_layer_RandomNormalLike(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: RandomNormalLike" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomNormalLike" <<std::endl;
 
     });
 }
@@ -989,7 +988,7 @@ void init_layer_OneHot(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: OneHot" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "OneHot" <<std::endl;
 
     });
 }
@@ -1003,7 +1002,7 @@ void init_layer_RandomUniform(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: RandomUniform" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomUniform" <<std::endl;
 
     });
 }
@@ -1017,7 +1016,7 @@ void init_layer_ReduceL1(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceL1" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceL1" <<std::endl;
 
     });
 }
@@ -1031,7 +1030,7 @@ void init_layer_ReduceLogSum(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceLogSum" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceLogSum" <<std::endl;
 
     });
 }
@@ -1045,7 +1044,7 @@ void init_layer_ReduceLogSumExp(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceLogSumExp" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceLogSumExp" <<std::endl;
 
     });
 }
@@ -1059,7 +1058,7 @@ void init_layer_ReduceMax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceMax" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMax" <<std::endl;
 
     });
 }
@@ -1073,7 +1072,7 @@ void init_layer_OneHotEncoder(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: OneHotEncoder" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "OneHotEncoder" <<std::endl;
 
     });
 }
@@ -1087,7 +1086,7 @@ void init_layer_IsNaN(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: IsNaN" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "IsNaN" <<std::endl;
 
     });
 }
@@ -1101,7 +1100,7 @@ void init_layer_ReduceMean(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceMean" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMean" <<std::endl;
 
     });
 }
@@ -1115,7 +1114,7 @@ void init_layer_ReduceMin(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceMin" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMin" <<std::endl;
 
     });
 }
@@ -1129,7 +1128,7 @@ void init_layer_TreeEnsembleRegressor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: TreeEnsembleRegressor" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TreeEnsembleRegressor" <<std::endl;
 
     });
 }
@@ -1143,7 +1142,7 @@ void init_layer_ReduceProd(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceProd" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceProd" <<std::endl;
 
     });
 }
@@ -1157,7 +1156,7 @@ void init_layer_ReduceSum(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceSum" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceSum" <<std::endl;
 
     });
 }
@@ -1171,7 +1170,7 @@ void init_layer_ReduceSumSquare(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ReduceSumSquare" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceSumSquare" <<std::endl;
 
     });
 }
@@ -1185,7 +1184,7 @@ void init_layer_Relu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Relu" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Relu" <<std::endl;
 
     });
 }
@@ -1199,7 +1198,7 @@ void init_layer_Reshape(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Reshape" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Reshape" <<std::endl;
 
     });
 }
@@ -1213,7 +1212,7 @@ void init_layer_Shape(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Shape" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Shape" <<std::endl;
 
     });
 }
@@ -1227,7 +1226,7 @@ void init_layer_Sigmoid(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Sigmoid" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sigmoid" <<std::endl;
 
     });
 }
@@ -1241,7 +1240,7 @@ void init_layer_Size(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Size" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Size" <<std::endl;
 
     });
 }
@@ -1255,7 +1254,7 @@ void init_layer_Softmax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Softmax" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softmax" <<std::endl;
 
     });
 }
@@ -1269,7 +1268,7 @@ void init_layer_Softplus(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Softplus" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softplus" <<std::endl;
 
     });
 }
@@ -1283,7 +1282,7 @@ void init_layer_Softsign(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Softsign" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softsign" <<std::endl;
 
     });
 }
@@ -1297,7 +1296,7 @@ void init_layer_SpaceToDepth(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: SpaceToDepth" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SpaceToDepth" <<std::endl;
 
     });
 }
@@ -1311,7 +1310,7 @@ void init_layer_TfIdfVectorizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: TfIdfVectorizer" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TfIdfVectorizer" <<std::endl;
 
     });
 }
@@ -1325,7 +1324,7 @@ void init_layer_Split(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Split" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Split" <<std::endl;
 
     });
 }
@@ -1339,7 +1338,7 @@ void init_layer_Imputer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Imputer" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Imputer" <<std::endl;
 
     });
 }
@@ -1353,7 +1352,7 @@ void init_layer_Sqrt(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Sqrt" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sqrt" <<std::endl;
 
     });
 }
@@ -1367,7 +1366,7 @@ void init_layer_Squeeze(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Squeeze" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Squeeze" <<std::endl;
 
     });
 }
@@ -1381,7 +1380,7 @@ void init_layer_TopK(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: TopK" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TopK" <<std::endl;
 
     });
 }
@@ -1395,7 +1394,7 @@ void init_layer_Sub(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Sub" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sub" <<std::endl;
 
     });
 }
@@ -1409,7 +1408,7 @@ void init_layer_Sum(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Sum" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sum" <<std::endl;
 
     });
 }
@@ -1423,7 +1422,7 @@ void init_layer_Shrink(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Shrink" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Shrink" <<std::endl;
 
     });
 }
@@ -1437,7 +1436,7 @@ void init_layer_Tanh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Tanh" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tanh" <<std::endl;
 
     });
 }
@@ -1451,7 +1450,7 @@ void init_layer_Transpose(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Transpose" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Transpose" <<std::endl;
 
     });
 }
@@ -1465,7 +1464,7 @@ void init_layer_Unsqueeze(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Unsqueeze" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Unsqueeze" <<std::endl;
 
     });
 }
@@ -1479,7 +1478,7 @@ void init_layer_SVMClassifier(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: SVMClassifier" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SVMClassifier" <<std::endl;
 
     });
 }
@@ -1493,7 +1492,7 @@ void init_layer_Xor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Xor" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Xor" <<std::endl;
 
     });
 }
@@ -1507,7 +1506,7 @@ void init_layer_Acos(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Acos" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Acos" <<std::endl;
 
     });
 }
@@ -1521,7 +1520,7 @@ void init_layer_Asin(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Asin" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Asin" <<std::endl;
 
     });
 }
@@ -1535,7 +1534,7 @@ void init_layer_Atan(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Atan" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Atan" <<std::endl;
 
     });
 }
@@ -1549,7 +1548,7 @@ void init_layer_Cos(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Cos" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cos" <<std::endl;
 
     });
 }
@@ -1563,7 +1562,7 @@ void init_layer_Sin(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Sin" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sin" <<std::endl;
 
     });
 }
@@ -1577,7 +1576,7 @@ void init_layer_Tan(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Tan" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tan" <<std::endl;
 
     });
 }
@@ -1591,7 +1590,7 @@ void init_layer_Multinomial(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Multinomial" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Multinomial" <<std::endl;
 
     });
 }
@@ -1605,7 +1604,7 @@ void init_layer_Scan(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Scan" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scan" <<std::endl;
 
     });
 }
@@ -1619,7 +1618,7 @@ void init_layer_Compress(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Compress" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Compress" <<std::endl;
 
     });
 }
@@ -1633,7 +1632,7 @@ void init_layer_ConstantOfShape(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ConstantOfShape" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConstantOfShape" <<std::endl;
 
     });
 }
@@ -1647,7 +1646,7 @@ void init_layer_MaxUnpool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: MaxUnpool" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxUnpool" <<std::endl;
 
     });
 }
@@ -1661,7 +1660,7 @@ void init_layer_Scatter(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Scatter" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scatter" <<std::endl;
 
     });
 }
@@ -1675,7 +1674,7 @@ void init_layer_Sinh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Sinh" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sinh" <<std::endl;
 
     });
 }
@@ -1689,7 +1688,7 @@ void init_layer_Cosh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Cosh" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cosh" <<std::endl;
 
     });
 }
@@ -1703,7 +1702,7 @@ void init_layer_Asinh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Asinh" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Asinh" <<std::endl;
 
     });
 }
@@ -1717,7 +1716,7 @@ void init_layer_Acosh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Acosh" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Acosh" <<std::endl;
 
     });
 }
@@ -1731,7 +1730,7 @@ void init_layer_NonMaxSuppression(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: NonMaxSuppression" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "NonMaxSuppression" <<std::endl;
 
     });
 }
@@ -1745,7 +1744,7 @@ void init_layer_Atanh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Atanh" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Atanh" <<std::endl;
 
     });
 }
@@ -1759,7 +1758,7 @@ void init_layer_Sign(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Sign" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sign" <<std::endl;
 
     });
 }
@@ -1773,7 +1772,7 @@ void init_layer_Erf(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Erf" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Erf" <<std::endl;
 
     });
 }
@@ -1787,7 +1786,7 @@ void init_layer_Where(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Where" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Where" <<std::endl;
 
     });
 }
@@ -1801,7 +1800,7 @@ void init_layer_NonZero(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: NonZero" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "NonZero" <<std::endl;
 
     });
 }
@@ -1815,7 +1814,7 @@ void init_layer_MeanVarianceNormalization(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: MeanVarianceNormalization" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MeanVarianceNormalization" <<std::endl;
 
     });
 }
@@ -1829,7 +1828,7 @@ void init_layer_StringNormalizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: StringNormalizer" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "StringNormalizer" <<std::endl;
 
     });
 }
@@ -1843,7 +1842,7 @@ void init_layer_Mod(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Mod" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mod" <<std::endl;
 
     });
 }
@@ -1857,7 +1856,7 @@ void init_layer_ThresholdedRelu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ThresholdedRelu" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ThresholdedRelu" <<std::endl;
 
     });
 }
@@ -1871,7 +1870,7 @@ void init_layer_MatMulInteger(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: MatMulInteger" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MatMulInteger" <<std::endl;
 
     });
 }
@@ -1885,7 +1884,7 @@ void init_layer_QLinearMatMul(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: QLinearMatMul" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QLinearMatMul" <<std::endl;
 
     });
 }
@@ -1899,7 +1898,7 @@ void init_layer_ConvInteger(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ConvInteger" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConvInteger" <<std::endl;
 
     });
 }
@@ -1913,7 +1912,7 @@ void init_layer_QLinearConv(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: QLinearConv" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QLinearConv" <<std::endl;
 
     });
 }
@@ -1927,7 +1926,7 @@ void init_layer_QuantizeLinear(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: QuantizeLinear" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QuantizeLinear" <<std::endl;
 
     });
 }
@@ -1941,7 +1940,7 @@ void init_layer_DequantizeLinear(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: DequantizeLinear" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DequantizeLinear" <<std::endl;
 
     });
 }
@@ -1955,7 +1954,7 @@ void init_layer_IsInf(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: IsInf" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "IsInf" <<std::endl;
 
     });
 }
@@ -1969,7 +1968,7 @@ void init_layer_RoiAlign(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: RoiAlign" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RoiAlign" <<std::endl;
 
     });
 }
@@ -1983,7 +1982,7 @@ void init_layer_ArrayFeatureExtractor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ArrayFeatureExtractor" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArrayFeatureExtractor" <<std::endl;
 
     });
 }
@@ -1997,7 +1996,7 @@ void init_layer_Binarizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Binarizer" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Binarizer" <<std::endl;
 
     });
 }
@@ -2011,7 +2010,7 @@ void init_layer_CategoryMapper(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: CategoryMapper" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "CategoryMapper" <<std::endl;
 
     });
 }
@@ -2025,7 +2024,7 @@ void init_layer_DictVectorizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: DictVectorizer" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DictVectorizer" <<std::endl;
 
     });
 }
@@ -2039,7 +2038,7 @@ void init_layer_FeatureVectorizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: FeatureVectorizer" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "FeatureVectorizer" <<std::endl;
 
     });
 }
@@ -2053,7 +2052,7 @@ void init_layer_LabelEncoder(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LabelEncoder" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LabelEncoder" <<std::endl;
 
     });
 }
@@ -2067,7 +2066,7 @@ void init_layer_LinearClassifier(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LinearClassifier" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LinearClassifier" <<std::endl;
 
     });
 }
@@ -2081,7 +2080,7 @@ void init_layer_LinearRegressor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: LinearRegressor" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LinearRegressor" <<std::endl;
 
     });
 }
@@ -2095,7 +2094,7 @@ void init_layer_Normalizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Normalizer" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Normalizer" <<std::endl;
 
     });
 }
@@ -2109,7 +2108,7 @@ void init_layer_SVMRegressor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: SVMRegressor" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SVMRegressor" <<std::endl;
 
     });
 }
@@ -2123,7 +2122,7 @@ void init_layer_Scaler(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: Scaler" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scaler" <<std::endl;
 
     });
 }
@@ -2137,7 +2136,7 @@ void init_layer_TreeEnsembleClassifier(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: TreeEnsembleClassifier" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TreeEnsembleClassifier" <<std::endl;
 
     });
 }
@@ -2151,7 +2150,7 @@ void init_layer_ZipMap(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: ZipMap" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ZipMap" <<std::endl;
 
     });
 }

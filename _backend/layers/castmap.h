@@ -52,7 +52,7 @@ namespace layers {
 
     public:
         CastMap(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::string _cast_to,  std::string _map_form,  int _max_map); 

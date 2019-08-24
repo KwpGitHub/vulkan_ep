@@ -53,7 +53,7 @@ namespace layers {
 
     public:
         Shrink(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _bias,  float _lambd); 

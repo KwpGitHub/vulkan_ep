@@ -54,7 +54,7 @@ namespace layers {
 
     public:
         Less(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

@@ -53,7 +53,7 @@ namespace layers {
 
     public:
         Compress(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _axis); 

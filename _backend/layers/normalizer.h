@@ -59,7 +59,7 @@ namespace layers {
 
     public:
         Normalizer(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::string _norm); 

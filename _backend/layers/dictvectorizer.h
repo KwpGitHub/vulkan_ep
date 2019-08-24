@@ -60,7 +60,7 @@ namespace layers {
 
     public:
         DictVectorizer(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<int> _int64_vocabulary,  std::vector<std::string> _string_vocabulary); 

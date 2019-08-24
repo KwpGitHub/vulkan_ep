@@ -57,7 +57,7 @@ namespace layers {
 
     public:
         InstanceNormalization(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _epsilon); 

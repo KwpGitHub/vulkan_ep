@@ -53,7 +53,7 @@ namespace layers {
 
     public:
         Mul(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

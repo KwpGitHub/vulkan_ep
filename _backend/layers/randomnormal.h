@@ -56,7 +56,7 @@ namespace layers {
 
     public:
         RandomNormal(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<int> _shape,  int _dtype,  float _mean,  float _scale,  float _seed); 

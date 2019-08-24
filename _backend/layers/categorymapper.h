@@ -57,7 +57,7 @@ namespace layers {
 
     public:
         CategoryMapper(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<int> _cats_int64s,  std::vector<std::string> _cats_strings,  int _default_int64,  std::string _default_string); 

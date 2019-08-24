@@ -50,7 +50,7 @@ namespace layers {
 
     public:
         Binarizer(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _threshold); 

@@ -53,7 +53,7 @@ void init_layer_{norm}(py::module& m){{
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout<< "Layer ::: {norm}" << " Built" << std::endl;
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "{norm}" <<std::endl;
 
     }});
 }}\n'''.format_map
@@ -106,7 +106,7 @@ namespace layers {{
 
     public:
         {norm}(std::string name);
-    
+        
         void forward() {{ program->run(); }}
         
         virtual void init({init_param_lst}); 
@@ -175,23 +175,28 @@ class {norm}:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._{norm} 
+        self.Module = nn._{norm}
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, {python_call})
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['{norm}'] = {norm}
@@ -394,7 +399,7 @@ def onnx_proto():
     layers.writelines(layers_lst)
     op_file.close()
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
-    py_layers.write('import _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
+    py_layers.write('import numpy as np\nimport _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
 
     print(single_element)
     print(double_element)

@@ -55,7 +55,7 @@ namespace layers {
 
     public:
         DequantizeLinear(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

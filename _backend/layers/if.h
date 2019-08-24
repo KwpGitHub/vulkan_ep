@@ -48,7 +48,7 @@ namespace layers {
 
     public:
         If(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _else_branch,  int _then_branch); 

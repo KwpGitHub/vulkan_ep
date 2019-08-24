@@ -51,7 +51,7 @@ namespace layers {
 
     public:
         Split(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _axis,  std::vector<int> _split); 

@@ -51,7 +51,7 @@ namespace layers {
 
     public:
         SpaceToDepth(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _blocksize); 

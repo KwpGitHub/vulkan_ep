@@ -170,7 +170,7 @@ namespace layers {
 
     public:
         Scan(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _body,  int _num_scan_inputs,  std::vector<int> _scan_input_axes,  std::vector<int> _scan_input_directions,  std::vector<int> _scan_output_axes,  std::vector<int> _scan_output_directions); 

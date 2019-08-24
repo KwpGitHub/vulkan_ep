@@ -64,7 +64,7 @@ namespace layers {
 
     public:
         QLinearMatMul(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

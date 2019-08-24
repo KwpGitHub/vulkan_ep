@@ -52,7 +52,7 @@ namespace layers {
 
     public:
         Abs(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

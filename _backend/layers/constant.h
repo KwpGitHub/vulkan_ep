@@ -48,7 +48,7 @@ namespace layers {
 
     public:
         Constant(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<float> _value); 

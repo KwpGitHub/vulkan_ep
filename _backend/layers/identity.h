@@ -48,7 +48,7 @@ namespace layers {
 
     public:
         Identity(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

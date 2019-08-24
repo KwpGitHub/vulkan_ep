@@ -52,7 +52,7 @@ namespace layers {
 
     public:
         Softplus(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

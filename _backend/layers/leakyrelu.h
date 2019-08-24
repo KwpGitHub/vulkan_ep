@@ -52,7 +52,7 @@ namespace layers {
 
     public:
         LeakyRelu(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _alpha); 

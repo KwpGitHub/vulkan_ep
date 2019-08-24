@@ -51,7 +51,7 @@ namespace layers {
 
     public:
         LinearClassifier(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<float> _coefficients,  std::vector<int> _classlabels_ints,  std::vector<std::string> _classlabels_strings,  std::vector<float> _intercepts,  int _multi_class,  std::string _post_transform); 

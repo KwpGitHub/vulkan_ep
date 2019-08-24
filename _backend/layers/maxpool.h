@@ -78,7 +78,7 @@ namespace layers {
 
     public:
         MaxPool(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<int> _kernel_shape,  std::string _auto_pad,  int _ceil_mode,  std::vector<int> _dilations,  std::vector<int> _pads,  int _storage_order,  std::vector<int> _strides); 

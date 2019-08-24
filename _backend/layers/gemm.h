@@ -61,7 +61,7 @@ namespace layers {
 
     public:
         Gemm(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _alpha,  float _beta,  int _transA,  int _transB); 

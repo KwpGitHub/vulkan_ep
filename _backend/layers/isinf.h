@@ -48,7 +48,7 @@ namespace layers {
 
     public:
         IsInf(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _detect_negative,  int _detect_positive); 

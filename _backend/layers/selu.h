@@ -53,7 +53,7 @@ namespace layers {
 
     public:
         Selu(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _alpha,  float _gamma); 

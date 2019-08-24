@@ -76,7 +76,7 @@ namespace layers {
 
     public:
         TfIdfVectorizer(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _max_gram_length,  int _max_skip_count,  int _min_gram_length,  std::string _mode,  std::vector<int> _ngram_counts,  std::vector<int> _ngram_indexes,  std::vector<int> _pool_int64s,  std::vector<std::string> _pool_strings,  std::vector<float> _weights); 

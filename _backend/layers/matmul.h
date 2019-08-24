@@ -51,7 +51,7 @@ namespace layers {
 
     public:
         MatMul(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

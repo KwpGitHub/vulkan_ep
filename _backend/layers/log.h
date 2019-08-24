@@ -50,7 +50,7 @@ namespace layers {
 
     public:
         Log(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

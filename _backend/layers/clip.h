@@ -52,7 +52,7 @@ namespace layers {
 
     public:
         Clip(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _max,  float _min); 

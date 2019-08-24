@@ -62,7 +62,7 @@ namespace layers {
 
     public:
         RoiAlign(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::string _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale); 

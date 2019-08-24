@@ -55,7 +55,7 @@ namespace layers {
 
     public:
         LinearRegressor(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<float> _coefficients,  std::vector<float> _intercepts,  std::string _post_transform,  int _targets); 

@@ -164,7 +164,7 @@ namespace layers {
 
     public:
         Loop(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _body); 

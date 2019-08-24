@@ -48,7 +48,7 @@ namespace layers {
 
     public:
         Concat(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _axis); 

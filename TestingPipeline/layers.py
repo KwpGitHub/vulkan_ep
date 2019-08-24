@@ -1,3 +1,4 @@
+import numpy as np
 import _backend.nn as nn
 layer_map = {}
 
@@ -31,23 +32,28 @@ class LSTM:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LSTM 
+        self.Module = nn._LSTM
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.activation_alpha, self.activation_beta, self.activations, self.clip, self.direction, self.hidden_size, self.input_forget, self.X_i, self.W_i, self.R_i, self.B_i, self.sequence_lens_i, self.initial_h_i, self.initial_c_i, self.P_i, self.Y_o, self.Y_h_o, self.Y_c_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LSTM'] = LSTM
@@ -69,23 +75,28 @@ class Identity:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Identity 
+        self.Module = nn._Identity
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Identity'] = Identity
@@ -107,23 +118,28 @@ class Abs:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Abs 
+        self.Module = nn._Abs
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Abs'] = Abs
@@ -155,23 +171,28 @@ class BatchNormalization:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._BatchNormalization 
+        self.Module = nn._BatchNormalization
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.epsilon, self.momentum, self.X_i, self.scale_i, self.B_i, self.mean_i, self.var_i, self.Y_o, self.mean_o, self.var_o, self.saved_mean_o, self.saved_var_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['BatchNormalization'] = BatchNormalization
@@ -192,23 +213,28 @@ class Mean:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Mean 
+        self.Module = nn._Mean
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.mean_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Mean'] = Mean
@@ -231,23 +257,28 @@ class Add:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Add 
+        self.Module = nn._Add
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Add'] = Add
@@ -269,23 +300,28 @@ class GlobalMaxPool:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._GlobalMaxPool 
+        self.Module = nn._GlobalMaxPool
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['GlobalMaxPool'] = GlobalMaxPool
@@ -308,23 +344,28 @@ class Cast:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Cast 
+        self.Module = nn._Cast
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.to, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Cast'] = Cast
@@ -352,23 +393,28 @@ class AveragePool:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._AveragePool 
+        self.Module = nn._AveragePool
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.kernel_shape, self.auto_pad, self.ceil_mode, self.count_include_pad, self.pads, self.strides, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['AveragePool'] = AveragePool
@@ -391,23 +437,28 @@ class And:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._And 
+        self.Module = nn._And
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['And'] = And
@@ -433,23 +484,28 @@ class LRN:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LRN 
+        self.Module = nn._LRN
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.size, self.alpha, self.beta, self.bias, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LRN'] = LRN
@@ -473,23 +529,28 @@ class ArgMax:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ArgMax 
+        self.Module = nn._ArgMax
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ArgMax'] = ArgMax
@@ -513,23 +574,28 @@ class Resize:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Resize 
+        self.Module = nn._Resize
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.mode, self.X_i, self.scales_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Resize'] = Resize
@@ -552,23 +618,28 @@ class Expand:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Expand 
+        self.Module = nn._Expand
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.shape_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Expand'] = Expand
@@ -590,23 +661,28 @@ class Neg:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Neg 
+        self.Module = nn._Neg
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Neg'] = Neg
@@ -629,23 +705,28 @@ class Mul:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Mul 
+        self.Module = nn._Mul
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Mul'] = Mul
@@ -669,23 +750,28 @@ class ArgMin:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ArgMin 
+        self.Module = nn._ArgMin
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ArgMin'] = ArgMin
@@ -710,23 +796,28 @@ class CastMap:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._CastMap 
+        self.Module = nn._CastMap
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.cast_to, self.map_form, self.max_map, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['CastMap'] = CastMap
@@ -748,23 +839,28 @@ class Exp:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Exp 
+        self.Module = nn._Exp
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Exp'] = Exp
@@ -787,23 +883,28 @@ class Div:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Div 
+        self.Module = nn._Div
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Div'] = Div
@@ -828,23 +929,28 @@ class ReverseSequence:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReverseSequence 
+        self.Module = nn._ReverseSequence
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.batch_axis, self.time_axis, self.input_i, self.sequence_lens_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReverseSequence'] = ReverseSequence
@@ -866,23 +972,28 @@ class Ceil:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Ceil 
+        self.Module = nn._Ceil
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Ceil'] = Ceil
@@ -905,23 +1016,28 @@ class DepthToSpace:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._DepthToSpace 
+        self.Module = nn._DepthToSpace
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.blocksize, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['DepthToSpace'] = DepthToSpace
@@ -945,23 +1061,28 @@ class Clip:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Clip 
+        self.Module = nn._Clip
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.max, self.min, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Clip'] = Clip
@@ -995,23 +1116,28 @@ class RNN:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RNN 
+        self.Module = nn._RNN
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.activation_alpha, self.activation_beta, self.activations, self.clip, self.direction, self.hidden_size, self.X_i, self.W_i, self.R_i, self.B_i, self.sequence_lens_i, self.initial_h_i, self.Y_o, self.Y_h_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['RNN'] = RNN
@@ -1065,23 +1191,28 @@ class Concat:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Concat 
+        self.Module = nn._Concat
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.x0_i, self.x1_i, self.x2_i, self.x3_i, self.x4_i, self.x5_i, self.x6_i, self.x7_i, self.x8_i, self.x9_i, self.x10_i, self.x11_i, self.x12_i, self.x13_i, self.x14_i, self.x15_i, self.x16_i, self.x17_i, self.x18_i, self.x19_i, self.x20_i, self.x21_i, self.x22_i, self.x23_i, self.x24_i, self.x25_i, self.x26_i, self.x27_i, self.x28_i, self.x29_i, self.x30_i, self.x31_i, self.concat_result_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Concat'] = Concat
@@ -1103,23 +1234,28 @@ class Constant:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Constant 
+        self.Module = nn._Constant
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.value, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Constant'] = Constant
@@ -1146,23 +1282,28 @@ class LpPool:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LpPool 
+        self.Module = nn._LpPool
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.kernel_shape, self.auto_pad, self.p, self.pads, self.strides, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LpPool'] = LpPool
@@ -1192,23 +1333,28 @@ class Conv:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Conv 
+        self.Module = nn._Conv
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.auto_pad, self.dilations, self.group, self.kernel_shape, self.pads, self.strides, self.X_i, self.W_i, self.B_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Conv'] = Conv
@@ -1230,23 +1376,28 @@ class Not:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Not 
+        self.Module = nn._Not
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Not'] = Not
@@ -1270,23 +1421,28 @@ class Gather:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Gather 
+        self.Module = nn._Gather
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.data_i, self.indices_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Gather'] = Gather
@@ -1318,23 +1474,28 @@ class ConvTranspose:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ConvTranspose 
+        self.Module = nn._ConvTranspose
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.auto_pad, self.dilations, self.group, self.kernel_shape, self.output_padding, self.output_shape, self.pads, self.strides, self.X_i, self.W_i, self.B_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ConvTranspose'] = ConvTranspose
@@ -1358,23 +1519,28 @@ class Dropout:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Dropout 
+        self.Module = nn._Dropout
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.ratio, self.data_i, self.output_o, self.mask_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Dropout'] = Dropout
@@ -1397,23 +1563,28 @@ class LeakyRelu:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LeakyRelu 
+        self.Module = nn._LeakyRelu
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.alpha, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LeakyRelu'] = LeakyRelu
@@ -1436,23 +1607,28 @@ class Elu:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Elu 
+        self.Module = nn._Elu
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.alpha, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Elu'] = Elu
@@ -1474,23 +1650,28 @@ class GlobalAveragePool:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._GlobalAveragePool 
+        self.Module = nn._GlobalAveragePool
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['GlobalAveragePool'] = GlobalAveragePool
@@ -1518,23 +1699,28 @@ class Gemm:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Gemm 
+        self.Module = nn._Gemm
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.alpha, self.beta, self.transA, self.transB, self.A_i, self.B_i, self.C_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Gemm'] = Gemm
@@ -1564,23 +1750,28 @@ class MaxPool:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MaxPool 
+        self.Module = nn._MaxPool
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.kernel_shape, self.auto_pad, self.ceil_mode, self.dilations, self.pads, self.storage_order, self.strides, self.X_i, self.Y_o, self.Indices_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['MaxPool'] = MaxPool
@@ -1603,23 +1794,28 @@ class Equal:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Equal 
+        self.Module = nn._Equal
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Equal'] = Equal
@@ -1642,23 +1838,28 @@ class Tile:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Tile 
+        self.Module = nn._Tile
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.repeats_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Tile'] = Tile
@@ -1681,23 +1882,28 @@ class Flatten:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Flatten 
+        self.Module = nn._Flatten
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Flatten'] = Flatten
@@ -1719,23 +1925,28 @@ class Floor:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Floor 
+        self.Module = nn._Floor
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Floor'] = Floor
@@ -1770,23 +1981,28 @@ class GRU:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._GRU 
+        self.Module = nn._GRU
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.activation_alpha, self.activation_beta, self.activations, self.clip, self.direction, self.hidden_size, self.linear_before_reset, self.X_i, self.W_i, self.R_i, self.B_i, self.sequence_lens_i, self.initial_h_i, self.Y_o, self.Y_h_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['GRU'] = GRU
@@ -1809,23 +2025,28 @@ class GlobalLpPool:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._GlobalLpPool 
+        self.Module = nn._GlobalLpPool
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.p, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['GlobalLpPool'] = GlobalLpPool
@@ -1848,23 +2069,28 @@ class Greater:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Greater 
+        self.Module = nn._Greater
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Greater'] = Greater
@@ -1888,23 +2114,28 @@ class HardSigmoid:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._HardSigmoid 
+        self.Module = nn._HardSigmoid
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.alpha, self.beta, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['HardSigmoid'] = HardSigmoid
@@ -1928,23 +2159,28 @@ class Selu:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Selu 
+        self.Module = nn._Selu
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.alpha, self.gamma, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Selu'] = Selu
@@ -1967,23 +2203,28 @@ class Hardmax:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Hardmax 
+        self.Module = nn._Hardmax
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Hardmax'] = Hardmax
@@ -2006,23 +2247,28 @@ class If:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._If 
+        self.Module = nn._If
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.else_branch, self.then_branch, self.cond_i)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['If'] = If
@@ -2043,23 +2289,28 @@ class Min:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Min 
+        self.Module = nn._Min
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.min_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Min'] = Min
@@ -2084,23 +2335,28 @@ class InstanceNormalization:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._InstanceNormalization 
+        self.Module = nn._InstanceNormalization
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.epsilon, self.input_i, self.scale_i, self.B_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['InstanceNormalization'] = InstanceNormalization
@@ -2123,23 +2379,28 @@ class Less:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Less 
+        self.Module = nn._Less
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Less'] = Less
@@ -2163,23 +2424,28 @@ class EyeLike:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._EyeLike 
+        self.Module = nn._EyeLike
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.dtype, self.k, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['EyeLike'] = EyeLike
@@ -2205,23 +2471,28 @@ class RandomNormal:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RandomNormal 
+        self.Module = nn._RandomNormal
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.shape, self.dtype, self.mean, self.scale, self.seed, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['RandomNormal'] = RandomNormal
@@ -2247,23 +2518,28 @@ class Slice:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Slice 
+        self.Module = nn._Slice
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.data_i, self.starts_i, self.ends_i, self.axes_i, self.steps_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Slice'] = Slice
@@ -2286,23 +2562,28 @@ class PRelu:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._PRelu 
+        self.Module = nn._PRelu
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.slope_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['PRelu'] = PRelu
@@ -2324,23 +2605,28 @@ class Log:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Log 
+        self.Module = nn._Log
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Log'] = Log
@@ -2363,23 +2649,28 @@ class LogSoftmax:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LogSoftmax 
+        self.Module = nn._LogSoftmax
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LogSoftmax'] = LogSoftmax
@@ -2402,23 +2693,28 @@ class Loop:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Loop 
+        self.Module = nn._Loop
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.body, self.M_i, self.cond_i)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Loop'] = Loop
@@ -2442,23 +2738,28 @@ class LpNormalization:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LpNormalization 
+        self.Module = nn._LpNormalization
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.p, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LpNormalization'] = LpNormalization
@@ -2481,23 +2782,28 @@ class MatMul:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MatMul 
+        self.Module = nn._MatMul
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['MatMul'] = MatMul
@@ -2521,23 +2827,28 @@ class ReduceL2:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceL2 
+        self.Module = nn._ReduceL2
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceL2'] = ReduceL2
@@ -2558,23 +2869,28 @@ class Max:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Max 
+        self.Module = nn._Max
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.max_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Max'] = Max
@@ -2599,23 +2915,28 @@ class MaxRoiPool:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MaxRoiPool 
+        self.Module = nn._MaxRoiPool
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.pooled_shape, self.spatial_scale, self.X_i, self.rois_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['MaxRoiPool'] = MaxRoiPool
@@ -2638,23 +2959,28 @@ class Or:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Or 
+        self.Module = nn._Or
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Or'] = Or
@@ -2679,23 +3005,28 @@ class Pad:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Pad 
+        self.Module = nn._Pad
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.pads, self.mode, self.value, self.data_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Pad'] = Pad
@@ -2721,23 +3052,28 @@ class RandomUniformLike:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RandomUniformLike 
+        self.Module = nn._RandomUniformLike
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.dtype, self.high, self.low, self.seed, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['RandomUniformLike'] = RandomUniformLike
@@ -2759,23 +3095,28 @@ class Reciprocal:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Reciprocal 
+        self.Module = nn._Reciprocal
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Reciprocal'] = Reciprocal
@@ -2798,23 +3139,28 @@ class Pow:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Pow 
+        self.Module = nn._Pow
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_i, self.Z_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Pow'] = Pow
@@ -2840,23 +3186,28 @@ class RandomNormalLike:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RandomNormalLike 
+        self.Module = nn._RandomNormalLike
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.dtype, self.mean, self.scale, self.seed, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['RandomNormalLike'] = RandomNormalLike
@@ -2881,23 +3232,28 @@ class OneHot:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._OneHot 
+        self.Module = nn._OneHot
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.indices_i, self.depth_i, self.values_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['OneHot'] = OneHot
@@ -2923,23 +3279,28 @@ class RandomUniform:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RandomUniform 
+        self.Module = nn._RandomUniform
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.shape, self.dtype, self.high, self.low, self.seed, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['RandomUniform'] = RandomUniform
@@ -2963,23 +3324,28 @@ class ReduceL1:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceL1 
+        self.Module = nn._ReduceL1
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceL1'] = ReduceL1
@@ -3003,23 +3369,28 @@ class ReduceLogSum:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceLogSum 
+        self.Module = nn._ReduceLogSum
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceLogSum'] = ReduceLogSum
@@ -3043,23 +3414,28 @@ class ReduceLogSumExp:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceLogSumExp 
+        self.Module = nn._ReduceLogSumExp
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceLogSumExp'] = ReduceLogSumExp
@@ -3083,23 +3459,28 @@ class ReduceMax:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceMax 
+        self.Module = nn._ReduceMax
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceMax'] = ReduceMax
@@ -3124,23 +3505,28 @@ class OneHotEncoder:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._OneHotEncoder 
+        self.Module = nn._OneHotEncoder
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.cats_int64s, self.cats_strings, self.zeros, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['OneHotEncoder'] = OneHotEncoder
@@ -3162,23 +3548,28 @@ class IsNaN:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._IsNaN 
+        self.Module = nn._IsNaN
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['IsNaN'] = IsNaN
@@ -3202,23 +3593,28 @@ class ReduceMean:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceMean 
+        self.Module = nn._ReduceMean
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceMean'] = ReduceMean
@@ -3242,23 +3638,28 @@ class ReduceMin:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceMin 
+        self.Module = nn._ReduceMin
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceMin'] = ReduceMin
@@ -3297,23 +3698,28 @@ class TreeEnsembleRegressor:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._TreeEnsembleRegressor 
+        self.Module = nn._TreeEnsembleRegressor
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.aggregate_function, self.base_values, self.n_targets, self.nodes_falsenodeids, self.nodes_featureids, self.nodes_hitrates, self.nodes_missing_value_tracks_true, self.nodes_modes, self.nodes_nodeids, self.nodes_treeids, self.nodes_truenodeids, self.nodes_values, self.post_transform, self.target_ids, self.target_nodeids, self.target_treeids, self.target_weights, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['TreeEnsembleRegressor'] = TreeEnsembleRegressor
@@ -3337,23 +3743,28 @@ class ReduceProd:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceProd 
+        self.Module = nn._ReduceProd
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceProd'] = ReduceProd
@@ -3377,23 +3788,28 @@ class ReduceSum:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceSum 
+        self.Module = nn._ReduceSum
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceSum'] = ReduceSum
@@ -3417,23 +3833,28 @@ class ReduceSumSquare:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ReduceSumSquare 
+        self.Module = nn._ReduceSumSquare
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.keepdims, self.data_i, self.reduced_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ReduceSumSquare'] = ReduceSumSquare
@@ -3455,23 +3876,28 @@ class Relu:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Relu 
+        self.Module = nn._Relu
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Relu'] = Relu
@@ -3494,23 +3920,28 @@ class Reshape:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Reshape 
+        self.Module = nn._Reshape
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.data_i, self.shape_i, self.reshaped_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Reshape'] = Reshape
@@ -3532,23 +3963,28 @@ class Shape:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Shape 
+        self.Module = nn._Shape
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.data_i, self.shape_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Shape'] = Shape
@@ -3570,23 +4006,28 @@ class Sigmoid:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sigmoid 
+        self.Module = nn._Sigmoid
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Sigmoid'] = Sigmoid
@@ -3608,23 +4049,28 @@ class Size:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Size 
+        self.Module = nn._Size
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.data_i, self.size_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Size'] = Size
@@ -3647,23 +4093,28 @@ class Softmax:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Softmax 
+        self.Module = nn._Softmax
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Softmax'] = Softmax
@@ -3685,23 +4136,28 @@ class Softplus:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Softplus 
+        self.Module = nn._Softplus
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Softplus'] = Softplus
@@ -3723,23 +4179,28 @@ class Softsign:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Softsign 
+        self.Module = nn._Softsign
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Softsign'] = Softsign
@@ -3762,23 +4223,28 @@ class SpaceToDepth:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._SpaceToDepth 
+        self.Module = nn._SpaceToDepth
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.blocksize, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['SpaceToDepth'] = SpaceToDepth
@@ -3809,23 +4275,28 @@ class TfIdfVectorizer:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._TfIdfVectorizer 
+        self.Module = nn._TfIdfVectorizer
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.max_gram_length, self.max_skip_count, self.min_gram_length, self.mode, self.ngram_counts, self.ngram_indexes, self.pool_int64s, self.pool_strings, self.weights, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['TfIdfVectorizer'] = TfIdfVectorizer
@@ -3848,23 +4319,28 @@ class Split:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Split 
+        self.Module = nn._Split
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.split, self.input_i)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Split'] = Split
@@ -3890,23 +4366,28 @@ class Imputer:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Imputer 
+        self.Module = nn._Imputer
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.imputed_value_floats, self.imputed_value_int64s, self.replaced_value_float, self.replaced_value_int64, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Imputer'] = Imputer
@@ -3928,23 +4409,28 @@ class Sqrt:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sqrt 
+        self.Module = nn._Sqrt
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Sqrt'] = Sqrt
@@ -3967,23 +4453,28 @@ class Squeeze:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Squeeze 
+        self.Module = nn._Squeeze
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.data_i, self.squeezed_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Squeeze'] = Squeeze
@@ -4008,23 +4499,28 @@ class TopK:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._TopK 
+        self.Module = nn._TopK
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.X_i, self.K_i, self.Values_o, self.Indices_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['TopK'] = TopK
@@ -4047,23 +4543,28 @@ class Sub:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sub 
+        self.Module = nn._Sub
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Sub'] = Sub
@@ -4116,23 +4617,28 @@ class Sum:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sum 
+        self.Module = nn._Sum
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.x0_i, self.x1_i, self.x2_i, self.x3_i, self.x4_i, self.x5_i, self.x6_i, self.x7_i, self.x8_i, self.x9_i, self.x10_i, self.x11_i, self.x12_i, self.x13_i, self.x14_i, self.x15_i, self.x16_i, self.x17_i, self.x18_i, self.x19_i, self.x20_i, self.x21_i, self.x22_i, self.x23_i, self.x24_i, self.x25_i, self.x26_i, self.x27_i, self.x28_i, self.x29_i, self.x30_i, self.x31_i, self.sum_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Sum'] = Sum
@@ -4156,23 +4662,28 @@ class Shrink:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Shrink 
+        self.Module = nn._Shrink
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.bias, self.lambd, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Shrink'] = Shrink
@@ -4194,23 +4705,28 @@ class Tanh:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Tanh 
+        self.Module = nn._Tanh
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Tanh'] = Tanh
@@ -4233,23 +4749,28 @@ class Transpose:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Transpose 
+        self.Module = nn._Transpose
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.perm, self.data_i, self.transposed_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Transpose'] = Transpose
@@ -4272,23 +4793,28 @@ class Unsqueeze:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Unsqueeze 
+        self.Module = nn._Unsqueeze
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.data_i, self.expanded_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Unsqueeze'] = Unsqueeze
@@ -4312,23 +4838,28 @@ class Upsample:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Upsample 
+        self.Module = nn._Upsample
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.mode, self.X_i, self.scales_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Upsample'] = Upsample
@@ -4362,23 +4893,28 @@ class SVMClassifier:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._SVMClassifier 
+        self.Module = nn._SVMClassifier
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.classlabels_ints, self.classlabels_strings, self.coefficients, self.kernel_params, self.kernel_type, self.post_transform, self.prob_a, self.prob_b, self.rho, self.support_vectors, self.vectors_per_class, self.X_i, self.Y_o, self.Z_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['SVMClassifier'] = SVMClassifier
@@ -4401,23 +4937,28 @@ class Xor:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Xor 
+        self.Module = nn._Xor
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Xor'] = Xor
@@ -4439,23 +4980,28 @@ class Acos:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Acos 
+        self.Module = nn._Acos
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Acos'] = Acos
@@ -4477,23 +5023,28 @@ class Asin:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Asin 
+        self.Module = nn._Asin
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Asin'] = Asin
@@ -4515,23 +5066,28 @@ class Atan:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Atan 
+        self.Module = nn._Atan
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Atan'] = Atan
@@ -4553,23 +5109,28 @@ class Cos:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Cos 
+        self.Module = nn._Cos
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Cos'] = Cos
@@ -4591,23 +5152,28 @@ class Sin:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sin 
+        self.Module = nn._Sin
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Sin'] = Sin
@@ -4629,23 +5195,28 @@ class Tan:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Tan 
+        self.Module = nn._Tan
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Tan'] = Tan
@@ -4670,23 +5241,28 @@ class Multinomial:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Multinomial 
+        self.Module = nn._Multinomial
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.dtype, self.sample_size, self.seed, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Multinomial'] = Multinomial
@@ -4776,23 +5352,28 @@ class Scan:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Scan 
+        self.Module = nn._Scan
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.body, self.num_scan_inputs, self.scan_input_axes, self.scan_input_directions, self.scan_output_axes, self.scan_output_directions, self.x0_i, self.x1_i, self.x2_i, self.x3_i, self.x4_i, self.x5_i, self.x6_i, self.x7_i, self.x8_i, self.x9_i, self.x10_i, self.x11_i, self.x12_i, self.x13_i, self.x14_i, self.x15_i, self.x16_i, self.x17_i, self.x18_i, self.x19_i, self.x20_i, self.x21_i, self.x22_i, self.x23_i, self.x24_i, self.x25_i, self.x26_i, self.x27_i, self.x28_i, self.x29_i, self.x30_i, self.x31_i, self.y0_o, self.y1_o, self.y2_o, self.y3_o, self.y4_o, self.y5_o, self.y6_o, self.y7_o, self.y8_o, self.y9_o, self.y10_o, self.y11_o, self.y12_o, self.y13_o, self.y14_o, self.y15_o, self.y16_o, self.y17_o, self.y18_o, self.y19_o, self.y20_o, self.y21_o, self.y22_o, self.y23_o, self.y24_o, self.y25_o, self.y26_o, self.y27_o, self.y28_o, self.y29_o, self.y30_o, self.y31_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Scan'] = Scan
@@ -4816,23 +5397,28 @@ class Compress:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Compress 
+        self.Module = nn._Compress
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.input_i, self.condition_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Compress'] = Compress
@@ -4855,23 +5441,28 @@ class ConstantOfShape:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ConstantOfShape 
+        self.Module = nn._ConstantOfShape
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.value, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ConstantOfShape'] = ConstantOfShape
@@ -4898,23 +5489,28 @@ class MaxUnpool:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MaxUnpool 
+        self.Module = nn._MaxUnpool
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.kernel_shape, self.pads, self.strides, self.X_i, self.I_i, self.output_shape_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['MaxUnpool'] = MaxUnpool
@@ -4939,23 +5535,28 @@ class Scatter:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Scatter 
+        self.Module = nn._Scatter
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axis, self.data_i, self.indices_i, self.updates_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Scatter'] = Scatter
@@ -4977,23 +5578,28 @@ class Sinh:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sinh 
+        self.Module = nn._Sinh
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Sinh'] = Sinh
@@ -5015,23 +5621,28 @@ class Cosh:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Cosh 
+        self.Module = nn._Cosh
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Cosh'] = Cosh
@@ -5053,23 +5664,28 @@ class Asinh:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Asinh 
+        self.Module = nn._Asinh
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Asinh'] = Asinh
@@ -5091,23 +5707,28 @@ class Acosh:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Acosh 
+        self.Module = nn._Acosh
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Acosh'] = Acosh
@@ -5134,23 +5755,28 @@ class NonMaxSuppression:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._NonMaxSuppression 
+        self.Module = nn._NonMaxSuppression
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.center_point_box, self.boxes_i, self.scores_i, self.max_output_boxes_per_class_i, self.iou_threshold_i, self.score_threshold_i, self.selected_indices_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['NonMaxSuppression'] = NonMaxSuppression
@@ -5172,23 +5798,28 @@ class Atanh:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Atanh 
+        self.Module = nn._Atanh
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Atanh'] = Atanh
@@ -5210,23 +5841,28 @@ class Sign:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Sign 
+        self.Module = nn._Sign
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Sign'] = Sign
@@ -5248,23 +5884,28 @@ class Erf:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Erf 
+        self.Module = nn._Erf
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.input_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Erf'] = Erf
@@ -5288,23 +5929,28 @@ class Where:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Where 
+        self.Module = nn._Where
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.condition_i, self.X_i, self.Y_i, self.output_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Where'] = Where
@@ -5326,23 +5972,28 @@ class NonZero:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._NonZero 
+        self.Module = nn._NonZero
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['NonZero'] = NonZero
@@ -5365,23 +6016,28 @@ class MeanVarianceNormalization:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MeanVarianceNormalization 
+        self.Module = nn._MeanVarianceNormalization
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.axes, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['MeanVarianceNormalization'] = MeanVarianceNormalization
@@ -5407,23 +6063,28 @@ class StringNormalizer:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._StringNormalizer 
+        self.Module = nn._StringNormalizer
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.case_change_action, self.is_case_sensitive, self.locale, self.stopwords, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['StringNormalizer'] = StringNormalizer
@@ -5447,23 +6108,28 @@ class Mod:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Mod 
+        self.Module = nn._Mod
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.fmod, self.A_i, self.B_i, self.C_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Mod'] = Mod
@@ -5486,23 +6152,28 @@ class ThresholdedRelu:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ThresholdedRelu 
+        self.Module = nn._ThresholdedRelu
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.alpha, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ThresholdedRelu'] = ThresholdedRelu
@@ -5527,23 +6198,28 @@ class MatMulInteger:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._MatMulInteger 
+        self.Module = nn._MatMulInteger
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.A_i, self.B_i, self.a_zero_point_i, self.b_zero_point_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['MatMulInteger'] = MatMulInteger
@@ -5572,23 +6248,28 @@ class QLinearMatMul:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._QLinearMatMul 
+        self.Module = nn._QLinearMatMul
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.a_i, self.a_scale_i, self.a_zero_point_i, self.b_i, self.b_scale_i, self.b_zero_point_i, self.y_scale_i, self.y_zero_point_i, self.y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['QLinearMatMul'] = QLinearMatMul
@@ -5619,23 +6300,28 @@ class ConvInteger:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ConvInteger 
+        self.Module = nn._ConvInteger
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.auto_pad, self.dilations, self.group, self.kernel_shape, self.pads, self.strides, self.x_i, self.w_i, self.x_zero_point_i, self.w_zero_point_i, self.y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ConvInteger'] = ConvInteger
@@ -5671,23 +6357,28 @@ class QLinearConv:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._QLinearConv 
+        self.Module = nn._QLinearConv
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.auto_pad, self.dilations, self.group, self.kernel_shape, self.pads, self.strides, self.x_i, self.x_scale_i, self.x_zero_point_i, self.w_i, self.w_scale_i, self.w_zero_point_i, self.y_scale_i, self.y_zero_point_i, self.B_i, self.y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['QLinearConv'] = QLinearConv
@@ -5711,23 +6402,28 @@ class QuantizeLinear:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._QuantizeLinear 
+        self.Module = nn._QuantizeLinear
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.x_i, self.y_scale_i, self.y_zero_point_i, self.y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['QuantizeLinear'] = QuantizeLinear
@@ -5751,23 +6447,28 @@ class DequantizeLinear:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._DequantizeLinear 
+        self.Module = nn._DequantizeLinear
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.x_i, self.x_scale_i, self.x_zero_point_i, self.y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['DequantizeLinear'] = DequantizeLinear
@@ -5791,23 +6492,28 @@ class IsInf:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._IsInf 
+        self.Module = nn._IsInf
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.detect_negative, self.detect_positive, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['IsInf'] = IsInf
@@ -5836,23 +6542,28 @@ class RoiAlign:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._RoiAlign 
+        self.Module = nn._RoiAlign
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.mode, self.output_height, self.output_width, self.sampling_ratio, self.spatial_scale, self.X_i, self.rois_i, self.batch_indices_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['RoiAlign'] = RoiAlign
@@ -5875,23 +6586,28 @@ class ArrayFeatureExtractor:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ArrayFeatureExtractor 
+        self.Module = nn._ArrayFeatureExtractor
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.X_i, self.Y_i, self.Z_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ArrayFeatureExtractor'] = ArrayFeatureExtractor
@@ -5914,23 +6630,28 @@ class Binarizer:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Binarizer 
+        self.Module = nn._Binarizer
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.threshold, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Binarizer'] = Binarizer
@@ -5956,23 +6677,28 @@ class CategoryMapper:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._CategoryMapper 
+        self.Module = nn._CategoryMapper
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.cats_int64s, self.cats_strings, self.default_int64, self.default_string, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['CategoryMapper'] = CategoryMapper
@@ -5996,23 +6722,28 @@ class DictVectorizer:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._DictVectorizer 
+        self.Module = nn._DictVectorizer
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.int64_vocabulary, self.string_vocabulary, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['DictVectorizer'] = DictVectorizer
@@ -6034,23 +6765,28 @@ class FeatureVectorizer:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._FeatureVectorizer 
+        self.Module = nn._FeatureVectorizer
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.inputdimensions, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['FeatureVectorizer'] = FeatureVectorizer
@@ -6081,23 +6817,28 @@ class LabelEncoder:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LabelEncoder 
+        self.Module = nn._LabelEncoder
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.default_float, self.default_int64, self.default_string, self.keys_floats, self.keys_int64s, self.keys_strings, self.values_floats, self.values_int64s, self.values_strings, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LabelEncoder'] = LabelEncoder
@@ -6126,23 +6867,28 @@ class LinearClassifier:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LinearClassifier 
+        self.Module = nn._LinearClassifier
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.coefficients, self.classlabels_ints, self.classlabels_strings, self.intercepts, self.multi_class, self.post_transform, self.X_i, self.Y_o, self.Z_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LinearClassifier'] = LinearClassifier
@@ -6168,23 +6914,28 @@ class LinearRegressor:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._LinearRegressor 
+        self.Module = nn._LinearRegressor
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.coefficients, self.intercepts, self.post_transform, self.targets, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['LinearRegressor'] = LinearRegressor
@@ -6207,23 +6958,28 @@ class Normalizer:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Normalizer 
+        self.Module = nn._Normalizer
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.norm, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Normalizer'] = Normalizer
@@ -6253,23 +7009,28 @@ class SVMRegressor:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._SVMRegressor 
+        self.Module = nn._SVMRegressor
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.coefficients, self.kernel_params, self.kernel_type, self.n_supports, self.one_class, self.post_transform, self.rho, self.support_vectors, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['SVMRegressor'] = SVMRegressor
@@ -6293,23 +7054,28 @@ class Scaler:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._Scaler 
+        self.Module = nn._Scaler
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.offset, self.scale, self.X_i, self.Y_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['Scaler'] = Scaler
@@ -6349,23 +7115,28 @@ class TreeEnsembleClassifier:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._TreeEnsembleClassifier 
+        self.Module = nn._TreeEnsembleClassifier
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.base_values, self.class_ids, self.class_nodeids, self.class_treeids, self.class_weights, self.classlabels_int64s, self.classlabels_strings, self.nodes_falsenodeids, self.nodes_featureids, self.nodes_hitrates, self.nodes_missing_value_tracks_true, self.nodes_modes, self.nodes_nodeids, self.nodes_treeids, self.nodes_truenodeids, self.nodes_values, self.post_transform, self.X_i, self.Y_o, self.Z_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['TreeEnsembleClassifier'] = TreeEnsembleClassifier
@@ -6389,23 +7160,28 @@ class ZipMap:
 
     def __init__(self, name):
         self.name = name
-        self.Module = nn._ZipMap 
+        self.Module = nn._ZipMap
 
-    def input(self, *args):
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
         for i, x in enumerate(args):
             self.__dict__[self.input_params[i]] = x
-
-    def output(self, *args):        
+            
+    def output(self, tensors, *args):        
         for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x
-    
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+
     def attribute(self, **kwargs):
         self.__dict__.update(kwargs)
 
     def build(self):
         self.Module(self.name, self.classlabels_int64s, self.classlabels_strings, self.X_i, self.Z_o)
 
-    def call(self):
+    def run(self):
         pass
 
 layer_map['ZipMap'] = ZipMap

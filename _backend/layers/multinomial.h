@@ -51,7 +51,7 @@ namespace layers {
 
     public:
         Multinomial(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _dtype,  int _sample_size,  float _seed); 

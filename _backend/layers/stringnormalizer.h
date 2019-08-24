@@ -58,7 +58,7 @@ namespace layers {
 
     public:
         StringNormalizer(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::string _case_change_action,  int _is_case_sensitive,  std::string _locale,  std::vector<std::string> _stopwords); 

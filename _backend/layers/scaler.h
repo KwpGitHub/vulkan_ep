@@ -50,7 +50,7 @@ namespace layers {
 
     public:
         Scaler(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<float> _offset,  std::vector<float> _scale); 

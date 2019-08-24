@@ -53,7 +53,7 @@ namespace layers {
 
     public:
         Resize(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::string _mode); 

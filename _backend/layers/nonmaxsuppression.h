@@ -61,7 +61,7 @@ namespace layers {
 
     public:
         NonMaxSuppression(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _center_point_box); 

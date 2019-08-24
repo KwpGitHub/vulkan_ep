@@ -50,7 +50,7 @@ namespace layers {
 
     public:
         Tanh(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

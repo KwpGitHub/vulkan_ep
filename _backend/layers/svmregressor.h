@@ -50,7 +50,7 @@ namespace layers {
 
     public:
         SVMRegressor(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<float> _coefficients,  std::vector<float> _kernel_params,  std::string _kernel_type,  int _n_supports,  int _one_class,  std::string _post_transform,  std::vector<float> _rho,  std::vector<float> _support_vectors); 

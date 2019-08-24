@@ -54,7 +54,7 @@ namespace layers {
 
     public:
         ConvInteger(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::string _auto_pad,  std::vector<int> _dilations,  int _group,  std::vector<int> _kernel_shape,  std::vector<int> _pads,  std::vector<int> _strides); 

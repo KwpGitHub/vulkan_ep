@@ -53,7 +53,7 @@ namespace layers {
 
     public:
         Sub(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

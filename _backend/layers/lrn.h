@@ -59,7 +59,7 @@ namespace layers {
 
     public:
         LRN(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _size,  float _alpha,  float _beta,  float _bias); 

@@ -23,8 +23,10 @@ void create_instance() {
 
 
 void test() {
-	auto y = std::vector<float>(128, 1.0f);
-	auto x = std::vector<float>(128, 2.0f);
+	uint32_t size = 2147482623;//2GB
+	
+	auto y = std::vector<float>(size, 1.0f);
+	auto x = std::vector<float>(size, 2.0f);
 	
 	    // just get the first available device
 	auto device = new vuh::Device(*backend::device);
@@ -38,12 +40,12 @@ void test() {
 	vuh::Program<Specs, Params>* program;
 	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
 	program = new vuh::Program<Specs, Params>(*device, std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-	program->grid(128 / 64, 1, 1).spec(64, 1, 1).bind({ 128, 0.1f }, d_y, d_x);
+	program->grid(size / 64, 1, 1).spec(64, 1, 1).bind({ size, 0.1f }, d_y, d_x);
 	program->run();
 
 	d_y.toHost(begin(y));
 	int error_count = 0;
-	for (int i = 0; i < 128; ++i) {
+	for (int i = 0; i < size; ++i) {
 		if (abs(y[i] - (1.0 + 0.1 * x[i])) > 1e-7) 
 			error_count++;
 	}
@@ -57,7 +59,7 @@ void test() {
 }
 
 
-void create_tensor_from_numpy(py::str name, py::array_t<float> input){
+void create_tensor(py::str name, py::array_t<float> input){
 	py::buffer_info buf = input.request();
 	auto bs = buf.shape;
 	float* p = (float*)buf.ptr;
@@ -130,7 +132,7 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 PYBIND11_MODULE(_backend, m) {
 	m.doc() = "C nn Executor";
 	m.def("create_instance", &create_instance);
-	m.def("create_tensor_from_numpy", &create_tensor_from_numpy);
+	m.def("create_tensor", &create_tensor);
 	m.def("create_layer", &create_layer);
 	m.def("test", &test);
 

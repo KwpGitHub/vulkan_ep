@@ -50,7 +50,7 @@ namespace layers {
 
     public:
         Atan(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 

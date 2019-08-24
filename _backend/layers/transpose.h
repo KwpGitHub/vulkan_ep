@@ -52,7 +52,7 @@ namespace layers {
 
     public:
         Transpose(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<int> _perm); 

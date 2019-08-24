@@ -66,7 +66,7 @@ namespace layers {
 
     public:
         LabelEncoder(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _default_float,  int _default_int64,  std::string _default_string,  std::vector<float> _keys_floats,  std::vector<int> _keys_int64s,  std::vector<std::string> _keys_strings,  std::vector<float> _values_floats,  std::vector<int> _values_int64s,  std::vector<std::string> _values_strings); 

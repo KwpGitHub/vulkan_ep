@@ -56,7 +56,7 @@ namespace layers {
 
     public:
         RandomNormalLike(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _dtype,  float _mean,  float _scale,  float _seed); 

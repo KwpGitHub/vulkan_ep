@@ -56,7 +56,7 @@ namespace layers {
 
     public:
         EyeLike(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _dtype,  int _k); 

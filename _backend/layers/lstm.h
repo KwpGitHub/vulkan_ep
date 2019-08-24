@@ -139,7 +139,7 @@ namespace layers {
 
     public:
         LSTM(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( std::vector<float> _activation_alpha,  std::vector<float> _activation_beta,  std::vector<std::string> _activations,  float _clip,  std::string _direction,  int _hidden_size,  int _input_forget); 

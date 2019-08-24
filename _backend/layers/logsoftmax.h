@@ -64,7 +64,7 @@ namespace layers {
 
     public:
         LogSoftmax(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _axis); 

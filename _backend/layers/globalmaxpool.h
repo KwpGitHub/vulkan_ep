@@ -51,7 +51,7 @@ namespace layers {
 
     public:
         GlobalMaxPool(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 
