@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Converts strings to integers and vice versa.<br>
@@ -29,47 +26,43 @@ output: Output data. If strings are input, the output values are integers, and v
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      cats_int64s, cats_strings, default_int64, default_string
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, int, int
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<std::string>, int, std::string
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class CategoryMapper : public Layer {
-        typedef struct {
-            Shape_t cats_int64s; int default_int64; int default_string;
-			Shape_t cats_strings;
-            Shape_t X_i;
+    class CategoryMapper : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
-
-        Shape_t cats_int64s; int default_int64; int default_string; std::string cats_strings;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> cats_int64s; std::vector<std::string> cats_strings; int default_int64; std::string default_string;
         std::string X_i;
         
         std::string Y_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         CategoryMapper(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _cats_int64s,  int _default_int64,  int _default_string); 
-        virtual void bind(std::string _cats_strings, std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/categorymapper.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[cats_strings]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void init( std::vector<int> _cats_int64s,  std::vector<std::string> _cats_strings,  int _default_int64,  std::string _default_string); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+        virtual void build();
 
         ~CategoryMapper() {}
     };

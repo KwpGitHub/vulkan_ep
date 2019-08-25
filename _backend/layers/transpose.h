@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Transpose the input tensor similar to numpy.transpose. For example, when
@@ -24,47 +21,43 @@ output: Transposed output.
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      perm
-//OPTIONAL_PARAMETERS_TYPE: Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Transpose : public Layer {
-        typedef struct {
-            Shape_t perm;
-			
-            Shape_t data_i;
+    class Transpose : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i;
             
-            Shape_t transposed_o;
+            backend::Shape_t transposed_o;
             
         } binding_descriptor;
-
-        Shape_t perm;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> perm;
         std::string data_i;
         
         std::string transposed_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         Transpose(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _perm); 
+        virtual void init( std::vector<int> _perm); 
         virtual void bind(std::string _data_i, std::string _transposed_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/transpose.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[transposed_o]->data());
-        }
+        virtual void build();
 
         ~Transpose() {}
     };

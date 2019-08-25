@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Given `data` tensor, pads, mode, and value.
@@ -35,49 +32,45 @@ output: Tensor after padding.
 //OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               pads
-//PARAMETER_TYPES:          Shape_t
+//PARAMETER_TYPES:          std::vector<int>
 //OPTIONAL_PARAMETERS:      mode, value
-//OPTIONAL_PARAMETERS_TYPE: int, float
+//OPTIONAL_PARAMETERS_TYPE: std::string, float
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Pad : public Layer {
-        typedef struct {
-            Shape_t pads; int mode; float value;
-			
-            Shape_t data_i;
+    class Pad : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
-
-        Shape_t pads; int mode; float value;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> pads; std::string mode; float value;
         std::string data_i;
         
         std::string output_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         Pad(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _pads,  int _mode,  float _value); 
+        virtual void init( std::vector<int> _pads,  std::string _mode,  float _value); 
         virtual void bind(std::string _data_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/pad.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Pad() {}
     };

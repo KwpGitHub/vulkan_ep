@@ -5,7 +5,10 @@ import onnx.defs
 import onnx.optimizer
 import onnx.shape_inference
 import onnx.utils
-from onnx.backend.base import Backend, Device, DeviceType, namedtupledict
+from onnx.backend.base import Backend, Device, DeviceType, namedtupledict, BackendRep
+
+from onnx.helper import make_tensor_value_info, make_graph, make_model
+import numpy as np
 
 import os
 import layers
@@ -29,7 +32,7 @@ def convertAttributeProto(onnx_arg):
     elif onnx_arg.HasField('t'):
         return onnx_arg.t  # this is a proto!
     elif onnx_arg.HasField('g'):
-        return []
+        return [] #this is graph
     elif len(onnx_arg.floats):
         return list(onnx_arg.floats)
     elif len(onnx_arg.ints):
@@ -53,29 +56,46 @@ class OnnxNode(object):
         return (self.inputs, self.outputs, self.attrs)
 
 class OnnxGraph:
+<<<<<<< HEAD
     def __init__(self, filename):
         _backend.create_instance(os.getcwd())
         _backend.test()
+=======
+    def __init__(self, filename):        
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
         model = onnx.load(filename)
+        _backend.create_instance()
+        _backend.test()
         graph = model.graph
         self.nodes = list()
         self.init_vals = dict()
         self.layer = list()
+
         for init_val in graph.initializer:
             name, data = self._create_tensor_filling_op(init_val)            
-            self.init_vals[name] = data
-            _backend.create_tensor_from_numpy(name, data)
+            self.init_vals[name] = data            
+        for val in graph.input:
+            if(val.name not in self.init_vals.keys()):            
+                data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
+                self.init_vals[val.name] = data                
+        for val in graph.output:
+            if(val.name not in self.init_vals.keys()):
+                data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
+                self.init_vals[val.name] = data       
         for n in graph.node:
             self.nodes.append(OnnxNode(n))
+
     def build(self):
         for nodes in self.nodes:
             l = layers.layer_map[nodes.op_type](nodes.name)
-            l.input(*nodes.inputs)
-            l.output(*nodes.outputs)
             l.attribute(**nodes.attrs)
+            l.input(self.init_vals, *nodes.inputs)
+            l.output(self.init_vals, *nodes.outputs)
             l.build()
-            self.layer.append(l)
-            
+            self.layer.append(l)       
+        for name, data in self.init_vals.items():
+            _backend.create_tensor(name, data)
+        _backend.test()
 
     def _create_tensor_filling_op(self, onnx_tensor, name=None):
       
@@ -115,5 +135,60 @@ class OnnxGraph:
                 return (name, tensor2list(onnx_tensor))
             data = tensor2list(onnx_tensor).reshape(*onnx_tensor.dims)
             
+
+
             return (name, data)
-        
+  
+'''
+def graph_def_info(onnx_file):
+    onnx_model_str =  MessageToJson(onnx.load(onnx_file))
+    graph = json.loads(onnx_model_str)['graph']
+    
+    backend.create_instance(os.getcwd())
+    backend.test()
+    
+    nodes = {} 
+    
+    init_nodes = []
+    for data in graph['initializer']:
+        name    = data['name']
+        dims    = [int(x) for x in data['dims']]
+             
+        init_nodes.append(name)
+        if(data['dataType'] == 7):
+            data_t = [float(x) for x in data['int64Data']]
+            backend.create_tensor(name, data_t, dims)
+        elif(data['dataType'] == 1):
+            data_t  = [float(x) for x in data['floatData']]
+            backend.create_tensor(name, data_t, dims)
+        else:
+            print(data['name'], data['dataType'])   
+
+    print("\n\n")
+    for node in graph['node']:
+        nodes[node['name']] = node
+        name = node['name']
+        op_type = node['opType'].lower()
+        input = node['input']
+        output = node['output']
+        layer = layer_map[op_type](name)
+        layer.input(*input)
+        layer.output(*output)
+        if('attribute' in node.keys()):
+            for attr_ in node['attribute']:
+                _x = [x for n,x in attr_.items() if(n != 'name' and n != 'type')]
+                if(type(_x[0]) == list and len(_x) == 1):
+                    layer.__dict__[attr_['name']] = _x[0]
+                else:
+                    layer.__dict__[attr_['name']] = _x
+        print(name)
+                
+    unint_nodes = {}
+    for node in graph['input'] + graph['output']:
+        if(node['name'] not in init_nodes):
+            tmp = np.zeros([int(i['dimValue']) for i in  node['type']['tensorType']['shape']['dim']])
+            backend.create_tensor_from_numpy(node['name'], tmp)
+    return nodes
+
+
+'''

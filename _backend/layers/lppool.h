@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
  LpPool consumes an input tensor X and applies Lp pooling across
@@ -23,49 +20,45 @@ output: Output data tensor from Lp pooling across the input tensor. Dimensions w
 //OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               kernel_shape
-//PARAMETER_TYPES:          Shape_t
+//PARAMETER_TYPES:          std::vector<int>
 //OPTIONAL_PARAMETERS:      auto_pad, p, pads, strides
-//OPTIONAL_PARAMETERS_TYPE: int, int, Shape_t, Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::string, int, std::vector<int>, std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class LpPool : public Layer {
-        typedef struct {
-            Shape_t kernel_shape; int auto_pad; int p; Shape_t pads; Shape_t strides;
-			
-            Shape_t X_i;
+    class LpPool : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
-
-        Shape_t kernel_shape; int auto_pad; int p; Shape_t pads; Shape_t strides;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> kernel_shape; std::string auto_pad; int p; std::vector<int> pads; std::vector<int> strides;
         std::string X_i;
         
         std::string Y_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         LpPool(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _kernel_shape,  int _auto_pad,  int _p,  Shape_t _pads,  Shape_t _strides); 
+        virtual void init( std::vector<int> _kernel_shape,  std::string _auto_pad,  int _p,  std::vector<int> _pads,  std::vector<int> _strides); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/lppool.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~LpPool() {}
     };

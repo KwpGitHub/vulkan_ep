@@ -69,10 +69,23 @@
     <ClCompile Include="layers\argmin.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\arrayfeatureextractor.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\asin.cpp">
+=======
+    <ClCompile Include="layers\topk.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\tile.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\thresholdedrelu.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\tfidfvectorizer.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\asinh.cpp">
@@ -93,7 +106,14 @@
     <ClCompile Include="layers\binarizer.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\cast.cpp">
+=======
+    <ClCompile Include="layers\stringnormalizer.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\squeeze.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\castmap.cpp">
@@ -114,7 +134,14 @@
     <ClCompile Include="layers\concat.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\constant.cpp">
+=======
+    <ClCompile Include="layers\slice.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\size.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\constantofshape.cpp">
@@ -147,10 +174,26 @@
     <ClCompile Include="layers\div.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\dropout.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\elu.cpp">
+=======
+    <ClCompile Include="layers\roialign.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\rnn.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\reversesequence.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\resize.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\reshape.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\equal.cpp">
@@ -201,7 +244,20 @@
     <ClCompile Include="layers\hardmax.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\hardsigmoid.cpp">
+=======
+    <ClCompile Include="layers\quantizelinear.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\qlinearmatmul.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\qlinearconv.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\prelu.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\identity.cpp">
@@ -228,7 +284,14 @@
     <ClCompile Include="layers\leakyrelu.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\less.cpp">
+=======
+    <ClCompile Include="layers\nonmaxsuppression.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\neg.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\linearclassifier.cpp">
@@ -237,7 +300,14 @@
     <ClCompile Include="layers\linearregressor.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\log.cpp">
+=======
+    <ClCompile Include="layers\mod.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\min.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\logsoftmax.cpp">
@@ -252,10 +322,20 @@
     <ClCompile Include="layers\lppool.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\lrn.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\lstm.cpp">
+=======
+    <ClCompile Include="layers\maxpool.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\max.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\matmulinteger.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\matmul.cpp">
@@ -300,7 +380,14 @@
     <ClCompile Include="layers\nonmaxsuppression.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\nonzero.cpp">
+=======
+    <ClCompile Include="layers\isinf.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\instancenormalization.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\normalizer.cpp">
@@ -366,13 +453,27 @@
     <ClCompile Include="layers\reducemax.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\reducemean.cpp">
+=======
+    <ClCompile Include="layers\dropout.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\div.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\reducemin.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\reduceprod.cpp">
+=======
+    <ClCompile Include="layers\dequantizelinear.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\depthtospace.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\reducesum.cpp">
@@ -384,7 +485,14 @@
     <ClCompile Include="layers\relu.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\reshape.cpp">
+=======
+    <ClCompile Include="layers\convinteger.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\conv.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\resize.cpp">
@@ -420,7 +528,14 @@
     <ClCompile Include="layers\sigmoid.cpp">
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="layers\sign.cpp">
+=======
+    <ClCompile Include="layers\averagepool.cpp">
+      <Filter>LayerCPP Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\atanh.cpp">
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
       <Filter>LayerCPP Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\sin.cpp">

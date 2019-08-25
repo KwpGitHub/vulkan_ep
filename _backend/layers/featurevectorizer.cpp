@@ -1,15 +1,23 @@
-#include "FeatureVectorizer.h"
+#include "featurevectorizer.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    FeatureVectorizer::FeatureVectorizer(std::string name) : Layer(name) { }
+    FeatureVectorizer::FeatureVectorizer(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders/bin/featurevectorizer.spv");
+       
+        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+    }
        
     vuh::Device* FeatureVectorizer::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
-    void FeatureVectorizer::init( Shape_t _inputdimensions) {      
+    void FeatureVectorizer::init( std::vector<int> _inputdimensions) {      
 		 inputdimensions = _inputdimensions; 
   
     }
@@ -18,12 +26,17 @@ namespace backend {
         Y_o = _Y_o;
 
 
-		binding.Y_o = tensor_dict[Y_o]->shape();
+		//binding.Y_o = tensor_dict[Y_o]->shape();
  
-		binding.inputdimensions = inputdimensions;
- 
-
-        
+		//binding.inputdimensions = inputdimensions;
+         
     }
+
+    void FeatureVectorizer::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[Y_o]->data());
+    }
+
 }
 

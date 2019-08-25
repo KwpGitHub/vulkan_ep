@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Linear classifier
@@ -21,49 +18,45 @@ output: Classification scores ([N,E] - one score for each class and example
 //OUTPUS:                   Y_o, Z_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               coefficients
-//PARAMETER_TYPES:          Tensor*
+//PARAMETER_TYPES:          std::vector<float>
 //OPTIONAL_PARAMETERS:      classlabels_ints, classlabels_strings, intercepts, multi_class, post_transform
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, Tensor*, int, int
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<std::string>, std::vector<float>, int, std::string
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class LinearClassifier : public Layer {
-        typedef struct {
-            Shape_t classlabels_ints; int multi_class; int post_transform;
-			Shape_t coefficients; Shape_t classlabels_strings; Shape_t intercepts;
-            Shape_t X_i;
+    class LinearClassifier : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o; Shape_t Z_o;
+            backend::Shape_t Y_o; backend::Shape_t Z_o;
             
         } binding_descriptor;
-
-        Shape_t classlabels_ints; int multi_class; int post_transform; std::string coefficients; std::string classlabels_strings; std::string intercepts;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<float> coefficients; std::vector<int> classlabels_ints; std::vector<std::string> classlabels_strings; std::vector<float> intercepts; int multi_class; std::string post_transform;
         std::string X_i;
         
         std::string Y_o; std::string Z_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         LinearClassifier(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _classlabels_ints,  int _multi_class,  int _post_transform); 
-        virtual void bind(std::string _coefficients, std::string _classlabels_strings, std::string _intercepts, std::string _X_i, std::string _Y_o, std::string _Z_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearclassifier.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[classlabels_strings]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Z_o]->data());
-        }
+        virtual void init( std::vector<float> _coefficients,  std::vector<int> _classlabels_ints,  std::vector<std::string> _classlabels_strings,  std::vector<float> _intercepts,  int _multi_class,  std::string _post_transform); 
+        virtual void bind(std::string _X_i, std::string _Y_o, std::string _Z_o); 
+        virtual void build();
 
         ~LinearClassifier() {}
     };

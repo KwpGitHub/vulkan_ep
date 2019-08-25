@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Flattens the input tensor into a 2D matrix. If input tensor has shape
@@ -28,18 +25,17 @@ output: A 2D tensor with the contents of the input tensor, with input dimensions
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Flatten : public Layer {
-        typedef struct {
-            int axis;
-			
-            Shape_t input_i;
+    class Flatten : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         int axis;
         std::string input_i;
         
@@ -47,24 +43,21 @@ namespace backend {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         Flatten(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _axis); 
         virtual void bind(std::string _input_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/flatten.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Flatten() {}
     };

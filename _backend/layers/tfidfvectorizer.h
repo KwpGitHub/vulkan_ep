@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 This transform extracts n-grams from the input sequence and save them as a vector. Input can
@@ -46,49 +43,45 @@ output: Ngram results
 //OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               max_gram_length, max_skip_count, min_gram_length, mode, ngram_counts, ngram_indexes
-//PARAMETER_TYPES:          int, int, int, int, Shape_t, Shape_t
+//PARAMETER_TYPES:          int, int, int, std::string, std::vector<int>, std::vector<int>
 //OPTIONAL_PARAMETERS:      pool_int64s, pool_strings, weights
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*, Tensor*
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<std::string>, std::vector<float>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class TfIdfVectorizer : public Layer {
-        typedef struct {
-            int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s;
-			Shape_t pool_strings; Shape_t weights;
-            Shape_t X_i;
+    class TfIdfVectorizer : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
-
-        int max_gram_length; int max_skip_count; int min_gram_length; int mode; Shape_t ngram_counts; Shape_t ngram_indexes; Shape_t pool_int64s; std::string pool_strings; std::string weights;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        int max_gram_length; int max_skip_count; int min_gram_length; std::string mode; std::vector<int> ngram_counts; std::vector<int> ngram_indexes; std::vector<int> pool_int64s; std::vector<std::string> pool_strings; std::vector<float> weights;
         std::string X_i;
         
         std::string Y_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         TfIdfVectorizer(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( int _max_gram_length,  int _max_skip_count,  int _min_gram_length,  int _mode,  Shape_t _ngram_counts,  Shape_t _ngram_indexes,  Shape_t _pool_int64s); 
-        virtual void bind(std::string _pool_strings, std::string _weights, std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/tfidfvectorizer.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[pool_strings]->data(), *tensor_dict[weights]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void init( int _max_gram_length,  int _max_skip_count,  int _min_gram_length,  std::string _mode,  std::vector<int> _ngram_counts,  std::vector<int> _ngram_indexes,  std::vector<int> _pool_int64s,  std::vector<std::string> _pool_strings,  std::vector<float> _weights); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+        virtual void build();
 
         ~TfIdfVectorizer() {}
     };

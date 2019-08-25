@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Matrix product that behaves like numpy.matmul: https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.matmul.html.
@@ -40,18 +37,17 @@ output: Quantized matrix multiply results from a * b
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class QLinearMatMul : public Layer {
-        typedef struct {
+    class QLinearMatMul : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t a_i; backend::Shape_t a_scale_i; backend::Shape_t a_zero_point_i; backend::Shape_t b_i; backend::Shape_t b_scale_i; backend::Shape_t b_zero_point_i; backend::Shape_t y_scale_i; backend::Shape_t y_zero_point_i;
             
-			
-            Shape_t a_i; Shape_t a_scale_i; Shape_t a_zero_point_i; Shape_t b_i; Shape_t b_scale_i; Shape_t b_zero_point_i; Shape_t y_scale_i; Shape_t y_zero_point_i;
-            
-            Shape_t y_o;
+            backend::Shape_t y_o;
             
         } binding_descriptor;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         
         std::string a_i; std::string a_scale_i; std::string a_zero_point_i; std::string b_i; std::string b_scale_i; std::string b_zero_point_i; std::string y_scale_i; std::string y_zero_point_i;
         
@@ -59,24 +55,21 @@ namespace backend {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         QLinearMatMul(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init(); 
         virtual void bind(std::string _a_i, std::string _a_scale_i, std::string _a_zero_point_i, std::string _b_i, std::string _b_scale_i, std::string _b_zero_point_i, std::string _y_scale_i, std::string _y_zero_point_i, std::string _y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/qlinearmatmul.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[a_i]->data(), *tensor_dict[a_scale_i]->data(), *tensor_dict[a_zero_point_i]->data(), *tensor_dict[b_i]->data(), *tensor_dict[b_scale_i]->data(), *tensor_dict[b_zero_point_i]->data(), *tensor_dict[y_scale_i]->data(), *tensor_dict[y_zero_point_i]->data(), *tensor_dict[y_o]->data());
-        }
+        virtual void build();
 
         ~QLinearMatMul() {}
     };

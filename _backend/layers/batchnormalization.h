@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Carries out batch normalization as described in the paper
@@ -43,18 +40,17 @@ output: Saved variance used during training to speed up gradient computation.
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class BatchNormalization : public Layer {
-        typedef struct {
-            float epsilon; float momentum;
-			
-            Shape_t X_i; Shape_t scale_i; Shape_t B_i; Shape_t mean_i; Shape_t var_i;
+    class BatchNormalization : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i; backend::Shape_t scale_i; backend::Shape_t B_i; backend::Shape_t mean_i; backend::Shape_t var_i;
             
-            Shape_t Y_o;
-            Shape_t mean_o; Shape_t var_o; Shape_t saved_mean_o; Shape_t saved_var_o;
+            backend::Shape_t Y_o;
+            backend::Shape_t mean_o; backend::Shape_t var_o; backend::Shape_t saved_mean_o; backend::Shape_t saved_var_o;
         } binding_descriptor;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         float epsilon; float momentum;
         std::string X_i; std::string scale_i; std::string B_i; std::string mean_i; std::string var_i;
         
@@ -62,24 +58,21 @@ namespace backend {
         std::string mean_o; std::string var_o; std::string saved_mean_o; std::string saved_var_o;
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         BatchNormalization(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( float _epsilon,  float _momentum); 
         virtual void bind(std::string _X_i, std::string _scale_i, std::string _B_i, std::string _mean_i, std::string _var_i, std::string _Y_o, std::string _mean_o, std::string _var_o, std::string _saved_mean_o, std::string _saved_var_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/batchnormalization.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[scale_i]->data(), *tensor_dict[B_i]->data(), *tensor_dict[mean_i]->data(), *tensor_dict[var_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[mean_o]->data(), *tensor_dict[var_o]->data(), *tensor_dict[saved_mean_o]->data(), *tensor_dict[saved_var_o]->data());
-        }
+        virtual void build();
 
         ~BatchNormalization() {}
     };

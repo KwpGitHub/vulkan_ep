@@ -1,12 +1,20 @@
-#include "Min.h"
+#include "min.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    Min::Min(std::string name) : Layer(name) { }
+    Min::Min(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders/bin/min.spv");
+       
+        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+    }
        
     vuh::Device* Min::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
     void Min::init() {      
@@ -17,11 +25,16 @@ namespace backend {
         min_o = _min_o;
 
 
-		binding.min_o = tensor_dict[min_o]->shape();
+		//binding.min_o = tensor_dict[min_o]->shape();
  
-
-
         
     }
+
+    void Min::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[min_o]->data());
+    }
+
 }
 

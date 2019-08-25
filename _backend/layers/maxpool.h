@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
  MaxPool consumes an input tensor X and applies max pooling across
@@ -48,49 +45,45 @@ output: Indices tensor from max pooling across the input tensor. The dimensions 
 //OUTPUS:                   Y_o
 //OPTIONAL_OUTPUTS:         Indices_o
 //PARAMETERS:               kernel_shape
-//PARAMETER_TYPES:          Shape_t
+//PARAMETER_TYPES:          std::vector<int>
 //OPTIONAL_PARAMETERS:      auto_pad, ceil_mode, dilations, pads, storage_order, strides
-//OPTIONAL_PARAMETERS_TYPE: int, int, Shape_t, Shape_t, int, Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::string, int, std::vector<int>, std::vector<int>, int, std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class MaxPool : public Layer {
-        typedef struct {
-            Shape_t kernel_shape; int auto_pad; int ceil_mode; Shape_t dilations; Shape_t pads; int storage_order; Shape_t strides;
-			
-            Shape_t X_i;
+    class MaxPool : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
-            Shape_t Indices_o;
+            backend::Shape_t Y_o;
+            backend::Shape_t Indices_o;
         } binding_descriptor;
-
-        Shape_t kernel_shape; int auto_pad; int ceil_mode; Shape_t dilations; Shape_t pads; int storage_order; Shape_t strides;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> kernel_shape; std::string auto_pad; int ceil_mode; std::vector<int> dilations; std::vector<int> pads; int storage_order; std::vector<int> strides;
         std::string X_i;
         
         std::string Y_o;
         std::string Indices_o;
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         MaxPool(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _kernel_shape,  int _auto_pad,  int _ceil_mode,  Shape_t _dilations,  Shape_t _pads,  int _storage_order,  Shape_t _strides); 
+        virtual void init( std::vector<int> _kernel_shape,  std::string _auto_pad,  int _ceil_mode,  std::vector<int> _dilations,  std::vector<int> _pads,  int _storage_order,  std::vector<int> _strides); 
         virtual void bind(std::string _X_i, std::string _Y_o, std::string _Indices_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxpool.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Indices_o]->data());
-        }
+        virtual void build();
 
         ~MaxPool() {}
     };

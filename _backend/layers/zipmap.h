@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Creates a map from the input and the attributes.<br>
@@ -25,47 +22,43 @@ output: The output map
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      classlabels_int64s, classlabels_strings
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<std::string>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class ZipMap : public Layer {
-        typedef struct {
-            Shape_t classlabels_int64s;
-			Shape_t classlabels_strings;
-            Shape_t X_i;
+    class ZipMap : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Z_o;
+            backend::Shape_t Z_o;
             
         } binding_descriptor;
-
-        Shape_t classlabels_int64s; std::string classlabels_strings;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> classlabels_int64s; std::vector<std::string> classlabels_strings;
         std::string X_i;
         
         std::string Z_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         ZipMap(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _classlabels_int64s); 
-        virtual void bind(std::string _classlabels_strings, std::string _X_i, std::string _Z_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/zipmap.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[classlabels_strings]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Z_o]->data());
-        }
+        virtual void init( std::vector<int> _classlabels_int64s,  std::vector<std::string> _classlabels_strings); 
+        virtual void bind(std::string _X_i, std::string _Z_o); 
+        virtual void build();
 
         ~ZipMap() {}
     };

@@ -15,27 +15,43 @@ namespace py = pybind11;
 #include "layers.h"
 
 
+<<<<<<< HEAD
 void test() {
 	auto y = std::vector<float>(128, 1.0f);
 	auto x = std::vector<float>(128, 2.0f);
+=======
+void create_instance() {
+	backend::instance = new vuh::Instance();
+	backend::device = new vuh::Device(backend::instance->devices().at(0));
+	backend::file_path = "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend\\";
+}
 
-	auto instance = vuh::Instance();
-	auto device = instance.devices().at(0);    // just get the first available device
+>>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
 
-	auto d_y = vuh::Array<float>(device, y);   // create device arrays and copy data
-	auto d_x = vuh::Array<float>(device, x);
+void test() {
+	uint32_t size = 2147482623;//2GB
+	
+	auto y = std::vector<float>(size, 1.0f);
+	auto x = std::vector<float>(size, 2.0f);
+	
+	    // just get the first available device
+	auto device = new vuh::Device(*backend::device);
+
+	auto d_y = vuh::Array<float>(*device, y);
+	auto d_x = vuh::Array<float>(*device, x);
 
 	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
 	struct Params { uint32_t size; float a; };    // shader push-constants interface
 
+	vuh::Program<Specs, Params>* program;
 	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
-	auto program = vuh::Program<Specs, Params>(device, std::string(backend::file_path + std::string("saxpy.spv")).c_str());
+	program = new vuh::Program<Specs, Params>(*device, std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+	program->grid(size / 64, 1, 1).spec(64, 1, 1).bind({ size, 0.1f }, d_y, d_x);
+	program->run();
 
-	program.grid(128/64, 1, 1).spec(64, 1, 1).bind({ 128, 0.1f }, d_y, d_x); 
-	program.run();
 	d_y.toHost(begin(y));
 	int error_count = 0;
-	for (int i = 0; i < 128; ++i) {
+	for (int i = 0; i < size; ++i) {
 		if (abs(y[i] - (1.0 + 0.1 * x[i])) > 1e-7) 
 			error_count++;
 	}
@@ -48,14 +64,8 @@ void test() {
 	return;
 }
 
-void create_instance(py::str file_path) {
-	std::cout << file_path << std::endl;
-	backend::file_path = std::string(file_path) + std::string("/../_backend/");
-	backend::instance = new vuh::Instance();
-	backend::device = new vuh::Device(backend::instance->devices().at(0));
-}
 
-void create_tensor_from_numpy(py::str name, py::array_t<float> input){
+void create_tensor(py::str name, py::array_t<float> input){
 	py::buffer_info buf = input.request();
 	auto bs = buf.shape;
 	float* p = (float*)buf.ptr;
@@ -87,34 +97,6 @@ void create_tensor_from_numpy(py::str name, py::array_t<float> input){
 	backend::Tensor* x = new backend::Tensor(data, _shape);
 	backend::tensor_dict.insert(std::pair<std::string, backend::Tensor*>(std::string(name), x));
 
-}
-
-void create_tensor(py::str name, py::list data, py::list shape) {
-	std::vector<float> d;
-	std::vector<uint32_t> s;
-
-	for (auto x : shape)
-		s.push_back(x.cast<uint32_t>());
-	for (auto x : data)
-		d.push_back(x.cast<float>());
-	
-	backend::Shape_t _shape = { 1,1,1,1,1 };
-
-	switch (s.size()) {
-	case 1: _shape = { s[0], 1,1,1,1 };
-			break;
-	case 2: _shape = { s[0], 1, 1, 1, s[1] };
-			break;
-	case 3: _shape = { s[0], 1, 1, s[1], s[2] };
-			break;
-	case 4: _shape = { s[0], s[1], 1, s[2], s[3] };
-			break;
-	case 5: _shape = { s[0], s[1], s[2], s[3], s[4] };
-	}
-
-	std::cout << "TENSOR ::: "<< name << std::endl;
-	backend::Tensor* x = new backend::Tensor(d, _shape);	
-	backend::tensor_dict.insert(std::pair<std::string, backend::Tensor*>(std::string(name), x));
 }
 
 void create_layer(py::str name, py::str opType, py::list inputs, py::list outputs, py::dict attribute) {
@@ -150,15 +132,13 @@ void create_layer(py::str name, py::str opType, py::list inputs, py::list output
 	for (auto item : attribute) {
 		std::string attribute_name = std::string(py::str(item.first));
 	}
-
-
+	
 }
 
 PYBIND11_MODULE(_backend, m) {
 	m.doc() = "C nn Executor";
 	m.def("create_instance", &create_instance);
 	m.def("create_tensor", &create_tensor);
-	m.def("create_tensor_from_numpy", &create_tensor_from_numpy);
 	m.def("create_layer", &create_layer);
 	m.def("test", &test);
 

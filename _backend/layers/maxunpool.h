@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 MaxUnpool essentially computes the partial inverse of the MaxPool op.
@@ -39,49 +36,45 @@ output: Output data tensor that contains the result of the unpooling.
 //OUTPUS:                   output_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               kernel_shape
-//PARAMETER_TYPES:          Shape_t
+//PARAMETER_TYPES:          std::vector<int>
 //OPTIONAL_PARAMETERS:      pads, strides
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Shape_t
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<int>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class MaxUnpool : public Layer {
-        typedef struct {
-            Shape_t kernel_shape; Shape_t pads; Shape_t strides;
-			
-            Shape_t X_i; Shape_t I_i;
-            Shape_t output_shape_i;
-            Shape_t output_o;
+    class MaxUnpool : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i; backend::Shape_t I_i;
+            backend::Shape_t output_shape_i;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
-
-        Shape_t kernel_shape; Shape_t pads; Shape_t strides;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> kernel_shape; std::vector<int> pads; std::vector<int> strides;
         std::string X_i; std::string I_i;
         std::string output_shape_i;
         std::string output_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         MaxUnpool(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _kernel_shape,  Shape_t _pads,  Shape_t _strides); 
+        virtual void init( std::vector<int> _kernel_shape,  std::vector<int> _pads,  std::vector<int> _strides); 
         virtual void bind(std::string _X_i, std::string _I_i, std::string _output_shape_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/maxunpool.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[I_i]->data(), *tensor_dict[output_shape_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~MaxUnpool() {}
     };

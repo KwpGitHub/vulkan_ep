@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 The operator casts the elements of a given input tensor to a data type
@@ -44,18 +41,17 @@ output: Output tensor with the same shape as input with type specified by the 't
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Cast : public Layer {
-        typedef struct {
-            int to;
-			
-            Shape_t input_i;
+    class Cast : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t input_i;
             
-            Shape_t output_o;
+            backend::Shape_t output_o;
             
         } binding_descriptor;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         int to;
         std::string input_i;
         
@@ -63,24 +59,21 @@ namespace backend {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         Cast(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _to); 
         virtual void bind(std::string _input_i, std::string _output_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/cast.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
-        }
+        virtual void build();
 
         ~Cast() {}
     };

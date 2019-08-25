@@ -7,31 +7,28 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    Shape_t imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
-			Shape_t imputed_value_floats;
+  
 //input
-    Shape_t X_i;
+    backend::Shape_t X_i;
     
 //output
-    Shape_t Y_o;
+    backend::Shape_t Y_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float imputed_value_floats[]; };
-layout(std430, binding = 1) buffer lay1 { float X_i[]; };
-layout(std430, binding = 2) buffer lay2 { float Y_o[]; };
+layout(std430, binding = 0) buffer lay0 { float X_i[]; };
+layout(std430, binding = 1) buffer lay1 { float Y_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint imputed_value_floats_size = params.imputed_value_floats.n * params.imputed_value_floats.c * params.imputed_value_floats.d * params.imputed_value_floats.w * params.imputed_value_floats.h;
-    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
-    
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
-    
+    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+    //
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

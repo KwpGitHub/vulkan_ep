@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Normalize the input.  There are three normalization modes, which have the corresponding formulas,
@@ -31,47 +28,43 @@ output: Encoded output data
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      norm
-//OPTIONAL_PARAMETERS_TYPE: int
+//OPTIONAL_PARAMETERS_TYPE: std::string
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Normalizer : public Layer {
-        typedef struct {
-            int norm;
-			
-            Shape_t X_i;
+    class Normalizer : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
-
-        int norm;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::string norm;
         std::string X_i;
         
         std::string Y_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         Normalizer(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( int _norm); 
+        virtual void init( std::string _norm); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/normalizer.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~Normalizer() {}
     };

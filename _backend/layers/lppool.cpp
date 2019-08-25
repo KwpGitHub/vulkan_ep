@@ -1,15 +1,23 @@
-#include "LpPool.h"
+#include "lppool.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    LpPool::LpPool(std::string name) : Layer(name) { }
+    LpPool::LpPool(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders/bin/lppool.spv");
+       
+        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+    }
        
     vuh::Device* LpPool::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
-    void LpPool::init( Shape_t _kernel_shape,  int _auto_pad,  int _p,  Shape_t _pads,  Shape_t _strides) {      
+    void LpPool::init( std::vector<int> _kernel_shape,  std::string _auto_pad,  int _p,  std::vector<int> _pads,  std::vector<int> _strides) {      
 		 kernel_shape = _kernel_shape; 
  		 auto_pad = _auto_pad; 
  		 p = _p; 
@@ -21,18 +29,23 @@ namespace backend {
     void LpPool::bind(std::string _X_i, std::string _Y_o){
         X_i = _X_i; Y_o = _Y_o;
 
-		binding.X_i = tensor_dict[X_i]->shape();
+		//binding.X_i = tensor_dict[X_i]->shape();
  
-		binding.Y_o = tensor_dict[Y_o]->shape();
+		//binding.Y_o = tensor_dict[Y_o]->shape();
  
-		binding.kernel_shape = kernel_shape;
-  		binding.auto_pad = auto_pad;
-  		binding.p = p;
-  		binding.pads = pads;
-  		binding.strides = strides;
- 
-
-        
+		//binding.kernel_shape = kernel_shape;
+  		//binding.auto_pad = auto_pad;
+  		//binding.p = p;
+  		//binding.pads = pads;
+  		//binding.strides = strides;
+         
     }
+
+    void LpPool::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
+    }
+
 }
 

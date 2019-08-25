@@ -1,12 +1,20 @@
-#include "Shrink.h"
+#include "shrink.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    Shrink::Shrink(std::string name) : Layer(name) { }
+    Shrink::Shrink(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders/bin/shrink.spv");
+       
+        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+    }
        
     vuh::Device* Shrink::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
     void Shrink::init( float _bias,  float _lambd) {      
@@ -18,15 +26,20 @@ namespace backend {
     void Shrink::bind(std::string _input_i, std::string _output_o){
         input_i = _input_i; output_o = _output_o;
 
-		binding.input_i = tensor_dict[input_i]->shape();
+		//binding.input_i = tensor_dict[input_i]->shape();
  
-		binding.output_o = tensor_dict[output_o]->shape();
+		//binding.output_o = tensor_dict[output_o]->shape();
  
-		binding.bias = bias;
-  		binding.lambd = lambd;
- 
-
-        
+		//binding.bias = bias;
+  		//binding.lambd = lambd;
+         
     }
+
+    void Shrink::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[input_i]->data(), *tensor_dict[output_o]->data());
+    }
+
 }
 

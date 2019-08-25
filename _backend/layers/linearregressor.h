@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Generalized linear regression evaluation.<br>
@@ -27,47 +24,43 @@ output: Regression outputs (one per target, per example).
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      coefficients, intercepts, post_transform, targets
-//OPTIONAL_PARAMETERS_TYPE: Tensor*, Tensor*, int, int
+//OPTIONAL_PARAMETERS_TYPE: std::vector<float>, std::vector<float>, std::string, int
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class LinearRegressor : public Layer {
-        typedef struct {
-            int post_transform; int targets;
-			Shape_t coefficients; Shape_t intercepts;
-            Shape_t X_i;
+    class LinearRegressor : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
-
-        int post_transform; int targets; std::string coefficients; std::string intercepts;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<float> coefficients; std::vector<float> intercepts; std::string post_transform; int targets;
         std::string X_i;
         
         std::string Y_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         LinearRegressor(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( int _post_transform,  int _targets); 
-        virtual void bind(std::string _coefficients, std::string _intercepts, std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/linearregressor.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[coefficients]->data(), *tensor_dict[intercepts]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void init( std::vector<float> _coefficients,  std::vector<float> _intercepts,  std::string _post_transform,  int _targets); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+        virtual void build();
 
         ~LinearRegressor() {}
     };

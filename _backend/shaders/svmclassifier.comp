@@ -7,45 +7,30 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    Shape_t classlabels_ints; int kernel_type; int post_transform; Shape_t vectors_per_class;
-			Shape_t classlabels_strings; Shape_t coefficients; Shape_t kernel_params; Shape_t prob_a; Shape_t prob_b; Shape_t rho; Shape_t support_vectors;
+  
 //input
-    Shape_t X_i;
+    backend::Shape_t X_i;
     
 //output
-    Shape_t Y_o; Shape_t Z_o;
+    backend::Shape_t Y_o; backend::Shape_t Z_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float classlabels_strings[]; };
-layout(std430, binding = 1) buffer lay1 { float coefficients[]; };
-layout(std430, binding = 2) buffer lay2 { float kernel_params[]; };
-layout(std430, binding = 3) buffer lay3 { float prob_a[]; };
-layout(std430, binding = 4) buffer lay4 { float prob_b[]; };
-layout(std430, binding = 5) buffer lay5 { float rho[]; };
-layout(std430, binding = 6) buffer lay6 { float support_vectors[]; };
-layout(std430, binding = 7) buffer lay7 { float X_i[]; };
-layout(std430, binding = 8) buffer lay8 { float Y_o[]; };
-layout(std430, binding = 9) buffer lay9 { float Z_o[]; };
+layout(std430, binding = 0) buffer lay0 { float X_i[]; };
+layout(std430, binding = 1) buffer lay1 { float Y_o[]; };
+layout(std430, binding = 2) buffer lay2 { float Z_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint classlabels_strings_size = params.classlabels_strings.n * params.classlabels_strings.c * params.classlabels_strings.d * params.classlabels_strings.w * params.classlabels_strings.h;
-	const uint coefficients_size = params.coefficients.n * params.coefficients.c * params.coefficients.d * params.coefficients.w * params.coefficients.h;
-	const uint kernel_params_size = params.kernel_params.n * params.kernel_params.c * params.kernel_params.d * params.kernel_params.w * params.kernel_params.h;
-	const uint prob_a_size = params.prob_a.n * params.prob_a.c * params.prob_a.d * params.prob_a.w * params.prob_a.h;
-	const uint prob_b_size = params.prob_b.n * params.prob_b.c * params.prob_b.d * params.prob_b.w * params.prob_b.h;
-	const uint rho_size = params.rho.n * params.rho.c * params.rho.d * params.rho.w * params.rho.h;
-	const uint support_vectors_size = params.support_vectors.n * params.support_vectors.c * params.support_vectors.d * params.support_vectors.w * params.support_vectors.h;
-    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
-    
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+    //
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
 	const uint Z_o_size = params.Z_o.n * params.Z_o.c * params.Z_o.d * params.Z_o.w * params.Z_o.h;
-    
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

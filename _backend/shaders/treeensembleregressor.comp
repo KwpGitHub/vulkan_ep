@@ -7,39 +7,28 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    int aggregate_function; int n_targets; Shape_t nodes_falsenodeids; Shape_t nodes_featureids; Shape_t nodes_missing_value_tracks_true; Shape_t nodes_nodeids; Shape_t nodes_treeids; Shape_t nodes_truenodeids; int post_transform; Shape_t target_ids; Shape_t target_nodeids; Shape_t target_treeids;
-			Shape_t base_values; Shape_t nodes_hitrates; Shape_t nodes_modes; Shape_t nodes_values; Shape_t target_weights;
+  
 //input
-    Shape_t X_i;
+    backend::Shape_t X_i;
     
 //output
-    Shape_t Y_o;
+    backend::Shape_t Y_o;
     
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float base_values[]; };
-layout(std430, binding = 1) buffer lay1 { float nodes_hitrates[]; };
-layout(std430, binding = 2) buffer lay2 { float nodes_modes[]; };
-layout(std430, binding = 3) buffer lay3 { float nodes_values[]; };
-layout(std430, binding = 4) buffer lay4 { float target_weights[]; };
-layout(std430, binding = 5) buffer lay5 { float X_i[]; };
-layout(std430, binding = 6) buffer lay6 { float Y_o[]; };
+layout(std430, binding = 0) buffer lay0 { float X_i[]; };
+layout(std430, binding = 1) buffer lay1 { float Y_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint base_values_size = params.base_values.n * params.base_values.c * params.base_values.d * params.base_values.w * params.base_values.h;
-	const uint nodes_hitrates_size = params.nodes_hitrates.n * params.nodes_hitrates.c * params.nodes_hitrates.d * params.nodes_hitrates.w * params.nodes_hitrates.h;
-	const uint nodes_modes_size = params.nodes_modes.n * params.nodes_modes.c * params.nodes_modes.d * params.nodes_modes.w * params.nodes_modes.h;
-	const uint nodes_values_size = params.nodes_values.n * params.nodes_values.c * params.nodes_values.d * params.nodes_values.w * params.nodes_values.h;
-	const uint target_weights_size = params.target_weights.n * params.target_weights.c * params.target_weights.d * params.target_weights.w * params.target_weights.h;
-    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
-    
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
-    
+    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+    //
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

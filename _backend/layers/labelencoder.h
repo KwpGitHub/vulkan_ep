@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Maps each element in the input tensor to another value.<br>
@@ -38,47 +35,43 @@ output: Output data.
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      default_float, default_int64, default_string, keys_floats, keys_int64s, keys_strings, values_floats, values_int64s, values_strings
-//OPTIONAL_PARAMETERS_TYPE: float, int, int, Tensor*, Shape_t, Tensor*, Tensor*, Shape_t, Tensor*
+//OPTIONAL_PARAMETERS_TYPE: float, int, std::string, std::vector<float>, std::vector<int>, std::vector<std::string>, std::vector<float>, std::vector<int>, std::vector<std::string>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class LabelEncoder : public Layer {
-        typedef struct {
-            float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s;
-			Shape_t keys_floats; Shape_t keys_strings; Shape_t values_floats; Shape_t values_strings;
-            Shape_t X_i;
+    class LabelEncoder : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
-
-        float default_float; int default_int64; int default_string; Shape_t keys_int64s; Shape_t values_int64s; std::string keys_floats; std::string keys_strings; std::string values_floats; std::string values_strings;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        float default_float; int default_int64; std::string default_string; std::vector<float> keys_floats; std::vector<int> keys_int64s; std::vector<std::string> keys_strings; std::vector<float> values_floats; std::vector<int> values_int64s; std::vector<std::string> values_strings;
         std::string X_i;
         
         std::string Y_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         LabelEncoder(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( float _default_float,  int _default_int64,  int _default_string,  Shape_t _keys_int64s,  Shape_t _values_int64s); 
-        virtual void bind(std::string _keys_floats, std::string _keys_strings, std::string _values_floats, std::string _values_strings, std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/labelencoder.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[keys_floats]->data(), *tensor_dict[keys_strings]->data(), *tensor_dict[values_floats]->data(), *tensor_dict[values_strings]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void init( float _default_float,  int _default_int64,  std::string _default_string,  std::vector<float> _keys_floats,  std::vector<int> _keys_int64s,  std::vector<std::string> _keys_strings,  std::vector<float> _values_floats,  std::vector<int> _values_int64s,  std::vector<std::string> _values_strings); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+        virtual void build();
 
         ~LabelEncoder() {}
     };

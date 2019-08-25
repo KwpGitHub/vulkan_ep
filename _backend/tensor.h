@@ -1,12 +1,13 @@
 #ifndef TENSOR_H
 #define TENSOR_H
+
 #include <vector>
+#include <string>
 #include <numeric>
 #include <map>
 
 #include "kernel/array.hpp"
 #include "kernel/vuh.h"
-
 
 namespace backend {
 
@@ -18,34 +19,12 @@ namespace backend {
 		uint32_t w;
 	};
 
-	/*
-	void convert_vec_param(std::vector<std::string> s, Shape_t out) {
-		backend::Shape_t _shape = { 1,1,1,1,1 };
-		switch (s.size()) {
-		case 1: _shape = { std::stoul(s[0]), 1,1,1,1 };
-				break;
-		case 2: _shape = { std::stoul(s[0]), 1, 1, 1, std::stoul(s[1]) };
-				break;
-		case 3: _shape = { std::stoul(s[0]), 1, 1, std::stoul(s[1]), std::stoul(s[2]) };
-				break;
-		case 4: _shape = { std::stoul(s[0]), std::stoul(s[1]), 1, std::stoul(s[2]), std::stoul(s[3]) };
-				break;
-		case 5: _shape = { std::stoul(s[0]), std::stoul(s[1]), std::stoul(s[2]), std::stoul(s[3]), std::stoul(s[4]) };
-		}
-		out = _shape;
-	}
+	inline vuh::Instance* instance;
+	inline vuh::Device* device;
 
-	void convert_vec_param(std::vector<std::string> s, int out) {
-		out = std::stoi(s[0]);
+	static vuh::Device getDevice() {
+		return *device;
 	}
-
-	void convert_vec_param(std::vector<std::string> s, float out) {
-		out = std::stof(s[0]);
-	}
-	*/
-	static vuh::Instance* instance;
-	static vuh::Device* device;
-	static std::string file_path;
 
 	class Tensor {		
 		
@@ -109,7 +88,8 @@ namespace backend {
 
 
 namespace backend {
-	static std::map<std::string, Tensor*> tensor_dict;
+	inline std::map<std::string, Tensor*> tensor_dict;
+	inline std::string file_path;
 }
 
 #endif

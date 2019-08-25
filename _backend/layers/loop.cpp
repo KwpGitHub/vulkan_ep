@@ -1,12 +1,20 @@
-#include "Loop.h"
+#include "loop.h"
 //cpp stuff
-namespace backend {    
+namespace layers {    
    
-    Loop::Loop(std::string name) : Layer(name) { }
+    Loop::Loop(std::string name) : backend::Layer(name) {    
+        std::string file;
+        file.append(backend::file_path);
+        file.append("shaders/bin/loop.spv");
+       
+        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
+
+        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+    }
        
     vuh::Device* Loop::_get_device() {
         
-        return device;
+        return backend::device;
     }
     
     void Loop::init( int _body) {      
@@ -17,14 +25,19 @@ namespace backend {
     void Loop::bind(std::string _M_i, std::string _cond_i){
         M_i = _M_i; cond_i = _cond_i;
 
-		binding.M_i = tensor_dict[M_i]->shape();
-  		binding.cond_i = tensor_dict[cond_i]->shape();
+		//binding.M_i = tensor_dict[M_i]->shape();
+  		//binding.cond_i = tensor_dict[cond_i]->shape();
  
 
-		binding.body = body;
- 
-
-        
+		//binding.body = body;
+         
     }
+
+    void Loop::build(){
+        
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
+        //program->bind(binding, *tensor_dict[M_i]->data(), *tensor_dict[cond_i]->data());
+    }
+
 }
 

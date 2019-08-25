@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
  GlobalLpPool consumes an input tensor X and applies lp pool pooling across
@@ -27,18 +24,17 @@ output: Output data tensor from pooling across the input tensor. Dimensions will
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class GlobalLpPool : public Layer {
-        typedef struct {
-            int p;
-			
-            Shape_t X_i;
+    class GlobalLpPool : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
-
+        
+        vuh::Program<Specs, binding_descriptor>* program;
         int p;
         std::string X_i;
         
@@ -46,24 +42,21 @@ namespace backend {
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         GlobalLpPool(std::string name);
-    
+        
         void forward() { program->run(); }
         
         virtual void init( int _p); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/globallppool.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void build();
 
         ~GlobalLpPool() {}
     };

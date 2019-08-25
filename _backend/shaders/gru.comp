@@ -7,46 +7,39 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    float clip; int direction; int hidden_size; int linear_before_reset;
-			Shape_t activation_alpha; Shape_t activation_beta; Shape_t activations;
+  
 //input
-    Shape_t X_i; Shape_t W_i; Shape_t R_i;
-    Shape_t B_i; Shape_t sequence_lens_i; Shape_t initial_h_i;
+    backend::Shape_t X_i; backend::Shape_t W_i; backend::Shape_t R_i;
+    backend::Shape_t B_i; backend::Shape_t sequence_lens_i; backend::Shape_t initial_h_i;
 //output
     
-    Shape_t Y_o; Shape_t Y_h_o;
+    backend::Shape_t Y_o; backend::Shape_t Y_h_o;
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float activation_alpha[]; };
-layout(std430, binding = 1) buffer lay1 { float activation_beta[]; };
-layout(std430, binding = 2) buffer lay2 { float activations[]; };
-layout(std430, binding = 3) buffer lay3 { float X_i[]; };
-layout(std430, binding = 4) buffer lay4 { float W_i[]; };
-layout(std430, binding = 5) buffer lay5 { float R_i[]; };
-layout(std430, binding = 6) buffer lay6 { float B_i[]; };
-layout(std430, binding = 7) buffer lay7 { float sequence_lens_i[]; };
-layout(std430, binding = 8) buffer lay8 { float initial_h_i[]; };
-layout(std430, binding = 9) buffer lay9 { float Y_o[]; };
-layout(std430, binding = 10) buffer lay10 { float Y_h_o[]; };
+layout(std430, binding = 0) buffer lay0 { float X_i[]; };
+layout(std430, binding = 1) buffer lay1 { float W_i[]; };
+layout(std430, binding = 2) buffer lay2 { float R_i[]; };
+layout(std430, binding = 3) buffer lay3 { float B_i[]; };
+layout(std430, binding = 4) buffer lay4 { float sequence_lens_i[]; };
+layout(std430, binding = 5) buffer lay5 { float initial_h_i[]; };
+layout(std430, binding = 6) buffer lay6 { float Y_o[]; };
+layout(std430, binding = 7) buffer lay7 { float Y_h_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    const uint activation_alpha_size = params.activation_alpha.n * params.activation_alpha.c * params.activation_alpha.d * params.activation_alpha.w * params.activation_alpha.h;
-	const uint activation_beta_size = params.activation_beta.n * params.activation_beta.c * params.activation_beta.d * params.activation_beta.w * params.activation_beta.h;
-	const uint activations_size = params.activations.n * params.activations.c * params.activations.d * params.activations.w * params.activations.h;
-    const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
 	const uint W_i_size = params.W_i.n * params.W_i.c * params.W_i.d * params.W_i.w * params.W_i.h;
 	const uint R_i_size = params.R_i.n * params.R_i.c * params.R_i.d * params.R_i.w * params.R_i.h;
-    const uint B_i_size = params.B_i.n * params.B_i.c * params.B_i.d * params.B_i.w * params.B_i.h;
+    //const uint B_i_size = params.B_i.n * params.B_i.c * params.B_i.d * params.B_i.w * params.B_i.h;
 	const uint sequence_lens_i_size = params.sequence_lens_i.n * params.sequence_lens_i.c * params.sequence_lens_i.d * params.sequence_lens_i.w * params.sequence_lens_i.h;
 	const uint initial_h_i_size = params.initial_h_i.n * params.initial_h_i.c * params.initial_h_i.d * params.initial_h_i.w * params.initial_h_i.h;
-    
-    const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
+    //
+    //const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
 	const uint Y_h_o_size = params.Y_h_o.n * params.Y_h_o.c * params.Y_h_o.d * params.Y_h_o.w * params.Y_h_o.h;
 
-    if(size <= idx) {
+    if(5 <= idx) {
         return;
     }
    

@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
 Insert single-dimensional entries to the shape of a tensor.
@@ -24,49 +21,45 @@ output: Reshaped tensor with same data as input.
 //OUTPUS:                   expanded_o
 //OPTIONAL_OUTPUTS:         
 //PARAMETERS:               axes
-//PARAMETER_TYPES:          Shape_t
+//PARAMETER_TYPES:          std::vector<int>
 //OPTIONAL_PARAMETERS:      
 //OPTIONAL_PARAMETERS_TYPE: 
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class Unsqueeze : public Layer {
-        typedef struct {
-            Shape_t axes;
-			
-            Shape_t data_i;
+    class Unsqueeze : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t data_i;
             
-            Shape_t expanded_o;
+            backend::Shape_t expanded_o;
             
         } binding_descriptor;
-
-        Shape_t axes;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> axes;
         std::string data_i;
         
         std::string expanded_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         Unsqueeze(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _axes); 
+        virtual void init( std::vector<int> _axes); 
         virtual void bind(std::string _data_i, std::string _expanded_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/unsqueeze.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[expanded_o]->data());
-        }
+        virtual void build();
 
         ~Unsqueeze() {}
     };

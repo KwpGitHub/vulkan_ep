@@ -3,9 +3,6 @@
 
 #include "../layer.h"
 
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-
 /*
 
     Uses an index mapping to convert a dictionary to an array.<br>
@@ -32,47 +29,43 @@ output: A 1-D tensor holding values from the input dictionary.
 //PARAMETERS:               
 //PARAMETER_TYPES:          
 //OPTIONAL_PARAMETERS:      int64_vocabulary, string_vocabulary
-//OPTIONAL_PARAMETERS_TYPE: Shape_t, Tensor*
+//OPTIONAL_PARAMETERS_TYPE: std::vector<int>, std::vector<std::string>
 
 
 //class stuff
-namespace backend {   
+namespace layers {   
 
-    class DictVectorizer : public Layer {
-        typedef struct {
-            Shape_t int64_vocabulary;
-			Shape_t string_vocabulary;
-            Shape_t X_i;
+    class DictVectorizer : public backend::Layer {
+        typedef struct {          
+            backend::Shape_t X_i;
             
-            Shape_t Y_o;
+            backend::Shape_t Y_o;
             
         } binding_descriptor;
-
-        Shape_t int64_vocabulary; std::string string_vocabulary;
+        
+        vuh::Program<Specs, binding_descriptor>* program;
+        std::vector<int> int64_vocabulary; std::vector<std::string> string_vocabulary;
         std::string X_i;
         
         std::string Y_o;
         
 
         binding_descriptor   binding;
-
         vuh::Device* _get_device();
-        vuh::Program<Specs, binding_descriptor>* program;        
+
+        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
+	    struct Params { uint32_t size; float a; };    // shader push-constants interface
+	    vuh::Program<Specs, Params>* program;*/
+
 
     public:
         DictVectorizer(std::string name);
-    
+        
         void forward() { program->run(); }
         
-        virtual void init( Shape_t _int64_vocabulary); 
-        virtual void bind(std::string _string_vocabulary, std::string _X_i, std::string _Y_o); 
-
-        virtual void build(){
-            program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), std::string(file_path + std::string("/shaders/bin/dictvectorizer.spv")).c_str());
-            program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
-            program->spec(64, 64, 64);
-            //program->bind(binding, *tensor_dict[string_vocabulary]->data(), *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data());
-        }
+        virtual void init( std::vector<int> _int64_vocabulary,  std::vector<std::string> _string_vocabulary); 
+        virtual void bind(std::string _X_i, std::string _Y_o); 
+        virtual void build();
 
         ~DictVectorizer() {}
     };
