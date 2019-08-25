@@ -4823,54 +4823,6 @@ layer_map['Unsqueeze'] = Unsqueeze
 
 
 
-<<<<<<< HEAD
-=======
-class Upsample:
-    name = None
-    X_i = str()
-    scales_i = str()
-    Y_o = str()
-
-    #parameters
-    mode = str()
-
-    input_params = ["X_i", "scales_i"]
-    output_params = ["Y_o"]
-    attribute_params = ["mode"]
-
-    def __init__(self, name):
-        self.name = name
-        self.Module = nn._Upsample
-
-    def output_shape(self, tensor):
-        return tensor[self.__dict__[self.input_params[0]]].shape 
-
-    def input(self, tensors, *args):
-        for i, x in enumerate(args):
-            self.__dict__[self.input_params[i]] = x
-            
-    def output(self, tensors, *args):        
-        for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x            
-            if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
-
-    def attribute(self, **kwargs):
-        self.__dict__.update(kwargs)
-
-    def build(self):
-        self.Module(self.name, self.mode, self.X_i, self.scales_i, self.Y_o)
-
-    def run(self):
-        pass
-
-layer_map['Upsample'] = Upsample
-
-
-
-
-
->>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
 class SVMClassifier:
     name = None
     X_i = str()

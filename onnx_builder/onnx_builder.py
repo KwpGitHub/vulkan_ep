@@ -400,12 +400,9 @@ def onnx_proto():
     pybind_modules_file.write('\n'.join(pybind_modules))
     layers.writelines(layers_lst)
     op_file.close()
-<<<<<<< HEAD
-    py_layers.write('import _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
-=======
+
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
     py_layers.write('import numpy as np\nimport _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
->>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
 
     print(single_element)
     print(double_element)

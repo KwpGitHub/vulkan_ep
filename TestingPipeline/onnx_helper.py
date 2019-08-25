@@ -56,13 +56,7 @@ class OnnxNode(object):
         return (self.inputs, self.outputs, self.attrs)
 
 class OnnxGraph:
-<<<<<<< HEAD
-    def __init__(self, filename):
-        _backend.create_instance(os.getcwd())
-        _backend.test()
-=======
-    def __init__(self, filename):        
->>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
+    def _init__(self, filename):
         model = onnx.load(filename)
         _backend.create_instance()
         _backend.test()

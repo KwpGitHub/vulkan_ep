@@ -15,18 +15,11 @@ namespace py = pybind11;
 #include "layers.h"
 
 
-<<<<<<< HEAD
-void test() {
-	auto y = std::vector<float>(128, 1.0f);
-	auto x = std::vector<float>(128, 2.0f);
-=======
 void create_instance() {
 	backend::instance = new vuh::Instance();
 	backend::device = new vuh::Device(backend::instance->devices().at(0));
 	backend::file_path = "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend\\";
 }
-
->>>>>>> d26aec2ecadf589e64df8528df9a1a0d2b4f9138
 
 void test() {
 	uint32_t size = 2147482623;//2GB
