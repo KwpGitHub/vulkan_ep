@@ -52,8 +52,7 @@ namespace layers {
     public:
         GlobalLpPool(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _p); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
         virtual void build();

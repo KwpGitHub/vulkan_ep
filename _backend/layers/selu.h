@@ -54,8 +54,7 @@ namespace layers {
     public:
         Selu(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( float _alpha,  float _gamma); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
         virtual void build();

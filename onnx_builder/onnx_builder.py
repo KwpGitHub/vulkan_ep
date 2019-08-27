@@ -44,19 +44,6 @@ std::map<std::string, std::map<std::string, std::string> > parameter_map = {{
 }}*/
     """.format
 
-layers_file_str = '''
-void init_layer_{norm}(py::module& m){{
-    m.def("_{norm}", [](py::str name{create_param_lst}) {{
-        layers::{norm}* layer = new layers::{norm}(std::string(name));
-        layer->init({create_init_lst});
-        layer->bind({create_bind_lst});
-        layer->build();
-        backend::layer_dict[std::string(name)] = layer;
-
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "{norm}" <<std::endl;
-
-    }});
-}}\n'''.format_map
 
 class_h_str = """#ifndef {upper}_H
 #define {upper}_H 
@@ -107,8 +94,7 @@ namespace layers {{
     public:
         {norm}(std::string name);
         
-        void forward() {{ program->run(); }}
-        
+        virtual void forward();        
         virtual void init({init_param_lst}); 
         virtual void bind({bind_lst}); 
         virtual void build();
@@ -129,14 +115,10 @@ namespace layers {{
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/{lower}.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }}
        
-    vuh::Device* {norm}::_get_device() {{
-        
+    vuh::Device* {norm}::_get_device() {{        
         return backend::device;
     }}
     
@@ -152,54 +134,16 @@ namespace layers {{
 {bind_binding_lst_1}        
     }}
 
-    void {norm}::build(){{
-        
+    void {norm}::build(){{        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding{bind_input_lst}{bind_output_lst});
+        program->bind(binding{bind_input_lst}{bind_output_lst});
+    }}
+
+    void {norm}::forward(){{ 
+        program->run();
     }}
 
 }}
-
-""".format_map
-
-python_class_str = """
-
-class {norm}:
-    name = None
-{python_variables}
-    #parameters
-{python_parameters}
-    input_params = [{python_inputs_func}]
-    output_params = [{python_outputs_func}]
-    attribute_params = [{python_attribute_func}]
-
-    def __init__(self, name):
-        self.name = name
-        self.Module = nn._{norm}
-
-    def output_shape(self, tensor):
-        return tensor[self.__dict__[self.input_params[0]]].shape 
-
-    def input(self, tensors, *args):
-        for i, x in enumerate(args):
-            self.__dict__[self.input_params[i]] = x
-            
-    def output(self, tensors, *args):        
-        for i, x in enumerate(args):
-            self.__dict__[self.output_params[i]] = x            
-            if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
-
-    def attribute(self, **kwargs):
-        self.__dict__.update(kwargs)
-
-    def build(self):
-        self.Module(self.name, {python_call})
-
-    def run(self):
-        pass
-
-layer_map['{norm}'] = {norm}
 
 """.format_map
 
@@ -214,11 +158,11 @@ layout(local_size_z_id = 2) in;
 layout(push_constant) uniform Parameters {{      
   
 //input
-    {input_param_lst}
-    {optional_input_param_lst}
+    {input_param_lst_1}
+    {optional_input_param_lst_1}
 //output
-    {output_param_lst}
-    {optional_output_param_lst}
+    {output_param_lst_1}
+    {optional_output_param_lst_1}
 }} params;
 
 {shader_layout_lst}
@@ -232,13 +176,83 @@ void main(){{
     //{output_param_lst_size}
     //{optional_output_param_lst_size}
 
-    if(5 <= idx) {{
-        return;
-    }}
-   
+    //if(5 <= idx) {{
+    //    return;
+    //}}
+    return;
 }}
 """.format_map
 
+layers_file_str = '''
+void init_layer_{norm}(py::module& m){{
+    m.def("_{norm}", [](py::str name{create_param_lst}) {{
+        layers::{norm}* layer = new layers::{norm}(std::string(name));
+        layer->init({create_init_lst});
+        layer->bind({create_bind_lst});
+        layer->build();
+        backend::layer_dict[std::string(name)] = layer;
+
+        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "{norm}" <<std::endl;
+
+    }});
+
+    m.def("_{norm}_run",  [](py::str name) {{
+        std::cout << "RUN ::: " << std::string(name) << " ::: {norm}" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    }});
+
+}}\n\n'''.format_map
+
+
+python_class_str = """
+
+class {norm}:
+    name = None
+{python_variables}
+    #parameters
+{python_parameters}
+    input_params = [{python_inputs_func}]
+    output_params = [{python_outputs_func}]
+    attribute_params = [{python_attribute_func}]
+    i   = ''
+    o   = ''
+    def __init__(self, name):
+        self.name = name
+        self.Module = nn._{norm}
+        self.run_ = nn._{norm}_run
+
+        
+
+    def output_shape(self, tensor):
+        return tensor[self.__dict__[self.input_params[0]]].shape 
+
+    def input(self, tensors, *args):
+        for i, x in enumerate(args):
+            self.__dict__[self.input_params[i]] = x
+            if(self.i != ''):
+                self.i = x
+            
+    def output(self, tensors, *args):
+        for i, x in enumerate(args):
+            self.__dict__[self.output_params[i]] = x            
+            if(x not in tensors.keys()):     
+                tensors[x] =  np.zeros(self.output_shape(tensors))
+                if(self.o != ''):
+                    self.o = x
+
+
+    def attribute(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+    def build(self):
+        self.Module(self.name, {python_call})
+
+    def run(self):
+        self.run_(self.name)
+
+layer_map['{norm}'] = {norm}
+
+""".format_map
 
 
 def onnx_proto():
@@ -324,23 +338,28 @@ def onnx_proto():
                 'optional_input_param_lst' :    ' '.join( ['backend::Shape_t {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
                 'output_param_lst' :            ' '.join( ['backend::Shape_t {0};'.format(x) for x in OUTPUT_NAMES]),
                 'optional_output_param_lst' :   ' '.join( ['backend::Shape_t {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
-                
+ 
+                'input_param_lst_1' :             ' '.join( ['Shape_t {0};'.format(x) for x in INPUT_NAMES]),
+                'optional_input_param_lst_1' :    ' '.join( ['Shape_t {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
+                'output_param_lst_1' :            ' '.join( ['Shape_t {0};'.format(x) for x in OUTPUT_NAMES]),
+                'optional_output_param_lst_1' :   ' '.join( ['Shape_t {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
+ 
 
-                'input_param_lst_size' :             '\n\t'.join( ['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in INPUT_NAMES]),
-                'optional_input_param_lst_size' :    '\n\t'.join( ['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OPTIONAL_INPUT_NAMES]),
-                'output_param_lst_size' :            '\n\t'.join( ['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OUTPUT_NAMES]),
-                'optional_output_param_lst_size' :   '\n\t'.join( ['const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),        
+                'input_param_lst_size' :             '\n\t'.join( ['//const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in INPUT_NAMES]),
+                'optional_input_param_lst_size' :    '\n\t'.join( ['//const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OPTIONAL_INPUT_NAMES]),
+                'output_param_lst_size' :            '\n\t'.join( ['//const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OUTPUT_NAMES]),
+                'optional_output_param_lst_size' :   '\n\t'.join( ['//const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),        
                                  
                 'init_param_lst' :              ', '.join( [ ' {0} _{1}'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
                 'init_input_lst_3':             ' '.join(['\t\t {0} = _{0}; \n'.format(i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
                 
                 'bind_lst' :                    ', '.join(['std::string _{0}'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),              
                 'bind_input_lst_2':             ' '.join(['{0} = _{0};'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
-                'bind_input_lst' :              ''.join([', *tensor_dict[{0}]->data()'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES ]),
-                'bind_output_lst' :             ''.join([', *tensor_dict[{0}]->data()'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+                'bind_input_lst' :              ''.join([', *backend::tensor_dict[{0}]->data()'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES ]),
+                'bind_output_lst' :             ''.join([', *backend::tensor_dict[{0}]->data()'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 
-                'bind_input_lst_1' :              ' '.join(['\t\t//binding.{0} = tensor_dict[{0}]->shape();\n '.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES]),
-                'bind_output_lst_1' :             ' '.join(['\t\t//binding.{0} = tensor_dict[{0}]->shape();\n '.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+                'bind_input_lst_1' :              ' '.join(['\t\tbinding.{0} = backend::tensor_dict[{0}]->shape();\n '.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES]),
+                'bind_output_lst_1' :             ' '.join(['\t\tbinding.{0} = backend::tensor_dict[{0}]->shape();\n '.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 'bind_binding_lst_1' :            ' '.join(['\t\t//binding.{0} = {0};\n '.format(i)for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
 
                 'shader_layout_lst' :           '\n'.join(['layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};'.format(i,x) for i,x in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)]),
@@ -421,6 +440,8 @@ if (__name__ == "__main__"):
 
 '''
 CategoryMap -> cat_strings-not Tensor is List()
+Process TensorProto/Graph obj
+
 
 
 

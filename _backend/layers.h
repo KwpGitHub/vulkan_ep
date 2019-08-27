@@ -11,7 +11,14 @@ void init_layer_LSTM(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LSTM" <<std::endl;
 
     });
+
+    m.def("_LSTM_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LSTM" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Identity(py::module&);
 #include "./layers/identity.h"
 void init_layer_Identity(py::module& m){
@@ -25,7 +32,14 @@ void init_layer_Identity(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Identity" <<std::endl;
 
     });
+
+    m.def("_Identity_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Identity" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Abs(py::module&);
 #include "./layers/abs.h"
 void init_layer_Abs(py::module& m){
@@ -39,7 +53,14 @@ void init_layer_Abs(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Abs" <<std::endl;
 
     });
+
+    m.def("_Abs_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Abs" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_BatchNormalization(py::module&);
 #include "./layers/batchnormalization.h"
 void init_layer_BatchNormalization(py::module& m){
@@ -53,7 +74,14 @@ void init_layer_BatchNormalization(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "BatchNormalization" <<std::endl;
 
     });
+
+    m.def("_BatchNormalization_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: BatchNormalization" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Mean(py::module&);
 #include "./layers/mean.h"
 void init_layer_Mean(py::module& m){
@@ -67,7 +95,14 @@ void init_layer_Mean(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mean" <<std::endl;
 
     });
+
+    m.def("_Mean_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Mean" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Add(py::module&);
 #include "./layers/add.h"
 void init_layer_Add(py::module& m){
@@ -81,7 +116,14 @@ void init_layer_Add(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Add" <<std::endl;
 
     });
+
+    m.def("_Add_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Add" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_GlobalMaxPool(py::module&);
 #include "./layers/globalmaxpool.h"
 void init_layer_GlobalMaxPool(py::module& m){
@@ -95,7 +137,14 @@ void init_layer_GlobalMaxPool(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalMaxPool" <<std::endl;
 
     });
+
+    m.def("_GlobalMaxPool_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: GlobalMaxPool" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Cast(py::module&);
 #include "./layers/cast.h"
 void init_layer_Cast(py::module& m){
@@ -109,7 +158,14 @@ void init_layer_Cast(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cast" <<std::endl;
 
     });
+
+    m.def("_Cast_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Cast" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_AveragePool(py::module&);
 #include "./layers/averagepool.h"
 void init_layer_AveragePool(py::module& m){
@@ -123,7 +179,14 @@ void init_layer_AveragePool(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "AveragePool" <<std::endl;
 
     });
+
+    m.def("_AveragePool_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: AveragePool" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_And(py::module&);
 #include "./layers/and.h"
 void init_layer_And(py::module& m){
@@ -137,7 +200,14 @@ void init_layer_And(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "And" <<std::endl;
 
     });
+
+    m.def("_And_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: And" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_LRN(py::module&);
 #include "./layers/lrn.h"
 void init_layer_LRN(py::module& m){
@@ -151,7 +221,14 @@ void init_layer_LRN(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LRN" <<std::endl;
 
     });
+
+    m.def("_LRN_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LRN" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ArgMax(py::module&);
 #include "./layers/argmax.h"
 void init_layer_ArgMax(py::module& m){
@@ -165,7 +242,14 @@ void init_layer_ArgMax(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArgMax" <<std::endl;
 
     });
+
+    m.def("_ArgMax_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ArgMax" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Resize(py::module&);
 #include "./layers/resize.h"
 void init_layer_Resize(py::module& m){
@@ -179,7 +263,14 @@ void init_layer_Resize(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Resize" <<std::endl;
 
     });
+
+    m.def("_Resize_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Resize" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Expand(py::module&);
 #include "./layers/expand.h"
 void init_layer_Expand(py::module& m){
@@ -193,7 +284,14 @@ void init_layer_Expand(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Expand" <<std::endl;
 
     });
+
+    m.def("_Expand_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Expand" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Neg(py::module&);
 #include "./layers/neg.h"
 void init_layer_Neg(py::module& m){
@@ -207,7 +305,14 @@ void init_layer_Neg(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Neg" <<std::endl;
 
     });
+
+    m.def("_Neg_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Neg" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Mul(py::module&);
 #include "./layers/mul.h"
 void init_layer_Mul(py::module& m){
@@ -221,7 +326,14 @@ void init_layer_Mul(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mul" <<std::endl;
 
     });
+
+    m.def("_Mul_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Mul" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ArgMin(py::module&);
 #include "./layers/argmin.h"
 void init_layer_ArgMin(py::module& m){
@@ -235,7 +347,14 @@ void init_layer_ArgMin(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArgMin" <<std::endl;
 
     });
+
+    m.def("_ArgMin_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ArgMin" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_CastMap(py::module&);
 #include "./layers/castmap.h"
 void init_layer_CastMap(py::module& m){
@@ -249,7 +368,14 @@ void init_layer_CastMap(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "CastMap" <<std::endl;
 
     });
+
+    m.def("_CastMap_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: CastMap" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Exp(py::module&);
 #include "./layers/exp.h"
 void init_layer_Exp(py::module& m){
@@ -263,7 +389,14 @@ void init_layer_Exp(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Exp" <<std::endl;
 
     });
+
+    m.def("_Exp_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Exp" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Div(py::module&);
 #include "./layers/div.h"
 void init_layer_Div(py::module& m){
@@ -277,7 +410,14 @@ void init_layer_Div(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Div" <<std::endl;
 
     });
+
+    m.def("_Div_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Div" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReverseSequence(py::module&);
 #include "./layers/reversesequence.h"
 void init_layer_ReverseSequence(py::module& m){
@@ -291,7 +431,14 @@ void init_layer_ReverseSequence(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReverseSequence" <<std::endl;
 
     });
+
+    m.def("_ReverseSequence_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReverseSequence" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Ceil(py::module&);
 #include "./layers/ceil.h"
 void init_layer_Ceil(py::module& m){
@@ -305,7 +452,14 @@ void init_layer_Ceil(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Ceil" <<std::endl;
 
     });
+
+    m.def("_Ceil_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Ceil" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_DepthToSpace(py::module&);
 #include "./layers/depthtospace.h"
 void init_layer_DepthToSpace(py::module& m){
@@ -319,7 +473,14 @@ void init_layer_DepthToSpace(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DepthToSpace" <<std::endl;
 
     });
+
+    m.def("_DepthToSpace_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: DepthToSpace" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Clip(py::module&);
 #include "./layers/clip.h"
 void init_layer_Clip(py::module& m){
@@ -333,7 +494,14 @@ void init_layer_Clip(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Clip" <<std::endl;
 
     });
+
+    m.def("_Clip_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Clip" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_RNN(py::module&);
 #include "./layers/rnn.h"
 void init_layer_RNN(py::module& m){
@@ -347,7 +515,14 @@ void init_layer_RNN(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RNN" <<std::endl;
 
     });
+
+    m.def("_RNN_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: RNN" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Concat(py::module&);
 #include "./layers/concat.h"
 void init_layer_Concat(py::module& m){
@@ -361,7 +536,14 @@ void init_layer_Concat(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Concat" <<std::endl;
 
     });
+
+    m.def("_Concat_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Concat" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Constant(py::module&);
 #include "./layers/constant.h"
 void init_layer_Constant(py::module& m){
@@ -375,7 +557,14 @@ void init_layer_Constant(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Constant" <<std::endl;
 
     });
+
+    m.def("_Constant_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Constant" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_LpPool(py::module&);
 #include "./layers/lppool.h"
 void init_layer_LpPool(py::module& m){
@@ -389,7 +578,14 @@ void init_layer_LpPool(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LpPool" <<std::endl;
 
     });
+
+    m.def("_LpPool_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LpPool" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Conv(py::module&);
 #include "./layers/conv.h"
 void init_layer_Conv(py::module& m){
@@ -403,7 +599,14 @@ void init_layer_Conv(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Conv" <<std::endl;
 
     });
+
+    m.def("_Conv_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Conv" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Not(py::module&);
 #include "./layers/not.h"
 void init_layer_Not(py::module& m){
@@ -417,7 +620,14 @@ void init_layer_Not(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Not" <<std::endl;
 
     });
+
+    m.def("_Not_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Not" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Gather(py::module&);
 #include "./layers/gather.h"
 void init_layer_Gather(py::module& m){
@@ -431,7 +641,14 @@ void init_layer_Gather(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Gather" <<std::endl;
 
     });
+
+    m.def("_Gather_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Gather" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ConvTranspose(py::module&);
 #include "./layers/convtranspose.h"
 void init_layer_ConvTranspose(py::module& m){
@@ -445,7 +662,14 @@ void init_layer_ConvTranspose(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConvTranspose" <<std::endl;
 
     });
+
+    m.def("_ConvTranspose_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ConvTranspose" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Dropout(py::module&);
 #include "./layers/dropout.h"
 void init_layer_Dropout(py::module& m){
@@ -459,7 +683,14 @@ void init_layer_Dropout(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Dropout" <<std::endl;
 
     });
+
+    m.def("_Dropout_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Dropout" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_LeakyRelu(py::module&);
 #include "./layers/leakyrelu.h"
 void init_layer_LeakyRelu(py::module& m){
@@ -473,7 +704,14 @@ void init_layer_LeakyRelu(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LeakyRelu" <<std::endl;
 
     });
+
+    m.def("_LeakyRelu_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LeakyRelu" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Elu(py::module&);
 #include "./layers/elu.h"
 void init_layer_Elu(py::module& m){
@@ -487,7 +725,14 @@ void init_layer_Elu(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Elu" <<std::endl;
 
     });
+
+    m.def("_Elu_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Elu" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_GlobalAveragePool(py::module&);
 #include "./layers/globalaveragepool.h"
 void init_layer_GlobalAveragePool(py::module& m){
@@ -501,7 +746,14 @@ void init_layer_GlobalAveragePool(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalAveragePool" <<std::endl;
 
     });
+
+    m.def("_GlobalAveragePool_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: GlobalAveragePool" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Gemm(py::module&);
 #include "./layers/gemm.h"
 void init_layer_Gemm(py::module& m){
@@ -515,7 +767,14 @@ void init_layer_Gemm(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Gemm" <<std::endl;
 
     });
+
+    m.def("_Gemm_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Gemm" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_MaxPool(py::module&);
 #include "./layers/maxpool.h"
 void init_layer_MaxPool(py::module& m){
@@ -529,7 +788,14 @@ void init_layer_MaxPool(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxPool" <<std::endl;
 
     });
+
+    m.def("_MaxPool_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: MaxPool" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Equal(py::module&);
 #include "./layers/equal.h"
 void init_layer_Equal(py::module& m){
@@ -543,7 +809,14 @@ void init_layer_Equal(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Equal" <<std::endl;
 
     });
+
+    m.def("_Equal_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Equal" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Tile(py::module&);
 #include "./layers/tile.h"
 void init_layer_Tile(py::module& m){
@@ -557,7 +830,14 @@ void init_layer_Tile(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tile" <<std::endl;
 
     });
+
+    m.def("_Tile_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Tile" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Flatten(py::module&);
 #include "./layers/flatten.h"
 void init_layer_Flatten(py::module& m){
@@ -571,7 +851,14 @@ void init_layer_Flatten(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Flatten" <<std::endl;
 
     });
+
+    m.def("_Flatten_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Flatten" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Floor(py::module&);
 #include "./layers/floor.h"
 void init_layer_Floor(py::module& m){
@@ -585,7 +872,14 @@ void init_layer_Floor(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Floor" <<std::endl;
 
     });
+
+    m.def("_Floor_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Floor" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_GRU(py::module&);
 #include "./layers/gru.h"
 void init_layer_GRU(py::module& m){
@@ -599,7 +893,14 @@ void init_layer_GRU(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GRU" <<std::endl;
 
     });
+
+    m.def("_GRU_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: GRU" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_GlobalLpPool(py::module&);
 #include "./layers/globallppool.h"
 void init_layer_GlobalLpPool(py::module& m){
@@ -613,7 +914,14 @@ void init_layer_GlobalLpPool(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalLpPool" <<std::endl;
 
     });
+
+    m.def("_GlobalLpPool_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: GlobalLpPool" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Greater(py::module&);
 #include "./layers/greater.h"
 void init_layer_Greater(py::module& m){
@@ -627,7 +935,14 @@ void init_layer_Greater(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Greater" <<std::endl;
 
     });
+
+    m.def("_Greater_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Greater" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_HardSigmoid(py::module&);
 #include "./layers/hardsigmoid.h"
 void init_layer_HardSigmoid(py::module& m){
@@ -641,7 +956,14 @@ void init_layer_HardSigmoid(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "HardSigmoid" <<std::endl;
 
     });
+
+    m.def("_HardSigmoid_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: HardSigmoid" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Selu(py::module&);
 #include "./layers/selu.h"
 void init_layer_Selu(py::module& m){
@@ -655,7 +977,14 @@ void init_layer_Selu(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Selu" <<std::endl;
 
     });
+
+    m.def("_Selu_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Selu" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Hardmax(py::module&);
 #include "./layers/hardmax.h"
 void init_layer_Hardmax(py::module& m){
@@ -669,7 +998,14 @@ void init_layer_Hardmax(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Hardmax" <<std::endl;
 
     });
+
+    m.def("_Hardmax_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Hardmax" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_If(py::module&);
 #include "./layers/if.h"
 void init_layer_If(py::module& m){
@@ -683,7 +1019,14 @@ void init_layer_If(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "If" <<std::endl;
 
     });
+
+    m.def("_If_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: If" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Min(py::module&);
 #include "./layers/min.h"
 void init_layer_Min(py::module& m){
@@ -697,7 +1040,14 @@ void init_layer_Min(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Min" <<std::endl;
 
     });
+
+    m.def("_Min_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Min" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_InstanceNormalization(py::module&);
 #include "./layers/instancenormalization.h"
 void init_layer_InstanceNormalization(py::module& m){
@@ -711,7 +1061,14 @@ void init_layer_InstanceNormalization(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "InstanceNormalization" <<std::endl;
 
     });
+
+    m.def("_InstanceNormalization_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: InstanceNormalization" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Less(py::module&);
 #include "./layers/less.h"
 void init_layer_Less(py::module& m){
@@ -725,7 +1082,14 @@ void init_layer_Less(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Less" <<std::endl;
 
     });
+
+    m.def("_Less_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Less" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_EyeLike(py::module&);
 #include "./layers/eyelike.h"
 void init_layer_EyeLike(py::module& m){
@@ -739,7 +1103,14 @@ void init_layer_EyeLike(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "EyeLike" <<std::endl;
 
     });
+
+    m.def("_EyeLike_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: EyeLike" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_RandomNormal(py::module&);
 #include "./layers/randomnormal.h"
 void init_layer_RandomNormal(py::module& m){
@@ -753,7 +1124,14 @@ void init_layer_RandomNormal(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomNormal" <<std::endl;
 
     });
+
+    m.def("_RandomNormal_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: RandomNormal" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Slice(py::module&);
 #include "./layers/slice.h"
 void init_layer_Slice(py::module& m){
@@ -767,7 +1145,14 @@ void init_layer_Slice(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Slice" <<std::endl;
 
     });
+
+    m.def("_Slice_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Slice" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_PRelu(py::module&);
 #include "./layers/prelu.h"
 void init_layer_PRelu(py::module& m){
@@ -781,7 +1166,14 @@ void init_layer_PRelu(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "PRelu" <<std::endl;
 
     });
+
+    m.def("_PRelu_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: PRelu" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Log(py::module&);
 #include "./layers/log.h"
 void init_layer_Log(py::module& m){
@@ -795,7 +1187,14 @@ void init_layer_Log(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Log" <<std::endl;
 
     });
+
+    m.def("_Log_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Log" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_LogSoftmax(py::module&);
 #include "./layers/logsoftmax.h"
 void init_layer_LogSoftmax(py::module& m){
@@ -809,7 +1208,14 @@ void init_layer_LogSoftmax(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LogSoftmax" <<std::endl;
 
     });
+
+    m.def("_LogSoftmax_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LogSoftmax" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Loop(py::module&);
 #include "./layers/loop.h"
 void init_layer_Loop(py::module& m){
@@ -823,7 +1229,14 @@ void init_layer_Loop(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Loop" <<std::endl;
 
     });
+
+    m.def("_Loop_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Loop" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_LpNormalization(py::module&);
 #include "./layers/lpnormalization.h"
 void init_layer_LpNormalization(py::module& m){
@@ -837,7 +1250,14 @@ void init_layer_LpNormalization(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LpNormalization" <<std::endl;
 
     });
+
+    m.def("_LpNormalization_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LpNormalization" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_MatMul(py::module&);
 #include "./layers/matmul.h"
 void init_layer_MatMul(py::module& m){
@@ -851,7 +1271,14 @@ void init_layer_MatMul(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MatMul" <<std::endl;
 
     });
+
+    m.def("_MatMul_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: MatMul" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceL2(py::module&);
 #include "./layers/reducel2.h"
 void init_layer_ReduceL2(py::module& m){
@@ -865,7 +1292,14 @@ void init_layer_ReduceL2(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceL2" <<std::endl;
 
     });
+
+    m.def("_ReduceL2_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceL2" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Max(py::module&);
 #include "./layers/max.h"
 void init_layer_Max(py::module& m){
@@ -879,7 +1313,14 @@ void init_layer_Max(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Max" <<std::endl;
 
     });
+
+    m.def("_Max_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Max" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_MaxRoiPool(py::module&);
 #include "./layers/maxroipool.h"
 void init_layer_MaxRoiPool(py::module& m){
@@ -893,7 +1334,14 @@ void init_layer_MaxRoiPool(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxRoiPool" <<std::endl;
 
     });
+
+    m.def("_MaxRoiPool_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: MaxRoiPool" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Or(py::module&);
 #include "./layers/or.h"
 void init_layer_Or(py::module& m){
@@ -907,7 +1355,14 @@ void init_layer_Or(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Or" <<std::endl;
 
     });
+
+    m.def("_Or_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Or" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Pad(py::module&);
 #include "./layers/pad.h"
 void init_layer_Pad(py::module& m){
@@ -921,7 +1376,14 @@ void init_layer_Pad(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Pad" <<std::endl;
 
     });
+
+    m.def("_Pad_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Pad" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_RandomUniformLike(py::module&);
 #include "./layers/randomuniformlike.h"
 void init_layer_RandomUniformLike(py::module& m){
@@ -935,7 +1397,14 @@ void init_layer_RandomUniformLike(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomUniformLike" <<std::endl;
 
     });
+
+    m.def("_RandomUniformLike_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: RandomUniformLike" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Reciprocal(py::module&);
 #include "./layers/reciprocal.h"
 void init_layer_Reciprocal(py::module& m){
@@ -949,7 +1418,14 @@ void init_layer_Reciprocal(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Reciprocal" <<std::endl;
 
     });
+
+    m.def("_Reciprocal_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Reciprocal" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Pow(py::module&);
 #include "./layers/pow.h"
 void init_layer_Pow(py::module& m){
@@ -963,7 +1439,14 @@ void init_layer_Pow(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Pow" <<std::endl;
 
     });
+
+    m.def("_Pow_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Pow" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_RandomNormalLike(py::module&);
 #include "./layers/randomnormallike.h"
 void init_layer_RandomNormalLike(py::module& m){
@@ -977,7 +1460,14 @@ void init_layer_RandomNormalLike(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomNormalLike" <<std::endl;
 
     });
+
+    m.def("_RandomNormalLike_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: RandomNormalLike" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_OneHot(py::module&);
 #include "./layers/onehot.h"
 void init_layer_OneHot(py::module& m){
@@ -991,7 +1481,14 @@ void init_layer_OneHot(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "OneHot" <<std::endl;
 
     });
+
+    m.def("_OneHot_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: OneHot" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_RandomUniform(py::module&);
 #include "./layers/randomuniform.h"
 void init_layer_RandomUniform(py::module& m){
@@ -1005,7 +1502,14 @@ void init_layer_RandomUniform(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomUniform" <<std::endl;
 
     });
+
+    m.def("_RandomUniform_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: RandomUniform" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceL1(py::module&);
 #include "./layers/reducel1.h"
 void init_layer_ReduceL1(py::module& m){
@@ -1019,7 +1523,14 @@ void init_layer_ReduceL1(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceL1" <<std::endl;
 
     });
+
+    m.def("_ReduceL1_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceL1" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceLogSum(py::module&);
 #include "./layers/reducelogsum.h"
 void init_layer_ReduceLogSum(py::module& m){
@@ -1033,7 +1544,14 @@ void init_layer_ReduceLogSum(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceLogSum" <<std::endl;
 
     });
+
+    m.def("_ReduceLogSum_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceLogSum" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceLogSumExp(py::module&);
 #include "./layers/reducelogsumexp.h"
 void init_layer_ReduceLogSumExp(py::module& m){
@@ -1047,7 +1565,14 @@ void init_layer_ReduceLogSumExp(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceLogSumExp" <<std::endl;
 
     });
+
+    m.def("_ReduceLogSumExp_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceLogSumExp" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceMax(py::module&);
 #include "./layers/reducemax.h"
 void init_layer_ReduceMax(py::module& m){
@@ -1061,7 +1586,14 @@ void init_layer_ReduceMax(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMax" <<std::endl;
 
     });
+
+    m.def("_ReduceMax_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMax" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_OneHotEncoder(py::module&);
 #include "./layers/onehotencoder.h"
 void init_layer_OneHotEncoder(py::module& m){
@@ -1075,7 +1607,14 @@ void init_layer_OneHotEncoder(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "OneHotEncoder" <<std::endl;
 
     });
+
+    m.def("_OneHotEncoder_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: OneHotEncoder" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_IsNaN(py::module&);
 #include "./layers/isnan.h"
 void init_layer_IsNaN(py::module& m){
@@ -1089,7 +1628,14 @@ void init_layer_IsNaN(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "IsNaN" <<std::endl;
 
     });
+
+    m.def("_IsNaN_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: IsNaN" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceMean(py::module&);
 #include "./layers/reducemean.h"
 void init_layer_ReduceMean(py::module& m){
@@ -1103,7 +1649,14 @@ void init_layer_ReduceMean(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMean" <<std::endl;
 
     });
+
+    m.def("_ReduceMean_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMean" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceMin(py::module&);
 #include "./layers/reducemin.h"
 void init_layer_ReduceMin(py::module& m){
@@ -1117,7 +1670,14 @@ void init_layer_ReduceMin(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMin" <<std::endl;
 
     });
+
+    m.def("_ReduceMin_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMin" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_TreeEnsembleRegressor(py::module&);
 #include "./layers/treeensembleregressor.h"
 void init_layer_TreeEnsembleRegressor(py::module& m){
@@ -1131,7 +1691,14 @@ void init_layer_TreeEnsembleRegressor(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TreeEnsembleRegressor" <<std::endl;
 
     });
+
+    m.def("_TreeEnsembleRegressor_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: TreeEnsembleRegressor" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceProd(py::module&);
 #include "./layers/reduceprod.h"
 void init_layer_ReduceProd(py::module& m){
@@ -1145,7 +1712,14 @@ void init_layer_ReduceProd(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceProd" <<std::endl;
 
     });
+
+    m.def("_ReduceProd_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceProd" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceSum(py::module&);
 #include "./layers/reducesum.h"
 void init_layer_ReduceSum(py::module& m){
@@ -1159,7 +1733,14 @@ void init_layer_ReduceSum(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceSum" <<std::endl;
 
     });
+
+    m.def("_ReduceSum_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceSum" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ReduceSumSquare(py::module&);
 #include "./layers/reducesumsquare.h"
 void init_layer_ReduceSumSquare(py::module& m){
@@ -1173,7 +1754,14 @@ void init_layer_ReduceSumSquare(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceSumSquare" <<std::endl;
 
     });
+
+    m.def("_ReduceSumSquare_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceSumSquare" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Relu(py::module&);
 #include "./layers/relu.h"
 void init_layer_Relu(py::module& m){
@@ -1187,7 +1775,14 @@ void init_layer_Relu(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Relu" <<std::endl;
 
     });
+
+    m.def("_Relu_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Relu" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Reshape(py::module&);
 #include "./layers/reshape.h"
 void init_layer_Reshape(py::module& m){
@@ -1201,7 +1796,14 @@ void init_layer_Reshape(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Reshape" <<std::endl;
 
     });
+
+    m.def("_Reshape_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Reshape" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Shape(py::module&);
 #include "./layers/shape.h"
 void init_layer_Shape(py::module& m){
@@ -1215,7 +1817,14 @@ void init_layer_Shape(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Shape" <<std::endl;
 
     });
+
+    m.def("_Shape_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Shape" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Sigmoid(py::module&);
 #include "./layers/sigmoid.h"
 void init_layer_Sigmoid(py::module& m){
@@ -1229,7 +1838,14 @@ void init_layer_Sigmoid(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sigmoid" <<std::endl;
 
     });
+
+    m.def("_Sigmoid_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Sigmoid" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Size(py::module&);
 #include "./layers/size.h"
 void init_layer_Size(py::module& m){
@@ -1243,7 +1859,14 @@ void init_layer_Size(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Size" <<std::endl;
 
     });
+
+    m.def("_Size_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Size" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Softmax(py::module&);
 #include "./layers/softmax.h"
 void init_layer_Softmax(py::module& m){
@@ -1257,7 +1880,14 @@ void init_layer_Softmax(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softmax" <<std::endl;
 
     });
+
+    m.def("_Softmax_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Softmax" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Softplus(py::module&);
 #include "./layers/softplus.h"
 void init_layer_Softplus(py::module& m){
@@ -1271,7 +1901,14 @@ void init_layer_Softplus(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softplus" <<std::endl;
 
     });
+
+    m.def("_Softplus_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Softplus" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Softsign(py::module&);
 #include "./layers/softsign.h"
 void init_layer_Softsign(py::module& m){
@@ -1285,7 +1922,14 @@ void init_layer_Softsign(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softsign" <<std::endl;
 
     });
+
+    m.def("_Softsign_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Softsign" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_SpaceToDepth(py::module&);
 #include "./layers/spacetodepth.h"
 void init_layer_SpaceToDepth(py::module& m){
@@ -1299,7 +1943,14 @@ void init_layer_SpaceToDepth(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SpaceToDepth" <<std::endl;
 
     });
+
+    m.def("_SpaceToDepth_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: SpaceToDepth" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_TfIdfVectorizer(py::module&);
 #include "./layers/tfidfvectorizer.h"
 void init_layer_TfIdfVectorizer(py::module& m){
@@ -1313,7 +1964,14 @@ void init_layer_TfIdfVectorizer(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TfIdfVectorizer" <<std::endl;
 
     });
+
+    m.def("_TfIdfVectorizer_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: TfIdfVectorizer" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Split(py::module&);
 #include "./layers/split.h"
 void init_layer_Split(py::module& m){
@@ -1327,7 +1985,14 @@ void init_layer_Split(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Split" <<std::endl;
 
     });
+
+    m.def("_Split_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Split" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Imputer(py::module&);
 #include "./layers/imputer.h"
 void init_layer_Imputer(py::module& m){
@@ -1341,7 +2006,14 @@ void init_layer_Imputer(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Imputer" <<std::endl;
 
     });
+
+    m.def("_Imputer_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Imputer" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Sqrt(py::module&);
 #include "./layers/sqrt.h"
 void init_layer_Sqrt(py::module& m){
@@ -1355,7 +2027,14 @@ void init_layer_Sqrt(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sqrt" <<std::endl;
 
     });
+
+    m.def("_Sqrt_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Sqrt" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Squeeze(py::module&);
 #include "./layers/squeeze.h"
 void init_layer_Squeeze(py::module& m){
@@ -1369,7 +2048,14 @@ void init_layer_Squeeze(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Squeeze" <<std::endl;
 
     });
+
+    m.def("_Squeeze_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Squeeze" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_TopK(py::module&);
 #include "./layers/topk.h"
 void init_layer_TopK(py::module& m){
@@ -1383,7 +2069,14 @@ void init_layer_TopK(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TopK" <<std::endl;
 
     });
+
+    m.def("_TopK_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: TopK" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Sub(py::module&);
 #include "./layers/sub.h"
 void init_layer_Sub(py::module& m){
@@ -1397,7 +2090,14 @@ void init_layer_Sub(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sub" <<std::endl;
 
     });
+
+    m.def("_Sub_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Sub" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Sum(py::module&);
 #include "./layers/sum.h"
 void init_layer_Sum(py::module& m){
@@ -1411,7 +2111,14 @@ void init_layer_Sum(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sum" <<std::endl;
 
     });
+
+    m.def("_Sum_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Sum" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Shrink(py::module&);
 #include "./layers/shrink.h"
 void init_layer_Shrink(py::module& m){
@@ -1425,7 +2132,14 @@ void init_layer_Shrink(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Shrink" <<std::endl;
 
     });
+
+    m.def("_Shrink_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Shrink" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Tanh(py::module&);
 #include "./layers/tanh.h"
 void init_layer_Tanh(py::module& m){
@@ -1439,7 +2153,14 @@ void init_layer_Tanh(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tanh" <<std::endl;
 
     });
+
+    m.def("_Tanh_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Tanh" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Transpose(py::module&);
 #include "./layers/transpose.h"
 void init_layer_Transpose(py::module& m){
@@ -1453,7 +2174,14 @@ void init_layer_Transpose(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Transpose" <<std::endl;
 
     });
+
+    m.def("_Transpose_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Transpose" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Unsqueeze(py::module&);
 #include "./layers/unsqueeze.h"
 void init_layer_Unsqueeze(py::module& m){
@@ -1467,7 +2195,14 @@ void init_layer_Unsqueeze(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Unsqueeze" <<std::endl;
 
     });
+
+    m.def("_Unsqueeze_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Unsqueeze" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_SVMClassifier(py::module&);
 #include "./layers/svmclassifier.h"
 void init_layer_SVMClassifier(py::module& m){
@@ -1481,7 +2216,14 @@ void init_layer_SVMClassifier(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SVMClassifier" <<std::endl;
 
     });
+
+    m.def("_SVMClassifier_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: SVMClassifier" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Xor(py::module&);
 #include "./layers/xor.h"
 void init_layer_Xor(py::module& m){
@@ -1495,7 +2237,14 @@ void init_layer_Xor(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Xor" <<std::endl;
 
     });
+
+    m.def("_Xor_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Xor" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Acos(py::module&);
 #include "./layers/acos.h"
 void init_layer_Acos(py::module& m){
@@ -1509,7 +2258,14 @@ void init_layer_Acos(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Acos" <<std::endl;
 
     });
+
+    m.def("_Acos_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Acos" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Asin(py::module&);
 #include "./layers/asin.h"
 void init_layer_Asin(py::module& m){
@@ -1523,7 +2279,14 @@ void init_layer_Asin(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Asin" <<std::endl;
 
     });
+
+    m.def("_Asin_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Asin" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Atan(py::module&);
 #include "./layers/atan.h"
 void init_layer_Atan(py::module& m){
@@ -1537,7 +2300,14 @@ void init_layer_Atan(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Atan" <<std::endl;
 
     });
+
+    m.def("_Atan_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Atan" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Cos(py::module&);
 #include "./layers/cos.h"
 void init_layer_Cos(py::module& m){
@@ -1551,7 +2321,14 @@ void init_layer_Cos(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cos" <<std::endl;
 
     });
+
+    m.def("_Cos_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Cos" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Sin(py::module&);
 #include "./layers/sin.h"
 void init_layer_Sin(py::module& m){
@@ -1565,7 +2342,14 @@ void init_layer_Sin(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sin" <<std::endl;
 
     });
+
+    m.def("_Sin_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Sin" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Tan(py::module&);
 #include "./layers/tan.h"
 void init_layer_Tan(py::module& m){
@@ -1579,7 +2363,14 @@ void init_layer_Tan(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tan" <<std::endl;
 
     });
+
+    m.def("_Tan_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Tan" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Multinomial(py::module&);
 #include "./layers/multinomial.h"
 void init_layer_Multinomial(py::module& m){
@@ -1593,7 +2384,14 @@ void init_layer_Multinomial(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Multinomial" <<std::endl;
 
     });
+
+    m.def("_Multinomial_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Multinomial" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Scan(py::module&);
 #include "./layers/scan.h"
 void init_layer_Scan(py::module& m){
@@ -1607,7 +2405,14 @@ void init_layer_Scan(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scan" <<std::endl;
 
     });
+
+    m.def("_Scan_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Scan" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Compress(py::module&);
 #include "./layers/compress.h"
 void init_layer_Compress(py::module& m){
@@ -1621,7 +2426,14 @@ void init_layer_Compress(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Compress" <<std::endl;
 
     });
+
+    m.def("_Compress_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Compress" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ConstantOfShape(py::module&);
 #include "./layers/constantofshape.h"
 void init_layer_ConstantOfShape(py::module& m){
@@ -1635,7 +2447,14 @@ void init_layer_ConstantOfShape(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConstantOfShape" <<std::endl;
 
     });
+
+    m.def("_ConstantOfShape_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ConstantOfShape" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_MaxUnpool(py::module&);
 #include "./layers/maxunpool.h"
 void init_layer_MaxUnpool(py::module& m){
@@ -1649,7 +2468,14 @@ void init_layer_MaxUnpool(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxUnpool" <<std::endl;
 
     });
+
+    m.def("_MaxUnpool_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: MaxUnpool" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Scatter(py::module&);
 #include "./layers/scatter.h"
 void init_layer_Scatter(py::module& m){
@@ -1663,7 +2489,14 @@ void init_layer_Scatter(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scatter" <<std::endl;
 
     });
+
+    m.def("_Scatter_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Scatter" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Sinh(py::module&);
 #include "./layers/sinh.h"
 void init_layer_Sinh(py::module& m){
@@ -1677,7 +2510,14 @@ void init_layer_Sinh(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sinh" <<std::endl;
 
     });
+
+    m.def("_Sinh_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Sinh" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Cosh(py::module&);
 #include "./layers/cosh.h"
 void init_layer_Cosh(py::module& m){
@@ -1691,7 +2531,14 @@ void init_layer_Cosh(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cosh" <<std::endl;
 
     });
+
+    m.def("_Cosh_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Cosh" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Asinh(py::module&);
 #include "./layers/asinh.h"
 void init_layer_Asinh(py::module& m){
@@ -1705,7 +2552,14 @@ void init_layer_Asinh(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Asinh" <<std::endl;
 
     });
+
+    m.def("_Asinh_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Asinh" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Acosh(py::module&);
 #include "./layers/acosh.h"
 void init_layer_Acosh(py::module& m){
@@ -1719,7 +2573,14 @@ void init_layer_Acosh(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Acosh" <<std::endl;
 
     });
+
+    m.def("_Acosh_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Acosh" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_NonMaxSuppression(py::module&);
 #include "./layers/nonmaxsuppression.h"
 void init_layer_NonMaxSuppression(py::module& m){
@@ -1733,7 +2594,14 @@ void init_layer_NonMaxSuppression(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "NonMaxSuppression" <<std::endl;
 
     });
+
+    m.def("_NonMaxSuppression_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: NonMaxSuppression" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Atanh(py::module&);
 #include "./layers/atanh.h"
 void init_layer_Atanh(py::module& m){
@@ -1747,7 +2615,14 @@ void init_layer_Atanh(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Atanh" <<std::endl;
 
     });
+
+    m.def("_Atanh_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Atanh" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Sign(py::module&);
 #include "./layers/sign.h"
 void init_layer_Sign(py::module& m){
@@ -1761,7 +2636,14 @@ void init_layer_Sign(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sign" <<std::endl;
 
     });
+
+    m.def("_Sign_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Sign" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Erf(py::module&);
 #include "./layers/erf.h"
 void init_layer_Erf(py::module& m){
@@ -1775,7 +2657,14 @@ void init_layer_Erf(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Erf" <<std::endl;
 
     });
+
+    m.def("_Erf_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Erf" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Where(py::module&);
 #include "./layers/where.h"
 void init_layer_Where(py::module& m){
@@ -1789,7 +2678,14 @@ void init_layer_Where(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Where" <<std::endl;
 
     });
+
+    m.def("_Where_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Where" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_NonZero(py::module&);
 #include "./layers/nonzero.h"
 void init_layer_NonZero(py::module& m){
@@ -1803,7 +2699,14 @@ void init_layer_NonZero(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "NonZero" <<std::endl;
 
     });
+
+    m.def("_NonZero_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: NonZero" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_MeanVarianceNormalization(py::module&);
 #include "./layers/meanvariancenormalization.h"
 void init_layer_MeanVarianceNormalization(py::module& m){
@@ -1817,7 +2720,14 @@ void init_layer_MeanVarianceNormalization(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MeanVarianceNormalization" <<std::endl;
 
     });
+
+    m.def("_MeanVarianceNormalization_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: MeanVarianceNormalization" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_StringNormalizer(py::module&);
 #include "./layers/stringnormalizer.h"
 void init_layer_StringNormalizer(py::module& m){
@@ -1831,7 +2741,14 @@ void init_layer_StringNormalizer(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "StringNormalizer" <<std::endl;
 
     });
+
+    m.def("_StringNormalizer_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: StringNormalizer" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Mod(py::module&);
 #include "./layers/mod.h"
 void init_layer_Mod(py::module& m){
@@ -1845,7 +2762,14 @@ void init_layer_Mod(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mod" <<std::endl;
 
     });
+
+    m.def("_Mod_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Mod" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ThresholdedRelu(py::module&);
 #include "./layers/thresholdedrelu.h"
 void init_layer_ThresholdedRelu(py::module& m){
@@ -1859,7 +2783,14 @@ void init_layer_ThresholdedRelu(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ThresholdedRelu" <<std::endl;
 
     });
+
+    m.def("_ThresholdedRelu_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ThresholdedRelu" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_MatMulInteger(py::module&);
 #include "./layers/matmulinteger.h"
 void init_layer_MatMulInteger(py::module& m){
@@ -1873,7 +2804,14 @@ void init_layer_MatMulInteger(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MatMulInteger" <<std::endl;
 
     });
+
+    m.def("_MatMulInteger_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: MatMulInteger" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_QLinearMatMul(py::module&);
 #include "./layers/qlinearmatmul.h"
 void init_layer_QLinearMatMul(py::module& m){
@@ -1887,7 +2825,14 @@ void init_layer_QLinearMatMul(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QLinearMatMul" <<std::endl;
 
     });
+
+    m.def("_QLinearMatMul_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: QLinearMatMul" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ConvInteger(py::module&);
 #include "./layers/convinteger.h"
 void init_layer_ConvInteger(py::module& m){
@@ -1901,7 +2846,14 @@ void init_layer_ConvInteger(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConvInteger" <<std::endl;
 
     });
+
+    m.def("_ConvInteger_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ConvInteger" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_QLinearConv(py::module&);
 #include "./layers/qlinearconv.h"
 void init_layer_QLinearConv(py::module& m){
@@ -1915,7 +2867,14 @@ void init_layer_QLinearConv(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QLinearConv" <<std::endl;
 
     });
+
+    m.def("_QLinearConv_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: QLinearConv" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_QuantizeLinear(py::module&);
 #include "./layers/quantizelinear.h"
 void init_layer_QuantizeLinear(py::module& m){
@@ -1929,7 +2888,14 @@ void init_layer_QuantizeLinear(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QuantizeLinear" <<std::endl;
 
     });
+
+    m.def("_QuantizeLinear_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: QuantizeLinear" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_DequantizeLinear(py::module&);
 #include "./layers/dequantizelinear.h"
 void init_layer_DequantizeLinear(py::module& m){
@@ -1943,7 +2909,14 @@ void init_layer_DequantizeLinear(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DequantizeLinear" <<std::endl;
 
     });
+
+    m.def("_DequantizeLinear_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: DequantizeLinear" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_IsInf(py::module&);
 #include "./layers/isinf.h"
 void init_layer_IsInf(py::module& m){
@@ -1957,7 +2930,14 @@ void init_layer_IsInf(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "IsInf" <<std::endl;
 
     });
+
+    m.def("_IsInf_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: IsInf" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_RoiAlign(py::module&);
 #include "./layers/roialign.h"
 void init_layer_RoiAlign(py::module& m){
@@ -1971,7 +2951,14 @@ void init_layer_RoiAlign(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RoiAlign" <<std::endl;
 
     });
+
+    m.def("_RoiAlign_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: RoiAlign" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ArrayFeatureExtractor(py::module&);
 #include "./layers/arrayfeatureextractor.h"
 void init_layer_ArrayFeatureExtractor(py::module& m){
@@ -1985,7 +2972,14 @@ void init_layer_ArrayFeatureExtractor(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArrayFeatureExtractor" <<std::endl;
 
     });
+
+    m.def("_ArrayFeatureExtractor_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ArrayFeatureExtractor" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Binarizer(py::module&);
 #include "./layers/binarizer.h"
 void init_layer_Binarizer(py::module& m){
@@ -1999,7 +2993,14 @@ void init_layer_Binarizer(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Binarizer" <<std::endl;
 
     });
+
+    m.def("_Binarizer_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Binarizer" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_CategoryMapper(py::module&);
 #include "./layers/categorymapper.h"
 void init_layer_CategoryMapper(py::module& m){
@@ -2013,7 +3014,14 @@ void init_layer_CategoryMapper(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "CategoryMapper" <<std::endl;
 
     });
+
+    m.def("_CategoryMapper_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: CategoryMapper" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_DictVectorizer(py::module&);
 #include "./layers/dictvectorizer.h"
 void init_layer_DictVectorizer(py::module& m){
@@ -2027,7 +3035,14 @@ void init_layer_DictVectorizer(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DictVectorizer" <<std::endl;
 
     });
+
+    m.def("_DictVectorizer_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: DictVectorizer" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_FeatureVectorizer(py::module&);
 #include "./layers/featurevectorizer.h"
 void init_layer_FeatureVectorizer(py::module& m){
@@ -2041,7 +3056,14 @@ void init_layer_FeatureVectorizer(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "FeatureVectorizer" <<std::endl;
 
     });
+
+    m.def("_FeatureVectorizer_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: FeatureVectorizer" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_LabelEncoder(py::module&);
 #include "./layers/labelencoder.h"
 void init_layer_LabelEncoder(py::module& m){
@@ -2055,7 +3077,14 @@ void init_layer_LabelEncoder(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LabelEncoder" <<std::endl;
 
     });
+
+    m.def("_LabelEncoder_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LabelEncoder" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_LinearClassifier(py::module&);
 #include "./layers/linearclassifier.h"
 void init_layer_LinearClassifier(py::module& m){
@@ -2069,7 +3098,14 @@ void init_layer_LinearClassifier(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LinearClassifier" <<std::endl;
 
     });
+
+    m.def("_LinearClassifier_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LinearClassifier" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_LinearRegressor(py::module&);
 #include "./layers/linearregressor.h"
 void init_layer_LinearRegressor(py::module& m){
@@ -2083,7 +3119,14 @@ void init_layer_LinearRegressor(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LinearRegressor" <<std::endl;
 
     });
+
+    m.def("_LinearRegressor_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: LinearRegressor" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Normalizer(py::module&);
 #include "./layers/normalizer.h"
 void init_layer_Normalizer(py::module& m){
@@ -2097,7 +3140,14 @@ void init_layer_Normalizer(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Normalizer" <<std::endl;
 
     });
+
+    m.def("_Normalizer_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Normalizer" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_SVMRegressor(py::module&);
 #include "./layers/svmregressor.h"
 void init_layer_SVMRegressor(py::module& m){
@@ -2111,7 +3161,14 @@ void init_layer_SVMRegressor(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SVMRegressor" <<std::endl;
 
     });
+
+    m.def("_SVMRegressor_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: SVMRegressor" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_Scaler(py::module&);
 #include "./layers/scaler.h"
 void init_layer_Scaler(py::module& m){
@@ -2125,7 +3182,14 @@ void init_layer_Scaler(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scaler" <<std::endl;
 
     });
+
+    m.def("_Scaler_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: Scaler" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_TreeEnsembleClassifier(py::module&);
 #include "./layers/treeensembleclassifier.h"
 void init_layer_TreeEnsembleClassifier(py::module& m){
@@ -2139,7 +3203,14 @@ void init_layer_TreeEnsembleClassifier(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TreeEnsembleClassifier" <<std::endl;
 
     });
+
+    m.def("_TreeEnsembleClassifier_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: TreeEnsembleClassifier" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+
 void init_layer_ZipMap(py::module&);
 #include "./layers/zipmap.h"
 void init_layer_ZipMap(py::module& m){
@@ -2153,4 +3224,11 @@ void init_layer_ZipMap(py::module& m){
         std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ZipMap" <<std::endl;
 
     });
+
+    m.def("_ZipMap_run",  [](py::str name) {
+        std::cout << "RUN ::: " << std::string(name) << " ::: ZipMap" << std::endl;
+        backend::layer_dict[std::string(name)]->forward();
+    });
+
 }
+

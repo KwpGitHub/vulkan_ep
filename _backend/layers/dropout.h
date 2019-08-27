@@ -57,8 +57,7 @@ namespace layers {
     public:
         Dropout(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( float _ratio); 
         virtual void bind(std::string _data_i, std::string _output_o, std::string _mask_o); 
         virtual void build();

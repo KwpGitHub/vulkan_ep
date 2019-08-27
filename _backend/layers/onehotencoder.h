@@ -58,8 +58,7 @@ namespace layers {
     public:
         OneHotEncoder(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _cats_int64s,  std::vector<std::string> _cats_strings,  int _zeros); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
         virtual void build();

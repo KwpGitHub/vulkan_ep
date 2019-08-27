@@ -12,7 +12,7 @@ layout(push_constant) uniform Parameters {
     
     
 //output
-    backend::Shape_t mean_o;
+    Shape_t mean_o;
     
 } params;
 
@@ -24,11 +24,11 @@ void main(){
     const uint idz = gl_GlobalInvocationID.z;
     //
     //
-    //const uint mean_o_size = params.mean_o.n * params.mean_o.c * params.mean_o.d * params.mean_o.w * params.mean_o.h;
+    ////const uint mean_o_size = params.mean_o.n * params.mean_o.c * params.mean_o.d * params.mean_o.w * params.mean_o.h;
     //
 
-    if(5 <= idx) {
-        return;
-    }
-   
+    //if(5 <= idx) {
+    //    return;
+    //}
+    return;
 }

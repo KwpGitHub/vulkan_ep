@@ -64,8 +64,7 @@ namespace layers {
     public:
         Mod(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _fmod); 
         virtual void bind(std::string _A_i, std::string _B_i, std::string _C_o); 
         virtual void build();

@@ -51,8 +51,7 @@ namespace layers {
     public:
         Shape(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _data_i, std::string _shape_o); 
         virtual void build();

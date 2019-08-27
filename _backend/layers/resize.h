@@ -54,8 +54,7 @@ namespace layers {
     public:
         Resize(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::string _mode); 
         virtual void bind(std::string _X_i, std::string _scales_i, std::string _Y_o); 
         virtual void build();

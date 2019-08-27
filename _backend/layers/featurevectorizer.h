@@ -54,8 +54,7 @@ namespace layers {
     public:
         FeatureVectorizer(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _inputdimensions); 
         virtual void bind(std::string _Y_o); 
         virtual void build();

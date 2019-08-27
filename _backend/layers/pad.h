@@ -66,8 +66,7 @@ namespace layers {
     public:
         Pad(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _pads,  std::string _mode,  float _value); 
         virtual void bind(std::string _data_i, std::string _output_o); 
         virtual void build();

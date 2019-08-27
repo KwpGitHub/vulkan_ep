@@ -54,8 +54,7 @@ namespace layers {
     public:
         Shrink(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( float _bias,  float _lambd); 
         virtual void bind(std::string _input_i, std::string _output_o); 
         virtual void build();

@@ -57,8 +57,7 @@ namespace layers {
     public:
         EyeLike(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _dtype,  int _k); 
         virtual void bind(std::string _input_i, std::string _output_o); 
         virtual void build();

@@ -54,8 +54,7 @@ namespace layers {
     public:
         Elu(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( float _alpha); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
         virtual void build();

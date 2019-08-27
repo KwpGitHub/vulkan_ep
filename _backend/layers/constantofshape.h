@@ -51,8 +51,7 @@ namespace layers {
     public:
         ConstantOfShape(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<float> _value); 
         virtual void bind(std::string _input_i, std::string _output_o); 
         virtual void build();

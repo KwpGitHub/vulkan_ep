@@ -69,8 +69,7 @@ namespace layers {
     public:
         Cast(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _to); 
         virtual void bind(std::string _input_i, std::string _output_o); 
         virtual void build();

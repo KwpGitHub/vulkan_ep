@@ -51,8 +51,7 @@ namespace layers {
     public:
         LpNormalization(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _axis,  int _p); 
         virtual void bind(std::string _input_i, std::string _output_o); 
         virtual void build();

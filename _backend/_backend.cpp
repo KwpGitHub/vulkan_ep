@@ -23,12 +23,14 @@ void create_instance() {
 
 
 void test() {
-	uint32_t size = 2147482623;//2GB
-	
+	uint32_t size = 1073741823;//1GB
+	size = 536870911;//5MB
+	size = 268435455;//2MB
+	size = 1024;
 	auto y = std::vector<float>(size, 1.0f);
 	auto x = std::vector<float>(size, 2.0f);
 	
-	    // just get the first available device
+	// just get the first available device
 	auto device = new vuh::Device(*backend::device);
 
 	auto d_y = vuh::Array<float>(*device, y);

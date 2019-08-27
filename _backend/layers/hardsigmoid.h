@@ -53,8 +53,7 @@ namespace layers {
     public:
         HardSigmoid(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( float _alpha,  float _beta); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
         virtual void build();

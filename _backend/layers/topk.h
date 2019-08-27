@@ -62,8 +62,7 @@ namespace layers {
     public:
         TopK(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _axis); 
         virtual void bind(std::string _X_i, std::string _K_i, std::string _Values_o, std::string _Indices_o); 
         virtual void build();

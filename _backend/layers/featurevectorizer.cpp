@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/featurevectorizer.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* FeatureVectorizer::_get_device() {
-        
+    vuh::Device* FeatureVectorizer::_get_device() {        
         return backend::device;
     }
     
@@ -26,16 +22,19 @@ namespace layers {
         Y_o = _Y_o;
 
 
-		//binding.Y_o = tensor_dict[Y_o]->shape();
+		binding.Y_o = backend::tensor_dict[Y_o]->shape();
  
 		//binding.inputdimensions = inputdimensions;
          
     }
 
-    void FeatureVectorizer::build(){
-        
+    void FeatureVectorizer::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[Y_o]->data());
+        program->bind(binding, *backend::tensor_dict[Y_o]->data());
+    }
+
+    void FeatureVectorizer::forward(){ 
+        //program->run();
     }
 
 }

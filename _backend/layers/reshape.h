@@ -56,8 +56,7 @@ namespace layers {
     public:
         Reshape(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _data_i, std::string _shape_i, std::string _reshaped_o); 
         virtual void build();

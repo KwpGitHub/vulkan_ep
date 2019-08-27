@@ -9,10 +9,10 @@ layout(local_size_z_id = 2) in;
 layout(push_constant) uniform Parameters {      
   
 //input
-    backend::Shape_t x_i; backend::Shape_t x_scale_i;
-    backend::Shape_t x_zero_point_i;
+    Shape_t x_i; Shape_t x_scale_i;
+    Shape_t x_zero_point_i;
 //output
-    backend::Shape_t y_o;
+    Shape_t y_o;
     
 } params;
 
@@ -25,14 +25,14 @@ void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    //const uint x_i_size = params.x_i.n * params.x_i.c * params.x_i.d * params.x_i.w * params.x_i.h;
-	const uint x_scale_i_size = params.x_scale_i.n * params.x_scale_i.c * params.x_scale_i.d * params.x_scale_i.w * params.x_scale_i.h;
-    //const uint x_zero_point_i_size = params.x_zero_point_i.n * params.x_zero_point_i.c * params.x_zero_point_i.d * params.x_zero_point_i.w * params.x_zero_point_i.h;
-    //const uint y_o_size = params.y_o.n * params.y_o.c * params.y_o.d * params.y_o.w * params.y_o.h;
+    ////const uint x_i_size = params.x_i.n * params.x_i.c * params.x_i.d * params.x_i.w * params.x_i.h;
+	//const uint x_scale_i_size = params.x_scale_i.n * params.x_scale_i.c * params.x_scale_i.d * params.x_scale_i.w * params.x_scale_i.h;
+    ////const uint x_zero_point_i_size = params.x_zero_point_i.n * params.x_zero_point_i.c * params.x_zero_point_i.d * params.x_zero_point_i.w * params.x_zero_point_i.h;
+    ////const uint y_o_size = params.y_o.n * params.y_o.c * params.y_o.d * params.y_o.w * params.y_o.h;
     //
 
-    if(5 <= idx) {
-        return;
-    }
-   
+    //if(5 <= idx) {
+    //    return;
+    //}
+    return;
 }

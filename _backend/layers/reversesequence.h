@@ -84,8 +84,7 @@ namespace layers {
     public:
         ReverseSequence(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _batch_axis,  int _time_axis); 
         virtual void bind(std::string _input_i, std::string _sequence_lens_i, std::string _Y_o); 
         virtual void build();

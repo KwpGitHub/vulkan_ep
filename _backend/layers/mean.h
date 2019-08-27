@@ -53,8 +53,7 @@ namespace layers {
     public:
         Mean(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _mean_o); 
         virtual void build();

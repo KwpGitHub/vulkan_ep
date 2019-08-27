@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/roialign.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* RoiAlign::_get_device() {
-        
+    vuh::Device* RoiAlign::_get_device() {        
         return backend::device;
     }
     
@@ -29,11 +25,11 @@ namespace layers {
     void RoiAlign::bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o){
         X_i = _X_i; rois_i = _rois_i; batch_indices_i = _batch_indices_i; Y_o = _Y_o;
 
-		//binding.X_i = tensor_dict[X_i]->shape();
-  		//binding.rois_i = tensor_dict[rois_i]->shape();
-  		//binding.batch_indices_i = tensor_dict[batch_indices_i]->shape();
+		binding.X_i = backend::tensor_dict[X_i]->shape();
+  		binding.rois_i = backend::tensor_dict[rois_i]->shape();
+  		binding.batch_indices_i = backend::tensor_dict[batch_indices_i]->shape();
  
-		//binding.Y_o = tensor_dict[Y_o]->shape();
+		binding.Y_o = backend::tensor_dict[Y_o]->shape();
  
 		//binding.mode = mode;
   		//binding.output_height = output_height;
@@ -43,10 +39,13 @@ namespace layers {
          
     }
 
-    void RoiAlign::build(){
-        
+    void RoiAlign::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[rois_i]->data(), *tensor_dict[batch_indices_i]->data(), *tensor_dict[Y_o]->data());
+        program->bind(binding, *backend::tensor_dict[X_i]->data(), *backend::tensor_dict[rois_i]->data(), *backend::tensor_dict[batch_indices_i]->data(), *backend::tensor_dict[Y_o]->data());
+    }
+
+    void RoiAlign::forward(){ 
+        //program->run();
     }
 
 }

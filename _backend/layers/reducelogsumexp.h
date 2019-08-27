@@ -55,8 +55,7 @@ namespace layers {
     public:
         ReduceLogSumExp(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _axes,  int _keepdims); 
         virtual void bind(std::string _data_i, std::string _reduced_o); 
         virtual void build();

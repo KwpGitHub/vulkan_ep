@@ -21,7 +21,7 @@ namespace backend {
 		std::string name;
 		Layer(std::string name) : name(name) {}
 		virtual ~Layer() {}
-		//virtual void forward() {}
+		virtual void forward() {}
 		virtual void init() {}
 		virtual void bind() {}
 		virtual void build() {}

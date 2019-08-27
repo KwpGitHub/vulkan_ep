@@ -53,8 +53,7 @@ namespace layers {
     public:
         Max(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _max_o); 
         virtual void build();

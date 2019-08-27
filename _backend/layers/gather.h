@@ -91,8 +91,7 @@ namespace layers {
     public:
         Gather(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _axis); 
         virtual void bind(std::string _data_i, std::string _indices_i, std::string _output_o); 
         virtual void build();

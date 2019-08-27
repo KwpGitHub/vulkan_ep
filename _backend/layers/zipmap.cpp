@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/zipmap.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* ZipMap::_get_device() {
-        
+    vuh::Device* ZipMap::_get_device() {        
         return backend::device;
     }
     
@@ -26,19 +22,22 @@ namespace layers {
     void ZipMap::bind(std::string _X_i, std::string _Z_o){
         X_i = _X_i; Z_o = _Z_o;
 
-		//binding.X_i = tensor_dict[X_i]->shape();
+		binding.X_i = backend::tensor_dict[X_i]->shape();
  
-		//binding.Z_o = tensor_dict[Z_o]->shape();
+		binding.Z_o = backend::tensor_dict[Z_o]->shape();
  
 		//binding.classlabels_int64s = classlabels_int64s;
   		//binding.classlabels_strings = classlabels_strings;
          
     }
 
-    void ZipMap::build(){
-        
+    void ZipMap::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Z_o]->data());
+        program->bind(binding, *backend::tensor_dict[X_i]->data(), *backend::tensor_dict[Z_o]->data());
+    }
+
+    void ZipMap::forward(){ 
+        //program->run();
     }
 
 }

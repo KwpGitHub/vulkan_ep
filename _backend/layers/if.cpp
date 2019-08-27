@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/if.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* If::_get_device() {
-        
+    vuh::Device* If::_get_device() {        
         return backend::device;
     }
     
@@ -26,7 +22,7 @@ namespace layers {
     void If::bind(std::string _cond_i){
         cond_i = _cond_i;
 
-		//binding.cond_i = tensor_dict[cond_i]->shape();
+		binding.cond_i = backend::tensor_dict[cond_i]->shape();
  
 
 		//binding.else_branch = else_branch;
@@ -34,10 +30,13 @@ namespace layers {
          
     }
 
-    void If::build(){
-        
+    void If::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[cond_i]->data());
+        program->bind(binding, *backend::tensor_dict[cond_i]->data());
+    }
+
+    void If::forward(){ 
+        //program->run();
     }
 
 }

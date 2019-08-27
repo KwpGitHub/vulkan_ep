@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/maxunpool.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* MaxUnpool::_get_device() {
-        
+    vuh::Device* MaxUnpool::_get_device() {        
         return backend::device;
     }
     
@@ -27,11 +23,11 @@ namespace layers {
     void MaxUnpool::bind(std::string _X_i, std::string _I_i, std::string _output_shape_i, std::string _output_o){
         X_i = _X_i; I_i = _I_i; output_shape_i = _output_shape_i; output_o = _output_o;
 
-		//binding.X_i = tensor_dict[X_i]->shape();
-  		//binding.I_i = tensor_dict[I_i]->shape();
-  		//binding.output_shape_i = tensor_dict[output_shape_i]->shape();
+		binding.X_i = backend::tensor_dict[X_i]->shape();
+  		binding.I_i = backend::tensor_dict[I_i]->shape();
+  		binding.output_shape_i = backend::tensor_dict[output_shape_i]->shape();
  
-		//binding.output_o = tensor_dict[output_o]->shape();
+		binding.output_o = backend::tensor_dict[output_o]->shape();
  
 		//binding.kernel_shape = kernel_shape;
   		//binding.pads = pads;
@@ -39,10 +35,13 @@ namespace layers {
          
     }
 
-    void MaxUnpool::build(){
-        
+    void MaxUnpool::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[I_i]->data(), *tensor_dict[output_shape_i]->data(), *tensor_dict[output_o]->data());
+        program->bind(binding, *backend::tensor_dict[X_i]->data(), *backend::tensor_dict[I_i]->data(), *backend::tensor_dict[output_shape_i]->data(), *backend::tensor_dict[output_o]->data());
+    }
+
+    void MaxUnpool::forward(){ 
+        //program->run();
     }
 
 }

@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/linearclassifier.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* LinearClassifier::_get_device() {
-        
+    vuh::Device* LinearClassifier::_get_device() {        
         return backend::device;
     }
     
@@ -30,10 +26,10 @@ namespace layers {
     void LinearClassifier::bind(std::string _X_i, std::string _Y_o, std::string _Z_o){
         X_i = _X_i; Y_o = _Y_o; Z_o = _Z_o;
 
-		//binding.X_i = tensor_dict[X_i]->shape();
+		binding.X_i = backend::tensor_dict[X_i]->shape();
  
-		//binding.Y_o = tensor_dict[Y_o]->shape();
-  		//binding.Z_o = tensor_dict[Z_o]->shape();
+		binding.Y_o = backend::tensor_dict[Y_o]->shape();
+  		binding.Z_o = backend::tensor_dict[Z_o]->shape();
  
 		//binding.coefficients = coefficients;
   		//binding.classlabels_ints = classlabels_ints;
@@ -44,10 +40,13 @@ namespace layers {
          
     }
 
-    void LinearClassifier::build(){
-        
+    void LinearClassifier::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[X_i]->data(), *tensor_dict[Y_o]->data(), *tensor_dict[Z_o]->data());
+        program->bind(binding, *backend::tensor_dict[X_i]->data(), *backend::tensor_dict[Y_o]->data(), *backend::tensor_dict[Z_o]->data());
+    }
+
+    void LinearClassifier::forward(){ 
+        //program->run();
     }
 
 }

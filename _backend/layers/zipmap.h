@@ -54,8 +54,7 @@ namespace layers {
     public:
         ZipMap(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _classlabels_int64s,  std::vector<std::string> _classlabels_strings); 
         virtual void bind(std::string _X_i, std::string _Z_o); 
         virtual void build();

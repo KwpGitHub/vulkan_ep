@@ -53,8 +53,7 @@ namespace layers {
     public:
         Transpose(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _perm); 
         virtual void bind(std::string _data_i, std::string _transposed_o); 
         virtual void build();

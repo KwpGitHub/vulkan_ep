@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/pad.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* Pad::_get_device() {
-        
+    vuh::Device* Pad::_get_device() {        
         return backend::device;
     }
     
@@ -27,9 +23,9 @@ namespace layers {
     void Pad::bind(std::string _data_i, std::string _output_o){
         data_i = _data_i; output_o = _output_o;
 
-		//binding.data_i = tensor_dict[data_i]->shape();
+		binding.data_i = backend::tensor_dict[data_i]->shape();
  
-		//binding.output_o = tensor_dict[output_o]->shape();
+		binding.output_o = backend::tensor_dict[output_o]->shape();
  
 		//binding.pads = pads;
   		//binding.mode = mode;
@@ -37,10 +33,13 @@ namespace layers {
          
     }
 
-    void Pad::build(){
-        
+    void Pad::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[output_o]->data());
+        program->bind(binding, *backend::tensor_dict[data_i]->data(), *backend::tensor_dict[output_o]->data());
+    }
+
+    void Pad::forward(){ 
+        //program->run();
     }
 
 }

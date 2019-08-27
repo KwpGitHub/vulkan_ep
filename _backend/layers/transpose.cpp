@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/transpose.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* Transpose::_get_device() {
-        
+    vuh::Device* Transpose::_get_device() {        
         return backend::device;
     }
     
@@ -25,18 +21,21 @@ namespace layers {
     void Transpose::bind(std::string _data_i, std::string _transposed_o){
         data_i = _data_i; transposed_o = _transposed_o;
 
-		//binding.data_i = tensor_dict[data_i]->shape();
+		binding.data_i = backend::tensor_dict[data_i]->shape();
  
-		//binding.transposed_o = tensor_dict[transposed_o]->shape();
+		binding.transposed_o = backend::tensor_dict[transposed_o]->shape();
  
 		//binding.perm = perm;
          
     }
 
-    void Transpose::build(){
-        
+    void Transpose::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[transposed_o]->data());
+        program->bind(binding, *backend::tensor_dict[data_i]->data(), *backend::tensor_dict[transposed_o]->data());
+    }
+
+    void Transpose::forward(){ 
+        //program->run();
     }
 
 }

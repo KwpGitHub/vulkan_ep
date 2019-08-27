@@ -70,8 +70,7 @@ namespace layers {
     public:
         MaxUnpool(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _kernel_shape,  std::vector<int> _pads,  std::vector<int> _strides); 
         virtual void bind(std::string _X_i, std::string _I_i, std::string _output_shape_i, std::string _output_o); 
         virtual void build();

@@ -10,10 +10,10 @@ layout(push_constant) uniform Parameters {
   
 //input
     
-    backend::Shape_t x0_i; backend::Shape_t x1_i; backend::Shape_t x2_i; backend::Shape_t x3_i; backend::Shape_t x4_i; backend::Shape_t x5_i; backend::Shape_t x6_i; backend::Shape_t x7_i; backend::Shape_t x8_i; backend::Shape_t x9_i; backend::Shape_t x10_i; backend::Shape_t x11_i; backend::Shape_t x12_i; backend::Shape_t x13_i; backend::Shape_t x14_i; backend::Shape_t x15_i; backend::Shape_t x16_i; backend::Shape_t x17_i; backend::Shape_t x18_i; backend::Shape_t x19_i; backend::Shape_t x20_i; backend::Shape_t x21_i; backend::Shape_t x22_i; backend::Shape_t x23_i; backend::Shape_t x24_i; backend::Shape_t x25_i; backend::Shape_t x26_i; backend::Shape_t x27_i; backend::Shape_t x28_i; backend::Shape_t x29_i; backend::Shape_t x30_i; backend::Shape_t x31_i;
+    Shape_t x0_i; Shape_t x1_i; Shape_t x2_i; Shape_t x3_i; Shape_t x4_i; Shape_t x5_i; Shape_t x6_i; Shape_t x7_i; Shape_t x8_i; Shape_t x9_i; Shape_t x10_i; Shape_t x11_i; Shape_t x12_i; Shape_t x13_i; Shape_t x14_i; Shape_t x15_i; Shape_t x16_i; Shape_t x17_i; Shape_t x18_i; Shape_t x19_i; Shape_t x20_i; Shape_t x21_i; Shape_t x22_i; Shape_t x23_i; Shape_t x24_i; Shape_t x25_i; Shape_t x26_i; Shape_t x27_i; Shape_t x28_i; Shape_t x29_i; Shape_t x30_i; Shape_t x31_i;
 //output
     
-    backend::Shape_t y0_o; backend::Shape_t y1_o; backend::Shape_t y2_o; backend::Shape_t y3_o; backend::Shape_t y4_o; backend::Shape_t y5_o; backend::Shape_t y6_o; backend::Shape_t y7_o; backend::Shape_t y8_o; backend::Shape_t y9_o; backend::Shape_t y10_o; backend::Shape_t y11_o; backend::Shape_t y12_o; backend::Shape_t y13_o; backend::Shape_t y14_o; backend::Shape_t y15_o; backend::Shape_t y16_o; backend::Shape_t y17_o; backend::Shape_t y18_o; backend::Shape_t y19_o; backend::Shape_t y20_o; backend::Shape_t y21_o; backend::Shape_t y22_o; backend::Shape_t y23_o; backend::Shape_t y24_o; backend::Shape_t y25_o; backend::Shape_t y26_o; backend::Shape_t y27_o; backend::Shape_t y28_o; backend::Shape_t y29_o; backend::Shape_t y30_o; backend::Shape_t y31_o;
+    Shape_t y0_o; Shape_t y1_o; Shape_t y2_o; Shape_t y3_o; Shape_t y4_o; Shape_t y5_o; Shape_t y6_o; Shape_t y7_o; Shape_t y8_o; Shape_t y9_o; Shape_t y10_o; Shape_t y11_o; Shape_t y12_o; Shape_t y13_o; Shape_t y14_o; Shape_t y15_o; Shape_t y16_o; Shape_t y17_o; Shape_t y18_o; Shape_t y19_o; Shape_t y20_o; Shape_t y21_o; Shape_t y22_o; Shape_t y23_o; Shape_t y24_o; Shape_t y25_o; Shape_t y26_o; Shape_t y27_o; Shape_t y28_o; Shape_t y29_o; Shape_t y30_o; Shape_t y31_o;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { float x0_i[]; };
@@ -86,74 +86,74 @@ void main(){
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
     //
-    //const uint x0_i_size = params.x0_i.n * params.x0_i.c * params.x0_i.d * params.x0_i.w * params.x0_i.h;
-	const uint x1_i_size = params.x1_i.n * params.x1_i.c * params.x1_i.d * params.x1_i.w * params.x1_i.h;
-	const uint x2_i_size = params.x2_i.n * params.x2_i.c * params.x2_i.d * params.x2_i.w * params.x2_i.h;
-	const uint x3_i_size = params.x3_i.n * params.x3_i.c * params.x3_i.d * params.x3_i.w * params.x3_i.h;
-	const uint x4_i_size = params.x4_i.n * params.x4_i.c * params.x4_i.d * params.x4_i.w * params.x4_i.h;
-	const uint x5_i_size = params.x5_i.n * params.x5_i.c * params.x5_i.d * params.x5_i.w * params.x5_i.h;
-	const uint x6_i_size = params.x6_i.n * params.x6_i.c * params.x6_i.d * params.x6_i.w * params.x6_i.h;
-	const uint x7_i_size = params.x7_i.n * params.x7_i.c * params.x7_i.d * params.x7_i.w * params.x7_i.h;
-	const uint x8_i_size = params.x8_i.n * params.x8_i.c * params.x8_i.d * params.x8_i.w * params.x8_i.h;
-	const uint x9_i_size = params.x9_i.n * params.x9_i.c * params.x9_i.d * params.x9_i.w * params.x9_i.h;
-	const uint x10_i_size = params.x10_i.n * params.x10_i.c * params.x10_i.d * params.x10_i.w * params.x10_i.h;
-	const uint x11_i_size = params.x11_i.n * params.x11_i.c * params.x11_i.d * params.x11_i.w * params.x11_i.h;
-	const uint x12_i_size = params.x12_i.n * params.x12_i.c * params.x12_i.d * params.x12_i.w * params.x12_i.h;
-	const uint x13_i_size = params.x13_i.n * params.x13_i.c * params.x13_i.d * params.x13_i.w * params.x13_i.h;
-	const uint x14_i_size = params.x14_i.n * params.x14_i.c * params.x14_i.d * params.x14_i.w * params.x14_i.h;
-	const uint x15_i_size = params.x15_i.n * params.x15_i.c * params.x15_i.d * params.x15_i.w * params.x15_i.h;
-	const uint x16_i_size = params.x16_i.n * params.x16_i.c * params.x16_i.d * params.x16_i.w * params.x16_i.h;
-	const uint x17_i_size = params.x17_i.n * params.x17_i.c * params.x17_i.d * params.x17_i.w * params.x17_i.h;
-	const uint x18_i_size = params.x18_i.n * params.x18_i.c * params.x18_i.d * params.x18_i.w * params.x18_i.h;
-	const uint x19_i_size = params.x19_i.n * params.x19_i.c * params.x19_i.d * params.x19_i.w * params.x19_i.h;
-	const uint x20_i_size = params.x20_i.n * params.x20_i.c * params.x20_i.d * params.x20_i.w * params.x20_i.h;
-	const uint x21_i_size = params.x21_i.n * params.x21_i.c * params.x21_i.d * params.x21_i.w * params.x21_i.h;
-	const uint x22_i_size = params.x22_i.n * params.x22_i.c * params.x22_i.d * params.x22_i.w * params.x22_i.h;
-	const uint x23_i_size = params.x23_i.n * params.x23_i.c * params.x23_i.d * params.x23_i.w * params.x23_i.h;
-	const uint x24_i_size = params.x24_i.n * params.x24_i.c * params.x24_i.d * params.x24_i.w * params.x24_i.h;
-	const uint x25_i_size = params.x25_i.n * params.x25_i.c * params.x25_i.d * params.x25_i.w * params.x25_i.h;
-	const uint x26_i_size = params.x26_i.n * params.x26_i.c * params.x26_i.d * params.x26_i.w * params.x26_i.h;
-	const uint x27_i_size = params.x27_i.n * params.x27_i.c * params.x27_i.d * params.x27_i.w * params.x27_i.h;
-	const uint x28_i_size = params.x28_i.n * params.x28_i.c * params.x28_i.d * params.x28_i.w * params.x28_i.h;
-	const uint x29_i_size = params.x29_i.n * params.x29_i.c * params.x29_i.d * params.x29_i.w * params.x29_i.h;
-	const uint x30_i_size = params.x30_i.n * params.x30_i.c * params.x30_i.d * params.x30_i.w * params.x30_i.h;
-	const uint x31_i_size = params.x31_i.n * params.x31_i.c * params.x31_i.d * params.x31_i.w * params.x31_i.h;
+    ////const uint x0_i_size = params.x0_i.n * params.x0_i.c * params.x0_i.d * params.x0_i.w * params.x0_i.h;
+	//const uint x1_i_size = params.x1_i.n * params.x1_i.c * params.x1_i.d * params.x1_i.w * params.x1_i.h;
+	//const uint x2_i_size = params.x2_i.n * params.x2_i.c * params.x2_i.d * params.x2_i.w * params.x2_i.h;
+	//const uint x3_i_size = params.x3_i.n * params.x3_i.c * params.x3_i.d * params.x3_i.w * params.x3_i.h;
+	//const uint x4_i_size = params.x4_i.n * params.x4_i.c * params.x4_i.d * params.x4_i.w * params.x4_i.h;
+	//const uint x5_i_size = params.x5_i.n * params.x5_i.c * params.x5_i.d * params.x5_i.w * params.x5_i.h;
+	//const uint x6_i_size = params.x6_i.n * params.x6_i.c * params.x6_i.d * params.x6_i.w * params.x6_i.h;
+	//const uint x7_i_size = params.x7_i.n * params.x7_i.c * params.x7_i.d * params.x7_i.w * params.x7_i.h;
+	//const uint x8_i_size = params.x8_i.n * params.x8_i.c * params.x8_i.d * params.x8_i.w * params.x8_i.h;
+	//const uint x9_i_size = params.x9_i.n * params.x9_i.c * params.x9_i.d * params.x9_i.w * params.x9_i.h;
+	//const uint x10_i_size = params.x10_i.n * params.x10_i.c * params.x10_i.d * params.x10_i.w * params.x10_i.h;
+	//const uint x11_i_size = params.x11_i.n * params.x11_i.c * params.x11_i.d * params.x11_i.w * params.x11_i.h;
+	//const uint x12_i_size = params.x12_i.n * params.x12_i.c * params.x12_i.d * params.x12_i.w * params.x12_i.h;
+	//const uint x13_i_size = params.x13_i.n * params.x13_i.c * params.x13_i.d * params.x13_i.w * params.x13_i.h;
+	//const uint x14_i_size = params.x14_i.n * params.x14_i.c * params.x14_i.d * params.x14_i.w * params.x14_i.h;
+	//const uint x15_i_size = params.x15_i.n * params.x15_i.c * params.x15_i.d * params.x15_i.w * params.x15_i.h;
+	//const uint x16_i_size = params.x16_i.n * params.x16_i.c * params.x16_i.d * params.x16_i.w * params.x16_i.h;
+	//const uint x17_i_size = params.x17_i.n * params.x17_i.c * params.x17_i.d * params.x17_i.w * params.x17_i.h;
+	//const uint x18_i_size = params.x18_i.n * params.x18_i.c * params.x18_i.d * params.x18_i.w * params.x18_i.h;
+	//const uint x19_i_size = params.x19_i.n * params.x19_i.c * params.x19_i.d * params.x19_i.w * params.x19_i.h;
+	//const uint x20_i_size = params.x20_i.n * params.x20_i.c * params.x20_i.d * params.x20_i.w * params.x20_i.h;
+	//const uint x21_i_size = params.x21_i.n * params.x21_i.c * params.x21_i.d * params.x21_i.w * params.x21_i.h;
+	//const uint x22_i_size = params.x22_i.n * params.x22_i.c * params.x22_i.d * params.x22_i.w * params.x22_i.h;
+	//const uint x23_i_size = params.x23_i.n * params.x23_i.c * params.x23_i.d * params.x23_i.w * params.x23_i.h;
+	//const uint x24_i_size = params.x24_i.n * params.x24_i.c * params.x24_i.d * params.x24_i.w * params.x24_i.h;
+	//const uint x25_i_size = params.x25_i.n * params.x25_i.c * params.x25_i.d * params.x25_i.w * params.x25_i.h;
+	//const uint x26_i_size = params.x26_i.n * params.x26_i.c * params.x26_i.d * params.x26_i.w * params.x26_i.h;
+	//const uint x27_i_size = params.x27_i.n * params.x27_i.c * params.x27_i.d * params.x27_i.w * params.x27_i.h;
+	//const uint x28_i_size = params.x28_i.n * params.x28_i.c * params.x28_i.d * params.x28_i.w * params.x28_i.h;
+	//const uint x29_i_size = params.x29_i.n * params.x29_i.c * params.x29_i.d * params.x29_i.w * params.x29_i.h;
+	//const uint x30_i_size = params.x30_i.n * params.x30_i.c * params.x30_i.d * params.x30_i.w * params.x30_i.h;
+	//const uint x31_i_size = params.x31_i.n * params.x31_i.c * params.x31_i.d * params.x31_i.w * params.x31_i.h;
     //
-    //const uint y0_o_size = params.y0_o.n * params.y0_o.c * params.y0_o.d * params.y0_o.w * params.y0_o.h;
-	const uint y1_o_size = params.y1_o.n * params.y1_o.c * params.y1_o.d * params.y1_o.w * params.y1_o.h;
-	const uint y2_o_size = params.y2_o.n * params.y2_o.c * params.y2_o.d * params.y2_o.w * params.y2_o.h;
-	const uint y3_o_size = params.y3_o.n * params.y3_o.c * params.y3_o.d * params.y3_o.w * params.y3_o.h;
-	const uint y4_o_size = params.y4_o.n * params.y4_o.c * params.y4_o.d * params.y4_o.w * params.y4_o.h;
-	const uint y5_o_size = params.y5_o.n * params.y5_o.c * params.y5_o.d * params.y5_o.w * params.y5_o.h;
-	const uint y6_o_size = params.y6_o.n * params.y6_o.c * params.y6_o.d * params.y6_o.w * params.y6_o.h;
-	const uint y7_o_size = params.y7_o.n * params.y7_o.c * params.y7_o.d * params.y7_o.w * params.y7_o.h;
-	const uint y8_o_size = params.y8_o.n * params.y8_o.c * params.y8_o.d * params.y8_o.w * params.y8_o.h;
-	const uint y9_o_size = params.y9_o.n * params.y9_o.c * params.y9_o.d * params.y9_o.w * params.y9_o.h;
-	const uint y10_o_size = params.y10_o.n * params.y10_o.c * params.y10_o.d * params.y10_o.w * params.y10_o.h;
-	const uint y11_o_size = params.y11_o.n * params.y11_o.c * params.y11_o.d * params.y11_o.w * params.y11_o.h;
-	const uint y12_o_size = params.y12_o.n * params.y12_o.c * params.y12_o.d * params.y12_o.w * params.y12_o.h;
-	const uint y13_o_size = params.y13_o.n * params.y13_o.c * params.y13_o.d * params.y13_o.w * params.y13_o.h;
-	const uint y14_o_size = params.y14_o.n * params.y14_o.c * params.y14_o.d * params.y14_o.w * params.y14_o.h;
-	const uint y15_o_size = params.y15_o.n * params.y15_o.c * params.y15_o.d * params.y15_o.w * params.y15_o.h;
-	const uint y16_o_size = params.y16_o.n * params.y16_o.c * params.y16_o.d * params.y16_o.w * params.y16_o.h;
-	const uint y17_o_size = params.y17_o.n * params.y17_o.c * params.y17_o.d * params.y17_o.w * params.y17_o.h;
-	const uint y18_o_size = params.y18_o.n * params.y18_o.c * params.y18_o.d * params.y18_o.w * params.y18_o.h;
-	const uint y19_o_size = params.y19_o.n * params.y19_o.c * params.y19_o.d * params.y19_o.w * params.y19_o.h;
-	const uint y20_o_size = params.y20_o.n * params.y20_o.c * params.y20_o.d * params.y20_o.w * params.y20_o.h;
-	const uint y21_o_size = params.y21_o.n * params.y21_o.c * params.y21_o.d * params.y21_o.w * params.y21_o.h;
-	const uint y22_o_size = params.y22_o.n * params.y22_o.c * params.y22_o.d * params.y22_o.w * params.y22_o.h;
-	const uint y23_o_size = params.y23_o.n * params.y23_o.c * params.y23_o.d * params.y23_o.w * params.y23_o.h;
-	const uint y24_o_size = params.y24_o.n * params.y24_o.c * params.y24_o.d * params.y24_o.w * params.y24_o.h;
-	const uint y25_o_size = params.y25_o.n * params.y25_o.c * params.y25_o.d * params.y25_o.w * params.y25_o.h;
-	const uint y26_o_size = params.y26_o.n * params.y26_o.c * params.y26_o.d * params.y26_o.w * params.y26_o.h;
-	const uint y27_o_size = params.y27_o.n * params.y27_o.c * params.y27_o.d * params.y27_o.w * params.y27_o.h;
-	const uint y28_o_size = params.y28_o.n * params.y28_o.c * params.y28_o.d * params.y28_o.w * params.y28_o.h;
-	const uint y29_o_size = params.y29_o.n * params.y29_o.c * params.y29_o.d * params.y29_o.w * params.y29_o.h;
-	const uint y30_o_size = params.y30_o.n * params.y30_o.c * params.y30_o.d * params.y30_o.w * params.y30_o.h;
-	const uint y31_o_size = params.y31_o.n * params.y31_o.c * params.y31_o.d * params.y31_o.w * params.y31_o.h;
+    ////const uint y0_o_size = params.y0_o.n * params.y0_o.c * params.y0_o.d * params.y0_o.w * params.y0_o.h;
+	//const uint y1_o_size = params.y1_o.n * params.y1_o.c * params.y1_o.d * params.y1_o.w * params.y1_o.h;
+	//const uint y2_o_size = params.y2_o.n * params.y2_o.c * params.y2_o.d * params.y2_o.w * params.y2_o.h;
+	//const uint y3_o_size = params.y3_o.n * params.y3_o.c * params.y3_o.d * params.y3_o.w * params.y3_o.h;
+	//const uint y4_o_size = params.y4_o.n * params.y4_o.c * params.y4_o.d * params.y4_o.w * params.y4_o.h;
+	//const uint y5_o_size = params.y5_o.n * params.y5_o.c * params.y5_o.d * params.y5_o.w * params.y5_o.h;
+	//const uint y6_o_size = params.y6_o.n * params.y6_o.c * params.y6_o.d * params.y6_o.w * params.y6_o.h;
+	//const uint y7_o_size = params.y7_o.n * params.y7_o.c * params.y7_o.d * params.y7_o.w * params.y7_o.h;
+	//const uint y8_o_size = params.y8_o.n * params.y8_o.c * params.y8_o.d * params.y8_o.w * params.y8_o.h;
+	//const uint y9_o_size = params.y9_o.n * params.y9_o.c * params.y9_o.d * params.y9_o.w * params.y9_o.h;
+	//const uint y10_o_size = params.y10_o.n * params.y10_o.c * params.y10_o.d * params.y10_o.w * params.y10_o.h;
+	//const uint y11_o_size = params.y11_o.n * params.y11_o.c * params.y11_o.d * params.y11_o.w * params.y11_o.h;
+	//const uint y12_o_size = params.y12_o.n * params.y12_o.c * params.y12_o.d * params.y12_o.w * params.y12_o.h;
+	//const uint y13_o_size = params.y13_o.n * params.y13_o.c * params.y13_o.d * params.y13_o.w * params.y13_o.h;
+	//const uint y14_o_size = params.y14_o.n * params.y14_o.c * params.y14_o.d * params.y14_o.w * params.y14_o.h;
+	//const uint y15_o_size = params.y15_o.n * params.y15_o.c * params.y15_o.d * params.y15_o.w * params.y15_o.h;
+	//const uint y16_o_size = params.y16_o.n * params.y16_o.c * params.y16_o.d * params.y16_o.w * params.y16_o.h;
+	//const uint y17_o_size = params.y17_o.n * params.y17_o.c * params.y17_o.d * params.y17_o.w * params.y17_o.h;
+	//const uint y18_o_size = params.y18_o.n * params.y18_o.c * params.y18_o.d * params.y18_o.w * params.y18_o.h;
+	//const uint y19_o_size = params.y19_o.n * params.y19_o.c * params.y19_o.d * params.y19_o.w * params.y19_o.h;
+	//const uint y20_o_size = params.y20_o.n * params.y20_o.c * params.y20_o.d * params.y20_o.w * params.y20_o.h;
+	//const uint y21_o_size = params.y21_o.n * params.y21_o.c * params.y21_o.d * params.y21_o.w * params.y21_o.h;
+	//const uint y22_o_size = params.y22_o.n * params.y22_o.c * params.y22_o.d * params.y22_o.w * params.y22_o.h;
+	//const uint y23_o_size = params.y23_o.n * params.y23_o.c * params.y23_o.d * params.y23_o.w * params.y23_o.h;
+	//const uint y24_o_size = params.y24_o.n * params.y24_o.c * params.y24_o.d * params.y24_o.w * params.y24_o.h;
+	//const uint y25_o_size = params.y25_o.n * params.y25_o.c * params.y25_o.d * params.y25_o.w * params.y25_o.h;
+	//const uint y26_o_size = params.y26_o.n * params.y26_o.c * params.y26_o.d * params.y26_o.w * params.y26_o.h;
+	//const uint y27_o_size = params.y27_o.n * params.y27_o.c * params.y27_o.d * params.y27_o.w * params.y27_o.h;
+	//const uint y28_o_size = params.y28_o.n * params.y28_o.c * params.y28_o.d * params.y28_o.w * params.y28_o.h;
+	//const uint y29_o_size = params.y29_o.n * params.y29_o.c * params.y29_o.d * params.y29_o.w * params.y29_o.h;
+	//const uint y30_o_size = params.y30_o.n * params.y30_o.c * params.y30_o.d * params.y30_o.w * params.y30_o.h;
+	//const uint y31_o_size = params.y31_o.n * params.y31_o.c * params.y31_o.d * params.y31_o.w * params.y31_o.h;
 
-    if(5 <= idx) {
-        return;
-    }
-   
+    //if(5 <= idx) {
+    //    return;
+    //}
+    return;
 }

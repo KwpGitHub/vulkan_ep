@@ -12,7 +12,7 @@ layout(push_constant) uniform Parameters {
     
     
 //output
-    backend::Shape_t output_o;
+    Shape_t output_o;
     
 } params;
 
@@ -24,11 +24,11 @@ void main(){
     const uint idz = gl_GlobalInvocationID.z;
     //
     //
-    //const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
+    ////const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
     //
 
-    if(5 <= idx) {
-        return;
-    }
-   
+    //if(5 <= idx) {
+    //    return;
+    //}
+    return;
 }

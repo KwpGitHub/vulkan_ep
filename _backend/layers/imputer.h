@@ -58,8 +58,7 @@ namespace layers {
     public:
         Imputer(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<float> _imputed_value_floats,  std::vector<int> _imputed_value_int64s,  float _replaced_value_float,  int _replaced_value_int64); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
         virtual void build();

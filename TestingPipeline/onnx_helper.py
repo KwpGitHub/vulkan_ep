@@ -56,40 +56,61 @@ class OnnxNode(object):
         return (self.inputs, self.outputs, self.attrs)
 
 class OnnxGraph:
-    def __init__(self, filename):        
+    def __init__(self, filename):
         model = onnx.load(filename)
-        _backend.create_instance()
-        _backend.test()
-        graph = model.graph
+        inferred_model = onnx.shape_inference.infer_shapes(model)
+        graph = inferred_model.graph
+       
         self.nodes = list()
         self.init_vals = dict()
         self.layer = list()
+        self.init_vals[""] = np.ones(1)
 
+        for val in inferred_model.graph.value_info:
+            data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
+            self.init_vals[val.name] = data
         for init_val in graph.initializer:
             name, data = self._create_tensor_filling_op(init_val)            
-            self.init_vals[name] = data            
+            self.init_vals[name] = data
+            
         for val in graph.input:
             if(val.name not in self.init_vals.keys()):            
                 data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
-                self.init_vals[val.name] = data                
+
+
+                self.init_vals[val.name] = data     
+                
         for val in graph.output:
             if(val.name not in self.init_vals.keys()):
                 data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
-                self.init_vals[val.name] = data       
+                self.init_vals[val.name] = data 
+                
         for n in graph.node:
             self.nodes.append(OnnxNode(n))
+        
+        _backend.create_instance()
+        _backend.test()
 
     def build(self):
         for nodes in self.nodes:
             l = layers.layer_map[nodes.op_type](nodes.name)
             l.attribute(**nodes.attrs)
             l.input(self.init_vals, *nodes.inputs)
-            l.output(self.init_vals, *nodes.outputs)
-            l.build()
-            self.layer.append(l)       
+            l.output(self.init_vals, *nodes.outputs)           
+            self.layer.append(l)     
+            
         for name, data in self.init_vals.items():
             _backend.create_tensor(name, data)
+        for l in self.layer:
+             l.build()
+
         _backend.test()
+
+    def run(self):
+        print("STARTING EXECUTION")
+        for layer in self.layer:
+            layer.run()
+        print("::: DONE RUNNING PIPE :::")
 
     def _create_tensor_filling_op(self, onnx_tensor, name=None):
       

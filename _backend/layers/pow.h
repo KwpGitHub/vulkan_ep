@@ -54,8 +54,7 @@ namespace layers {
     public:
         Pow(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _X_i, std::string _Y_i, std::string _Z_o); 
         virtual void build();

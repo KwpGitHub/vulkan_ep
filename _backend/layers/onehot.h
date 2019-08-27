@@ -64,8 +64,7 @@ namespace layers {
     public:
         OneHot(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _axis); 
         virtual void bind(std::string _indices_i, std::string _depth_i, std::string _values_i, std::string _output_o); 
         virtual void build();

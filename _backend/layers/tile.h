@@ -53,8 +53,7 @@ namespace layers {
     public:
         Tile(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _input_i, std::string _repeats_i, std::string _output_o); 
         virtual void build();

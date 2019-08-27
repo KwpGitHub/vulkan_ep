@@ -53,8 +53,7 @@ namespace layers {
     public:
         MaxRoiPool(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _pooled_shape,  float _spatial_scale); 
         virtual void bind(std::string _X_i, std::string _rois_i, std::string _Y_o); 
         virtual void build();

@@ -55,8 +55,7 @@ namespace layers {
     public:
         QuantizeLinear(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _x_i, std::string _y_scale_i, std::string _y_zero_point_i, std::string _y_o); 
         virtual void build();

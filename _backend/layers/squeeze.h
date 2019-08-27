@@ -54,8 +54,7 @@ namespace layers {
     public:
         Squeeze(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _axes); 
         virtual void bind(std::string _data_i, std::string _squeezed_o); 
         virtual void build();

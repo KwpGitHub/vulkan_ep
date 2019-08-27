@@ -55,8 +55,7 @@ namespace layers {
     public:
         MatMulInteger(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _A_i, std::string _B_i, std::string _a_zero_point_i, std::string _b_zero_point_i, std::string _Y_o); 
         virtual void build();

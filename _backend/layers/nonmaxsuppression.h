@@ -62,8 +62,7 @@ namespace layers {
     public:
         NonMaxSuppression(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( int _center_point_box); 
         virtual void bind(std::string _boxes_i, std::string _scores_i, std::string _max_output_boxes_per_class_i, std::string _iou_threshold_i, std::string _score_threshold_i, std::string _selected_indices_o); 
         virtual void build();

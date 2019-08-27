@@ -60,8 +60,7 @@ namespace layers {
     public:
         Normalizer(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::string _norm); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
         virtual void build();

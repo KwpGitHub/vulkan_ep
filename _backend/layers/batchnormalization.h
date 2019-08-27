@@ -68,8 +68,7 @@ namespace layers {
     public:
         BatchNormalization(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( float _epsilon,  float _momentum); 
         virtual void bind(std::string _X_i, std::string _scale_i, std::string _B_i, std::string _mean_i, std::string _var_i, std::string _Y_o, std::string _mean_o, std::string _var_o, std::string _saved_mean_o, std::string _saved_var_o); 
         virtual void build();

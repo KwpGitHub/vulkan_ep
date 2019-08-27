@@ -6,14 +6,10 @@ namespace layers {
         std::string file;
         file.append(backend::file_path);
         file.append("shaders/bin/reducesum.spv");
-       
-        //program = new vuh::Program<Specs, Params>(*_get_device(), std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-
         program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
     }
        
-    vuh::Device* ReduceSum::_get_device() {
-        
+    vuh::Device* ReduceSum::_get_device() {        
         return backend::device;
     }
     
@@ -26,19 +22,22 @@ namespace layers {
     void ReduceSum::bind(std::string _data_i, std::string _reduced_o){
         data_i = _data_i; reduced_o = _reduced_o;
 
-		//binding.data_i = tensor_dict[data_i]->shape();
+		binding.data_i = backend::tensor_dict[data_i]->shape();
  
-		//binding.reduced_o = tensor_dict[reduced_o]->shape();
+		binding.reduced_o = backend::tensor_dict[reduced_o]->shape();
  
 		//binding.axes = axes;
   		//binding.keepdims = keepdims;
          
     }
 
-    void ReduceSum::build(){
-        
+    void ReduceSum::build(){        
         program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        //program->bind(binding, *tensor_dict[data_i]->data(), *tensor_dict[reduced_o]->data());
+        program->bind(binding, *backend::tensor_dict[data_i]->data(), *backend::tensor_dict[reduced_o]->data());
+    }
+
+    void ReduceSum::forward(){ 
+        //program->run();
     }
 
 }

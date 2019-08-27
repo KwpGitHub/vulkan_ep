@@ -9,10 +9,10 @@ layout(local_size_z_id = 2) in;
 layout(push_constant) uniform Parameters {      
   
 //input
-    backend::Shape_t X_i; backend::Shape_t I_i;
-    backend::Shape_t output_shape_i;
+    Shape_t X_i; Shape_t I_i;
+    Shape_t output_shape_i;
 //output
-    backend::Shape_t output_o;
+    Shape_t output_o;
     
 } params;
 
@@ -25,14 +25,14 @@ void main(){
     const uint idx = gl_GlobalInvocationID.x;
     const uint idy = gl_GlobalInvocationID.y;
     const uint idz = gl_GlobalInvocationID.z;
-    //const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
-	const uint I_i_size = params.I_i.n * params.I_i.c * params.I_i.d * params.I_i.w * params.I_i.h;
-    //const uint output_shape_i_size = params.output_shape_i.n * params.output_shape_i.c * params.output_shape_i.d * params.output_shape_i.w * params.output_shape_i.h;
-    //const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
+    ////const uint X_i_size = params.X_i.n * params.X_i.c * params.X_i.d * params.X_i.w * params.X_i.h;
+	//const uint I_i_size = params.I_i.n * params.I_i.c * params.I_i.d * params.I_i.w * params.I_i.h;
+    ////const uint output_shape_i_size = params.output_shape_i.n * params.output_shape_i.c * params.output_shape_i.d * params.output_shape_i.w * params.output_shape_i.h;
+    ////const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
     //
 
-    if(5 <= idx) {
-        return;
-    }
-   
+    //if(5 <= idx) {
+    //    return;
+    //}
+    return;
 }

@@ -58,8 +58,7 @@ namespace layers {
     public:
         InstanceNormalization(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( float _epsilon); 
         virtual void bind(std::string _input_i, std::string _scale_i, std::string _B_i, std::string _output_o); 
         virtual void build();

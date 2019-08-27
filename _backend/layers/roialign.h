@@ -63,8 +63,7 @@ namespace layers {
     public:
         RoiAlign(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::string _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale); 
         virtual void bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o); 
         virtual void build();

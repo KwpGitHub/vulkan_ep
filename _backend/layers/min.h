@@ -53,8 +53,7 @@ namespace layers {
     public:
         Min(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init(); 
         virtual void bind(std::string _min_o); 
         virtual void build();

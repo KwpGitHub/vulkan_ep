@@ -78,8 +78,7 @@ namespace layers {
     public:
         AveragePool(std::string name);
         
-        void forward() { program->run(); }
-        
+        virtual void forward();        
         virtual void init( std::vector<int> _kernel_shape,  std::string _auto_pad,  int _ceil_mode,  int _count_include_pad,  std::vector<int> _pads,  std::vector<int> _strides); 
         virtual void bind(std::string _X_i, std::string _Y_o); 
         virtual void build();
