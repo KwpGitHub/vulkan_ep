@@ -41,7 +41,7 @@ namespace layers {
     }
 
     void LRN::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

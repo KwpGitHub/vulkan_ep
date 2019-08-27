@@ -36,7 +36,7 @@ namespace layers {
     }
 
     void Gather::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

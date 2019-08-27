@@ -107,7 +107,7 @@ namespace layers {
     }
 
     void Scan::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

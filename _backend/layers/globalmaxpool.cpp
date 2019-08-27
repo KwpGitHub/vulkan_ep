@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void GlobalMaxPool::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -36,7 +36,7 @@ namespace layers {
     }
 
     void If::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

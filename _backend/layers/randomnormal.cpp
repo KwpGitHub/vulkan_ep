@@ -42,7 +42,7 @@ namespace layers {
     }
 
     void RandomNormal::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

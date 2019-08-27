@@ -32,7 +32,7 @@ namespace layers {
     }
 
     void Mean::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

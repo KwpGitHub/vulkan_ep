@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ReduceMax::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

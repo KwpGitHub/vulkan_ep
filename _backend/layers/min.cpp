@@ -32,7 +32,7 @@ namespace layers {
     }
 
     void Min::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Unsqueeze::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

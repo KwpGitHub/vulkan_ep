@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ReduceLogSumExp::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

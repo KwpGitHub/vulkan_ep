@@ -56,7 +56,7 @@ namespace layers {
     }
 
     void LSTM::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Asinh::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

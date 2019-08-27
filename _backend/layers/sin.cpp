@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Sin::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

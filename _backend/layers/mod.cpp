@@ -36,7 +36,7 @@ namespace layers {
     }
 
     void Mod::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -41,7 +41,7 @@ namespace layers {
     }
 
     void StringNormalizer::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

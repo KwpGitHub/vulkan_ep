@@ -41,7 +41,7 @@ namespace layers {
     }
 
     void MaxUnpool::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

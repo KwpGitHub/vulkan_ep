@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Neg::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

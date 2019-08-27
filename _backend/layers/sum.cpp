@@ -64,7 +64,7 @@ namespace layers {
     }
 
     void Sum::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

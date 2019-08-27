@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Where::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

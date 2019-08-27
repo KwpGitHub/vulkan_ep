@@ -38,7 +38,7 @@ namespace layers {
     }
 
     void MaxRoiPool::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

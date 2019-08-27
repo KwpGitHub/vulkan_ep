@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Constant::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

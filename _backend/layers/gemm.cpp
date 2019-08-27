@@ -43,7 +43,7 @@ namespace layers {
     }
 
     void Gemm::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

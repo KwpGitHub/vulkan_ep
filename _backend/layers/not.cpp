@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Not::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

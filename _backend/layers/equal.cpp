@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Equal::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

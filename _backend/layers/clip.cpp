@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void Clip::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Sinh::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

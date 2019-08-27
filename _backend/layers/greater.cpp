@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Greater::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

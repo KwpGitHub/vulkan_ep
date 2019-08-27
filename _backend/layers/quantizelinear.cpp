@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void QuantizeLinear::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

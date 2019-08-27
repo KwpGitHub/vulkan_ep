@@ -39,7 +39,7 @@ namespace layers {
     }
 
     void Multinomial::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

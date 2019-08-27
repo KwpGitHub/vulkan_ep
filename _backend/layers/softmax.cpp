@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Softmax::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

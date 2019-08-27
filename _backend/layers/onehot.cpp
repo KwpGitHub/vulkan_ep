@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void OneHot::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

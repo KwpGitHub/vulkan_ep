@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void DequantizeLinear::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

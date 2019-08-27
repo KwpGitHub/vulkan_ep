@@ -51,7 +51,7 @@ namespace layers {
     }
 
     void TfIdfVectorizer::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

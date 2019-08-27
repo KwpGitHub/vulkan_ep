@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void LogSoftmax::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

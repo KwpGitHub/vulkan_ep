@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Pow::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

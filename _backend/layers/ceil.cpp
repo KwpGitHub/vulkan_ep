@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Ceil::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

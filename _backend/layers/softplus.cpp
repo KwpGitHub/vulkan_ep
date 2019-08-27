@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Softplus::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

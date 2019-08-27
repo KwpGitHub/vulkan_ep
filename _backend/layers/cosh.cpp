@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Cosh::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

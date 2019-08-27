@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Div::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

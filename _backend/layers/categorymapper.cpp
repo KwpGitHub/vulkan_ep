@@ -41,7 +41,7 @@ namespace layers {
     }
 
     void CategoryMapper::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

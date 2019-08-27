@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ZipMap::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

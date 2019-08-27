@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void Scaler::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

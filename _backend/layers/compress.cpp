@@ -36,7 +36,7 @@ namespace layers {
     }
 
     void Compress::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

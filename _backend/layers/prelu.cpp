@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void PRelu::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

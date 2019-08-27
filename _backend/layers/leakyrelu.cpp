@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void LeakyRelu::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

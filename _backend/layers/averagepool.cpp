@@ -45,7 +45,7 @@ namespace layers {
     }
 
     void AveragePool::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

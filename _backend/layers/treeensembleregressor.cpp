@@ -67,7 +67,7 @@ namespace layers {
     }
 
     void TreeEnsembleRegressor::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

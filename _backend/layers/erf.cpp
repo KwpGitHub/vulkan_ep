@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Erf::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

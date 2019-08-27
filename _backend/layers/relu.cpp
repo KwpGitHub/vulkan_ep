@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Relu::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

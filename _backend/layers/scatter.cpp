@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void Scatter::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

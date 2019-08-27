@@ -51,7 +51,7 @@ namespace layers {
     }
 
     void ConvTranspose::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

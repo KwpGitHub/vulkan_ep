@@ -53,7 +53,7 @@ namespace layers {
     }
 
     void QLinearConv::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void HardSigmoid::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

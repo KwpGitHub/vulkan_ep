@@ -41,7 +41,7 @@ namespace layers {
     }
 
     void LinearRegressor::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

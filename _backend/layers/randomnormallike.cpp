@@ -41,7 +41,7 @@ namespace layers {
     }
 
     void RandomNormalLike::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

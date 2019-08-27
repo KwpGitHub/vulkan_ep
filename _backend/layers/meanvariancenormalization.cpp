@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void MeanVarianceNormalization::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

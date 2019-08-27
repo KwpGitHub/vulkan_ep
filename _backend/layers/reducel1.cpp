@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ReduceL1::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

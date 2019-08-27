@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Elu::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

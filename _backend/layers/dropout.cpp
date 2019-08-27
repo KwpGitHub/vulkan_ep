@@ -36,7 +36,7 @@ namespace layers {
     }
 
     void Dropout::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

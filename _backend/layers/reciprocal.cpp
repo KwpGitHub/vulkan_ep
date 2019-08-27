@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Reciprocal::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

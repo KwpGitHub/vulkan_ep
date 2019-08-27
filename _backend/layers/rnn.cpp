@@ -51,7 +51,7 @@ namespace layers {
     }
 
     void RNN::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

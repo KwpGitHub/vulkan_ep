@@ -39,7 +39,7 @@ namespace layers {
     }
 
     void CastMap::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

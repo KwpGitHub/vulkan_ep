@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void NonZero::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

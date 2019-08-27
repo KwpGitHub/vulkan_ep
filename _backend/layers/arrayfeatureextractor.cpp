@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void ArrayFeatureExtractor::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

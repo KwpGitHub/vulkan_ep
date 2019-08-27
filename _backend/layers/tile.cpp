@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Tile::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Binarizer::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

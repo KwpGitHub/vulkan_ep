@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ReduceMin::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

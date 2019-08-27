@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ArgMin::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Or::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

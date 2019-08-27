@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Mul::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

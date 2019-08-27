@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Xor::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

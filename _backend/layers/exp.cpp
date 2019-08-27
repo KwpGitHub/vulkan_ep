@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Exp::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

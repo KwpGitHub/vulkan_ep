@@ -39,7 +39,7 @@ namespace layers {
     }
 
     void OneHotEncoder::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Less::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

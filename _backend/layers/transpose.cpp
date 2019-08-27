@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Transpose::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

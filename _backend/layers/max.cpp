@@ -32,7 +32,7 @@ namespace layers {
     }
 
     void Max::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

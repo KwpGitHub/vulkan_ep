@@ -43,7 +43,7 @@ namespace layers {
     }
 
     void LpPool::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

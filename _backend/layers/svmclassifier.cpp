@@ -56,7 +56,7 @@ namespace layers {
     }
 
     void SVMClassifier::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

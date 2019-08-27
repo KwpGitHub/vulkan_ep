@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void Shrink::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

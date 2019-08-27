@@ -46,7 +46,7 @@ namespace layers {
     }
 
     void LinearClassifier::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

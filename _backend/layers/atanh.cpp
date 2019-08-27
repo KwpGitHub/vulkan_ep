@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Atanh::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

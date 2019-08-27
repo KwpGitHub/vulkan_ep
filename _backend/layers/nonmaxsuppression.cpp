@@ -39,7 +39,7 @@ namespace layers {
     }
 
     void NonMaxSuppression::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

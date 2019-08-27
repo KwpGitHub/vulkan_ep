@@ -68,7 +68,7 @@ namespace layers {
     }
 
     void TreeEnsembleClassifier::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

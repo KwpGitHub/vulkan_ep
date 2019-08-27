@@ -18,188 +18,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{91E2152E-2C2F-471B-9088-204EB4C55F82}</ProjectGuid>
-    <RootNamespace>_backend</RootNamespace>
-    <PythonVersion>3.7</PythonVersion>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Label="PythonConfiguration">
-    <RegistryView>RegistryView.Registry32</RegistryView>
-    <RegistryView Condition="$(Platform) == 'x64'">RegistryView.Registry64</RegistryView>
-    <PythonTag>$(PythonVersion)-32</PythonTag>
-    <PythonTag Condition="$(Platform) == 'x64'">$(PythonVersion)</PythonTag>
-    <PythonHome Condition="$(PythonHome) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstallPath', null, null, $(RegistryView)))</PythonHome>
-    <PythonHome Condition="$(PythonHome) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstallPath', null, null, $(RegistryView)))</PythonHome>
-    <PythonExe Condition="$(PythonExe) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstallPath', 'ExecutablePath', null, $(RegistryView)))</PythonExe>
-    <PythonExe Condition="$(PythonExe) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstallPath', 'ExecutablePath', null, $(RegistryView)))</PythonExe>
-    <PythonExe Condition="$(PythonExe) == '' and $(PythonHome) != ''">$(PythonHome)python.exe</PythonExe>
-    <PythonDevVersion>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'dev', null, $(RegistryView)))</PythonDevVersion>
-    <PythonDevVersion Condition="$(PythonDevVersion) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'dev', null, $(RegistryView)))</PythonDevVersion>
-    <PythonCorePDBVersion>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'core_pdb', null, $(RegistryView)))</PythonCorePDBVersion>
-    <PythonCorePDBVersion Condition="$(PythonCorePDBVersion) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'core_pdb', null, $(RegistryView)))</PythonCorePDBVersion>
-    <PythonCoreDVersion>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'core_d', null, $(RegistryView)))</PythonCoreDVersion>
-    <PythonCoreDVersion Condition="$(PythonCoreDVersion) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'core_d', null, $(RegistryView)))</PythonCoreDVersion>
-    <PythonDebugSuffix Condition="$(PythonCoreDVersion) != ''">_d</PythonDebugSuffix>
-    <PythonDExe Condition="$(PythonExe) != '' and $(PythonDExe) == ''">$([System.IO.Path]::GetDirectoryName($(PythonExe)))\python$(PythonDebugSuffix).exe</PythonDExe>
-    <PythonDExe Condition="!Exists($(PythonDExe))">$(PythonExe)</PythonDExe>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <PropertyGroup>
-    <DefaultDebuggerFlavor>WindowsLocalDebugger</DefaultDebuggerFlavor>
-    <DefaultDebuggerFlavor Condition="$(HasPythonDebugLaunchProvider) == 'true'">PythonDebugLaunchProvider</DefaultDebuggerFlavor>
-  </PropertyGroup>
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetName>_backend$(PythonDebugSuffix)</TargetName>
-    <TargetExt>.pyd</TargetExt>
-    <LocalDebuggerCommand>$(PythonDExe)</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import _backend'); import _backend"</LocalDebuggerCommandArguments>
-    <LocalDebuggerEnvironment>PYTHONPATH=$(OutDir)</LocalDebuggerEnvironment>
-    <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <TargetName>_backend</TargetName>
-    <TargetExt>.pyd</TargetExt>
-    <LocalDebuggerCommand>$(PythonExe)</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import _backend'); import _backend"</LocalDebuggerCommandArguments>
-    <LocalDebuggerEnvironment>PYTHONPATH=$(OutDir)</LocalDebuggerEnvironment>
-    <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>_backend$(PythonDebugSuffix)</TargetName>
-    <TargetExt>.pyd</TargetExt>
-    <LocalDebuggerCommand>$(PythonDExe)</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import _backend'); import _backend"</LocalDebuggerCommandArguments>
-    <LocalDebuggerEnvironment>PYTHONPATH=$(OutDir)</LocalDebuggerEnvironment>
-    <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>_backend</TargetName>
-    <TargetExt>.pyd</TargetExt>
-    <LocalDebuggerCommand>$(PythonExe)</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import _backend'); import _backend"</LocalDebuggerCommandArguments>
-    <LocalDebuggerEnvironment>PYTHONPATH=$(OutDir)</LocalDebuggerEnvironment>
-    <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <SDLCheck>true</SDLCheck>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(PythonHome)\libs;C:\VulkanSDK\1.1.108.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <RuntimeLibrary>Multithreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <IgnoreSpecificDefaultLibraries>libucrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>ucrt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <RuntimeLibrary>Multithreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)\Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <SDLCheck>true</SDLCheck>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <IgnoreSpecificDefaultLibraries>libucrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(PythonHome)\libs;C:\VulkanSDK\1.1.108.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="kernel\device.cpp" />
     <ClCompile Include="kernel\error.cpp" />
     <ClCompile Include="kernel\instance.cpp" />
     <ClCompile Include="kernel\utils.cpp" />
+    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="layers\abs.cpp" />
     <ClCompile Include="layers\acos.cpp" />
     <ClCompile Include="layers\acosh.cpp" />
@@ -535,165 +359,183 @@
     <ClInclude Include="layers_map.h" />
     <ClInclude Include="tensor.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\abs.comp" />
-    <None Include="shaders\acos.comp" />
-    <None Include="shaders\acosh.comp" />
-    <None Include="shaders\add.comp" />
-    <None Include="shaders\and.comp" />
-    <None Include="shaders\argmax.comp" />
-    <None Include="shaders\argmin.comp" />
-    <None Include="shaders\arrayfeatureextractor.comp" />
-    <None Include="shaders\asin.comp" />
-    <None Include="shaders\asinh.comp" />
-    <None Include="shaders\atan.comp" />
-    <None Include="shaders\atanh.comp" />
-    <None Include="shaders\averagepool.comp" />
-    <None Include="shaders\batchnormalization.comp" />
-    <None Include="shaders\binarizer.comp" />
-    <None Include="shaders\cast.comp" />
-    <None Include="shaders\castmap.comp" />
-    <None Include="shaders\categorymapper.comp" />
-    <None Include="shaders\ceil.comp" />
-    <None Include="shaders\clip.comp" />
-    <None Include="shaders\compress.comp" />
-    <None Include="shaders\concat.comp" />
-    <None Include="shaders\constant.comp" />
-    <None Include="shaders\constantofshape.comp" />
-    <None Include="shaders\conv.comp" />
-    <None Include="shaders\convinteger.comp" />
-    <None Include="shaders\convtranspose.comp" />
-    <None Include="shaders\cos.comp" />
-    <None Include="shaders\cosh.comp" />
-    <None Include="shaders\depthtospace.comp" />
-    <None Include="shaders\dequantizelinear.comp" />
-    <None Include="shaders\dictvectorizer.comp" />
-    <None Include="shaders\div.comp" />
-    <None Include="shaders\dropout.comp" />
-    <None Include="shaders\elu.comp" />
-    <None Include="shaders\equal.comp" />
-    <None Include="shaders\erf.comp" />
-    <None Include="shaders\exp.comp" />
-    <None Include="shaders\expand.comp" />
-    <None Include="shaders\eyelike.comp" />
-    <None Include="shaders\featurevectorizer.comp" />
-    <None Include="shaders\flatten.comp" />
-    <None Include="shaders\floor.comp" />
-    <None Include="shaders\gather.comp" />
-    <None Include="shaders\gemm.comp" />
-    <None Include="shaders\globalaveragepool.comp" />
-    <None Include="shaders\globallppool.comp" />
-    <None Include="shaders\globalmaxpool.comp" />
-    <None Include="shaders\greater.comp" />
-    <None Include="shaders\gru.comp" />
-    <None Include="shaders\hardmax.comp" />
-    <None Include="shaders\hardsigmoid.comp" />
-    <None Include="shaders\identity.comp" />
-    <None Include="shaders\if.comp" />
-    <None Include="shaders\imputer.comp" />
-    <None Include="shaders\instancenormalization.comp" />
-    <None Include="shaders\isinf.comp" />
-    <None Include="shaders\isnan.comp" />
-    <None Include="shaders\labelencoder.comp" />
-    <None Include="shaders\leakyrelu.comp" />
-    <None Include="shaders\less.comp" />
-    <None Include="shaders\linearclassifier.comp" />
-    <None Include="shaders\linearregressor.comp" />
-    <None Include="shaders\log.comp" />
-    <None Include="shaders\logsoftmax.comp" />
-    <None Include="shaders\loop.comp" />
-    <None Include="shaders\lpnormalization.comp" />
-    <None Include="shaders\lppool.comp" />
-    <None Include="shaders\lrn.comp" />
-    <None Include="shaders\lstm.comp" />
-    <None Include="shaders\matmul.comp" />
-    <None Include="shaders\matmulinteger.comp" />
-    <None Include="shaders\max.comp" />
-    <None Include="shaders\maxpool.comp" />
-    <None Include="shaders\maxroipool.comp" />
-    <None Include="shaders\maxunpool.comp" />
-    <None Include="shaders\mean.comp" />
-    <None Include="shaders\meanvariancenormalization.comp" />
-    <None Include="shaders\min.comp" />
-    <None Include="shaders\mod.comp" />
-    <None Include="shaders\mul.comp" />
-    <None Include="shaders\multinomial.comp" />
-    <None Include="shaders\neg.comp" />
-    <None Include="shaders\nonmaxsuppression.comp" />
-    <None Include="shaders\nonzero.comp" />
-    <None Include="shaders\normalizer.comp" />
-    <None Include="shaders\not.comp" />
-    <None Include="shaders\onehot.comp" />
-    <None Include="shaders\onehotencoder.comp" />
-    <None Include="shaders\or.comp" />
-    <None Include="shaders\pad.comp" />
-    <None Include="shaders\pow.comp" />
-    <None Include="shaders\prelu.comp" />
-    <None Include="shaders\qlinearconv.comp" />
-    <None Include="shaders\qlinearmatmul.comp" />
-    <None Include="shaders\quantizelinear.comp" />
-    <None Include="shaders\randomnormal.comp" />
-    <None Include="shaders\randomnormallike.comp" />
-    <None Include="shaders\randomuniform.comp" />
-    <None Include="shaders\randomuniformlike.comp" />
-    <None Include="shaders\reciprocal.comp" />
-    <None Include="shaders\reducel1.comp" />
-    <None Include="shaders\reducel2.comp" />
-    <None Include="shaders\reducelogsum.comp" />
-    <None Include="shaders\reducelogsumexp.comp" />
-    <None Include="shaders\reducemax.comp" />
-    <None Include="shaders\reducemean.comp" />
-    <None Include="shaders\reducemin.comp" />
-    <None Include="shaders\reduceprod.comp" />
-    <None Include="shaders\reducesum.comp" />
-    <None Include="shaders\reducesumsquare.comp" />
-    <None Include="shaders\relu.comp" />
-    <None Include="shaders\reshape.comp" />
-    <None Include="shaders\resize.comp" />
-    <None Include="shaders\reversesequence.comp" />
-    <None Include="shaders\rnn.comp" />
-    <None Include="shaders\roialign.comp" />
-    <None Include="shaders\scaler.comp" />
-    <None Include="shaders\scan.comp" />
-    <None Include="shaders\scatter.comp" />
-    <None Include="shaders\selu.comp" />
-    <None Include="shaders\shape.comp" />
-    <None Include="shaders\shrink.comp" />
-    <None Include="shaders\sigmoid.comp" />
-    <None Include="shaders\sign.comp" />
-    <None Include="shaders\sin.comp" />
-    <None Include="shaders\sinh.comp" />
-    <None Include="shaders\size.comp" />
-    <None Include="shaders\slice.comp" />
-    <None Include="shaders\softmax.comp" />
-    <None Include="shaders\softplus.comp" />
-    <None Include="shaders\softsign.comp" />
-    <None Include="shaders\spacetodepth.comp" />
-    <None Include="shaders\split.comp" />
-    <None Include="shaders\sqrt.comp" />
-    <None Include="shaders\squeeze.comp" />
-    <None Include="shaders\stringnormalizer.comp" />
-    <None Include="shaders\sub.comp" />
-    <None Include="shaders\sum.comp" />
-    <None Include="shaders\svmclassifier.comp" />
-    <None Include="shaders\svmregressor.comp" />
-    <None Include="shaders\tan.comp" />
-    <None Include="shaders\tanh.comp" />
-    <None Include="shaders\tfidfvectorizer.comp" />
-    <None Include="shaders\thresholdedrelu.comp" />
-    <None Include="shaders\tile.comp" />
-    <None Include="shaders\topk.comp" />
-    <None Include="shaders\transpose.comp" />
-    <None Include="shaders\treeensembleclassifier.comp" />
-    <None Include="shaders\treeensembleregressor.comp" />
-    <None Include="shaders\unsqueeze.comp" />
-    <None Include="shaders\where.comp" />
-    <None Include="shaders\xor.comp" />
-    <None Include="shaders\zipmap.comp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="pybind_modules.txt" />
-  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{91E2152E-2C2F-471B-9088-204EB4C55F82}</ProjectGuid>
+    <RootNamespace>_backend</RootNamespace>
+    <PythonVersion>3.7</PythonVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="PythonConfiguration">
+    <RegistryView>RegistryView.Registry32</RegistryView>
+    <RegistryView Condition="$(Platform) == 'x64'">RegistryView.Registry64</RegistryView>
+    <PythonTag>$(PythonVersion)-32</PythonTag>
+    <PythonTag Condition="$(Platform) == 'x64'">$(PythonVersion)</PythonTag>
+    <PythonHome Condition="$(PythonHome) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstallPath', null, null, $(RegistryView)))</PythonHome>
+    <PythonHome Condition="$(PythonHome) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstallPath', null, null, $(RegistryView)))</PythonHome>
+    <PythonExe Condition="$(PythonExe) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstallPath', 'ExecutablePath', null, $(RegistryView)))</PythonExe>
+    <PythonExe Condition="$(PythonExe) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstallPath', 'ExecutablePath', null, $(RegistryView)))</PythonExe>
+    <PythonExe Condition="$(PythonExe) == '' and $(PythonHome) != ''">$(PythonHome)python.exe</PythonExe>
+    <PythonDevVersion>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'dev', null, $(RegistryView)))</PythonDevVersion>
+    <PythonDevVersion Condition="$(PythonDevVersion) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'dev', null, $(RegistryView)))</PythonDevVersion>
+    <PythonCorePDBVersion>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'core_pdb', null, $(RegistryView)))</PythonCorePDBVersion>
+    <PythonCorePDBVersion Condition="$(PythonCorePDBVersion) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'core_pdb', null, $(RegistryView)))</PythonCorePDBVersion>
+    <PythonCoreDVersion>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'core_d', null, $(RegistryView)))</PythonCoreDVersion>
+    <PythonCoreDVersion Condition="$(PythonCoreDVersion) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\$(PythonTag)\InstalledFeatures', 'core_d', null, $(RegistryView)))</PythonCoreDVersion>
+    <PythonDebugSuffix Condition="$(PythonCoreDVersion) != ''">_d</PythonDebugSuffix>
+    <PythonDExe Condition="$(PythonExe) != '' and $(PythonDExe) == ''">$([System.IO.Path]::GetDirectoryName($(PythonExe)))\python$(PythonDebugSuffix).exe</PythonDExe>
+    <PythonDExe Condition="!Exists($(PythonDExe))">$(PythonExe)</PythonDExe>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <DefaultDebuggerFlavor>WindowsLocalDebugger</DefaultDebuggerFlavor>
+    <DefaultDebuggerFlavor Condition="$(HasPythonDebugLaunchProvider) == 'true'">PythonDebugLaunchProvider</DefaultDebuggerFlavor>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>_backend$(PythonDebugSuffix)</TargetName>
+    <TargetExt>.pyd</TargetExt>
+    <LocalDebuggerCommand>$(PythonDExe)</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import _backend'); import _backend"</LocalDebuggerCommandArguments>
+    <LocalDebuggerEnvironment>PYTHONPATH=$(OutDir)</LocalDebuggerEnvironment>
+    <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>_backend</TargetName>
+    <TargetExt>.pyd</TargetExt>
+    <LocalDebuggerCommand>$(PythonExe)</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import _backend'); import _backend"</LocalDebuggerCommandArguments>
+    <LocalDebuggerEnvironment>PYTHONPATH=$(OutDir)</LocalDebuggerEnvironment>
+    <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>_backend$(PythonDebugSuffix)</TargetName>
+    <TargetExt>.pyd</TargetExt>
+    <LocalDebuggerCommand>$(PythonDExe)</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import _backend'); import _backend"</LocalDebuggerCommandArguments>
+    <LocalDebuggerEnvironment>PYTHONPATH=$(OutDir)</LocalDebuggerEnvironment>
+    <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>_backend</TargetName>
+    <TargetExt>.pyd</TargetExt>
+    <LocalDebuggerCommand>$(PythonExe)</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>-i -c "print('&gt;&gt;&gt; import _backend'); import _backend"</LocalDebuggerCommandArguments>
+    <LocalDebuggerEnvironment>PYTHONPATH=$(OutDir)</LocalDebuggerEnvironment>
+    <DebuggerFlavor>$(DefaultDebuggerFlavor)</DebuggerFlavor>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(PythonHome)include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(PythonHome)\libs;C:\VulkanSDK\1.1.108.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>Multithreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreSpecificDefaultLibraries>libucrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>ucrt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(PythonHome)libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>Multithreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(PythonHome)\Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreSpecificDefaultLibraries>libucrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(PythonHome)\libs;C:\VulkanSDK\1.1.108.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

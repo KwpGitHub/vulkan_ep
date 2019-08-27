@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Identity::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Tanh::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

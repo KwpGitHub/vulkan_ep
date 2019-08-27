@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void ConstantOfShape::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

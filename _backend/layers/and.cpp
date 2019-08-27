@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void And::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

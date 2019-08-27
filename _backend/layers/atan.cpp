@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Atan::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

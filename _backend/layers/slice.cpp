@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void Slice::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

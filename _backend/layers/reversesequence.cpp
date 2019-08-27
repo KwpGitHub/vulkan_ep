@@ -38,7 +38,7 @@ namespace layers {
     }
 
     void ReverseSequence::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

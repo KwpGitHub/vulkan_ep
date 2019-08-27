@@ -48,7 +48,7 @@ namespace layers {
     }
 
     void MaxPool::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

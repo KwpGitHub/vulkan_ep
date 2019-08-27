@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void MatMul::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -39,7 +39,7 @@ namespace layers {
     }
 
     void Pad::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

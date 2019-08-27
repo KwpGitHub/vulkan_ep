@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Sqrt::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

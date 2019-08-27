@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ReduceProd::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

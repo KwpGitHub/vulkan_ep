@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Cos::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

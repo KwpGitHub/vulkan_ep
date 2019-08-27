@@ -40,7 +40,7 @@ namespace layers {
     }
 
     void QLinearMatMul::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

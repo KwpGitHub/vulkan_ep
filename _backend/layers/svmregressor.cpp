@@ -49,7 +49,7 @@ namespace layers {
     }
 
     void SVMRegressor::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

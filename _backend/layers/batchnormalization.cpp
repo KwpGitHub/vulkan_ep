@@ -45,7 +45,7 @@ namespace layers {
     }
 
     void BatchNormalization::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

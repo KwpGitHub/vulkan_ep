@@ -48,7 +48,7 @@ namespace layers {
     }
 
     void ConvInteger::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Size::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

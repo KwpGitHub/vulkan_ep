@@ -66,7 +66,7 @@ namespace layers {
     }
 
     void Concat::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

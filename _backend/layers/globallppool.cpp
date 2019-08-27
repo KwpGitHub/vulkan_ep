@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void GlobalLpPool::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

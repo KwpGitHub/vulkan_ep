@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Floor::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

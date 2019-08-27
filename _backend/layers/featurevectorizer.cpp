@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void FeatureVectorizer::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Shape::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

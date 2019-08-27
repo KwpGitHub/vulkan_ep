@@ -36,7 +36,7 @@ namespace layers {
     }
 
     void MatMulInteger::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

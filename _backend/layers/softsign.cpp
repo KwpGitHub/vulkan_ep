@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Softsign::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

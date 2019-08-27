@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ReduceMean::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

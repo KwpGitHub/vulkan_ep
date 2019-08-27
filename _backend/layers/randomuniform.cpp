@@ -42,7 +42,7 @@ namespace layers {
     }
 
     void RandomUniform::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

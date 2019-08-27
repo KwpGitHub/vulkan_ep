@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void EyeLike::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -34,7 +34,7 @@ namespace layers {
     }
 
     void Sub::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Hardmax::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

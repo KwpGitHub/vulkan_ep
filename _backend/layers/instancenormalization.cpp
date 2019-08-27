@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void InstanceNormalization::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

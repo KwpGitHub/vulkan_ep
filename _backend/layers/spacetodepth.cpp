@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void SpaceToDepth::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -51,7 +51,7 @@ namespace layers {
     }
 
     void LabelEncoder::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

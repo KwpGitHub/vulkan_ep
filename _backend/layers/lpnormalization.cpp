@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void LpNormalization::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

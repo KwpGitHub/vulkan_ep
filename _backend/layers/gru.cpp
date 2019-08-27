@@ -53,7 +53,7 @@ namespace layers {
     }
 
     void GRU::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

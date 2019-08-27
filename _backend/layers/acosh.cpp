@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Acosh::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

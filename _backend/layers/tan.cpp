@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Tan::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

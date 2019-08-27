@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void Selu::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

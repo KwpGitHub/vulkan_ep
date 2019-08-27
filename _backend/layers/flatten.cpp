@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Flatten::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

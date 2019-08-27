@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Loop::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

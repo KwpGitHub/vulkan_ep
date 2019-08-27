@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void ThresholdedRelu::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

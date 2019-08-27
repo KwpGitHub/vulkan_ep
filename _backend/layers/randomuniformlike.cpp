@@ -41,7 +41,7 @@ namespace layers {
     }
 
     void RandomUniformLike::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

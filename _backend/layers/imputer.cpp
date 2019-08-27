@@ -41,7 +41,7 @@ namespace layers {
     }
 
     void Imputer::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

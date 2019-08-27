@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>TestingPipeline</Name>
     <RootNamespace>TestingPipeline</RootNamespace>
-    <InterpreterId>Global|ContinuumAnalytics|Anaconda37-64</InterpreterId>
+    <InterpreterId>CondaEnv|CondaEnv|visual_sutdio_base</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <EnableNativeCodeDebugging>True</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="CondaEnv|CondaEnv|Anaconda3" />
+    <InterpreterReference Include="CondaEnv|CondaEnv|visual_sutdio_base" />
     <InterpreterReference Include="CondaEnv|CondaEnv|vulkan_testing_env" />
     <InterpreterReference Include="Global|ContinuumAnalytics|Anaconda37-64" />
   </ItemGroup>

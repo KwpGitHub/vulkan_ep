@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Normalizer::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

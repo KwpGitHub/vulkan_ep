@@ -36,7 +36,7 @@ namespace layers {
     }
 
     void Split::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

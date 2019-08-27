@@ -35,7 +35,7 @@ namespace layers {
     }
 
     void Cast::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

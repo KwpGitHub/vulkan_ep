@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Sign::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

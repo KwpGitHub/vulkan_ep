@@ -36,7 +36,7 @@ namespace layers {
     }
 
     void Resize::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

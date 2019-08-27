@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Acos::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

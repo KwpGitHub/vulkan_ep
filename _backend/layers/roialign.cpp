@@ -45,7 +45,7 @@ namespace layers {
     }
 
     void RoiAlign::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void GlobalAveragePool::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

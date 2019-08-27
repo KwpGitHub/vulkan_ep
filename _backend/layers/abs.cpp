@@ -33,7 +33,7 @@ namespace layers {
     }
 
     void Abs::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

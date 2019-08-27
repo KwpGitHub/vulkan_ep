@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void DictVectorizer::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }

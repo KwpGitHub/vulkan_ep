@@ -37,7 +37,7 @@ namespace layers {
     }
 
     void ArgMax::forward(){ 
-        //program->run();
+        program->run();
     }
 
 }
