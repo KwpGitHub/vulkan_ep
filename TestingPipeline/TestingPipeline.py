@@ -4,8 +4,6 @@ import onnx
 import json
 import os
 import onnx_helper
-#import _backend as backend
-#from layers import *
 
 
 

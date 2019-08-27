@@ -379,12 +379,13 @@ def onnx_proto():
                 'create_bind_lst' :             ', '.join(['_{0}'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
         }        
 
-        py_layers_map.append(python_class_str(mapt))
+        
        
 
         op_file.write(op.name+'=' + ', '.join(PARAMETERS + OPTIONAL_PARAMETERS) + '\n')
         
         if(op.since_version <= 10 and op.deprecated==False):
+            py_layers_map.append(python_class_str(mapt))
             if(len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 1 and len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) == 1 and len(PARAMETERS + OPTIONAL_PARAMETERS) == 0 and op_name not in activation and op_name not in elementwise and op_name not in math_op):
                 single_element.append(op_name)
             elif(len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) == 2 and len(PARAMETERS + OPTIONAL_PARAMETERS) == 0 and op_name not in activation and op_name not in elementwise and op_name not in math_op):
@@ -412,11 +413,13 @@ def onnx_proto():
             layers_lst.append( 'void init_layer_{norm}(py::module&);\n#include "./layers/{lower}.h"'.format_map(mapt) + layers_file_str(mapt) )
             layer_map.append('	{{ "{0}", &createInstance<{0}>}}'.format(op_name))
             parameter_map.append('{{ "{0}", {{{1}}} }}'.format(op_name, ', '.join(['{0}'.format(i) for k, i in p_map.items() if(i != '') ] )))
-
+            
+    layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
    
     pybind_modules_file.write('\n'.join(pybind_modules))
     layers.writelines(layers_lst)
     op_file.close()
+
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
     py_layers.write('import numpy as np\nimport _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
 

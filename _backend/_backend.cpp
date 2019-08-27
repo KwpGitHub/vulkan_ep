@@ -21,7 +21,6 @@ void create_instance() {
 	backend::file_path = "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend\\";
 }
 
-
 void test() {
 	uint32_t size = 1073741823;//1GB
 	size = 536870911;//5MB
