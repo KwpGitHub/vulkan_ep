@@ -39,14 +39,16 @@ output: Tensor of rank one greater than input tensor 'indices', i.e. rank(output
 namespace layers {   
 
     class OneHot : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t indices_i; backend::Shape_t depth_i; backend::Shape_t values_i;
-            
-            backend::Shape_t output_o;
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         int axis;
         std::string indices_i; std::string depth_i; std::string values_i;
         
@@ -54,12 +56,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         OneHot(std::string name);

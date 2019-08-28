@@ -24,14 +24,16 @@ output: Values that are live-out to the enclosing scope. The return values in th
 namespace layers {   
 
     class If : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t cond_i;
-            
-            
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         int else_branch; int then_branch;
         std::string cond_i;
         
@@ -39,12 +41,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         If(std::string name);

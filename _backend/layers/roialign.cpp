@@ -3,16 +3,12 @@
 namespace layers {    
    
     RoiAlign::RoiAlign(std::string name) : backend::Layer(name) {    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/roialign.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/roialign.spv");       
+        dev = backend::device;
     }
        
-    vuh::Device* RoiAlign::_get_device() {        
-        return backend::device;
-    }
-    
+        
     void RoiAlign::init( std::string _mode,  int _output_height,  int _output_width,  int _sampling_ratio,  float _spatial_scale) {      
 		 mode = _mode; 
  		 output_height = _output_height; 
@@ -20,28 +16,27 @@ namespace layers {
  		 sampling_ratio = _sampling_ratio; 
  		 spatial_scale = _spatial_scale; 
   
+
     }
     
-    void RoiAlign::bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o){
-        X_i = _X_i; rois_i = _rois_i; batch_indices_i = _batch_indices_i; Y_o = _Y_o;
+    void RoiAlign::bind(std::string _X_i, std::string _rois_i, std::string _batch_indices_i, std::string _Y_o){    
+        X_i = _X_i; rois_i = _rois_i; batch_indices_i = _batch_indices_i; Y_o = _Y_o;        
+		SHAPES.push_back(backend::tensor_dict[X_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[rois_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[batch_indices_i]->shape());
+ 
+		SHAPES.push_back(backend::tensor_dict[Y_o]->shape());
+ 
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
-		binding.X_i = backend::tensor_dict[X_i]->shape();
-  		binding.rois_i = backend::tensor_dict[rois_i]->shape();
-  		binding.batch_indices_i = backend::tensor_dict[batch_indices_i]->shape();
- 
-		binding.Y_o = backend::tensor_dict[Y_o]->shape();
- 
-		//binding.mode = mode;
-  		//binding.output_height = output_height;
-  		//binding.output_width = output_width;
-  		//binding.sampling_ratio = sampling_ratio;
-  		//binding.spatial_scale = spatial_scale;
-         
+
     }
 
-    void RoiAlign::build(){        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding, *backend::tensor_dict[X_i]->data(), *backend::tensor_dict[rois_i]->data(), *backend::tensor_dict[batch_indices_i]->data(), *backend::tensor_dict[Y_o]->data());
+    void RoiAlign::build(){     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[X_i]->data, *backend::tensor_dict[rois_i]->data, *backend::tensor_dict[batch_indices_i]->data, *backend::tensor_dict[Y_o]->data);
     }
 
     void RoiAlign::forward(){ 

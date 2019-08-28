@@ -27,14 +27,16 @@ output: Classification scores ([N,E] - one score for each class and example
 namespace layers {   
 
     class LinearClassifier : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t X_i;
-            
-            backend::Shape_t Y_o; backend::Shape_t Z_o;
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         std::vector<float> coefficients; std::vector<int> classlabels_ints; std::vector<std::string> classlabels_strings; std::vector<float> intercepts; int multi_class; std::string post_transform;
         std::string X_i;
         
@@ -42,12 +44,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         LinearClassifier(std::string name);

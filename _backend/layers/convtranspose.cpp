@@ -3,16 +3,12 @@
 namespace layers {    
    
     ConvTranspose::ConvTranspose(std::string name) : backend::Layer(name) {    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/convtranspose.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/convtranspose.spv");       
+        dev = backend::device;
     }
        
-    vuh::Device* ConvTranspose::_get_device() {        
-        return backend::device;
-    }
-    
+        
     void ConvTranspose::init( std::string _auto_pad,  std::vector<int> _dilations,  int _group,  std::vector<int> _kernel_shape,  std::vector<int> _output_padding,  std::vector<int> _output_shape,  std::vector<int> _pads,  std::vector<int> _strides) {      
 		 auto_pad = _auto_pad; 
  		 dilations = _dilations; 
@@ -23,31 +19,27 @@ namespace layers {
  		 pads = _pads; 
  		 strides = _strides; 
   
+
     }
     
-    void ConvTranspose::bind(std::string _X_i, std::string _W_i, std::string _B_i, std::string _Y_o){
-        X_i = _X_i; W_i = _W_i; B_i = _B_i; Y_o = _Y_o;
+    void ConvTranspose::bind(std::string _X_i, std::string _W_i, std::string _B_i, std::string _Y_o){    
+        X_i = _X_i; W_i = _W_i; B_i = _B_i; Y_o = _Y_o;        
+		SHAPES.push_back(backend::tensor_dict[X_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[W_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[B_i]->shape());
+ 
+		SHAPES.push_back(backend::tensor_dict[Y_o]->shape());
+ 
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
-		binding.X_i = backend::tensor_dict[X_i]->shape();
-  		binding.W_i = backend::tensor_dict[W_i]->shape();
-  		binding.B_i = backend::tensor_dict[B_i]->shape();
- 
-		binding.Y_o = backend::tensor_dict[Y_o]->shape();
- 
-		//binding.auto_pad = auto_pad;
-  		//binding.dilations = dilations;
-  		//binding.group = group;
-  		//binding.kernel_shape = kernel_shape;
-  		//binding.output_padding = output_padding;
-  		//binding.output_shape = output_shape;
-  		//binding.pads = pads;
-  		//binding.strides = strides;
-         
+
     }
 
-    void ConvTranspose::build(){        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding, *backend::tensor_dict[X_i]->data(), *backend::tensor_dict[W_i]->data(), *backend::tensor_dict[B_i]->data(), *backend::tensor_dict[Y_o]->data());
+    void ConvTranspose::build(){     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[X_i]->data, *backend::tensor_dict[W_i]->data, *backend::tensor_dict[B_i]->data, *backend::tensor_dict[Y_o]->data);
     }
 
     void ConvTranspose::forward(){ 

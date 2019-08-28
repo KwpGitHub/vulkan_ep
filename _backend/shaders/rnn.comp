@@ -7,23 +7,27 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-  
-//input
+    uint size;
+    float a;
+/*//input
     Shape_t X_i; Shape_t W_i; Shape_t R_i;
     Shape_t B_i; Shape_t sequence_lens_i; Shape_t initial_h_i;
-//output
+ //output
     
-    Shape_t Y_o; Shape_t Y_h_o;
+    Shape_t Y_o; Shape_t Y_h_o;*/
+
+
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float X_i[]; };
-layout(std430, binding = 1) buffer lay1 { float W_i[]; };
-layout(std430, binding = 2) buffer lay2 { float R_i[]; };
-layout(std430, binding = 3) buffer lay3 { float B_i[]; };
-layout(std430, binding = 4) buffer lay4 { float sequence_lens_i[]; };
-layout(std430, binding = 5) buffer lay5 { float initial_h_i[]; };
-layout(std430, binding = 6) buffer lay6 { float Y_o[]; };
-layout(std430, binding = 7) buffer lay7 { float Y_h_o[]; };
+layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
+layout(std430, binding = 1) buffer lay1 { float X_i[]; };
+layout(std430, binding = 2) buffer lay2 { float W_i[]; };
+layout(std430, binding = 3) buffer lay3 { float R_i[]; };
+layout(std430, binding = 4) buffer lay4 { float B_i[]; };
+layout(std430, binding = 5) buffer lay5 { float sequence_lens_i[]; };
+layout(std430, binding = 6) buffer lay6 { float initial_h_i[]; };
+layout(std430, binding = 7) buffer lay7 { float Y_o[]; };
+layout(std430, binding = 8) buffer lay8 { float Y_h_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;

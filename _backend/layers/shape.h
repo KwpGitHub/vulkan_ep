@@ -26,14 +26,16 @@ output: Shape of the input tensor
 namespace layers {   
 
     class Shape : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t data_i;
-            
-            backend::Shape_t shape_o;
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         
         std::string data_i;
         
@@ -41,12 +43,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         Shape(std::string name);

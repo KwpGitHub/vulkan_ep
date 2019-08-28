@@ -115,14 +115,16 @@ output: The last output value of the cell. It has shape `[num_directions, batch_
 namespace layers {   
 
     class LSTM : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t X_i; backend::Shape_t W_i; backend::Shape_t R_i;
-            backend::Shape_t B_i; backend::Shape_t sequence_lens_i; backend::Shape_t initial_h_i; backend::Shape_t initial_c_i; backend::Shape_t P_i;
-            
-            backend::Shape_t Y_o; backend::Shape_t Y_h_o; backend::Shape_t Y_c_o;
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         std::vector<float> activation_alpha; std::vector<float> activation_beta; std::vector<std::string> activations; float clip; std::string direction; int hidden_size; int input_forget;
         std::string X_i; std::string W_i; std::string R_i;
         std::string B_i; std::string sequence_lens_i; std::string initial_h_i; std::string initial_c_i; std::string P_i;
@@ -130,12 +132,7 @@ namespace layers {
         std::string Y_o; std::string Y_h_o; std::string Y_c_o;
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         LSTM(std::string name);

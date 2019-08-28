@@ -3,36 +3,36 @@
 namespace layers {    
    
     MatMulInteger::MatMulInteger(std::string name) : backend::Layer(name) {    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/matmulinteger.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/matmulinteger.spv");       
+        dev = backend::device;
     }
        
-    vuh::Device* MatMulInteger::_get_device() {        
-        return backend::device;
-    }
-    
+        
     void MatMulInteger::init() {      
   
+
     }
     
-    void MatMulInteger::bind(std::string _A_i, std::string _B_i, std::string _a_zero_point_i, std::string _b_zero_point_i, std::string _Y_o){
-        A_i = _A_i; B_i = _B_i; a_zero_point_i = _a_zero_point_i; b_zero_point_i = _b_zero_point_i; Y_o = _Y_o;
+    void MatMulInteger::bind(std::string _A_i, std::string _B_i, std::string _a_zero_point_i, std::string _b_zero_point_i, std::string _Y_o){    
+        A_i = _A_i; B_i = _B_i; a_zero_point_i = _a_zero_point_i; b_zero_point_i = _b_zero_point_i; Y_o = _Y_o;        
+		SHAPES.push_back(backend::tensor_dict[A_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[B_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[a_zero_point_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[b_zero_point_i]->shape());
+ 
+		SHAPES.push_back(backend::tensor_dict[Y_o]->shape());
+ 
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
-		binding.A_i = backend::tensor_dict[A_i]->shape();
-  		binding.B_i = backend::tensor_dict[B_i]->shape();
-  		binding.a_zero_point_i = backend::tensor_dict[a_zero_point_i]->shape();
-  		binding.b_zero_point_i = backend::tensor_dict[b_zero_point_i]->shape();
- 
-		binding.Y_o = backend::tensor_dict[Y_o]->shape();
- 
-        
+
     }
 
-    void MatMulInteger::build(){        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding, *backend::tensor_dict[A_i]->data(), *backend::tensor_dict[B_i]->data(), *backend::tensor_dict[a_zero_point_i]->data(), *backend::tensor_dict[b_zero_point_i]->data(), *backend::tensor_dict[Y_o]->data());
+    void MatMulInteger::build(){     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[A_i]->data, *backend::tensor_dict[B_i]->data, *backend::tensor_dict[a_zero_point_i]->data, *backend::tensor_dict[b_zero_point_i]->data, *backend::tensor_dict[Y_o]->data);
     }
 
     void MatMulInteger::forward(){ 

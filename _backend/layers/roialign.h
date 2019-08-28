@@ -38,14 +38,16 @@ output: RoI pooled output, 4-D tensor of shape (num_rois, C, output_height, outp
 namespace layers {   
 
     class RoiAlign : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t X_i; backend::Shape_t rois_i; backend::Shape_t batch_indices_i;
-            
-            backend::Shape_t Y_o;
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         std::string mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
         std::string X_i; std::string rois_i; std::string batch_indices_i;
         
@@ -53,12 +55,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         RoiAlign(std::string name);

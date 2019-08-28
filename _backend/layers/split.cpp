@@ -3,36 +3,34 @@
 namespace layers {    
    
     Split::Split(std::string name) : backend::Layer(name) {    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/split.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/split.spv");       
+        dev = backend::device;
     }
        
-    vuh::Device* Split::_get_device() {        
-        return backend::device;
-    }
-    
+        
     void Split::init( int _axis,  std::vector<int> _split) {      
 		 axis = _axis; 
  		 split = _split; 
   
+
     }
     
-    void Split::bind(std::string _input_i){
-        input_i = _input_i;
-
-		binding.input_i = backend::tensor_dict[input_i]->shape();
+    void Split::bind(std::string _input_i){    
+        input_i = _input_i;        
+		SHAPES.push_back(backend::tensor_dict[input_i]->shape());
  
 
-		//binding.axis = axis;
-  		//binding.split = split;
-         
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
+
+
     }
 
-    void Split::build(){        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding, *backend::tensor_dict[input_i]->data());
+    void Split::build(){     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[input_i]->data);
     }
 
     void Split::forward(){ 

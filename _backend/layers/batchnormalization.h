@@ -43,14 +43,16 @@ output: Saved variance used during training to speed up gradient computation.
 namespace layers {   
 
     class BatchNormalization : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t X_i; backend::Shape_t scale_i; backend::Shape_t B_i; backend::Shape_t mean_i; backend::Shape_t var_i;
-            
-            backend::Shape_t Y_o;
-            backend::Shape_t mean_o; backend::Shape_t var_o; backend::Shape_t saved_mean_o; backend::Shape_t saved_var_o;
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         float epsilon; float momentum;
         std::string X_i; std::string scale_i; std::string B_i; std::string mean_i; std::string var_i;
         
@@ -58,12 +60,7 @@ namespace layers {
         std::string mean_o; std::string var_o; std::string saved_mean_o; std::string saved_var_o;
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         BatchNormalization(std::string name);

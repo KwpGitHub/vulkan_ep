@@ -10,6 +10,11 @@
 #include "kernel/vuh.h"
 
 namespace backend {
+	inline vuh::Instance* instance;
+	inline vuh::Device* device;
+}
+
+namespace backend {
 
 	struct Shape_t {
 		uint32_t n;
@@ -19,33 +24,26 @@ namespace backend {
 		uint32_t w;
 	};
 
-	inline vuh::Instance* instance;
-	inline vuh::Device* device;
-
-	static vuh::Device getDevice() {
-		return *device;
-	}
-
 	class Tensor {		
-		
-		vuh::Array<float>* d_x;		
+				
 		size_t size;
 
 	public:
 		std::string name;
 		vuh::Device* dev;
+		vuh::Array<float>* data;
 		Shape_t dims;
 
-		Tensor(): d_x(nullptr), size(0u), dev(nullptr) {}
+		Tensor(): data(nullptr), size(0u), dev(nullptr) {}
 		
 		Tensor(const std::vector<float>& d, Shape_t s): dims(s) {
 			dev = device;
 			size = (size_t)dims.n * (size_t)dims.c * (size_t)dims.d * (size_t)dims.h * (size_t)dims.w;
-			d_x = new vuh::Array<float>(*dev, begin(d), end(d));
+			data = new vuh::Array<float>(*dev, begin(d), end(d));
 		}
 		
 		Tensor(const Tensor& t) {			
-			d_x = t.d_x;			
+			data = t.data;			
 			dims = t.dims;
 			size = t.size;
 			dev = t.dev;
@@ -53,26 +51,23 @@ namespace backend {
 
 		std::vector<float>& to_vector() {
 			std::vector<float> t(size, 0.0);
-			d_x->toHost(begin(t));
+			data->toHost(begin(t));
 			return t;
 		}
 
-		vuh::Array<float>* data() {
-			return d_x;
-		}
 
 		void to(int d) {			
 			std::vector<float> t(size, 0.0);
-			d_x->toHost(begin(t));
-			delete d_x;			
-			d_x = new vuh::Array<float>(instance->devices().at(d), t);
+			data->toHost(begin(t));
+			delete data;			
+			data = new vuh::Array<float>(instance->devices().at(d), t);
 		}
 
 		void to(vuh::Device* d) {
 			std::vector<float> t(size, 0.0);
-			d_x->toHost(begin(t));
-			delete d_x;
-			d_x = new vuh::Array<float>(*d, t);
+			data->toHost(begin(t));
+			delete data;
+			data = new vuh::Array<float>(*d, t);
 		}
 
 		Shape_t shape() {
@@ -80,7 +75,7 @@ namespace backend {
 		}
 
 		~Tensor() {
-			delete d_x;			
+			delete data;			
 		}
 
 	};

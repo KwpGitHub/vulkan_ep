@@ -7,79 +7,83 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-  
-//input
+    uint size;
+    float a;
+/*//input
     
     Shape_t x0_i; Shape_t x1_i; Shape_t x2_i; Shape_t x3_i; Shape_t x4_i; Shape_t x5_i; Shape_t x6_i; Shape_t x7_i; Shape_t x8_i; Shape_t x9_i; Shape_t x10_i; Shape_t x11_i; Shape_t x12_i; Shape_t x13_i; Shape_t x14_i; Shape_t x15_i; Shape_t x16_i; Shape_t x17_i; Shape_t x18_i; Shape_t x19_i; Shape_t x20_i; Shape_t x21_i; Shape_t x22_i; Shape_t x23_i; Shape_t x24_i; Shape_t x25_i; Shape_t x26_i; Shape_t x27_i; Shape_t x28_i; Shape_t x29_i; Shape_t x30_i; Shape_t x31_i;
-//output
+ //output
     
-    Shape_t y0_o; Shape_t y1_o; Shape_t y2_o; Shape_t y3_o; Shape_t y4_o; Shape_t y5_o; Shape_t y6_o; Shape_t y7_o; Shape_t y8_o; Shape_t y9_o; Shape_t y10_o; Shape_t y11_o; Shape_t y12_o; Shape_t y13_o; Shape_t y14_o; Shape_t y15_o; Shape_t y16_o; Shape_t y17_o; Shape_t y18_o; Shape_t y19_o; Shape_t y20_o; Shape_t y21_o; Shape_t y22_o; Shape_t y23_o; Shape_t y24_o; Shape_t y25_o; Shape_t y26_o; Shape_t y27_o; Shape_t y28_o; Shape_t y29_o; Shape_t y30_o; Shape_t y31_o;
+    Shape_t y0_o; Shape_t y1_o; Shape_t y2_o; Shape_t y3_o; Shape_t y4_o; Shape_t y5_o; Shape_t y6_o; Shape_t y7_o; Shape_t y8_o; Shape_t y9_o; Shape_t y10_o; Shape_t y11_o; Shape_t y12_o; Shape_t y13_o; Shape_t y14_o; Shape_t y15_o; Shape_t y16_o; Shape_t y17_o; Shape_t y18_o; Shape_t y19_o; Shape_t y20_o; Shape_t y21_o; Shape_t y22_o; Shape_t y23_o; Shape_t y24_o; Shape_t y25_o; Shape_t y26_o; Shape_t y27_o; Shape_t y28_o; Shape_t y29_o; Shape_t y30_o; Shape_t y31_o;*/
+
+
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float x0_i[]; };
-layout(std430, binding = 1) buffer lay1 { float x1_i[]; };
-layout(std430, binding = 2) buffer lay2 { float x2_i[]; };
-layout(std430, binding = 3) buffer lay3 { float x3_i[]; };
-layout(std430, binding = 4) buffer lay4 { float x4_i[]; };
-layout(std430, binding = 5) buffer lay5 { float x5_i[]; };
-layout(std430, binding = 6) buffer lay6 { float x6_i[]; };
-layout(std430, binding = 7) buffer lay7 { float x7_i[]; };
-layout(std430, binding = 8) buffer lay8 { float x8_i[]; };
-layout(std430, binding = 9) buffer lay9 { float x9_i[]; };
-layout(std430, binding = 10) buffer lay10 { float x10_i[]; };
-layout(std430, binding = 11) buffer lay11 { float x11_i[]; };
-layout(std430, binding = 12) buffer lay12 { float x12_i[]; };
-layout(std430, binding = 13) buffer lay13 { float x13_i[]; };
-layout(std430, binding = 14) buffer lay14 { float x14_i[]; };
-layout(std430, binding = 15) buffer lay15 { float x15_i[]; };
-layout(std430, binding = 16) buffer lay16 { float x16_i[]; };
-layout(std430, binding = 17) buffer lay17 { float x17_i[]; };
-layout(std430, binding = 18) buffer lay18 { float x18_i[]; };
-layout(std430, binding = 19) buffer lay19 { float x19_i[]; };
-layout(std430, binding = 20) buffer lay20 { float x20_i[]; };
-layout(std430, binding = 21) buffer lay21 { float x21_i[]; };
-layout(std430, binding = 22) buffer lay22 { float x22_i[]; };
-layout(std430, binding = 23) buffer lay23 { float x23_i[]; };
-layout(std430, binding = 24) buffer lay24 { float x24_i[]; };
-layout(std430, binding = 25) buffer lay25 { float x25_i[]; };
-layout(std430, binding = 26) buffer lay26 { float x26_i[]; };
-layout(std430, binding = 27) buffer lay27 { float x27_i[]; };
-layout(std430, binding = 28) buffer lay28 { float x28_i[]; };
-layout(std430, binding = 29) buffer lay29 { float x29_i[]; };
-layout(std430, binding = 30) buffer lay30 { float x30_i[]; };
-layout(std430, binding = 31) buffer lay31 { float x31_i[]; };
-layout(std430, binding = 32) buffer lay32 { float y0_o[]; };
-layout(std430, binding = 33) buffer lay33 { float y1_o[]; };
-layout(std430, binding = 34) buffer lay34 { float y2_o[]; };
-layout(std430, binding = 35) buffer lay35 { float y3_o[]; };
-layout(std430, binding = 36) buffer lay36 { float y4_o[]; };
-layout(std430, binding = 37) buffer lay37 { float y5_o[]; };
-layout(std430, binding = 38) buffer lay38 { float y6_o[]; };
-layout(std430, binding = 39) buffer lay39 { float y7_o[]; };
-layout(std430, binding = 40) buffer lay40 { float y8_o[]; };
-layout(std430, binding = 41) buffer lay41 { float y9_o[]; };
-layout(std430, binding = 42) buffer lay42 { float y10_o[]; };
-layout(std430, binding = 43) buffer lay43 { float y11_o[]; };
-layout(std430, binding = 44) buffer lay44 { float y12_o[]; };
-layout(std430, binding = 45) buffer lay45 { float y13_o[]; };
-layout(std430, binding = 46) buffer lay46 { float y14_o[]; };
-layout(std430, binding = 47) buffer lay47 { float y15_o[]; };
-layout(std430, binding = 48) buffer lay48 { float y16_o[]; };
-layout(std430, binding = 49) buffer lay49 { float y17_o[]; };
-layout(std430, binding = 50) buffer lay50 { float y18_o[]; };
-layout(std430, binding = 51) buffer lay51 { float y19_o[]; };
-layout(std430, binding = 52) buffer lay52 { float y20_o[]; };
-layout(std430, binding = 53) buffer lay53 { float y21_o[]; };
-layout(std430, binding = 54) buffer lay54 { float y22_o[]; };
-layout(std430, binding = 55) buffer lay55 { float y23_o[]; };
-layout(std430, binding = 56) buffer lay56 { float y24_o[]; };
-layout(std430, binding = 57) buffer lay57 { float y25_o[]; };
-layout(std430, binding = 58) buffer lay58 { float y26_o[]; };
-layout(std430, binding = 59) buffer lay59 { float y27_o[]; };
-layout(std430, binding = 60) buffer lay60 { float y28_o[]; };
-layout(std430, binding = 61) buffer lay61 { float y29_o[]; };
-layout(std430, binding = 62) buffer lay62 { float y30_o[]; };
-layout(std430, binding = 63) buffer lay63 { float y31_o[]; };
+layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
+layout(std430, binding = 1) buffer lay1 { float x0_i[]; };
+layout(std430, binding = 2) buffer lay2 { float x1_i[]; };
+layout(std430, binding = 3) buffer lay3 { float x2_i[]; };
+layout(std430, binding = 4) buffer lay4 { float x3_i[]; };
+layout(std430, binding = 5) buffer lay5 { float x4_i[]; };
+layout(std430, binding = 6) buffer lay6 { float x5_i[]; };
+layout(std430, binding = 7) buffer lay7 { float x6_i[]; };
+layout(std430, binding = 8) buffer lay8 { float x7_i[]; };
+layout(std430, binding = 9) buffer lay9 { float x8_i[]; };
+layout(std430, binding = 10) buffer lay10 { float x9_i[]; };
+layout(std430, binding = 11) buffer lay11 { float x10_i[]; };
+layout(std430, binding = 12) buffer lay12 { float x11_i[]; };
+layout(std430, binding = 13) buffer lay13 { float x12_i[]; };
+layout(std430, binding = 14) buffer lay14 { float x13_i[]; };
+layout(std430, binding = 15) buffer lay15 { float x14_i[]; };
+layout(std430, binding = 16) buffer lay16 { float x15_i[]; };
+layout(std430, binding = 17) buffer lay17 { float x16_i[]; };
+layout(std430, binding = 18) buffer lay18 { float x17_i[]; };
+layout(std430, binding = 19) buffer lay19 { float x18_i[]; };
+layout(std430, binding = 20) buffer lay20 { float x19_i[]; };
+layout(std430, binding = 21) buffer lay21 { float x20_i[]; };
+layout(std430, binding = 22) buffer lay22 { float x21_i[]; };
+layout(std430, binding = 23) buffer lay23 { float x22_i[]; };
+layout(std430, binding = 24) buffer lay24 { float x23_i[]; };
+layout(std430, binding = 25) buffer lay25 { float x24_i[]; };
+layout(std430, binding = 26) buffer lay26 { float x25_i[]; };
+layout(std430, binding = 27) buffer lay27 { float x26_i[]; };
+layout(std430, binding = 28) buffer lay28 { float x27_i[]; };
+layout(std430, binding = 29) buffer lay29 { float x28_i[]; };
+layout(std430, binding = 30) buffer lay30 { float x29_i[]; };
+layout(std430, binding = 31) buffer lay31 { float x30_i[]; };
+layout(std430, binding = 32) buffer lay32 { float x31_i[]; };
+layout(std430, binding = 33) buffer lay33 { float y0_o[]; };
+layout(std430, binding = 34) buffer lay34 { float y1_o[]; };
+layout(std430, binding = 35) buffer lay35 { float y2_o[]; };
+layout(std430, binding = 36) buffer lay36 { float y3_o[]; };
+layout(std430, binding = 37) buffer lay37 { float y4_o[]; };
+layout(std430, binding = 38) buffer lay38 { float y5_o[]; };
+layout(std430, binding = 39) buffer lay39 { float y6_o[]; };
+layout(std430, binding = 40) buffer lay40 { float y7_o[]; };
+layout(std430, binding = 41) buffer lay41 { float y8_o[]; };
+layout(std430, binding = 42) buffer lay42 { float y9_o[]; };
+layout(std430, binding = 43) buffer lay43 { float y10_o[]; };
+layout(std430, binding = 44) buffer lay44 { float y11_o[]; };
+layout(std430, binding = 45) buffer lay45 { float y12_o[]; };
+layout(std430, binding = 46) buffer lay46 { float y13_o[]; };
+layout(std430, binding = 47) buffer lay47 { float y14_o[]; };
+layout(std430, binding = 48) buffer lay48 { float y15_o[]; };
+layout(std430, binding = 49) buffer lay49 { float y16_o[]; };
+layout(std430, binding = 50) buffer lay50 { float y17_o[]; };
+layout(std430, binding = 51) buffer lay51 { float y18_o[]; };
+layout(std430, binding = 52) buffer lay52 { float y19_o[]; };
+layout(std430, binding = 53) buffer lay53 { float y20_o[]; };
+layout(std430, binding = 54) buffer lay54 { float y21_o[]; };
+layout(std430, binding = 55) buffer lay55 { float y22_o[]; };
+layout(std430, binding = 56) buffer lay56 { float y23_o[]; };
+layout(std430, binding = 57) buffer lay57 { float y24_o[]; };
+layout(std430, binding = 58) buffer lay58 { float y25_o[]; };
+layout(std430, binding = 59) buffer lay59 { float y26_o[]; };
+layout(std430, binding = 60) buffer lay60 { float y27_o[]; };
+layout(std430, binding = 61) buffer lay61 { float y28_o[]; };
+layout(std430, binding = 62) buffer lay62 { float y29_o[]; };
+layout(std430, binding = 63) buffer lay63 { float y30_o[]; };
+layout(std430, binding = 64) buffer lay64 { float y31_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;

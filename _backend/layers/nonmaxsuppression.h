@@ -37,14 +37,16 @@ output: selected indices from the boxes tensor. [num_selected_indices, 3], the s
 namespace layers {   
 
     class NonMaxSuppression : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t boxes_i; backend::Shape_t scores_i;
-            backend::Shape_t max_output_boxes_per_class_i; backend::Shape_t iou_threshold_i; backend::Shape_t score_threshold_i;
-            backend::Shape_t selected_indices_o;
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         int center_point_box;
         std::string boxes_i; std::string scores_i;
         std::string max_output_boxes_per_class_i; std::string iou_threshold_i; std::string score_threshold_i;
@@ -52,12 +54,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         NonMaxSuppression(std::string name);

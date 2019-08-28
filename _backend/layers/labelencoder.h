@@ -42,14 +42,16 @@ output: Output data.
 namespace layers {   
 
     class LabelEncoder : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t X_i;
-            
-            backend::Shape_t Y_o;
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         float default_float; int default_int64; std::string default_string; std::vector<float> keys_floats; std::vector<int> keys_int64s; std::vector<std::string> keys_strings; std::vector<float> values_floats; std::vector<int> values_int64s; std::vector<std::string> values_strings;
         std::string X_i;
         
@@ -57,12 +59,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         LabelEncoder(std::string name);

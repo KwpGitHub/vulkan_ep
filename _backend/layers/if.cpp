@@ -3,36 +3,34 @@
 namespace layers {    
    
     If::If(std::string name) : backend::Layer(name) {    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/if.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/if.spv");       
+        dev = backend::device;
     }
        
-    vuh::Device* If::_get_device() {        
-        return backend::device;
-    }
-    
+        
     void If::init( int _else_branch,  int _then_branch) {      
 		 else_branch = _else_branch; 
  		 then_branch = _then_branch; 
   
+
     }
     
-    void If::bind(std::string _cond_i){
-        cond_i = _cond_i;
-
-		binding.cond_i = backend::tensor_dict[cond_i]->shape();
+    void If::bind(std::string _cond_i){    
+        cond_i = _cond_i;        
+		SHAPES.push_back(backend::tensor_dict[cond_i]->shape());
  
 
-		//binding.else_branch = else_branch;
-  		//binding.then_branch = then_branch;
-         
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
+
+
     }
 
-    void If::build(){        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding, *backend::tensor_dict[cond_i]->data());
+    void If::build(){     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[cond_i]->data);
     }
 
     void If::forward(){ 

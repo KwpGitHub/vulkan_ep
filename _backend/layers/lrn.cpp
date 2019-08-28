@@ -3,41 +3,37 @@
 namespace layers {    
    
     LRN::LRN(std::string name) : backend::Layer(name) {    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/lrn.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/lrn.spv");       
+        dev = backend::device;
     }
        
-    vuh::Device* LRN::_get_device() {        
-        return backend::device;
-    }
-    
+        
     void LRN::init( int _size,  float _alpha,  float _beta,  float _bias) {      
 		 size = _size; 
  		 alpha = _alpha; 
  		 beta = _beta; 
  		 bias = _bias; 
   
+
     }
     
-    void LRN::bind(std::string _X_i, std::string _Y_o){
-        X_i = _X_i; Y_o = _Y_o;
+    void LRN::bind(std::string _X_i, std::string _Y_o){    
+        X_i = _X_i; Y_o = _Y_o;        
+		SHAPES.push_back(backend::tensor_dict[X_i]->shape());
+ 
+		SHAPES.push_back(backend::tensor_dict[Y_o]->shape());
+ 
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
-		binding.X_i = backend::tensor_dict[X_i]->shape();
- 
-		binding.Y_o = backend::tensor_dict[Y_o]->shape();
- 
-		//binding.size = size;
-  		//binding.alpha = alpha;
-  		//binding.beta = beta;
-  		//binding.bias = bias;
-         
+
     }
 
-    void LRN::build(){        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding, *backend::tensor_dict[X_i]->data(), *backend::tensor_dict[Y_o]->data());
+    void LRN::build(){     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[X_i]->data, *backend::tensor_dict[Y_o]->data);
     }
 
     void LRN::forward(){ 

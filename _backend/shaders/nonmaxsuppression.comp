@@ -7,21 +7,25 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-  
-//input
+    uint size;
+    float a;
+/*//input
     Shape_t boxes_i; Shape_t scores_i;
     Shape_t max_output_boxes_per_class_i; Shape_t iou_threshold_i; Shape_t score_threshold_i;
-//output
+ //output
     Shape_t selected_indices_o;
-    
+    */
+
+
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float boxes_i[]; };
-layout(std430, binding = 1) buffer lay1 { float scores_i[]; };
-layout(std430, binding = 2) buffer lay2 { float max_output_boxes_per_class_i[]; };
-layout(std430, binding = 3) buffer lay3 { float iou_threshold_i[]; };
-layout(std430, binding = 4) buffer lay4 { float score_threshold_i[]; };
-layout(std430, binding = 5) buffer lay5 { float selected_indices_o[]; };
+layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
+layout(std430, binding = 1) buffer lay1 { float boxes_i[]; };
+layout(std430, binding = 2) buffer lay2 { float scores_i[]; };
+layout(std430, binding = 3) buffer lay3 { float max_output_boxes_per_class_i[]; };
+layout(std430, binding = 4) buffer lay4 { float iou_threshold_i[]; };
+layout(std430, binding = 5) buffer lay5 { float score_threshold_i[]; };
+layout(std430, binding = 6) buffer lay6 { float selected_indices_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;

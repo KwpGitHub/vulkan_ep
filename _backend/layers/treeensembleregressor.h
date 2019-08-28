@@ -35,14 +35,16 @@ output: N classes
 namespace layers {   
 
     class TreeEnsembleRegressor : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t X_i;
-            
-            backend::Shape_t Y_o;
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         std::string aggregate_function; std::vector<float> base_values; int n_targets; std::vector<int> nodes_falsenodeids; std::vector<int> nodes_featureids; std::vector<float> nodes_hitrates; std::vector<int> nodes_missing_value_tracks_true; std::vector<std::string> nodes_modes; std::vector<int> nodes_nodeids; std::vector<int> nodes_treeids; std::vector<int> nodes_truenodeids; std::vector<float> nodes_values; std::string post_transform; std::vector<int> target_ids; std::vector<int> target_nodeids; std::vector<int> target_treeids; std::vector<float> target_weights;
         std::string X_i;
         
@@ -50,12 +52,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         TreeEnsembleRegressor(std::string name);

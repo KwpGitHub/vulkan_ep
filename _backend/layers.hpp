@@ -8,12 +8,12 @@ void init_layer_LSTM(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LSTM" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LSTM" <<std::endl;
 
     });
 
     m.def("_LSTM_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LSTM" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LSTM" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -29,12 +29,12 @@ void init_layer_Identity(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Identity" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Identity" <<std::endl;
 
     });
 
     m.def("_Identity_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Identity" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Identity" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -50,12 +50,12 @@ void init_layer_Abs(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Abs" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Abs" <<std::endl;
 
     });
 
     m.def("_Abs_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Abs" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Abs" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -71,12 +71,12 @@ void init_layer_BatchNormalization(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "BatchNormalization" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "BatchNormalization" <<std::endl;
 
     });
 
     m.def("_BatchNormalization_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: BatchNormalization" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: BatchNormalization" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -92,12 +92,12 @@ void init_layer_Mean(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mean" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mean" <<std::endl;
 
     });
 
     m.def("_Mean_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Mean" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Mean" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -113,12 +113,12 @@ void init_layer_Add(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Add" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Add" <<std::endl;
 
     });
 
     m.def("_Add_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Add" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Add" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -134,12 +134,12 @@ void init_layer_GlobalMaxPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalMaxPool" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalMaxPool" <<std::endl;
 
     });
 
     m.def("_GlobalMaxPool_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: GlobalMaxPool" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: GlobalMaxPool" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -155,12 +155,12 @@ void init_layer_Cast(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cast" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cast" <<std::endl;
 
     });
 
     m.def("_Cast_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Cast" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Cast" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -176,12 +176,12 @@ void init_layer_AveragePool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "AveragePool" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "AveragePool" <<std::endl;
 
     });
 
     m.def("_AveragePool_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: AveragePool" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: AveragePool" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -197,12 +197,12 @@ void init_layer_And(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "And" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "And" <<std::endl;
 
     });
 
     m.def("_And_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: And" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: And" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -218,12 +218,12 @@ void init_layer_LRN(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LRN" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LRN" <<std::endl;
 
     });
 
     m.def("_LRN_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LRN" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LRN" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -239,12 +239,12 @@ void init_layer_ArgMax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArgMax" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArgMax" <<std::endl;
 
     });
 
     m.def("_ArgMax_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ArgMax" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ArgMax" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -260,12 +260,12 @@ void init_layer_Resize(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Resize" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Resize" <<std::endl;
 
     });
 
     m.def("_Resize_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Resize" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Resize" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -281,12 +281,12 @@ void init_layer_Expand(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Expand" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Expand" <<std::endl;
 
     });
 
     m.def("_Expand_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Expand" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Expand" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -302,12 +302,12 @@ void init_layer_Neg(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Neg" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Neg" <<std::endl;
 
     });
 
     m.def("_Neg_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Neg" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Neg" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -323,12 +323,12 @@ void init_layer_Mul(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mul" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mul" <<std::endl;
 
     });
 
     m.def("_Mul_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Mul" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Mul" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -344,12 +344,12 @@ void init_layer_ArgMin(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArgMin" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArgMin" <<std::endl;
 
     });
 
     m.def("_ArgMin_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ArgMin" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ArgMin" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -365,12 +365,12 @@ void init_layer_CastMap(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "CastMap" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "CastMap" <<std::endl;
 
     });
 
     m.def("_CastMap_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: CastMap" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: CastMap" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -386,12 +386,12 @@ void init_layer_Exp(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Exp" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Exp" <<std::endl;
 
     });
 
     m.def("_Exp_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Exp" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Exp" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -407,12 +407,12 @@ void init_layer_Div(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Div" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Div" <<std::endl;
 
     });
 
     m.def("_Div_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Div" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Div" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -428,12 +428,12 @@ void init_layer_ReverseSequence(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReverseSequence" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReverseSequence" <<std::endl;
 
     });
 
     m.def("_ReverseSequence_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReverseSequence" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReverseSequence" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -449,12 +449,12 @@ void init_layer_Ceil(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Ceil" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Ceil" <<std::endl;
 
     });
 
     m.def("_Ceil_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Ceil" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Ceil" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -470,12 +470,12 @@ void init_layer_DepthToSpace(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DepthToSpace" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DepthToSpace" <<std::endl;
 
     });
 
     m.def("_DepthToSpace_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: DepthToSpace" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: DepthToSpace" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -491,12 +491,12 @@ void init_layer_Clip(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Clip" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Clip" <<std::endl;
 
     });
 
     m.def("_Clip_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Clip" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Clip" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -512,12 +512,12 @@ void init_layer_RNN(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RNN" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RNN" <<std::endl;
 
     });
 
     m.def("_RNN_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: RNN" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: RNN" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -533,12 +533,12 @@ void init_layer_Concat(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Concat" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Concat" <<std::endl;
 
     });
 
     m.def("_Concat_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Concat" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Concat" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -554,12 +554,12 @@ void init_layer_Constant(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Constant" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Constant" <<std::endl;
 
     });
 
     m.def("_Constant_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Constant" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Constant" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -575,12 +575,12 @@ void init_layer_LpPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LpPool" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LpPool" <<std::endl;
 
     });
 
     m.def("_LpPool_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LpPool" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LpPool" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -596,12 +596,12 @@ void init_layer_Conv(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Conv" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Conv" <<std::endl;
 
     });
 
     m.def("_Conv_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Conv" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Conv" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -617,12 +617,12 @@ void init_layer_Not(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Not" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Not" <<std::endl;
 
     });
 
     m.def("_Not_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Not" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Not" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -638,12 +638,12 @@ void init_layer_Gather(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Gather" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Gather" <<std::endl;
 
     });
 
     m.def("_Gather_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Gather" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Gather" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -659,12 +659,12 @@ void init_layer_ConvTranspose(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConvTranspose" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConvTranspose" <<std::endl;
 
     });
 
     m.def("_ConvTranspose_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ConvTranspose" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ConvTranspose" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -680,12 +680,12 @@ void init_layer_Dropout(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Dropout" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Dropout" <<std::endl;
 
     });
 
     m.def("_Dropout_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Dropout" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Dropout" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -701,12 +701,12 @@ void init_layer_LeakyRelu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LeakyRelu" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LeakyRelu" <<std::endl;
 
     });
 
     m.def("_LeakyRelu_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LeakyRelu" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LeakyRelu" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -722,12 +722,12 @@ void init_layer_Elu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Elu" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Elu" <<std::endl;
 
     });
 
     m.def("_Elu_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Elu" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Elu" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -743,12 +743,12 @@ void init_layer_GlobalAveragePool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalAveragePool" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalAveragePool" <<std::endl;
 
     });
 
     m.def("_GlobalAveragePool_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: GlobalAveragePool" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: GlobalAveragePool" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -764,12 +764,12 @@ void init_layer_Gemm(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Gemm" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Gemm" <<std::endl;
 
     });
 
     m.def("_Gemm_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Gemm" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Gemm" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -785,12 +785,12 @@ void init_layer_MaxPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxPool" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxPool" <<std::endl;
 
     });
 
     m.def("_MaxPool_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: MaxPool" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: MaxPool" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -806,12 +806,12 @@ void init_layer_Equal(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Equal" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Equal" <<std::endl;
 
     });
 
     m.def("_Equal_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Equal" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Equal" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -827,12 +827,12 @@ void init_layer_Tile(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tile" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tile" <<std::endl;
 
     });
 
     m.def("_Tile_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Tile" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Tile" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -848,12 +848,12 @@ void init_layer_Flatten(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Flatten" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Flatten" <<std::endl;
 
     });
 
     m.def("_Flatten_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Flatten" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Flatten" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -869,12 +869,12 @@ void init_layer_Floor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Floor" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Floor" <<std::endl;
 
     });
 
     m.def("_Floor_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Floor" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Floor" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -890,12 +890,12 @@ void init_layer_GRU(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GRU" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GRU" <<std::endl;
 
     });
 
     m.def("_GRU_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: GRU" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: GRU" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -911,12 +911,12 @@ void init_layer_GlobalLpPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalLpPool" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "GlobalLpPool" <<std::endl;
 
     });
 
     m.def("_GlobalLpPool_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: GlobalLpPool" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: GlobalLpPool" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -932,12 +932,12 @@ void init_layer_Greater(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Greater" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Greater" <<std::endl;
 
     });
 
     m.def("_Greater_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Greater" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Greater" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -953,12 +953,12 @@ void init_layer_HardSigmoid(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "HardSigmoid" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "HardSigmoid" <<std::endl;
 
     });
 
     m.def("_HardSigmoid_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: HardSigmoid" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: HardSigmoid" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -974,12 +974,12 @@ void init_layer_Selu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Selu" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Selu" <<std::endl;
 
     });
 
     m.def("_Selu_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Selu" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Selu" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -995,12 +995,12 @@ void init_layer_Hardmax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Hardmax" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Hardmax" <<std::endl;
 
     });
 
     m.def("_Hardmax_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Hardmax" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Hardmax" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1016,12 +1016,12 @@ void init_layer_If(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "If" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "If" <<std::endl;
 
     });
 
     m.def("_If_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: If" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: If" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1037,12 +1037,12 @@ void init_layer_Min(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Min" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Min" <<std::endl;
 
     });
 
     m.def("_Min_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Min" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Min" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1058,12 +1058,12 @@ void init_layer_InstanceNormalization(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "InstanceNormalization" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "InstanceNormalization" <<std::endl;
 
     });
 
     m.def("_InstanceNormalization_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: InstanceNormalization" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: InstanceNormalization" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1079,12 +1079,12 @@ void init_layer_Less(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Less" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Less" <<std::endl;
 
     });
 
     m.def("_Less_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Less" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Less" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1100,12 +1100,12 @@ void init_layer_EyeLike(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "EyeLike" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "EyeLike" <<std::endl;
 
     });
 
     m.def("_EyeLike_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: EyeLike" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: EyeLike" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1121,12 +1121,12 @@ void init_layer_RandomNormal(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomNormal" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomNormal" <<std::endl;
 
     });
 
     m.def("_RandomNormal_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: RandomNormal" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: RandomNormal" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1142,12 +1142,12 @@ void init_layer_Slice(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Slice" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Slice" <<std::endl;
 
     });
 
     m.def("_Slice_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Slice" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Slice" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1163,12 +1163,12 @@ void init_layer_PRelu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "PRelu" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "PRelu" <<std::endl;
 
     });
 
     m.def("_PRelu_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: PRelu" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: PRelu" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1184,12 +1184,12 @@ void init_layer_Log(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Log" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Log" <<std::endl;
 
     });
 
     m.def("_Log_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Log" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Log" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1205,12 +1205,12 @@ void init_layer_LogSoftmax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LogSoftmax" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LogSoftmax" <<std::endl;
 
     });
 
     m.def("_LogSoftmax_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LogSoftmax" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LogSoftmax" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1226,12 +1226,12 @@ void init_layer_Loop(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Loop" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Loop" <<std::endl;
 
     });
 
     m.def("_Loop_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Loop" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Loop" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1247,12 +1247,12 @@ void init_layer_LpNormalization(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LpNormalization" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LpNormalization" <<std::endl;
 
     });
 
     m.def("_LpNormalization_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LpNormalization" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LpNormalization" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1268,12 +1268,12 @@ void init_layer_MatMul(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MatMul" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MatMul" <<std::endl;
 
     });
 
     m.def("_MatMul_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: MatMul" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: MatMul" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1289,12 +1289,12 @@ void init_layer_ReduceL2(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceL2" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceL2" <<std::endl;
 
     });
 
     m.def("_ReduceL2_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceL2" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceL2" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1310,12 +1310,12 @@ void init_layer_Max(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Max" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Max" <<std::endl;
 
     });
 
     m.def("_Max_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Max" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Max" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1331,12 +1331,12 @@ void init_layer_MaxRoiPool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxRoiPool" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxRoiPool" <<std::endl;
 
     });
 
     m.def("_MaxRoiPool_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: MaxRoiPool" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: MaxRoiPool" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1352,12 +1352,12 @@ void init_layer_Or(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Or" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Or" <<std::endl;
 
     });
 
     m.def("_Or_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Or" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Or" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1373,12 +1373,12 @@ void init_layer_Pad(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Pad" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Pad" <<std::endl;
 
     });
 
     m.def("_Pad_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Pad" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Pad" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1394,12 +1394,12 @@ void init_layer_RandomUniformLike(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomUniformLike" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomUniformLike" <<std::endl;
 
     });
 
     m.def("_RandomUniformLike_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: RandomUniformLike" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: RandomUniformLike" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1415,12 +1415,12 @@ void init_layer_Reciprocal(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Reciprocal" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Reciprocal" <<std::endl;
 
     });
 
     m.def("_Reciprocal_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Reciprocal" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Reciprocal" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1436,12 +1436,12 @@ void init_layer_Pow(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Pow" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Pow" <<std::endl;
 
     });
 
     m.def("_Pow_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Pow" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Pow" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1457,12 +1457,12 @@ void init_layer_RandomNormalLike(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomNormalLike" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomNormalLike" <<std::endl;
 
     });
 
     m.def("_RandomNormalLike_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: RandomNormalLike" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: RandomNormalLike" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1478,12 +1478,12 @@ void init_layer_OneHot(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "OneHot" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "OneHot" <<std::endl;
 
     });
 
     m.def("_OneHot_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: OneHot" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: OneHot" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1499,12 +1499,12 @@ void init_layer_RandomUniform(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomUniform" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RandomUniform" <<std::endl;
 
     });
 
     m.def("_RandomUniform_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: RandomUniform" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: RandomUniform" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1520,12 +1520,12 @@ void init_layer_ReduceL1(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceL1" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceL1" <<std::endl;
 
     });
 
     m.def("_ReduceL1_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceL1" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceL1" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1541,12 +1541,12 @@ void init_layer_ReduceLogSum(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceLogSum" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceLogSum" <<std::endl;
 
     });
 
     m.def("_ReduceLogSum_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceLogSum" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceLogSum" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1562,12 +1562,12 @@ void init_layer_ReduceLogSumExp(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceLogSumExp" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceLogSumExp" <<std::endl;
 
     });
 
     m.def("_ReduceLogSumExp_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceLogSumExp" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceLogSumExp" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1583,12 +1583,12 @@ void init_layer_ReduceMax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMax" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMax" <<std::endl;
 
     });
 
     m.def("_ReduceMax_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMax" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMax" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1604,12 +1604,12 @@ void init_layer_OneHotEncoder(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "OneHotEncoder" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "OneHotEncoder" <<std::endl;
 
     });
 
     m.def("_OneHotEncoder_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: OneHotEncoder" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: OneHotEncoder" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1625,12 +1625,12 @@ void init_layer_IsNaN(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "IsNaN" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "IsNaN" <<std::endl;
 
     });
 
     m.def("_IsNaN_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: IsNaN" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: IsNaN" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1646,12 +1646,12 @@ void init_layer_ReduceMean(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMean" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMean" <<std::endl;
 
     });
 
     m.def("_ReduceMean_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMean" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMean" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1667,12 +1667,12 @@ void init_layer_ReduceMin(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMin" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceMin" <<std::endl;
 
     });
 
     m.def("_ReduceMin_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMin" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceMin" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1688,12 +1688,12 @@ void init_layer_TreeEnsembleRegressor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TreeEnsembleRegressor" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TreeEnsembleRegressor" <<std::endl;
 
     });
 
     m.def("_TreeEnsembleRegressor_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: TreeEnsembleRegressor" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: TreeEnsembleRegressor" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1709,12 +1709,12 @@ void init_layer_ReduceProd(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceProd" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceProd" <<std::endl;
 
     });
 
     m.def("_ReduceProd_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceProd" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceProd" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1730,12 +1730,12 @@ void init_layer_ReduceSum(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceSum" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceSum" <<std::endl;
 
     });
 
     m.def("_ReduceSum_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceSum" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceSum" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1751,12 +1751,12 @@ void init_layer_ReduceSumSquare(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceSumSquare" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ReduceSumSquare" <<std::endl;
 
     });
 
     m.def("_ReduceSumSquare_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ReduceSumSquare" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ReduceSumSquare" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1772,12 +1772,12 @@ void init_layer_Relu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Relu" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Relu" <<std::endl;
 
     });
 
     m.def("_Relu_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Relu" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Relu" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1793,12 +1793,12 @@ void init_layer_Reshape(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Reshape" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Reshape" <<std::endl;
 
     });
 
     m.def("_Reshape_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Reshape" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Reshape" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1814,12 +1814,12 @@ void init_layer_Shape(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Shape" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Shape" <<std::endl;
 
     });
 
     m.def("_Shape_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Shape" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Shape" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1835,12 +1835,12 @@ void init_layer_Sigmoid(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sigmoid" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sigmoid" <<std::endl;
 
     });
 
     m.def("_Sigmoid_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Sigmoid" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Sigmoid" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1856,12 +1856,12 @@ void init_layer_Size(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Size" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Size" <<std::endl;
 
     });
 
     m.def("_Size_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Size" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Size" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1877,12 +1877,12 @@ void init_layer_Softmax(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softmax" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softmax" <<std::endl;
 
     });
 
     m.def("_Softmax_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Softmax" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Softmax" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1898,12 +1898,12 @@ void init_layer_Softplus(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softplus" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softplus" <<std::endl;
 
     });
 
     m.def("_Softplus_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Softplus" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Softplus" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1919,12 +1919,12 @@ void init_layer_Softsign(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softsign" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Softsign" <<std::endl;
 
     });
 
     m.def("_Softsign_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Softsign" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Softsign" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1940,12 +1940,12 @@ void init_layer_SpaceToDepth(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SpaceToDepth" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SpaceToDepth" <<std::endl;
 
     });
 
     m.def("_SpaceToDepth_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: SpaceToDepth" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: SpaceToDepth" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1961,12 +1961,12 @@ void init_layer_TfIdfVectorizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TfIdfVectorizer" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TfIdfVectorizer" <<std::endl;
 
     });
 
     m.def("_TfIdfVectorizer_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: TfIdfVectorizer" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: TfIdfVectorizer" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -1982,12 +1982,12 @@ void init_layer_Split(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Split" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Split" <<std::endl;
 
     });
 
     m.def("_Split_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Split" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Split" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2003,12 +2003,12 @@ void init_layer_Imputer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Imputer" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Imputer" <<std::endl;
 
     });
 
     m.def("_Imputer_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Imputer" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Imputer" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2024,12 +2024,12 @@ void init_layer_Sqrt(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sqrt" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sqrt" <<std::endl;
 
     });
 
     m.def("_Sqrt_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Sqrt" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Sqrt" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2045,12 +2045,12 @@ void init_layer_Squeeze(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Squeeze" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Squeeze" <<std::endl;
 
     });
 
     m.def("_Squeeze_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Squeeze" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Squeeze" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2066,12 +2066,12 @@ void init_layer_TopK(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TopK" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TopK" <<std::endl;
 
     });
 
     m.def("_TopK_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: TopK" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: TopK" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2087,12 +2087,12 @@ void init_layer_Sub(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sub" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sub" <<std::endl;
 
     });
 
     m.def("_Sub_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Sub" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Sub" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2108,12 +2108,12 @@ void init_layer_Sum(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sum" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sum" <<std::endl;
 
     });
 
     m.def("_Sum_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Sum" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Sum" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2129,12 +2129,12 @@ void init_layer_Shrink(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Shrink" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Shrink" <<std::endl;
 
     });
 
     m.def("_Shrink_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Shrink" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Shrink" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2150,12 +2150,12 @@ void init_layer_Tanh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tanh" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tanh" <<std::endl;
 
     });
 
     m.def("_Tanh_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Tanh" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Tanh" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2171,12 +2171,12 @@ void init_layer_Transpose(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Transpose" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Transpose" <<std::endl;
 
     });
 
     m.def("_Transpose_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Transpose" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Transpose" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2192,12 +2192,12 @@ void init_layer_Unsqueeze(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Unsqueeze" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Unsqueeze" <<std::endl;
 
     });
 
     m.def("_Unsqueeze_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Unsqueeze" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Unsqueeze" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2213,12 +2213,12 @@ void init_layer_SVMClassifier(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SVMClassifier" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SVMClassifier" <<std::endl;
 
     });
 
     m.def("_SVMClassifier_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: SVMClassifier" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: SVMClassifier" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2234,12 +2234,12 @@ void init_layer_Xor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Xor" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Xor" <<std::endl;
 
     });
 
     m.def("_Xor_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Xor" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Xor" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2255,12 +2255,12 @@ void init_layer_Acos(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Acos" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Acos" <<std::endl;
 
     });
 
     m.def("_Acos_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Acos" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Acos" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2276,12 +2276,12 @@ void init_layer_Asin(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Asin" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Asin" <<std::endl;
 
     });
 
     m.def("_Asin_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Asin" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Asin" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2297,12 +2297,12 @@ void init_layer_Atan(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Atan" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Atan" <<std::endl;
 
     });
 
     m.def("_Atan_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Atan" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Atan" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2318,12 +2318,12 @@ void init_layer_Cos(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cos" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cos" <<std::endl;
 
     });
 
     m.def("_Cos_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Cos" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Cos" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2339,12 +2339,12 @@ void init_layer_Sin(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sin" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sin" <<std::endl;
 
     });
 
     m.def("_Sin_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Sin" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Sin" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2360,12 +2360,12 @@ void init_layer_Tan(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tan" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Tan" <<std::endl;
 
     });
 
     m.def("_Tan_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Tan" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Tan" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2381,12 +2381,12 @@ void init_layer_Multinomial(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Multinomial" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Multinomial" <<std::endl;
 
     });
 
     m.def("_Multinomial_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Multinomial" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Multinomial" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2402,12 +2402,12 @@ void init_layer_Scan(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scan" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scan" <<std::endl;
 
     });
 
     m.def("_Scan_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Scan" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Scan" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2423,12 +2423,12 @@ void init_layer_Compress(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Compress" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Compress" <<std::endl;
 
     });
 
     m.def("_Compress_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Compress" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Compress" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2444,12 +2444,12 @@ void init_layer_ConstantOfShape(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConstantOfShape" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConstantOfShape" <<std::endl;
 
     });
 
     m.def("_ConstantOfShape_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ConstantOfShape" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ConstantOfShape" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2465,12 +2465,12 @@ void init_layer_MaxUnpool(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxUnpool" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MaxUnpool" <<std::endl;
 
     });
 
     m.def("_MaxUnpool_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: MaxUnpool" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: MaxUnpool" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2486,12 +2486,12 @@ void init_layer_Scatter(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scatter" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scatter" <<std::endl;
 
     });
 
     m.def("_Scatter_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Scatter" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Scatter" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2507,12 +2507,12 @@ void init_layer_Sinh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sinh" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sinh" <<std::endl;
 
     });
 
     m.def("_Sinh_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Sinh" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Sinh" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2528,12 +2528,12 @@ void init_layer_Cosh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cosh" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Cosh" <<std::endl;
 
     });
 
     m.def("_Cosh_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Cosh" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Cosh" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2549,12 +2549,12 @@ void init_layer_Asinh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Asinh" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Asinh" <<std::endl;
 
     });
 
     m.def("_Asinh_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Asinh" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Asinh" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2570,12 +2570,12 @@ void init_layer_Acosh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Acosh" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Acosh" <<std::endl;
 
     });
 
     m.def("_Acosh_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Acosh" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Acosh" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2591,12 +2591,12 @@ void init_layer_NonMaxSuppression(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "NonMaxSuppression" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "NonMaxSuppression" <<std::endl;
 
     });
 
     m.def("_NonMaxSuppression_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: NonMaxSuppression" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: NonMaxSuppression" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2612,12 +2612,12 @@ void init_layer_Atanh(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Atanh" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Atanh" <<std::endl;
 
     });
 
     m.def("_Atanh_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Atanh" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Atanh" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2633,12 +2633,12 @@ void init_layer_Sign(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sign" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Sign" <<std::endl;
 
     });
 
     m.def("_Sign_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Sign" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Sign" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2654,12 +2654,12 @@ void init_layer_Erf(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Erf" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Erf" <<std::endl;
 
     });
 
     m.def("_Erf_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Erf" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Erf" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2675,12 +2675,12 @@ void init_layer_Where(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Where" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Where" <<std::endl;
 
     });
 
     m.def("_Where_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Where" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Where" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2696,12 +2696,12 @@ void init_layer_NonZero(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "NonZero" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "NonZero" <<std::endl;
 
     });
 
     m.def("_NonZero_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: NonZero" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: NonZero" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2717,12 +2717,12 @@ void init_layer_MeanVarianceNormalization(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MeanVarianceNormalization" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MeanVarianceNormalization" <<std::endl;
 
     });
 
     m.def("_MeanVarianceNormalization_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: MeanVarianceNormalization" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: MeanVarianceNormalization" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2738,12 +2738,12 @@ void init_layer_StringNormalizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "StringNormalizer" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "StringNormalizer" <<std::endl;
 
     });
 
     m.def("_StringNormalizer_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: StringNormalizer" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: StringNormalizer" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2759,12 +2759,12 @@ void init_layer_Mod(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mod" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Mod" <<std::endl;
 
     });
 
     m.def("_Mod_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Mod" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Mod" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2780,12 +2780,12 @@ void init_layer_ThresholdedRelu(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ThresholdedRelu" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ThresholdedRelu" <<std::endl;
 
     });
 
     m.def("_ThresholdedRelu_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ThresholdedRelu" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ThresholdedRelu" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2801,12 +2801,12 @@ void init_layer_MatMulInteger(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MatMulInteger" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "MatMulInteger" <<std::endl;
 
     });
 
     m.def("_MatMulInteger_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: MatMulInteger" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: MatMulInteger" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2822,12 +2822,12 @@ void init_layer_QLinearMatMul(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QLinearMatMul" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QLinearMatMul" <<std::endl;
 
     });
 
     m.def("_QLinearMatMul_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: QLinearMatMul" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: QLinearMatMul" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2843,12 +2843,12 @@ void init_layer_ConvInteger(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConvInteger" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ConvInteger" <<std::endl;
 
     });
 
     m.def("_ConvInteger_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ConvInteger" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ConvInteger" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2864,12 +2864,12 @@ void init_layer_QLinearConv(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QLinearConv" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QLinearConv" <<std::endl;
 
     });
 
     m.def("_QLinearConv_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: QLinearConv" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: QLinearConv" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2885,12 +2885,12 @@ void init_layer_QuantizeLinear(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QuantizeLinear" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "QuantizeLinear" <<std::endl;
 
     });
 
     m.def("_QuantizeLinear_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: QuantizeLinear" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: QuantizeLinear" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2906,12 +2906,12 @@ void init_layer_DequantizeLinear(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DequantizeLinear" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DequantizeLinear" <<std::endl;
 
     });
 
     m.def("_DequantizeLinear_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: DequantizeLinear" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: DequantizeLinear" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2927,12 +2927,12 @@ void init_layer_IsInf(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "IsInf" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "IsInf" <<std::endl;
 
     });
 
     m.def("_IsInf_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: IsInf" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: IsInf" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2948,12 +2948,12 @@ void init_layer_RoiAlign(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RoiAlign" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "RoiAlign" <<std::endl;
 
     });
 
     m.def("_RoiAlign_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: RoiAlign" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: RoiAlign" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2969,12 +2969,12 @@ void init_layer_ArrayFeatureExtractor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArrayFeatureExtractor" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ArrayFeatureExtractor" <<std::endl;
 
     });
 
     m.def("_ArrayFeatureExtractor_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ArrayFeatureExtractor" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ArrayFeatureExtractor" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -2990,12 +2990,12 @@ void init_layer_Binarizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Binarizer" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Binarizer" <<std::endl;
 
     });
 
     m.def("_Binarizer_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Binarizer" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Binarizer" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3011,12 +3011,12 @@ void init_layer_CategoryMapper(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "CategoryMapper" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "CategoryMapper" <<std::endl;
 
     });
 
     m.def("_CategoryMapper_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: CategoryMapper" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: CategoryMapper" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3032,12 +3032,12 @@ void init_layer_DictVectorizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DictVectorizer" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "DictVectorizer" <<std::endl;
 
     });
 
     m.def("_DictVectorizer_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: DictVectorizer" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: DictVectorizer" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3053,12 +3053,12 @@ void init_layer_FeatureVectorizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "FeatureVectorizer" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "FeatureVectorizer" <<std::endl;
 
     });
 
     m.def("_FeatureVectorizer_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: FeatureVectorizer" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: FeatureVectorizer" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3074,12 +3074,12 @@ void init_layer_LabelEncoder(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LabelEncoder" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LabelEncoder" <<std::endl;
 
     });
 
     m.def("_LabelEncoder_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LabelEncoder" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LabelEncoder" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3095,12 +3095,12 @@ void init_layer_LinearClassifier(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LinearClassifier" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LinearClassifier" <<std::endl;
 
     });
 
     m.def("_LinearClassifier_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LinearClassifier" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LinearClassifier" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3116,12 +3116,12 @@ void init_layer_LinearRegressor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LinearRegressor" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "LinearRegressor" <<std::endl;
 
     });
 
     m.def("_LinearRegressor_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: LinearRegressor" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: LinearRegressor" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3137,12 +3137,12 @@ void init_layer_Normalizer(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Normalizer" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Normalizer" <<std::endl;
 
     });
 
     m.def("_Normalizer_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Normalizer" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Normalizer" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3158,12 +3158,12 @@ void init_layer_SVMRegressor(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SVMRegressor" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "SVMRegressor" <<std::endl;
 
     });
 
     m.def("_SVMRegressor_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: SVMRegressor" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: SVMRegressor" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3179,12 +3179,12 @@ void init_layer_Scaler(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scaler" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "Scaler" <<std::endl;
 
     });
 
     m.def("_Scaler_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: Scaler" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: Scaler" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3200,12 +3200,12 @@ void init_layer_TreeEnsembleClassifier(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TreeEnsembleClassifier" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "TreeEnsembleClassifier" <<std::endl;
 
     });
 
     m.def("_TreeEnsembleClassifier_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: TreeEnsembleClassifier" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: TreeEnsembleClassifier" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 
@@ -3221,12 +3221,12 @@ void init_layer_ZipMap(py::module& m){
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ZipMap" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "ZipMap" <<std::endl;
 
     });
 
     m.def("_ZipMap_run",  [](py::str name) {
-        std::cout << "RUN ::: " << std::string(name) << " ::: ZipMap" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: ZipMap" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     });
 

@@ -69,14 +69,16 @@ class_h_str = """#ifndef {upper}_H
 namespace layers {{   
 
     class {norm} : public backend::Layer {{
-        typedef struct {{          
-            {input_param_lst}
-            {optional_input_param_lst}
-            {output_param_lst}
-            {optional_output_param_lst}
+        typedef struct {{
+            uint32_t size; float a;
         }} binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         {param_lst}
         {input_lst}
         {optional_input_lst}
@@ -84,12 +86,7 @@ namespace layers {{
         {optional_output_lst}
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params {{ uint32_t size; float a; }};    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         {norm}(std::string name);
@@ -112,31 +109,31 @@ cpp_class_str = """#include "{lower}.h"
 namespace layers {{    
    
     {norm}::{norm}(std::string name) : backend::Layer(name) {{    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/{lower}.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/{lower}.spv");       
+        dev = backend::device;
     }}
        
-    vuh::Device* {norm}::_get_device() {{        
-        return backend::device;
-    }}
-    
+        
     void {norm}::init({init_param_lst}) {{      
 {init_input_lst_3}  
+
     }}
     
-    void {norm}::bind({bind_lst}){{
-        {bind_input_lst_2}
-
+    void {norm}::bind({bind_lst}){{    
+        {bind_input_lst_2}        
 {bind_input_lst_1}
 {bind_output_lst_1}
-{bind_binding_lst_1}        
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
+
+
     }}
 
-    void {norm}::build(){{        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding{bind_input_lst}{bind_output_lst});
+    void {norm}::build(){{     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({{128, 0.1f}}, *_SHAPES{bind_input_lst}{bind_output_lst});
     }}
 
     void {norm}::forward(){{ 
@@ -156,15 +153,19 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {{      
-  
-//input
+    uint size;
+    float a;
+/*//input
     {input_param_lst_1}
     {optional_input_param_lst_1}
-//output
+ //output
     {output_param_lst_1}
-    {optional_output_param_lst_1}
+    {optional_output_param_lst_1}*/
+
+
 }} params;
 
+layout(std430, binding = 0) buffer lay0 {{ Shape_t shape[]; }};
 {shader_layout_lst}
 
 void main(){{
@@ -192,12 +193,12 @@ void init_layer_{norm}(py::module& m){{
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 
-        std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "{norm}" <<std::endl;
+        //std::cout << "LAYERS ::: " << std::string(name) << " ::: " << "{norm}" <<std::endl;
 
     }});
 
     m.def("_{norm}_run",  [](py::str name) {{
-        std::cout << "RUN ::: " << std::string(name) << " ::: {norm}" << std::endl;
+        //std::cout << "RUN ::: " << std::string(name) << " ::: {norm}" << std::endl;
         backend::layer_dict[std::string(name)]->forward();
     }});
 
@@ -214,35 +215,27 @@ class {norm}:
     input_params = [{python_inputs_func}]
     output_params = [{python_outputs_func}]
     attribute_params = [{python_attribute_func}]
-    i   = ''
-    o   = ''
-    def __init__(self, name):
+  
+    def __init__(self, name, **kwargs):
         self.name = name
         self.Module = nn._{norm}
         self.run_ = nn._{norm}_run
+        self.__dict__.update(kwargs)
+       
+    def output_shape(self):
+        return tensors[self.__dict__[self.input_params[0]]].shape 
 
-        
-
-    def output_shape(self, tensor):
-        return tensor[self.__dict__[self.input_params[0]]].shape 
-
-    def input(self, tensors, *args):
+    def __call__(self, *args):
         for i, x in enumerate(args):
-            self.__dict__[self.input_params[i]] = x
-            if(self.i != ''):
-                self.i = x
-            
-    def output(self, tensors, *args):
+            self.__dict__[self.input_params[i]] = x           
+        return self
+
+    def output(self, *args):
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
                 tensors[x] =  np.zeros(self.output_shape(tensors))
-                if(self.o != ''):
-                    self.o = x
-
-
-    def attribute(self, **kwargs):
-        self.__dict__.update(kwargs)
+        return self
 
     def build(self):
         self.Module(self.name, {python_call})
@@ -273,7 +266,7 @@ def onnx_proto():
     complex_element = []
     simple_element = []
     
-    layers = open('../_backend/layers.h', 'w')
+    layers = open('../_backend/layers.hpp', 'w')
     layer_map_file = open("../_backend/layers_map.h", 'w')
     py_layers = open('../TestingPipeline/layers.py', 'w')
     pybind_modules_file = open('../_backend/pybind_modules.txt', 'w')
@@ -355,14 +348,14 @@ def onnx_proto():
                 
                 'bind_lst' :                    ', '.join(['std::string _{0}'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),              
                 'bind_input_lst_2':             ' '.join(['{0} = _{0};'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
-                'bind_input_lst' :              ''.join([', *backend::tensor_dict[{0}]->data()'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES ]),
-                'bind_output_lst' :             ''.join([', *backend::tensor_dict[{0}]->data()'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+                'bind_input_lst' :              ''.join([', *backend::tensor_dict[{0}]->data'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES ]),
+                'bind_output_lst' :             ''.join([', *backend::tensor_dict[{0}]->data'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 
-                'bind_input_lst_1' :              ' '.join(['\t\tbinding.{0} = backend::tensor_dict[{0}]->shape();\n '.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES]),
-                'bind_output_lst_1' :             ' '.join(['\t\tbinding.{0} = backend::tensor_dict[{0}]->shape();\n '.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+                'bind_input_lst_1' :              ' '.join(['\t\tSHAPES.push_back(backend::tensor_dict[{0}]->shape());\n '.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES]),
+                'bind_output_lst_1' :             ' '.join(['\t\tSHAPES.push_back(backend::tensor_dict[{0}]->shape());\n '.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 'bind_binding_lst_1' :            ' '.join(['\t\t//binding.{0} = {0};\n '.format(i)for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
 
-                'shader_layout_lst' :           '\n'.join(['layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};'.format(i,x) for i,x in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)]),
+                'shader_layout_lst' :           '\n'.join(['layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};'.format(i,x) for i,x in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES, start=1)]),
                 
                 'call_python_binding' :         ', '.join(['std::string' for _ in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 
@@ -421,7 +414,7 @@ def onnx_proto():
     op_file.close()
 
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
-    py_layers.write('import numpy as np\nimport _backend.nn as nn\nlayer_map = {}\n' + '\n\n'.join(py_layers_map))
+    py_layers.write('import numpy as np\nimport _backend.nn as nn\nlayer_map = {}\ntensors = {}\n' + '\n\n'.join(py_layers_map))
 
     print(single_element)
     print(double_element)

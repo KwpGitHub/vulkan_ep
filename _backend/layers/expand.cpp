@@ -3,34 +3,34 @@
 namespace layers {    
    
     Expand::Expand(std::string name) : backend::Layer(name) {    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/expand.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/expand.spv");       
+        dev = backend::device;
     }
        
-    vuh::Device* Expand::_get_device() {        
-        return backend::device;
-    }
-    
+        
     void Expand::init() {      
   
+
     }
     
-    void Expand::bind(std::string _input_i, std::string _shape_i, std::string _output_o){
-        input_i = _input_i; shape_i = _shape_i; output_o = _output_o;
+    void Expand::bind(std::string _input_i, std::string _shape_i, std::string _output_o){    
+        input_i = _input_i; shape_i = _shape_i; output_o = _output_o;        
+		SHAPES.push_back(backend::tensor_dict[input_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[shape_i]->shape());
+ 
+		SHAPES.push_back(backend::tensor_dict[output_o]->shape());
+ 
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
-		binding.input_i = backend::tensor_dict[input_i]->shape();
-  		binding.shape_i = backend::tensor_dict[shape_i]->shape();
- 
-		binding.output_o = backend::tensor_dict[output_o]->shape();
- 
-        
+
     }
 
-    void Expand::build(){        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding, *backend::tensor_dict[input_i]->data(), *backend::tensor_dict[shape_i]->data(), *backend::tensor_dict[output_o]->data());
+    void Expand::build(){     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[input_i]->data, *backend::tensor_dict[shape_i]->data, *backend::tensor_dict[output_o]->data);
     }
 
     void Expand::forward(){ 

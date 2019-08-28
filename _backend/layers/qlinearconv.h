@@ -38,14 +38,16 @@ output: Output data tensor that contains the result of the convolution. The outp
 namespace layers {   
 
     class QLinearConv : public backend::Layer {
-        typedef struct {          
-            backend::Shape_t x_i; backend::Shape_t x_scale_i; backend::Shape_t x_zero_point_i; backend::Shape_t w_i; backend::Shape_t w_scale_i; backend::Shape_t w_zero_point_i; backend::Shape_t y_scale_i; backend::Shape_t y_zero_point_i;
-            backend::Shape_t B_i;
-            backend::Shape_t y_o;
-            
+        typedef struct {
+            uint32_t size; float a;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
+        std::string file;        
+		vuh::Device* dev;
+        std::vector<backend::Shape_t> SHAPES;
+        vuh::Array<backend::Shape_t>* _SHAPES;
+
         std::string auto_pad; std::vector<int> dilations; int group; std::vector<int> kernel_shape; std::vector<int> pads; std::vector<int> strides;
         std::string x_i; std::string x_scale_i; std::string x_zero_point_i; std::string w_i; std::string w_scale_i; std::string w_zero_point_i; std::string y_scale_i; std::string y_zero_point_i;
         std::string B_i;
@@ -53,12 +55,7 @@ namespace layers {
         
 
         binding_descriptor   binding;
-        vuh::Device* _get_device();
-
-        /*using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	    struct Params { uint32_t size; float a; };    // shader push-constants interface
-	    vuh::Program<Specs, Params>* program;*/
-
+       
 
     public:
         QLinearConv(std::string name);

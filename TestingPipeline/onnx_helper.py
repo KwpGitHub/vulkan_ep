@@ -9,8 +9,9 @@ from onnx.backend.base import Backend, Device, DeviceType, namedtupledict, Backe
 
 from onnx.helper import make_tensor_value_info, make_graph, make_model
 import numpy as np
-
 import os
+import time
+
 import layers
 import _backend
 
@@ -57,60 +58,82 @@ class OnnxNode(object):
 
 class OnnxGraph:
     def __init__(self, filename):
+        start = time.perf_counter()
         model = onnx.load(filename)
         inferred_model = onnx.shape_inference.infer_shapes(model)
         graph = inferred_model.graph
-       
         self.nodes = list()
-        self.init_vals = dict()
         self.layer = list()
-        self.init_vals[""] = np.ones(1)
+        layers.tensors[''] = np.zeros(10)
 
         for val in inferred_model.graph.value_info:
             data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
-            self.init_vals[val.name] = data
+            layers.tensors[val.name] = data
         for init_val in graph.initializer:
             name, data = self._create_tensor_filling_op(init_val)            
-            self.init_vals[name] = data
+            layers.tensors[name] = data
             
         for val in graph.input:
-            if(val.name not in self.init_vals.keys()):            
+            if(val.name not in layers.tensors.keys()):            
                 data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
-
-
-                self.init_vals[val.name] = data     
+                layers.tensors[val.name] = data     
                 
         for val in graph.output:
-            if(val.name not in self.init_vals.keys()):
+            if(val.name not in layers.tensors.keys()):
                 data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
-                self.init_vals[val.name] = data 
+                layers.tensors[val.name] = data 
                 
         for n in graph.node:
             self.nodes.append(OnnxNode(n))
         
+        
+
         _backend.create_instance()
+
+        end = time.perf_counter()
+        print("::: DONE MODEL PARSE :::", end-start)
+
+
+
         _backend.test()
 
     def build(self):
+        
+        x_start = time.perf_counter()
+
+        start = time.perf_counter()
         for nodes in self.nodes:
-            l = layers.layer_map[nodes.op_type](nodes.name)
-            l.attribute(**nodes.attrs)
-            l.input(self.init_vals, *nodes.inputs)
-            l.output(self.init_vals, *nodes.outputs)           
+            l = layers.layer_map[nodes.op_type](nodes.name, **nodes.attrs)(*nodes.inputs)
+            l.output(*nodes.outputs)
             self.layer.append(l)     
-            
-        for name, data in self.init_vals.items():
+        end = time.perf_counter()
+        print("::: DONE NODE INIT :::", end-start, "avg", (end-start)/len(self.nodes))
+
+        start = time.perf_counter()
+        for name, data in layers.tensors.items():
             _backend.create_tensor(name, data)
+        end = time.perf_counter()
+        print("::: DONE Tensor BUILD :::", end-start, "avg", (end-start)/len(layers.tensors.items()))
+
+        start = time.perf_counter()
         for l in self.layer:
              l.build()
-
+        end = time.perf_counter()
+        print("::: DONE LAYER BUILD :::", end-start, 'avg', (end-start)/len(self.layer))
+                
+        x_end = time.perf_counter()
+        print("::: DONE BUILDING PIPE :::", x_end-x_start)
+        
         _backend.test()
 
     def run(self):
-        print("STARTING EXECUTION")
+
+        start = time.perf_counter()
         for layer in self.layer:
             layer.run()
-        print("::: DONE RUNNING PIPE :::")
+        end = time.perf_counter()
+
+        print("::: DONE RUNNING PIPE :::", end-start, "avg", (end-start)/len(self.layer))
 
     def _create_tensor_filling_op(self, onnx_tensor, name=None):
       

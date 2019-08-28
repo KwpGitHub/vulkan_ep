@@ -14,5 +14,6 @@ if(__name__=="__main__"):
     print()
     #bidaf = onnx_helper.OnnxGraph('./bidaf.onnx')
     #bidaf.build()
+    mobilenet.run()
     print()
     

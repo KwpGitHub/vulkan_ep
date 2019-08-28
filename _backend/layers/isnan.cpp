@@ -3,33 +3,33 @@
 namespace layers {    
    
     IsNaN::IsNaN(std::string name) : backend::Layer(name) {    
-        std::string file;
         file.append(backend::file_path);
-        file.append("shaders/bin/isnan.spv");
-        program = new vuh::Program<Specs, binding_descriptor>(*_get_device(), file.c_str());
+        file.append("shaders/bin/isnan.spv");       
+        dev = backend::device;
     }
        
-    vuh::Device* IsNaN::_get_device() {        
-        return backend::device;
-    }
-    
+        
     void IsNaN::init() {      
   
+
     }
     
-    void IsNaN::bind(std::string _X_i, std::string _Y_o){
-        X_i = _X_i; Y_o = _Y_o;
+    void IsNaN::bind(std::string _X_i, std::string _Y_o){    
+        X_i = _X_i; Y_o = _Y_o;        
+		SHAPES.push_back(backend::tensor_dict[X_i]->shape());
+ 
+		SHAPES.push_back(backend::tensor_dict[Y_o]->shape());
+ 
+        _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
-		binding.X_i = backend::tensor_dict[X_i]->shape();
- 
-		binding.Y_o = backend::tensor_dict[Y_o]->shape();
- 
-        
+
     }
 
-    void IsNaN::build(){        
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE).spec(64, 64, 64);
-        program->bind(binding, *backend::tensor_dict[X_i]->data(), *backend::tensor_dict[Y_o]->data());
+    void IsNaN::build(){     
+        program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
+        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[X_i]->data, *backend::tensor_dict[Y_o]->data);
     }
 
     void IsNaN::forward(){ 

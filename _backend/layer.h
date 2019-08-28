@@ -13,7 +13,7 @@ namespace py = pybind11;
 
 namespace backend {
 	
-#define PROCESSKERNEL_SIZE 32
+#define PROCESSKERNEL_SIZE 1
 	
 	class Layer
 	{

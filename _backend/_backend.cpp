@@ -12,7 +12,7 @@ namespace py = pybind11;
 #include "kernel/vuh.h"
 #include "tensor.h"
 #include "layer.h"
-#include "layers.h"
+#include "layers.hpp"
 
 
 void create_instance() {
@@ -28,23 +28,35 @@ void test() {
 	size = 1024;
 	auto y = std::vector<float>(size, 1.0f);
 	auto x = std::vector<float>(size, 2.0f);
-	
-	// just get the first available device
-	auto device = new vuh::Device(*backend::device);
 
-	auto d_y = vuh::Array<float>(*device, y);
-	auto d_x = vuh::Array<float>(*device, x);
+	auto shape = std::vector<backend::Shape_t>();
+	shape.push_back({ 1,1,1,1,1 });
+	shape.push_back({ 1,1,1,1,1 });
+	// just get the first available device
+	auto device = backend::device;
+
+	auto shape_t = vuh::Array<backend::Shape_t>(*device, shape);
+
+	auto d_y = new backend::Tensor(x, { size,1,1,1,1 });
+	auto d_x = new backend::Tensor(y, { size,1,1,1,1 });
 
 	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
 	struct Params { uint32_t size; float a; };    // shader push-constants interface
 
 	vuh::Program<Specs, Params>* program;
 	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
-	program = new vuh::Program<Specs, Params>(*device, std::string(std::string(backend::file_path) + std::string("saxpy.spv")).c_str());
-	program->grid(size / 64, 1, 1).spec(64, 1, 1).bind({ size, 0.1f }, d_y, d_x);
+	Params p;
+	p.size = size;
+	p.a = 0.1f;
+
+	program = new vuh::Program<Specs, Params>(*device, std::string(std::string(backend::file_path) + std::string("saxpy_1.spv")).c_str());
+	program->grid(size / 64, 1, 1);
+	program->spec(64, 1, 1);
+	program->bind(p, *d_y->data, *d_x->data, shape_t);
 	program->run();
 
-	d_y.toHost(begin(y));
+	d_y->data->toHost(begin(y));
+
 	int error_count = 0;
 	for (int i = 0; i < size; ++i) {
 		if (abs(y[i] - (1.0 + 0.1 * x[i])) > 1e-7) 
@@ -88,7 +100,7 @@ void create_tensor(py::str name, py::array_t<float> input){
 	case 5: _shape = { s[0], s[1], s[2], s[3], s[4] };
 	}
 
-	std::cout << "NP_TENSOR ::: " << name << std::endl;
+	//std::cout << "NP_TENSOR ::: " << name << std::endl;
 	backend::Tensor* x = new backend::Tensor(data, _shape);
 	backend::tensor_dict.insert(std::pair<std::string, backend::Tensor*>(std::string(name), x));
 

@@ -23,7 +23,6 @@
     <ClCompile Include="kernel\error.cpp" />
     <ClCompile Include="kernel\instance.cpp" />
     <ClCompile Include="kernel\utils.cpp" />
-    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="layers\abs.cpp" />
     <ClCompile Include="layers\acos.cpp" />
     <ClCompile Include="layers\acosh.cpp" />
@@ -181,6 +180,7 @@
     <ClCompile Include="_backend.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blas.hpp" />
     <ClInclude Include="kernel\array.hpp" />
     <ClInclude Include="kernel\arr\allocDevice.hpp" />
     <ClInclude Include="kernel\arr\arrayIter.hpp" />
@@ -201,7 +201,7 @@
     <ClInclude Include="kernel\utils.h" />
     <ClInclude Include="kernel\vuh.h" />
     <ClInclude Include="layer.h" />
-    <ClInclude Include="layers.h" />
+    <ClInclude Include="layers.hpp" />
     <ClInclude Include="layers\abs.h" />
     <ClInclude Include="layers\acos.h" />
     <ClInclude Include="layers\acosh.h" />

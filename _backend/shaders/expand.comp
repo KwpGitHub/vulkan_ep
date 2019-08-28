@@ -7,18 +7,22 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-  
-//input
+    uint size;
+    float a;
+/*//input
     Shape_t input_i; Shape_t shape_i;
     
-//output
+ //output
     Shape_t output_o;
-    
+    */
+
+
 } params;
 
-layout(std430, binding = 0) buffer lay0 { float input_i[]; };
-layout(std430, binding = 1) buffer lay1 { float shape_i[]; };
-layout(std430, binding = 2) buffer lay2 { float output_o[]; };
+layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
+layout(std430, binding = 1) buffer lay1 { float input_i[]; };
+layout(std430, binding = 2) buffer lay2 { float shape_i[]; };
+layout(std430, binding = 3) buffer lay3 { float output_o[]; };
 
 void main(){
     const uint idx = gl_GlobalInvocationID.x;
