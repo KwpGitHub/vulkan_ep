@@ -18,7 +18,10 @@ namespace py = pybind11;
 void create_instance() {
 	backend::instance = new vuh::Instance();
 	backend::device = new vuh::Device(backend::instance->devices().at(0));
-	backend::file_path = "C:\\Users\\mramados.AMR\\source\\repos\\vulkan_ep\\_backend\\";
+	backend::file_path = "C:\\Users\\mramados.AMR";
+	backend::file_path = "C:\\Users\\monish";
+
+	backend::file_path.append("\\source\\repos\\vulkan_ep\\_backend\\");
 }
 
 void test() {
@@ -37,14 +40,13 @@ void test() {
 
 	auto shape_t = vuh::Array<backend::Shape_t>(*device, shape);
 
-	auto d_y = new backend::Tensor(x, { size,1,1,1,1 });
-	auto d_x = new backend::Tensor(y, { size,1,1,1,1 });
+	auto d_y = new backend::Tensor(y, { size,1,1,1,1 });
+	auto d_x = new backend::Tensor(x, { size,1,1,1,1 });
 
-	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;     // shader specialization constants interface
-	struct Params { uint32_t size; float a; };    // shader push-constants interface
+	using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
+	struct Params { uint32_t size; float a; };
 
 	vuh::Program<Specs, Params>* program;
-	//auto program = vuh::Program<Specs, Params>(device, "C:\\Users\\monish\\source\\repos\\vulkan_ep\\_backend/saxpy.spv");
 	Params p;
 	p.size = size;
 	p.a = 0.1f;
@@ -58,6 +60,7 @@ void test() {
 	d_y->data->toHost(begin(y));
 
 	int error_count = 0;
+	float tmp = y[0] - (1.0 + 0.1 * x[0]);
 	for (int i = 0; i < size; ++i) {
 		if (abs(y[i] - (1.0 + 0.1 * x[i])) > 1e-7) 
 			error_count++;

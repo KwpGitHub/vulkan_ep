@@ -484,7 +484,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)\include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>

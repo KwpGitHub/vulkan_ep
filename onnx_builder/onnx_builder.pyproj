@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>onnx_builder</Name>
     <RootNamespace>onnx_builder</RootNamespace>
-    <InterpreterId>CondaEnv|CondaEnv|visual_sutdio_base</InterpreterId>
+    <InterpreterId>Global|ContinuumAnalytics|Anaconda37-64</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>True</IsWindowsApplication>

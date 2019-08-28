@@ -17,11 +17,8 @@ type_map = {
     'GRAPHS':   'int'
 }
 
-
-
 ops = {}
 op_file = open('op_file.h','w')
-
 
 layer_map_str = """/*#include <map>
 #include "layers.h"
