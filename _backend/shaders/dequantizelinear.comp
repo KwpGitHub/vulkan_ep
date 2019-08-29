@@ -7,16 +7,7 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    uint size;
-    float a;
-/*//input
-    Shape_t x_i; Shape_t x_scale_i;
-    Shape_t x_zero_point_i;
- //output
-    Shape_t y_o;
-    */
-
-
+   uint x;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
@@ -25,18 +16,29 @@ layout(std430, binding = 2) buffer lay2 { float x_scale_i[]; };
 layout(std430, binding = 3) buffer lay3 { float x_zero_point_i[]; };
 layout(std430, binding = 4) buffer lay4 { float y_o[]; };
 
-void main(){
-    const uint idx = gl_GlobalInvocationID.x;
-    const uint idy = gl_GlobalInvocationID.y;
-    const uint idz = gl_GlobalInvocationID.z;
-    ////const uint x_i_size = params.x_i.n * params.x_i.c * params.x_i.d * params.x_i.w * params.x_i.h;
-	//const uint x_scale_i_size = params.x_scale_i.n * params.x_scale_i.c * params.x_scale_i.d * params.x_scale_i.w * params.x_scale_i.h;
-    ////const uint x_zero_point_i_size = params.x_zero_point_i.n * params.x_zero_point_i.c * params.x_zero_point_i.d * params.x_zero_point_i.w * params.x_zero_point_i.h;
-    ////const uint y_o_size = params.y_o.n * params.y_o.c * params.y_o.d * params.y_o.w * params.y_o.h;
-    //
 
-    //if(5 <= idx) {
-    //    return;
-    //}
-    return;
+void main(){
+    const uint x = gl_GlobalInvocationID.x;
+    const uint y = gl_GlobalInvocationID.y;
+    const uint z = gl_GlobalInvocationID.z;
+
+	vec4 x_i_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
+	vec4 x_scale_i_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
+	vec4 x_zero_point_i_shape = vec4(shape[2].c, shape[2].d, shape[2].h, shape[2].w);
+	vec4 y_o_shape = vec4(shape[3].c, shape[3].d, shape[3].h, shape[3].w);
+    uint n = shape[0].n;
+    
+    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
+        return;
+    }
+    for(uint i = 0; i < n; i++){
+        for(uint j = 0; j < shape[0].c; j++){
+           
+            uint indx = x + uint(y*x_i_shape.x)                        + uint(z*x_i_shape.x*x_i_shape.y)                        + uint(j*x_i_shape.x*x_i_shape.y*x_i_shape.z)                        + uint(i*x_i_shape.x*x_i_shape.y*x_i_shape.z*x_i_shape.w);
+
+            x_i[indx] = y_o[indx];
+        }
+    }
+       
+
 }

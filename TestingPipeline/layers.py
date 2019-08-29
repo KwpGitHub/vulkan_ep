@@ -208,11 +208,43 @@ layer_map['BatchNormalization'] = BatchNormalization
 
 class Mean:
     name = None
+    x0_i = str()
+    x1_i = str()
+    x2_i = str()
+    x3_i = str()
+    x4_i = str()
+    x5_i = str()
+    x6_i = str()
+    x7_i = str()
+    x8_i = str()
+    x9_i = str()
+    x10_i = str()
+    x11_i = str()
+    x12_i = str()
+    x13_i = str()
+    x14_i = str()
+    x15_i = str()
+    x16_i = str()
+    x17_i = str()
+    x18_i = str()
+    x19_i = str()
+    x20_i = str()
+    x21_i = str()
+    x22_i = str()
+    x23_i = str()
+    x24_i = str()
+    x25_i = str()
+    x26_i = str()
+    x27_i = str()
+    x28_i = str()
+    x29_i = str()
+    x30_i = str()
+    x31_i = str()
     mean_o = str()
 
     #parameters
 
-    input_params = []
+    input_params = ["x0_i", "x1_i", "x2_i", "x3_i", "x4_i", "x5_i", "x6_i", "x7_i", "x8_i", "x9_i", "x10_i", "x11_i", "x12_i", "x13_i", "x14_i", "x15_i", "x16_i", "x17_i", "x18_i", "x19_i", "x20_i", "x21_i", "x22_i", "x23_i", "x24_i", "x25_i", "x26_i", "x27_i", "x28_i", "x29_i", "x30_i", "x31_i"]
     output_params = ["mean_o"]
     attribute_params = []
   
@@ -238,7 +270,7 @@ class Mean:
         return self
 
     def build(self):
-        self.Module(self.name, self.mean_o)
+        self.Module(self.name, self.x0_i, self.x1_i, self.x2_i, self.x3_i, self.x4_i, self.x5_i, self.x6_i, self.x7_i, self.x8_i, self.x9_i, self.x10_i, self.x11_i, self.x12_i, self.x13_i, self.x14_i, self.x15_i, self.x16_i, self.x17_i, self.x18_i, self.x19_i, self.x20_i, self.x21_i, self.x22_i, self.x23_i, self.x24_i, self.x25_i, self.x26_i, self.x27_i, self.x28_i, self.x29_i, self.x30_i, self.x31_i, self.mean_o)
 
     def run(self):
         self.run_(self.name)

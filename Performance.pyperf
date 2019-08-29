@@ -1,9 +1,4 @@
 <?xml version="1.0"?>
 <ProfilingTarget xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ProjectTarget>
-    <TargetProject>dc794b97-d4b1-4756-aee3-f00f8f38332f</TargetProject>
-    <FriendlyName>TestingPipeline</FriendlyName>
-  </ProjectTarget>
-  <Reports />
   <UseVTune>false</UseVTune>
 </ProfilingTarget>

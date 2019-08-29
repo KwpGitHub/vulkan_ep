@@ -41,9 +41,11 @@ namespace layers {
 
     void QLinearConv::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->grid(  vuh::div_up(backend::tensor_dict[x_i]->shape().w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(backend::tensor_dict[x_i]->shape().h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(backend::tensor_dict[x_i]->shape().d, PROCESSKERNEL_SIZE));
         program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[x_i]->data, *backend::tensor_dict[x_scale_i]->data, *backend::tensor_dict[x_zero_point_i]->data, *backend::tensor_dict[w_i]->data, *backend::tensor_dict[w_scale_i]->data, *backend::tensor_dict[w_zero_point_i]->data, *backend::tensor_dict[y_scale_i]->data, *backend::tensor_dict[y_zero_point_i]->data, *backend::tensor_dict[B_i]->data, *backend::tensor_dict[y_o]->data);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[x_i]->data, *backend::tensor_dict[x_scale_i]->data, *backend::tensor_dict[x_zero_point_i]->data, *backend::tensor_dict[w_i]->data, *backend::tensor_dict[w_scale_i]->data, *backend::tensor_dict[w_zero_point_i]->data, *backend::tensor_dict[y_scale_i]->data, *backend::tensor_dict[y_zero_point_i]->data, *backend::tensor_dict[B_i]->data, *backend::tensor_dict[y_o]->data);
     }
 
     void QLinearConv::forward(){ 

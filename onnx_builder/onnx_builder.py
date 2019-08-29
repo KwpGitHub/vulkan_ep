@@ -67,7 +67,7 @@ namespace layers {{
 
     class {norm} : public backend::Layer {{
         typedef struct {{
-            uint32_t size; float a;
+            uint32_t size;
         }} binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
@@ -101,6 +101,7 @@ namespace layers {{
 
 """.format_map
 
+
 cpp_class_str = """#include "{lower}.h"
 //cpp stuff
 namespace layers {{    
@@ -128,9 +129,11 @@ namespace layers {{
 
     void {norm}::build(){{     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->grid(  vuh::div_up(backend::tensor_dict[{shader_input}]->shape().w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(backend::tensor_dict[{shader_input}]->shape().h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(backend::tensor_dict[{shader_input}]->shape().d, PROCESSKERNEL_SIZE));
         program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({{128, 0.1f}}, *_SHAPES{bind_input_lst}{bind_output_lst});
+        program->bind({{128}}, *_SHAPES{bind_input_lst}{bind_output_lst});
     }}
 
     void {norm}::forward(){{ 
@@ -141,6 +144,7 @@ namespace layers {{
 
 """.format_map
 
+
 class_shader_str = """
 #version 450
 struct Shape_t {{ uint n; uint c; uint d; uint h; uint w; }};
@@ -150,36 +154,41 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {{      
-    uint size;
-    float a;
-/*//input
-    {input_param_lst_1}
-    {optional_input_param_lst_1}
- //output
-    {output_param_lst_1}
-    {optional_output_param_lst_1}*/
-
-
+   uint x;
 }} params;
 
 layout(std430, binding = 0) buffer lay0 {{ Shape_t shape[]; }};
 {shader_layout_lst}
 
-void main(){{
-    const uint idx = gl_GlobalInvocationID.x;
-    const uint idy = gl_GlobalInvocationID.y;
-    const uint idz = gl_GlobalInvocationID.z;
-    //{input_param_lst_size}
-    //{optional_input_param_lst_size}
-    //{output_param_lst_size}
-    //{optional_output_param_lst_size}
 
-    //if(5 <= idx) {{
-    //    return;
-    //}}
-    return;
+void main(){{
+    const uint x = gl_GlobalInvocationID.x;
+    const uint y = gl_GlobalInvocationID.y;
+    const uint z = gl_GlobalInvocationID.z;
+
+{shader_shape_lst}
+    uint n = shape[0].n;
+    
+    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){{
+        return;
+    }}
+    for(uint i = 0; i < n; i++){{
+        for(uint j = 0; j < shape[0].c; j++){{
+           
+
+            uint indx = x + uint(y*{shader_input_shape}.x)\
+                        + uint(z*{shader_input_shape}.x*{shader_input_shape}.y)\
+                        + uint(j*{shader_input_shape}.x*{shader_input_shape}.y*{shader_input_shape}.z)\
+                        + uint(i*{shader_input_shape}.x*{shader_input_shape}.y*{shader_input_shape}.z*{shader_input_shape}.w);
+
+            {shader_input}[indx] = {shader_output}[indx];
+        }}
+    }}
+       
+
 }}
 """.format_map
+
 
 layers_file_str = '''
 void init_layer_{norm}(py::module& m){{
@@ -290,7 +299,7 @@ def onnx_proto():
         OUTPUT_NAMES =              [str(x.name)+"_o"  for x in op.outputs if(str(x.option) == 'FormalParameterOption.Single')]        
         OPTIONAL_OUTPUT_NAMES =     [str(x.name)+"_o" for x in op.outputs if(str(x.option) == 'FormalParameterOption.Optional')]
         
-        if(op_name in ['Concat', 'Sum', 'Scan']): 
+        if(op_name in ['Concat', 'Sum', 'Scan', 'Mean']): 
             OPTIONAL_INPUT_NAMES = ['x'+str(i)+'_i' for i in range(32)]
         if(op_name in ['Scan']):
             OPTIONAL_OUTPUT_NAMES = ['y'+str(i)+'_o' for i in range(32)]
@@ -328,18 +337,7 @@ def onnx_proto():
                 'optional_input_param_lst' :    ' '.join( ['backend::Shape_t {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
                 'output_param_lst' :            ' '.join( ['backend::Shape_t {0};'.format(x) for x in OUTPUT_NAMES]),
                 'optional_output_param_lst' :   ' '.join( ['backend::Shape_t {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
- 
-                'input_param_lst_1' :             ' '.join( ['Shape_t {0};'.format(x) for x in INPUT_NAMES]),
-                'optional_input_param_lst_1' :    ' '.join( ['Shape_t {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
-                'output_param_lst_1' :            ' '.join( ['Shape_t {0};'.format(x) for x in OUTPUT_NAMES]),
-                'optional_output_param_lst_1' :   ' '.join( ['Shape_t {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
- 
-
-                'input_param_lst_size' :             '\n\t'.join( ['//const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in INPUT_NAMES]),
-                'optional_input_param_lst_size' :    '\n\t'.join( ['//const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OPTIONAL_INPUT_NAMES]),
-                'output_param_lst_size' :            '\n\t'.join( ['//const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OUTPUT_NAMES]),
-                'optional_output_param_lst_size' :   '\n\t'.join( ['//const uint {0}_size = params.{0}.n * params.{0}.c * params.{0}.d * params.{0}.w * params.{0}.h;'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),        
-                                 
+                                                         
                 'init_param_lst' :              ', '.join( [ ' {0} _{1}'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
                 'init_input_lst_3':             ' '.join(['\t\t {0} = _{0}; \n'.format(i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
                 
@@ -353,7 +351,12 @@ def onnx_proto():
                 'bind_binding_lst_1' :            ' '.join(['\t\t//binding.{0} = {0};\n '.format(i)for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
 
                 'shader_layout_lst' :           '\n'.join(['layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};'.format(i,x) for i,x in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES, start=1)]),
-                
+                'shader_shape_lst' :            '\n'.join(['\tvec4 {0}_shape = vec4(shape[{1}].c, shape[{1}].d, shape[{1}].h, shape[{1}].w);'.format(j,i) for i, j in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)]),
+                'shader_input' :                '{0}'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
+                'shader_output' :                '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
+                'shader_input_shape' :          '{0}_shape'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
+                'shader_output_shape' :         '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
+
                 'call_python_binding' :         ', '.join(['std::string' for _ in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 
                 'pybind11_constructor':         ''.join([ ', {0}'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]).replace("Shape_t", "backend::Shape_t"),

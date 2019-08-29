@@ -13,7 +13,7 @@ namespace py = pybind11;
 
 namespace backend {
 	
-#define PROCESSKERNEL_SIZE 1
+#define PROCESSKERNEL_SIZE 32
 	
 	class Layer
 	{
@@ -27,7 +27,6 @@ namespace backend {
 		virtual void build() {}
 	protected:
 		using Specs = vuh::typelist<uint32_t, uint32_t, uint32_t>;
-		//virtual void parameter_proc(std::map<std::string, std::vector<std::string>> a()) {}
 	};
 }
 

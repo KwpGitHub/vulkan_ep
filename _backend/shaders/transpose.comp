@@ -7,33 +7,34 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    uint size;
-    float a;
-/*//input
-    Shape_t data_i;
-    
- //output
-    Shape_t transposed_o;
-    */
-
-
+   uint x;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
 layout(std430, binding = 1) buffer lay1 { float data_i[]; };
 layout(std430, binding = 2) buffer lay2 { float transposed_o[]; };
 
-void main(){
-    const uint idx = gl_GlobalInvocationID.x;
-    const uint idy = gl_GlobalInvocationID.y;
-    const uint idz = gl_GlobalInvocationID.z;
-    ////const uint data_i_size = params.data_i.n * params.data_i.c * params.data_i.d * params.data_i.w * params.data_i.h;
-    //
-    ////const uint transposed_o_size = params.transposed_o.n * params.transposed_o.c * params.transposed_o.d * params.transposed_o.w * params.transposed_o.h;
-    //
 
-    //if(5 <= idx) {
-    //    return;
-    //}
-    return;
+void main(){
+    const uint x = gl_GlobalInvocationID.x;
+    const uint y = gl_GlobalInvocationID.y;
+    const uint z = gl_GlobalInvocationID.z;
+
+	vec4 data_i_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
+	vec4 transposed_o_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
+    uint n = shape[0].n;
+    
+    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
+        return;
+    }
+    for(uint i = 0; i < n; i++){
+        for(uint j = 0; j < shape[0].c; j++){
+           
+            uint indx = x + uint(y*data_i_shape.x)                        + uint(z*data_i_shape.x*data_i_shape.y)                        + uint(j*data_i_shape.x*data_i_shape.y*data_i_shape.z)                        + uint(i*data_i_shape.x*data_i_shape.y*data_i_shape.z*data_i_shape.w);
+
+            data_i[indx] = transposed_o[indx];
+        }
+    }
+       
+
 }

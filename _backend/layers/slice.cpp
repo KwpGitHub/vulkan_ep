@@ -31,9 +31,11 @@ namespace layers {
 
     void Slice::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->grid(  vuh::div_up(backend::tensor_dict[data_i]->shape().w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(backend::tensor_dict[data_i]->shape().h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(backend::tensor_dict[data_i]->shape().d, PROCESSKERNEL_SIZE));
         program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[data_i]->data, *backend::tensor_dict[starts_i]->data, *backend::tensor_dict[ends_i]->data, *backend::tensor_dict[axes_i]->data, *backend::tensor_dict[steps_i]->data, *backend::tensor_dict[output_o]->data);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[data_i]->data, *backend::tensor_dict[starts_i]->data, *backend::tensor_dict[ends_i]->data, *backend::tensor_dict[axes_i]->data, *backend::tensor_dict[steps_i]->data, *backend::tensor_dict[output_o]->data);
     }
 
     void Slice::forward(){ 

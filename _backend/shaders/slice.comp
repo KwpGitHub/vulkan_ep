@@ -7,16 +7,7 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    uint size;
-    float a;
-/*//input
-    Shape_t data_i; Shape_t starts_i; Shape_t ends_i;
-    Shape_t axes_i; Shape_t steps_i;
- //output
-    Shape_t output_o;
-    */
-
-
+   uint x;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
@@ -27,20 +18,31 @@ layout(std430, binding = 4) buffer lay4 { float axes_i[]; };
 layout(std430, binding = 5) buffer lay5 { float steps_i[]; };
 layout(std430, binding = 6) buffer lay6 { float output_o[]; };
 
-void main(){
-    const uint idx = gl_GlobalInvocationID.x;
-    const uint idy = gl_GlobalInvocationID.y;
-    const uint idz = gl_GlobalInvocationID.z;
-    ////const uint data_i_size = params.data_i.n * params.data_i.c * params.data_i.d * params.data_i.w * params.data_i.h;
-	//const uint starts_i_size = params.starts_i.n * params.starts_i.c * params.starts_i.d * params.starts_i.w * params.starts_i.h;
-	//const uint ends_i_size = params.ends_i.n * params.ends_i.c * params.ends_i.d * params.ends_i.w * params.ends_i.h;
-    ////const uint axes_i_size = params.axes_i.n * params.axes_i.c * params.axes_i.d * params.axes_i.w * params.axes_i.h;
-	//const uint steps_i_size = params.steps_i.n * params.steps_i.c * params.steps_i.d * params.steps_i.w * params.steps_i.h;
-    ////const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
-    //
 
-    //if(5 <= idx) {
-    //    return;
-    //}
-    return;
+void main(){
+    const uint x = gl_GlobalInvocationID.x;
+    const uint y = gl_GlobalInvocationID.y;
+    const uint z = gl_GlobalInvocationID.z;
+
+	vec4 data_i_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
+	vec4 starts_i_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
+	vec4 ends_i_shape = vec4(shape[2].c, shape[2].d, shape[2].h, shape[2].w);
+	vec4 axes_i_shape = vec4(shape[3].c, shape[3].d, shape[3].h, shape[3].w);
+	vec4 steps_i_shape = vec4(shape[4].c, shape[4].d, shape[4].h, shape[4].w);
+	vec4 output_o_shape = vec4(shape[5].c, shape[5].d, shape[5].h, shape[5].w);
+    uint n = shape[0].n;
+    
+    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
+        return;
+    }
+    for(uint i = 0; i < n; i++){
+        for(uint j = 0; j < shape[0].c; j++){
+           
+            uint indx = x + uint(y*data_i_shape.x)                        + uint(z*data_i_shape.x*data_i_shape.y)                        + uint(j*data_i_shape.x*data_i_shape.y*data_i_shape.z)                        + uint(i*data_i_shape.x*data_i_shape.y*data_i_shape.z*data_i_shape.w);
+
+            data_i[indx] = output_o[indx];
+        }
+    }
+       
+
 }

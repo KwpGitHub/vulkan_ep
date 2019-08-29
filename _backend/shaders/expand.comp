@@ -7,16 +7,7 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    uint size;
-    float a;
-/*//input
-    Shape_t input_i; Shape_t shape_i;
-    
- //output
-    Shape_t output_o;
-    */
-
-
+   uint x;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
@@ -24,18 +15,28 @@ layout(std430, binding = 1) buffer lay1 { float input_i[]; };
 layout(std430, binding = 2) buffer lay2 { float shape_i[]; };
 layout(std430, binding = 3) buffer lay3 { float output_o[]; };
 
-void main(){
-    const uint idx = gl_GlobalInvocationID.x;
-    const uint idy = gl_GlobalInvocationID.y;
-    const uint idz = gl_GlobalInvocationID.z;
-    ////const uint input_i_size = params.input_i.n * params.input_i.c * params.input_i.d * params.input_i.w * params.input_i.h;
-	//const uint shape_i_size = params.shape_i.n * params.shape_i.c * params.shape_i.d * params.shape_i.w * params.shape_i.h;
-    //
-    ////const uint output_o_size = params.output_o.n * params.output_o.c * params.output_o.d * params.output_o.w * params.output_o.h;
-    //
 
-    //if(5 <= idx) {
-    //    return;
-    //}
-    return;
+void main(){
+    const uint x = gl_GlobalInvocationID.x;
+    const uint y = gl_GlobalInvocationID.y;
+    const uint z = gl_GlobalInvocationID.z;
+
+	vec4 input_i_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
+	vec4 shape_i_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
+	vec4 output_o_shape = vec4(shape[2].c, shape[2].d, shape[2].h, shape[2].w);
+    uint n = shape[0].n;
+    
+    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
+        return;
+    }
+    for(uint i = 0; i < n; i++){
+        for(uint j = 0; j < shape[0].c; j++){
+           
+            uint indx = x + uint(y*input_i_shape.x)                        + uint(z*input_i_shape.x*input_i_shape.y)                        + uint(j*input_i_shape.x*input_i_shape.y*input_i_shape.z)                        + uint(i*input_i_shape.x*input_i_shape.y*input_i_shape.z*input_i_shape.w);
+
+            input_i[indx] = output_o[indx];
+        }
+    }
+       
+
 }

@@ -7,16 +7,7 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    uint size;
-    float a;
-/*//input
-    
-    Shape_t x0_i; Shape_t x1_i; Shape_t x2_i; Shape_t x3_i; Shape_t x4_i; Shape_t x5_i; Shape_t x6_i; Shape_t x7_i; Shape_t x8_i; Shape_t x9_i; Shape_t x10_i; Shape_t x11_i; Shape_t x12_i; Shape_t x13_i; Shape_t x14_i; Shape_t x15_i; Shape_t x16_i; Shape_t x17_i; Shape_t x18_i; Shape_t x19_i; Shape_t x20_i; Shape_t x21_i; Shape_t x22_i; Shape_t x23_i; Shape_t x24_i; Shape_t x25_i; Shape_t x26_i; Shape_t x27_i; Shape_t x28_i; Shape_t x29_i; Shape_t x30_i; Shape_t x31_i;
- //output
-    
-    Shape_t y0_o; Shape_t y1_o; Shape_t y2_o; Shape_t y3_o; Shape_t y4_o; Shape_t y5_o; Shape_t y6_o; Shape_t y7_o; Shape_t y8_o; Shape_t y9_o; Shape_t y10_o; Shape_t y11_o; Shape_t y12_o; Shape_t y13_o; Shape_t y14_o; Shape_t y15_o; Shape_t y16_o; Shape_t y17_o; Shape_t y18_o; Shape_t y19_o; Shape_t y20_o; Shape_t y21_o; Shape_t y22_o; Shape_t y23_o; Shape_t y24_o; Shape_t y25_o; Shape_t y26_o; Shape_t y27_o; Shape_t y28_o; Shape_t y29_o; Shape_t y30_o; Shape_t y31_o;*/
-
-
+   uint x;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
@@ -85,79 +76,89 @@ layout(std430, binding = 62) buffer lay62 { float y29_o[]; };
 layout(std430, binding = 63) buffer lay63 { float y30_o[]; };
 layout(std430, binding = 64) buffer lay64 { float y31_o[]; };
 
-void main(){
-    const uint idx = gl_GlobalInvocationID.x;
-    const uint idy = gl_GlobalInvocationID.y;
-    const uint idz = gl_GlobalInvocationID.z;
-    //
-    ////const uint x0_i_size = params.x0_i.n * params.x0_i.c * params.x0_i.d * params.x0_i.w * params.x0_i.h;
-	//const uint x1_i_size = params.x1_i.n * params.x1_i.c * params.x1_i.d * params.x1_i.w * params.x1_i.h;
-	//const uint x2_i_size = params.x2_i.n * params.x2_i.c * params.x2_i.d * params.x2_i.w * params.x2_i.h;
-	//const uint x3_i_size = params.x3_i.n * params.x3_i.c * params.x3_i.d * params.x3_i.w * params.x3_i.h;
-	//const uint x4_i_size = params.x4_i.n * params.x4_i.c * params.x4_i.d * params.x4_i.w * params.x4_i.h;
-	//const uint x5_i_size = params.x5_i.n * params.x5_i.c * params.x5_i.d * params.x5_i.w * params.x5_i.h;
-	//const uint x6_i_size = params.x6_i.n * params.x6_i.c * params.x6_i.d * params.x6_i.w * params.x6_i.h;
-	//const uint x7_i_size = params.x7_i.n * params.x7_i.c * params.x7_i.d * params.x7_i.w * params.x7_i.h;
-	//const uint x8_i_size = params.x8_i.n * params.x8_i.c * params.x8_i.d * params.x8_i.w * params.x8_i.h;
-	//const uint x9_i_size = params.x9_i.n * params.x9_i.c * params.x9_i.d * params.x9_i.w * params.x9_i.h;
-	//const uint x10_i_size = params.x10_i.n * params.x10_i.c * params.x10_i.d * params.x10_i.w * params.x10_i.h;
-	//const uint x11_i_size = params.x11_i.n * params.x11_i.c * params.x11_i.d * params.x11_i.w * params.x11_i.h;
-	//const uint x12_i_size = params.x12_i.n * params.x12_i.c * params.x12_i.d * params.x12_i.w * params.x12_i.h;
-	//const uint x13_i_size = params.x13_i.n * params.x13_i.c * params.x13_i.d * params.x13_i.w * params.x13_i.h;
-	//const uint x14_i_size = params.x14_i.n * params.x14_i.c * params.x14_i.d * params.x14_i.w * params.x14_i.h;
-	//const uint x15_i_size = params.x15_i.n * params.x15_i.c * params.x15_i.d * params.x15_i.w * params.x15_i.h;
-	//const uint x16_i_size = params.x16_i.n * params.x16_i.c * params.x16_i.d * params.x16_i.w * params.x16_i.h;
-	//const uint x17_i_size = params.x17_i.n * params.x17_i.c * params.x17_i.d * params.x17_i.w * params.x17_i.h;
-	//const uint x18_i_size = params.x18_i.n * params.x18_i.c * params.x18_i.d * params.x18_i.w * params.x18_i.h;
-	//const uint x19_i_size = params.x19_i.n * params.x19_i.c * params.x19_i.d * params.x19_i.w * params.x19_i.h;
-	//const uint x20_i_size = params.x20_i.n * params.x20_i.c * params.x20_i.d * params.x20_i.w * params.x20_i.h;
-	//const uint x21_i_size = params.x21_i.n * params.x21_i.c * params.x21_i.d * params.x21_i.w * params.x21_i.h;
-	//const uint x22_i_size = params.x22_i.n * params.x22_i.c * params.x22_i.d * params.x22_i.w * params.x22_i.h;
-	//const uint x23_i_size = params.x23_i.n * params.x23_i.c * params.x23_i.d * params.x23_i.w * params.x23_i.h;
-	//const uint x24_i_size = params.x24_i.n * params.x24_i.c * params.x24_i.d * params.x24_i.w * params.x24_i.h;
-	//const uint x25_i_size = params.x25_i.n * params.x25_i.c * params.x25_i.d * params.x25_i.w * params.x25_i.h;
-	//const uint x26_i_size = params.x26_i.n * params.x26_i.c * params.x26_i.d * params.x26_i.w * params.x26_i.h;
-	//const uint x27_i_size = params.x27_i.n * params.x27_i.c * params.x27_i.d * params.x27_i.w * params.x27_i.h;
-	//const uint x28_i_size = params.x28_i.n * params.x28_i.c * params.x28_i.d * params.x28_i.w * params.x28_i.h;
-	//const uint x29_i_size = params.x29_i.n * params.x29_i.c * params.x29_i.d * params.x29_i.w * params.x29_i.h;
-	//const uint x30_i_size = params.x30_i.n * params.x30_i.c * params.x30_i.d * params.x30_i.w * params.x30_i.h;
-	//const uint x31_i_size = params.x31_i.n * params.x31_i.c * params.x31_i.d * params.x31_i.w * params.x31_i.h;
-    //
-    ////const uint y0_o_size = params.y0_o.n * params.y0_o.c * params.y0_o.d * params.y0_o.w * params.y0_o.h;
-	//const uint y1_o_size = params.y1_o.n * params.y1_o.c * params.y1_o.d * params.y1_o.w * params.y1_o.h;
-	//const uint y2_o_size = params.y2_o.n * params.y2_o.c * params.y2_o.d * params.y2_o.w * params.y2_o.h;
-	//const uint y3_o_size = params.y3_o.n * params.y3_o.c * params.y3_o.d * params.y3_o.w * params.y3_o.h;
-	//const uint y4_o_size = params.y4_o.n * params.y4_o.c * params.y4_o.d * params.y4_o.w * params.y4_o.h;
-	//const uint y5_o_size = params.y5_o.n * params.y5_o.c * params.y5_o.d * params.y5_o.w * params.y5_o.h;
-	//const uint y6_o_size = params.y6_o.n * params.y6_o.c * params.y6_o.d * params.y6_o.w * params.y6_o.h;
-	//const uint y7_o_size = params.y7_o.n * params.y7_o.c * params.y7_o.d * params.y7_o.w * params.y7_o.h;
-	//const uint y8_o_size = params.y8_o.n * params.y8_o.c * params.y8_o.d * params.y8_o.w * params.y8_o.h;
-	//const uint y9_o_size = params.y9_o.n * params.y9_o.c * params.y9_o.d * params.y9_o.w * params.y9_o.h;
-	//const uint y10_o_size = params.y10_o.n * params.y10_o.c * params.y10_o.d * params.y10_o.w * params.y10_o.h;
-	//const uint y11_o_size = params.y11_o.n * params.y11_o.c * params.y11_o.d * params.y11_o.w * params.y11_o.h;
-	//const uint y12_o_size = params.y12_o.n * params.y12_o.c * params.y12_o.d * params.y12_o.w * params.y12_o.h;
-	//const uint y13_o_size = params.y13_o.n * params.y13_o.c * params.y13_o.d * params.y13_o.w * params.y13_o.h;
-	//const uint y14_o_size = params.y14_o.n * params.y14_o.c * params.y14_o.d * params.y14_o.w * params.y14_o.h;
-	//const uint y15_o_size = params.y15_o.n * params.y15_o.c * params.y15_o.d * params.y15_o.w * params.y15_o.h;
-	//const uint y16_o_size = params.y16_o.n * params.y16_o.c * params.y16_o.d * params.y16_o.w * params.y16_o.h;
-	//const uint y17_o_size = params.y17_o.n * params.y17_o.c * params.y17_o.d * params.y17_o.w * params.y17_o.h;
-	//const uint y18_o_size = params.y18_o.n * params.y18_o.c * params.y18_o.d * params.y18_o.w * params.y18_o.h;
-	//const uint y19_o_size = params.y19_o.n * params.y19_o.c * params.y19_o.d * params.y19_o.w * params.y19_o.h;
-	//const uint y20_o_size = params.y20_o.n * params.y20_o.c * params.y20_o.d * params.y20_o.w * params.y20_o.h;
-	//const uint y21_o_size = params.y21_o.n * params.y21_o.c * params.y21_o.d * params.y21_o.w * params.y21_o.h;
-	//const uint y22_o_size = params.y22_o.n * params.y22_o.c * params.y22_o.d * params.y22_o.w * params.y22_o.h;
-	//const uint y23_o_size = params.y23_o.n * params.y23_o.c * params.y23_o.d * params.y23_o.w * params.y23_o.h;
-	//const uint y24_o_size = params.y24_o.n * params.y24_o.c * params.y24_o.d * params.y24_o.w * params.y24_o.h;
-	//const uint y25_o_size = params.y25_o.n * params.y25_o.c * params.y25_o.d * params.y25_o.w * params.y25_o.h;
-	//const uint y26_o_size = params.y26_o.n * params.y26_o.c * params.y26_o.d * params.y26_o.w * params.y26_o.h;
-	//const uint y27_o_size = params.y27_o.n * params.y27_o.c * params.y27_o.d * params.y27_o.w * params.y27_o.h;
-	//const uint y28_o_size = params.y28_o.n * params.y28_o.c * params.y28_o.d * params.y28_o.w * params.y28_o.h;
-	//const uint y29_o_size = params.y29_o.n * params.y29_o.c * params.y29_o.d * params.y29_o.w * params.y29_o.h;
-	//const uint y30_o_size = params.y30_o.n * params.y30_o.c * params.y30_o.d * params.y30_o.w * params.y30_o.h;
-	//const uint y31_o_size = params.y31_o.n * params.y31_o.c * params.y31_o.d * params.y31_o.w * params.y31_o.h;
 
-    //if(5 <= idx) {
-    //    return;
-    //}
-    return;
+void main(){
+    const uint x = gl_GlobalInvocationID.x;
+    const uint y = gl_GlobalInvocationID.y;
+    const uint z = gl_GlobalInvocationID.z;
+
+	vec4 x0_i_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
+	vec4 x1_i_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
+	vec4 x2_i_shape = vec4(shape[2].c, shape[2].d, shape[2].h, shape[2].w);
+	vec4 x3_i_shape = vec4(shape[3].c, shape[3].d, shape[3].h, shape[3].w);
+	vec4 x4_i_shape = vec4(shape[4].c, shape[4].d, shape[4].h, shape[4].w);
+	vec4 x5_i_shape = vec4(shape[5].c, shape[5].d, shape[5].h, shape[5].w);
+	vec4 x6_i_shape = vec4(shape[6].c, shape[6].d, shape[6].h, shape[6].w);
+	vec4 x7_i_shape = vec4(shape[7].c, shape[7].d, shape[7].h, shape[7].w);
+	vec4 x8_i_shape = vec4(shape[8].c, shape[8].d, shape[8].h, shape[8].w);
+	vec4 x9_i_shape = vec4(shape[9].c, shape[9].d, shape[9].h, shape[9].w);
+	vec4 x10_i_shape = vec4(shape[10].c, shape[10].d, shape[10].h, shape[10].w);
+	vec4 x11_i_shape = vec4(shape[11].c, shape[11].d, shape[11].h, shape[11].w);
+	vec4 x12_i_shape = vec4(shape[12].c, shape[12].d, shape[12].h, shape[12].w);
+	vec4 x13_i_shape = vec4(shape[13].c, shape[13].d, shape[13].h, shape[13].w);
+	vec4 x14_i_shape = vec4(shape[14].c, shape[14].d, shape[14].h, shape[14].w);
+	vec4 x15_i_shape = vec4(shape[15].c, shape[15].d, shape[15].h, shape[15].w);
+	vec4 x16_i_shape = vec4(shape[16].c, shape[16].d, shape[16].h, shape[16].w);
+	vec4 x17_i_shape = vec4(shape[17].c, shape[17].d, shape[17].h, shape[17].w);
+	vec4 x18_i_shape = vec4(shape[18].c, shape[18].d, shape[18].h, shape[18].w);
+	vec4 x19_i_shape = vec4(shape[19].c, shape[19].d, shape[19].h, shape[19].w);
+	vec4 x20_i_shape = vec4(shape[20].c, shape[20].d, shape[20].h, shape[20].w);
+	vec4 x21_i_shape = vec4(shape[21].c, shape[21].d, shape[21].h, shape[21].w);
+	vec4 x22_i_shape = vec4(shape[22].c, shape[22].d, shape[22].h, shape[22].w);
+	vec4 x23_i_shape = vec4(shape[23].c, shape[23].d, shape[23].h, shape[23].w);
+	vec4 x24_i_shape = vec4(shape[24].c, shape[24].d, shape[24].h, shape[24].w);
+	vec4 x25_i_shape = vec4(shape[25].c, shape[25].d, shape[25].h, shape[25].w);
+	vec4 x26_i_shape = vec4(shape[26].c, shape[26].d, shape[26].h, shape[26].w);
+	vec4 x27_i_shape = vec4(shape[27].c, shape[27].d, shape[27].h, shape[27].w);
+	vec4 x28_i_shape = vec4(shape[28].c, shape[28].d, shape[28].h, shape[28].w);
+	vec4 x29_i_shape = vec4(shape[29].c, shape[29].d, shape[29].h, shape[29].w);
+	vec4 x30_i_shape = vec4(shape[30].c, shape[30].d, shape[30].h, shape[30].w);
+	vec4 x31_i_shape = vec4(shape[31].c, shape[31].d, shape[31].h, shape[31].w);
+	vec4 y0_o_shape = vec4(shape[32].c, shape[32].d, shape[32].h, shape[32].w);
+	vec4 y1_o_shape = vec4(shape[33].c, shape[33].d, shape[33].h, shape[33].w);
+	vec4 y2_o_shape = vec4(shape[34].c, shape[34].d, shape[34].h, shape[34].w);
+	vec4 y3_o_shape = vec4(shape[35].c, shape[35].d, shape[35].h, shape[35].w);
+	vec4 y4_o_shape = vec4(shape[36].c, shape[36].d, shape[36].h, shape[36].w);
+	vec4 y5_o_shape = vec4(shape[37].c, shape[37].d, shape[37].h, shape[37].w);
+	vec4 y6_o_shape = vec4(shape[38].c, shape[38].d, shape[38].h, shape[38].w);
+	vec4 y7_o_shape = vec4(shape[39].c, shape[39].d, shape[39].h, shape[39].w);
+	vec4 y8_o_shape = vec4(shape[40].c, shape[40].d, shape[40].h, shape[40].w);
+	vec4 y9_o_shape = vec4(shape[41].c, shape[41].d, shape[41].h, shape[41].w);
+	vec4 y10_o_shape = vec4(shape[42].c, shape[42].d, shape[42].h, shape[42].w);
+	vec4 y11_o_shape = vec4(shape[43].c, shape[43].d, shape[43].h, shape[43].w);
+	vec4 y12_o_shape = vec4(shape[44].c, shape[44].d, shape[44].h, shape[44].w);
+	vec4 y13_o_shape = vec4(shape[45].c, shape[45].d, shape[45].h, shape[45].w);
+	vec4 y14_o_shape = vec4(shape[46].c, shape[46].d, shape[46].h, shape[46].w);
+	vec4 y15_o_shape = vec4(shape[47].c, shape[47].d, shape[47].h, shape[47].w);
+	vec4 y16_o_shape = vec4(shape[48].c, shape[48].d, shape[48].h, shape[48].w);
+	vec4 y17_o_shape = vec4(shape[49].c, shape[49].d, shape[49].h, shape[49].w);
+	vec4 y18_o_shape = vec4(shape[50].c, shape[50].d, shape[50].h, shape[50].w);
+	vec4 y19_o_shape = vec4(shape[51].c, shape[51].d, shape[51].h, shape[51].w);
+	vec4 y20_o_shape = vec4(shape[52].c, shape[52].d, shape[52].h, shape[52].w);
+	vec4 y21_o_shape = vec4(shape[53].c, shape[53].d, shape[53].h, shape[53].w);
+	vec4 y22_o_shape = vec4(shape[54].c, shape[54].d, shape[54].h, shape[54].w);
+	vec4 y23_o_shape = vec4(shape[55].c, shape[55].d, shape[55].h, shape[55].w);
+	vec4 y24_o_shape = vec4(shape[56].c, shape[56].d, shape[56].h, shape[56].w);
+	vec4 y25_o_shape = vec4(shape[57].c, shape[57].d, shape[57].h, shape[57].w);
+	vec4 y26_o_shape = vec4(shape[58].c, shape[58].d, shape[58].h, shape[58].w);
+	vec4 y27_o_shape = vec4(shape[59].c, shape[59].d, shape[59].h, shape[59].w);
+	vec4 y28_o_shape = vec4(shape[60].c, shape[60].d, shape[60].h, shape[60].w);
+	vec4 y29_o_shape = vec4(shape[61].c, shape[61].d, shape[61].h, shape[61].w);
+	vec4 y30_o_shape = vec4(shape[62].c, shape[62].d, shape[62].h, shape[62].w);
+	vec4 y31_o_shape = vec4(shape[63].c, shape[63].d, shape[63].h, shape[63].w);
+    uint n = shape[0].n;
+    
+    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
+        return;
+    }
+    for(uint i = 0; i < n; i++){
+        for(uint j = 0; j < shape[0].c; j++){
+           
+            uint indx = x + uint(y*x0_i_shape.x)                        + uint(z*x0_i_shape.x*x0_i_shape.y)                        + uint(j*x0_i_shape.x*x0_i_shape.y*x0_i_shape.z)                        + uint(i*x0_i_shape.x*x0_i_shape.y*x0_i_shape.z*x0_i_shape.w);
+
+            x0_i[indx] = y0_o[indx];
+        }
+    }
+       
+
 }

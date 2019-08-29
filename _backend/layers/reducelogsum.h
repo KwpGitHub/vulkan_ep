@@ -31,7 +31,7 @@ namespace layers {
 
     class ReduceLogSum : public backend::Layer {
         typedef struct {
-            uint32_t size; float a;
+            uint32_t size;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;

@@ -7,16 +7,7 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    uint size;
-    float a;
-/*//input
-    Shape_t boxes_i; Shape_t scores_i;
-    Shape_t max_output_boxes_per_class_i; Shape_t iou_threshold_i; Shape_t score_threshold_i;
- //output
-    Shape_t selected_indices_o;
-    */
-
-
+   uint x;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
@@ -27,20 +18,31 @@ layout(std430, binding = 4) buffer lay4 { float iou_threshold_i[]; };
 layout(std430, binding = 5) buffer lay5 { float score_threshold_i[]; };
 layout(std430, binding = 6) buffer lay6 { float selected_indices_o[]; };
 
-void main(){
-    const uint idx = gl_GlobalInvocationID.x;
-    const uint idy = gl_GlobalInvocationID.y;
-    const uint idz = gl_GlobalInvocationID.z;
-    ////const uint boxes_i_size = params.boxes_i.n * params.boxes_i.c * params.boxes_i.d * params.boxes_i.w * params.boxes_i.h;
-	//const uint scores_i_size = params.scores_i.n * params.scores_i.c * params.scores_i.d * params.scores_i.w * params.scores_i.h;
-    ////const uint max_output_boxes_per_class_i_size = params.max_output_boxes_per_class_i.n * params.max_output_boxes_per_class_i.c * params.max_output_boxes_per_class_i.d * params.max_output_boxes_per_class_i.w * params.max_output_boxes_per_class_i.h;
-	//const uint iou_threshold_i_size = params.iou_threshold_i.n * params.iou_threshold_i.c * params.iou_threshold_i.d * params.iou_threshold_i.w * params.iou_threshold_i.h;
-	//const uint score_threshold_i_size = params.score_threshold_i.n * params.score_threshold_i.c * params.score_threshold_i.d * params.score_threshold_i.w * params.score_threshold_i.h;
-    ////const uint selected_indices_o_size = params.selected_indices_o.n * params.selected_indices_o.c * params.selected_indices_o.d * params.selected_indices_o.w * params.selected_indices_o.h;
-    //
 
-    //if(5 <= idx) {
-    //    return;
-    //}
-    return;
+void main(){
+    const uint x = gl_GlobalInvocationID.x;
+    const uint y = gl_GlobalInvocationID.y;
+    const uint z = gl_GlobalInvocationID.z;
+
+	vec4 boxes_i_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
+	vec4 scores_i_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
+	vec4 max_output_boxes_per_class_i_shape = vec4(shape[2].c, shape[2].d, shape[2].h, shape[2].w);
+	vec4 iou_threshold_i_shape = vec4(shape[3].c, shape[3].d, shape[3].h, shape[3].w);
+	vec4 score_threshold_i_shape = vec4(shape[4].c, shape[4].d, shape[4].h, shape[4].w);
+	vec4 selected_indices_o_shape = vec4(shape[5].c, shape[5].d, shape[5].h, shape[5].w);
+    uint n = shape[0].n;
+    
+    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
+        return;
+    }
+    for(uint i = 0; i < n; i++){
+        for(uint j = 0; j < shape[0].c; j++){
+           
+            uint indx = x + uint(y*boxes_i_shape.x)                        + uint(z*boxes_i_shape.x*boxes_i_shape.y)                        + uint(j*boxes_i_shape.x*boxes_i_shape.y*boxes_i_shape.z)                        + uint(i*boxes_i_shape.x*boxes_i_shape.y*boxes_i_shape.z*boxes_i_shape.w);
+
+            boxes_i[indx] = selected_indices_o[indx];
+        }
+    }
+       
+
 }

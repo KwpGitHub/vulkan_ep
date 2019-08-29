@@ -6,7 +6,7 @@ import onnx.optimizer
 import onnx.shape_inference
 import onnx.utils
 from onnx.backend.base import Backend, Device, DeviceType, namedtupledict, BackendRep
-
+from onnx.tools.net_drawer import GetPydotGraph, GetOpNodeProducer
 from onnx.helper import make_tensor_value_info, make_graph, make_model
 import numpy as np
 import os
@@ -58,15 +58,18 @@ class OnnxNode(object):
 
 class OnnxGraph:
     def __init__(self, filename):
-        start = time.perf_counter()
+        print()
+        self.filename = filename
+        start = time.perf_counter_ns() / 1000000
         model = onnx.load(filename)
-        inferred_model = onnx.shape_inference.infer_shapes(model)
-        graph = inferred_model.graph
+        model = onnx.shape_inference.infer_shapes(model)
+        graph = model.graph
+
         self.nodes = list()
         self.layer = list()
         layers.tensors[''] = np.zeros(10)
 
-        for val in inferred_model.graph.value_info:
+        for val in model.graph.value_info:
             data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
             layers.tensors[val.name] = data
         for init_val in graph.initializer:
@@ -87,53 +90,45 @@ class OnnxGraph:
             self.nodes.append(OnnxNode(n))
         
         
-
-        _backend.create_instance()
-
-        end = time.perf_counter()
-        print("::: DONE MODEL PARSE :::", end-start)
-
-
-
+        end = time.perf_counter_ns() / 1000000
+        print(self.filename, "::: DONE MODEL PARSE :::", end-start)
         _backend.test()
+  
+        x_start = time.perf_counter_ns() / 1000000
 
-    def build(self):
-        
-        x_start = time.perf_counter()
-
-        start = time.perf_counter()
+        start = time.perf_counter_ns() / 1000000
         for nodes in self.nodes:
             l = layers.layer_map[nodes.op_type](nodes.name, **nodes.attrs)(*nodes.inputs)
             l.output(*nodes.outputs)
             self.layer.append(l)     
-        end = time.perf_counter()
+        end = time.perf_counter_ns() / 1000000
         print("::: DONE NODE INIT :::", end-start, "avg", (end-start)/len(self.nodes))
 
-        start = time.perf_counter()
+        start = time.perf_counter_ns() / 1000000
         for name, data in layers.tensors.items():
             _backend.create_tensor(name, data)
-        end = time.perf_counter()
+        end = time.perf_counter_ns() / 1000000
         print("::: DONE Tensor BUILD :::", end-start, "avg", (end-start)/len(layers.tensors.items()))
 
-        start = time.perf_counter()
+        start = time.perf_counter_ns() / 1000000
         for l in self.layer:
              l.build()
-        end = time.perf_counter()
+        end = time.perf_counter_ns() / 1000000
         print("::: DONE LAYER BUILD :::", end-start, 'avg', (end-start)/len(self.layer))
-                
-        x_end = time.perf_counter()
-        print("::: DONE BUILDING PIPE :::", x_end-x_start)
         
+        x_end = time.perf_counter_ns() / 1000000
+
+        print("::: DONE BUILDING PIPE :::", x_end-x_start)
+        pydot_graph = GetPydotGraph(model.graph, name=model.graph.name, rankdir="LR", node_producer=GetOpNodeProducer("docstring"))
+        pydot_graph.write_dot(filename+".dot")
         _backend.test()
 
-    def run(self):
-
-        start = time.perf_counter()
+    def __call__(self):
+        start = time.perf_counter_ns() / 1000000
         for layer in self.layer:
             layer.run()
-        end = time.perf_counter()
-
-        print("::: DONE RUNNING PIPE :::", end-start, "avg", (end-start)/len(self.layer))
+        end = time.perf_counter_ns() / 1000000
+        print(self.filename, "::: DONE RUNNING PIPE :::", end-start, "avg", (end-start)/len(self.layer))
 
     def _create_tensor_filling_op(self, onnx_tensor, name=None):
       

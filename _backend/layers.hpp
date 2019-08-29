@@ -85,10 +85,10 @@ void init_layer_BatchNormalization(py::module& m){
 void init_layer_Mean(py::module&);
 #include "./layers/mean.h"
 void init_layer_Mean(py::module& m){
-    m.def("_Mean", [](py::str name, py::str _mean_o) {
+    m.def("_Mean", [](py::str name, py::str _x0_i , py::str _x1_i , py::str _x2_i , py::str _x3_i , py::str _x4_i , py::str _x5_i , py::str _x6_i , py::str _x7_i , py::str _x8_i , py::str _x9_i , py::str _x10_i , py::str _x11_i , py::str _x12_i , py::str _x13_i , py::str _x14_i , py::str _x15_i , py::str _x16_i , py::str _x17_i , py::str _x18_i , py::str _x19_i , py::str _x20_i , py::str _x21_i , py::str _x22_i , py::str _x23_i , py::str _x24_i , py::str _x25_i , py::str _x26_i , py::str _x27_i , py::str _x28_i , py::str _x29_i , py::str _x30_i , py::str _x31_i , py::str _mean_o) {
         layers::Mean* layer = new layers::Mean(std::string(name));
         layer->init();
-        layer->bind(_mean_o);
+        layer->bind(_x0_i, _x1_i, _x2_i, _x3_i, _x4_i, _x5_i, _x6_i, _x7_i, _x8_i, _x9_i, _x10_i, _x11_i, _x12_i, _x13_i, _x14_i, _x15_i, _x16_i, _x17_i, _x18_i, _x19_i, _x20_i, _x21_i, _x22_i, _x23_i, _x24_i, _x25_i, _x26_i, _x27_i, _x28_i, _x29_i, _x30_i, _x31_i, _mean_o);
         layer->build();
         backend::layer_dict[std::string(name)] = layer;
 

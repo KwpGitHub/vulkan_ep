@@ -7,32 +7,32 @@ layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-    uint size;
-    float a;
-/*//input
-    
-    
- //output
-    Shape_t Y_o;
-    */
-
-
+   uint x;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
 layout(std430, binding = 1) buffer lay1 { float Y_o[]; };
 
-void main(){
-    const uint idx = gl_GlobalInvocationID.x;
-    const uint idy = gl_GlobalInvocationID.y;
-    const uint idz = gl_GlobalInvocationID.z;
-    //
-    //
-    ////const uint Y_o_size = params.Y_o.n * params.Y_o.c * params.Y_o.d * params.Y_o.w * params.Y_o.h;
-    //
 
-    //if(5 <= idx) {
-    //    return;
-    //}
-    return;
+void main(){
+    const uint x = gl_GlobalInvocationID.x;
+    const uint y = gl_GlobalInvocationID.y;
+    const uint z = gl_GlobalInvocationID.z;
+
+	vec4 Y_o_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
+    uint n = shape[0].n;
+    
+    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
+        return;
+    }
+    for(uint i = 0; i < n; i++){
+        for(uint j = 0; j < shape[0].c; j++){
+           
+            uint indx = x + uint(y*Y_o_shape.x)                        + uint(z*Y_o_shape.x*Y_o_shape.y)                        + uint(j*Y_o_shape.x*Y_o_shape.y*Y_o_shape.z)                        + uint(i*Y_o_shape.x*Y_o_shape.y*Y_o_shape.z*Y_o_shape.w);
+
+            Y_o[indx] = Y_o[indx];
+        }
+    }
+       
+
 }

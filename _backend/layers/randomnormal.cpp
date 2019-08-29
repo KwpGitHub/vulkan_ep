@@ -31,9 +31,11 @@ namespace layers {
 
     void RandomNormal::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(1024 / PROCESSKERNEL_SIZE, 1024 / PROCESSKERNEL_SIZE, 64 / PROCESSKERNEL_SIZE);
+        program->grid(  vuh::div_up(backend::tensor_dict[output_o]->shape().w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(backend::tensor_dict[output_o]->shape().h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(backend::tensor_dict[output_o]->shape().d, PROCESSKERNEL_SIZE));
         program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128, 0.1f}, *_SHAPES, *backend::tensor_dict[output_o]->data);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[output_o]->data);
     }
 
     void RandomNormal::forward(){ 
