@@ -62,10 +62,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int max_gram_length; int max_skip_count; int min_gram_length; std::string mode; std::vector<int> ngram_counts; std::vector<int> ngram_indexes; std::vector<int> pool_int64s; std::vector<std::string> pool_strings; std::vector<float> weights;
-        std::string X_i;
+        int m_max_gram_length; int m_max_skip_count; int m_min_gram_length; std::string m_mode; std::vector<int> m_ngram_counts; std::vector<int> m_ngram_indexes; std::vector<int> m_pool_int64s; std::vector<std::string> m_pool_strings; std::vector<float> m_weights;
+        std::string m_X_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

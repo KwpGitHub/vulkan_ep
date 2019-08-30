@@ -45,10 +45,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::vector<float> base_values; std::vector<int> class_ids; std::vector<int> class_nodeids; std::vector<int> class_treeids; std::vector<float> class_weights; std::vector<int> classlabels_int64s; std::vector<std::string> classlabels_strings; std::vector<int> nodes_falsenodeids; std::vector<int> nodes_featureids; std::vector<float> nodes_hitrates; std::vector<int> nodes_missing_value_tracks_true; std::vector<std::string> nodes_modes; std::vector<int> nodes_nodeids; std::vector<int> nodes_treeids; std::vector<int> nodes_truenodeids; std::vector<float> nodes_values; std::string post_transform;
-        std::string X_i;
+        std::vector<float> m_base_values; std::vector<int> m_class_ids; std::vector<int> m_class_nodeids; std::vector<int> m_class_treeids; std::vector<float> m_class_weights; std::vector<int> m_classlabels_int64s; std::vector<std::string> m_classlabels_strings; std::vector<int> m_nodes_falsenodeids; std::vector<int> m_nodes_featureids; std::vector<float> m_nodes_hitrates; std::vector<int> m_nodes_missing_value_tracks_true; std::vector<std::string> m_nodes_modes; std::vector<int> m_nodes_nodeids; std::vector<int> m_nodes_treeids; std::vector<int> m_nodes_truenodeids; std::vector<float> m_nodes_values; std::string m_post_transform;
+        std::string m_X_i;
         
-        std::string Y_o; std::string Z_o;
+        std::string m_Y_o; std::string m_Z_o;
         
 
         binding_descriptor   binding;

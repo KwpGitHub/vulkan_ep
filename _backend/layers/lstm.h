@@ -125,11 +125,11 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::vector<float> activation_alpha; std::vector<float> activation_beta; std::vector<std::string> activations; float clip; std::string direction; int hidden_size; int input_forget;
-        std::string X_i; std::string W_i; std::string R_i;
-        std::string B_i; std::string sequence_lens_i; std::string initial_h_i; std::string initial_c_i; std::string P_i;
+        std::vector<float> m_activation_alpha; std::vector<float> m_activation_beta; std::vector<std::string> m_activations; float m_clip; std::string m_direction; int m_hidden_size; int m_input_forget;
+        std::string m_X_i; std::string m_W_i; std::string m_R_i;
+        std::string m_B_i; std::string m_sequence_lens_i; std::string m_initial_h_i; std::string m_initial_c_i; std::string m_P_i;
         
-        std::string Y_o; std::string Y_h_o; std::string Y_c_o;
+        std::string m_Y_o; std::string m_Y_h_o; std::string m_Y_c_o;
 
         binding_descriptor   binding;
        

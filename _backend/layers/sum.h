@@ -40,8 +40,8 @@ namespace layers {
 
         
         
-        std::string x0_i; std::string x1_i; std::string x2_i; std::string x3_i; std::string x4_i; std::string x5_i; std::string x6_i; std::string x7_i; std::string x8_i; std::string x9_i; std::string x10_i; std::string x11_i; std::string x12_i; std::string x13_i; std::string x14_i; std::string x15_i; std::string x16_i; std::string x17_i; std::string x18_i; std::string x19_i; std::string x20_i; std::string x21_i; std::string x22_i; std::string x23_i; std::string x24_i; std::string x25_i; std::string x26_i; std::string x27_i; std::string x28_i; std::string x29_i; std::string x30_i; std::string x31_i;
-        std::string sum_o;
+        std::string m_x0_i; std::string m_x1_i; std::string m_x2_i; std::string m_x3_i; std::string m_x4_i; std::string m_x5_i; std::string m_x6_i; std::string m_x7_i; std::string m_x8_i; std::string m_x9_i; std::string m_x10_i; std::string m_x11_i; std::string m_x12_i; std::string m_x13_i; std::string m_x14_i; std::string m_x15_i; std::string m_x16_i; std::string m_x17_i; std::string m_x18_i; std::string m_x19_i; std::string m_x20_i; std::string m_x21_i; std::string m_x22_i; std::string m_x23_i; std::string m_x24_i; std::string m_x25_i; std::string m_x26_i; std::string m_x27_i; std::string m_x28_i; std::string m_x29_i; std::string m_x30_i; std::string m_x31_i;
+        std::string m_sum_o;
         
 
         binding_descriptor   binding;

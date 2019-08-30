@@ -55,10 +55,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::vector<int> kernel_shape; std::vector<int> pads; std::vector<int> strides;
-        std::string X_i; std::string I_i;
-        std::string output_shape_i;
-        std::string output_o;
+        std::vector<int> m_kernel_shape; std::vector<int> m_pads; std::vector<int> m_strides;
+        std::string m_X_i; std::string m_I_i;
+        std::string m_output_shape_i;
+        std::string m_output_o;
         
 
         binding_descriptor   binding;

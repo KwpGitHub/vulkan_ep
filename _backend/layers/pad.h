@@ -51,10 +51,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::vector<int> pads; std::string mode; float value;
-        std::string data_i;
+        std::vector<int> m_pads; std::string m_mode; float m_value;
+        std::string m_data_i;
         
-        std::string output_o;
+        std::string m_output_o;
         
 
         binding_descriptor   binding;

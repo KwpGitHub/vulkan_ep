@@ -41,7 +41,7 @@ namespace layers {
         
         
         
-        std::string min_o;
+        std::string m_min_o;
         
 
         binding_descriptor   binding;

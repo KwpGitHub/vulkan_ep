@@ -69,10 +69,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int batch_axis; int time_axis;
-        std::string input_i; std::string sequence_lens_i;
+        int m_batch_axis; int m_time_axis;
+        std::string m_input_i; std::string m_sequence_lens_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

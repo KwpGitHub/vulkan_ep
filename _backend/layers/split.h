@@ -37,8 +37,8 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int axis; std::vector<int> split;
-        std::string input_i;
+        int m_axis; std::vector<int> m_split;
+        std::string m_input_i;
         
         
         

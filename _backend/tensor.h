@@ -10,8 +10,8 @@
 #include "kernel/vuh.h"
 
 namespace backend {
-	inline vuh::Instance* instance;
-	inline vuh::Device* device;
+	inline vuh::Instance* g_instance;
+	inline vuh::Device* g_device;
 }
 
 namespace backend {
@@ -37,7 +37,7 @@ namespace backend {
 		Tensor(): data(nullptr), size(0u), dev(nullptr) {}
 		
 		Tensor(const std::vector<float>& d, Shape_t s): dims(s) {
-			dev = device;
+			dev = g_device;
 			size = (size_t)dims.n * (size_t)dims.c * (size_t)dims.d * (size_t)dims.h * (size_t)dims.w;
 			data = new vuh::Array<float>(*dev, begin(d), end(d));
 		}
@@ -55,12 +55,11 @@ namespace backend {
 			return t;
 		}
 
-
 		void to(int d) {			
 			std::vector<float> t(size, 0.0);
 			data->toHost(begin(t));
 			delete data;			
-			data = new vuh::Array<float>(instance->devices().at(d), t);
+			data = new vuh::Array<float>(g_instance->devices().at(d), t);
 		}
 
 		void to(vuh::Device* d) {

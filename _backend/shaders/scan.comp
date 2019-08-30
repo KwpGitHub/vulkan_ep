@@ -154,6 +154,7 @@ void main(){
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < shape[0].c; j++){
            
+
             uint indx = x + uint(y*x0_i_shape.x)                        + uint(z*x0_i_shape.x*x0_i_shape.y)                        + uint(j*x0_i_shape.x*x0_i_shape.y*x0_i_shape.z)                        + uint(i*x0_i_shape.x*x0_i_shape.y*x0_i_shape.z*x0_i_shape.w);
 
             x0_i[indx] = y0_o[indx];

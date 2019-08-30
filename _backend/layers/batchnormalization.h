@@ -53,11 +53,11 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        float epsilon; float momentum;
-        std::string X_i; std::string scale_i; std::string B_i; std::string mean_i; std::string var_i;
+        float m_epsilon; float m_momentum;
+        std::string m_X_i; std::string m_scale_i; std::string m_B_i; std::string m_mean_i; std::string m_var_i;
         
-        std::string Y_o;
-        std::string mean_o; std::string var_o; std::string saved_mean_o; std::string saved_var_o;
+        std::string m_Y_o;
+        std::string m_mean_o; std::string m_var_o; std::string m_saved_mean_o; std::string m_saved_var_o;
 
         binding_descriptor   binding;
        

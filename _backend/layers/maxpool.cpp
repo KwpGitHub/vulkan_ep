@@ -5,28 +5,28 @@ namespace layers {
     MaxPool::MaxPool(std::string name) : backend::Layer(name) {    
         file.append(backend::file_path);
         file.append("shaders/bin/maxpool.spv");       
-        dev = backend::device;
+        dev = backend::g_device;
     }
        
         
     void MaxPool::init( std::vector<int> _kernel_shape,  std::string _auto_pad,  int _ceil_mode,  std::vector<int> _dilations,  std::vector<int> _pads,  int _storage_order,  std::vector<int> _strides) {      
-		 kernel_shape = _kernel_shape; 
- 		 auto_pad = _auto_pad; 
- 		 ceil_mode = _ceil_mode; 
- 		 dilations = _dilations; 
- 		 pads = _pads; 
- 		 storage_order = _storage_order; 
- 		 strides = _strides; 
+		 m_kernel_shape = _kernel_shape; 
+ 		 m_auto_pad = _auto_pad; 
+ 		 m_ceil_mode = _ceil_mode; 
+ 		 m_dilations = _dilations; 
+ 		 m_pads = _pads; 
+ 		 m_storage_order = _storage_order; 
+ 		 m_strides = _strides; 
   
 
     }
     
     void MaxPool::bind(std::string _X_i, std::string _Y_o, std::string _Indices_o){    
-        X_i = _X_i; Y_o = _Y_o; Indices_o = _Indices_o;        
-		SHAPES.push_back(backend::tensor_dict[X_i]->shape());
+        m_X_i = _X_i; m_Y_o = _Y_o; m_Indices_o = _Indices_o;        
+		SHAPES.push_back(backend::tensor_dict[m_X_i]->shape());
  
-		SHAPES.push_back(backend::tensor_dict[Y_o]->shape());
-  		SHAPES.push_back(backend::tensor_dict[Indices_o]->shape());
+		SHAPES.push_back(backend::tensor_dict[m_Y_o]->shape());
+  		SHAPES.push_back(backend::tensor_dict[m_Indices_o]->shape());
  
         _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
@@ -35,11 +35,11 @@ namespace layers {
 
     void MaxPool::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(backend::tensor_dict[X_i]->shape().w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(backend::tensor_dict[X_i]->shape().h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(backend::tensor_dict[X_i]->shape().d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[X_i]->data, *backend::tensor_dict[Y_o]->data, *backend::tensor_dict[Indices_o]->data);
+        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
+        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_Y_o]->data, *backend::tensor_dict[m_Indices_o]->data);
     }
 
     void MaxPool::forward(){ 

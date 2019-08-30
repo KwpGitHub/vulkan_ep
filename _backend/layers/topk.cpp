@@ -5,23 +5,23 @@ namespace layers {
     TopK::TopK(std::string name) : backend::Layer(name) {    
         file.append(backend::file_path);
         file.append("shaders/bin/topk.spv");       
-        dev = backend::device;
+        dev = backend::g_device;
     }
        
         
     void TopK::init( int _axis) {      
-		 axis = _axis; 
+		 m_axis = _axis; 
   
 
     }
     
     void TopK::bind(std::string _X_i, std::string _K_i, std::string _Values_o, std::string _Indices_o){    
-        X_i = _X_i; K_i = _K_i; Values_o = _Values_o; Indices_o = _Indices_o;        
-		SHAPES.push_back(backend::tensor_dict[X_i]->shape());
-  		SHAPES.push_back(backend::tensor_dict[K_i]->shape());
+        m_X_i = _X_i; m_K_i = _K_i; m_Values_o = _Values_o; m_Indices_o = _Indices_o;        
+		SHAPES.push_back(backend::tensor_dict[m_X_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[m_K_i]->shape());
  
-		SHAPES.push_back(backend::tensor_dict[Values_o]->shape());
-  		SHAPES.push_back(backend::tensor_dict[Indices_o]->shape());
+		SHAPES.push_back(backend::tensor_dict[m_Values_o]->shape());
+  		SHAPES.push_back(backend::tensor_dict[m_Indices_o]->shape());
  
         _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
@@ -30,11 +30,11 @@ namespace layers {
 
     void TopK::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(backend::tensor_dict[X_i]->shape().w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(backend::tensor_dict[X_i]->shape().h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(backend::tensor_dict[X_i]->shape().d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[X_i]->data, *backend::tensor_dict[K_i]->data, *backend::tensor_dict[Values_o]->data, *backend::tensor_dict[Indices_o]->data);
+        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
+        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_K_i]->data, *backend::tensor_dict[m_Values_o]->data, *backend::tensor_dict[m_Indices_o]->data);
     }
 
     void TopK::forward(){ 

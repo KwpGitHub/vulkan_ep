@@ -45,10 +45,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::string aggregate_function; std::vector<float> base_values; int n_targets; std::vector<int> nodes_falsenodeids; std::vector<int> nodes_featureids; std::vector<float> nodes_hitrates; std::vector<int> nodes_missing_value_tracks_true; std::vector<std::string> nodes_modes; std::vector<int> nodes_nodeids; std::vector<int> nodes_treeids; std::vector<int> nodes_truenodeids; std::vector<float> nodes_values; std::string post_transform; std::vector<int> target_ids; std::vector<int> target_nodeids; std::vector<int> target_treeids; std::vector<float> target_weights;
-        std::string X_i;
+        std::string m_aggregate_function; std::vector<float> m_base_values; int m_n_targets; std::vector<int> m_nodes_falsenodeids; std::vector<int> m_nodes_featureids; std::vector<float> m_nodes_hitrates; std::vector<int> m_nodes_missing_value_tracks_true; std::vector<std::string> m_nodes_modes; std::vector<int> m_nodes_nodeids; std::vector<int> m_nodes_treeids; std::vector<int> m_nodes_truenodeids; std::vector<float> m_nodes_values; std::string m_post_transform; std::vector<int> m_target_ids; std::vector<int> m_target_nodeids; std::vector<int> m_target_treeids; std::vector<float> m_target_weights;
+        std::string m_X_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

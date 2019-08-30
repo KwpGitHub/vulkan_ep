@@ -28,6 +28,7 @@ void main(){
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < shape[0].c; j++){
            
+
             uint indx = x + uint(y*cond_i_shape.x)                        + uint(z*cond_i_shape.x*cond_i_shape.y)                        + uint(j*cond_i_shape.x*cond_i_shape.y*cond_i_shape.z)                        + uint(i*cond_i_shape.x*cond_i_shape.y*cond_i_shape.z*cond_i_shape.w);
 
             cond_i[indx] = cond_i[indx];

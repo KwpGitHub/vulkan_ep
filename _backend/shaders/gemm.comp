@@ -34,6 +34,7 @@ void main(){
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < shape[0].c; j++){
            
+
             uint indx = x + uint(y*A_i_shape.x)                        + uint(z*A_i_shape.x*A_i_shape.y)                        + uint(j*A_i_shape.x*A_i_shape.y*A_i_shape.z)                        + uint(i*A_i_shape.x*A_i_shape.y*A_i_shape.z*A_i_shape.w);
 
             A_i[indx] = Y_o[indx];

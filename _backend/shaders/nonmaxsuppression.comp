@@ -38,6 +38,7 @@ void main(){
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < shape[0].c; j++){
            
+
             uint indx = x + uint(y*boxes_i_shape.x)                        + uint(z*boxes_i_shape.x*boxes_i_shape.y)                        + uint(j*boxes_i_shape.x*boxes_i_shape.y*boxes_i_shape.z)                        + uint(i*boxes_i_shape.x*boxes_i_shape.y*boxes_i_shape.z*boxes_i_shape.w);
 
             boxes_i[indx] = selected_indices_o[indx];

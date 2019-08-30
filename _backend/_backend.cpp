@@ -16,8 +16,8 @@ namespace py = pybind11;
 
 
 void create_instance() {
-	backend::instance = new vuh::Instance();
-	backend::device = new vuh::Device(backend::instance->devices().at(0));
+	backend::g_instance = new vuh::Instance();
+	backend::g_device = new vuh::Device(backend::g_instance->devices().at(0));
 	backend::file_path = "C:\\Users\\mramados.AMR";
 	//backend::file_path = "C:\\Users\\monish";
 
@@ -36,7 +36,7 @@ void test() {
 	shape.push_back({ 1,1,1,1,1 });
 	shape.push_back({ 1,1,1,1,1 });
 	// just get the first available device
-	auto device = backend::device;
+	auto device = backend::g_device;
 
 	auto shape_t = vuh::Array<backend::Shape_t>(*device, shape);
 
@@ -60,8 +60,8 @@ void test() {
 	d_y->data->toHost(begin(y));
 
 	int error_count = 0;
-	float tmp = y[0] - (1.0 + 0.1 * x[0]);
-	for (int i = 0; i < size; ++i) {
+	
+	for (size_t i = 0; i < size; ++i) {
 		if (abs(y[i] - (1.0 + 0.1 * x[i])) > 1e-7) 
 			error_count++;
 	}
@@ -103,53 +103,16 @@ void create_tensor(py::str name, py::array_t<float> input){
 	case 5: _shape = { s[0], s[1], s[2], s[3], s[4] };
 	}
 
-	//std::cout << "NP_TENSOR ::: " << name << std::endl;
 	backend::Tensor* x = new backend::Tensor(data, _shape);
 	backend::tensor_dict.insert(std::pair<std::string, backend::Tensor*>(std::string(name), x));
 
 }
 
-void create_layer(py::str name, py::str opType, py::list inputs, py::list outputs, py::dict attribute) {
-	std::vector<std::string> i;
-	std::vector<std::string> o;
-	std::string n = std::string(name);
-	std::string oT = std::string(opType);
-	std::map<std::string, std::vector<std::string>> a;
-
-	for (auto attr : attribute) {
-		auto param = std::string(py::str(attr.first));
-		std::vector<std::string> tmp;
-		for (auto x : attr.second) {
-			tmp.push_back(std::string(py::str(x)));
-		}
-		a.insert(std::pair<std::string, std::vector<std::string>>(param, tmp));
-	}
-
-	for (auto x : inputs)
-		i.push_back(x.cast<std::string>());
-
-	for (auto x : outputs)
-		o.push_back(x.cast<std::string>());
-
-	std::cout << "LAYERS ::: " << name << "\n\t input:[ ";
-	for (auto x : i)
-		std::cout << x << " ";
-	std::cout << "] \n\t output:[";
-	for (auto x : o)
-		std::cout << x << " ";
-	std::cout << "]" << std::endl;
-	
-	for (auto item : attribute) {
-		std::string attribute_name = std::string(py::str(item.first));
-	}
-	
-}
 
 PYBIND11_MODULE(_backend, m) {
 	m.doc() = "C nn Executor";
 	m.def("create_instance", &create_instance);
 	m.def("create_tensor", &create_tensor);
-	m.def("create_layer", &create_layer);
 	m.def("test", &test);
 
 	auto nn = m.def_submodule("nn", "Neural Network C Execution");

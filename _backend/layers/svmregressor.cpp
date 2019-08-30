@@ -5,28 +5,28 @@ namespace layers {
     SVMRegressor::SVMRegressor(std::string name) : backend::Layer(name) {    
         file.append(backend::file_path);
         file.append("shaders/bin/svmregressor.spv");       
-        dev = backend::device;
+        dev = backend::g_device;
     }
        
         
     void SVMRegressor::init( std::vector<float> _coefficients,  std::vector<float> _kernel_params,  std::string _kernel_type,  int _n_supports,  int _one_class,  std::string _post_transform,  std::vector<float> _rho,  std::vector<float> _support_vectors) {      
-		 coefficients = _coefficients; 
- 		 kernel_params = _kernel_params; 
- 		 kernel_type = _kernel_type; 
- 		 n_supports = _n_supports; 
- 		 one_class = _one_class; 
- 		 post_transform = _post_transform; 
- 		 rho = _rho; 
- 		 support_vectors = _support_vectors; 
+		 m_coefficients = _coefficients; 
+ 		 m_kernel_params = _kernel_params; 
+ 		 m_kernel_type = _kernel_type; 
+ 		 m_n_supports = _n_supports; 
+ 		 m_one_class = _one_class; 
+ 		 m_post_transform = _post_transform; 
+ 		 m_rho = _rho; 
+ 		 m_support_vectors = _support_vectors; 
   
 
     }
     
     void SVMRegressor::bind(std::string _X_i, std::string _Y_o){    
-        X_i = _X_i; Y_o = _Y_o;        
-		SHAPES.push_back(backend::tensor_dict[X_i]->shape());
+        m_X_i = _X_i; m_Y_o = _Y_o;        
+		SHAPES.push_back(backend::tensor_dict[m_X_i]->shape());
  
-		SHAPES.push_back(backend::tensor_dict[Y_o]->shape());
+		SHAPES.push_back(backend::tensor_dict[m_Y_o]->shape());
  
         _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
@@ -35,11 +35,11 @@ namespace layers {
 
     void SVMRegressor::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(backend::tensor_dict[X_i]->shape().w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(backend::tensor_dict[X_i]->shape().h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(backend::tensor_dict[X_i]->shape().d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[X_i]->data, *backend::tensor_dict[Y_o]->data);
+        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
+        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_Y_o]->data);
     }
 
     void SVMRegressor::forward(){ 

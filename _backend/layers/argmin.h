@@ -38,10 +38,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int axis; int keepdims;
-        std::string data_i;
+        int m_axis; int m_keepdims;
+        std::string m_data_i;
         
-        std::string reduced_o;
+        std::string m_reduced_o;
         
 
         binding_descriptor   binding;

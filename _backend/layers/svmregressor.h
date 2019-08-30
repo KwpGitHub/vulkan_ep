@@ -36,10 +36,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::vector<float> coefficients; std::vector<float> kernel_params; std::string kernel_type; int n_supports; int one_class; std::string post_transform; std::vector<float> rho; std::vector<float> support_vectors;
-        std::string X_i;
+        std::vector<float> m_coefficients; std::vector<float> m_kernel_params; std::string m_kernel_type; int m_n_supports; int m_one_class; std::string m_post_transform; std::vector<float> m_rho; std::vector<float> m_support_vectors;
+        std::string m_X_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

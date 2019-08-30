@@ -64,11 +64,11 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::vector<int> kernel_shape; std::string auto_pad; int ceil_mode; std::vector<int> dilations; std::vector<int> pads; int storage_order; std::vector<int> strides;
-        std::string X_i;
+        std::vector<int> m_kernel_shape; std::string m_auto_pad; int m_ceil_mode; std::vector<int> m_dilations; std::vector<int> m_pads; int m_storage_order; std::vector<int> m_strides;
+        std::string m_X_i;
         
-        std::string Y_o;
-        std::string Indices_o;
+        std::string m_Y_o;
+        std::string m_Indices_o;
 
         binding_descriptor   binding;
        

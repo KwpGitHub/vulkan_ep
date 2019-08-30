@@ -47,10 +47,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int center_point_box;
-        std::string boxes_i; std::string scores_i;
-        std::string max_output_boxes_per_class_i; std::string iou_threshold_i; std::string score_threshold_i;
-        std::string selected_indices_o;
+        int m_center_point_box;
+        std::string m_boxes_i; std::string m_scores_i;
+        std::string m_max_output_boxes_per_class_i; std::string m_iou_threshold_i; std::string m_score_threshold_i;
+        std::string m_selected_indices_o;
         
 
         binding_descriptor   binding;

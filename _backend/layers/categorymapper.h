@@ -43,10 +43,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::vector<int> cats_int64s; std::vector<std::string> cats_strings; int default_int64; std::string default_string;
-        std::string X_i;
+        std::vector<int> m_cats_int64s; std::vector<std::string> m_cats_strings; int m_default_int64; std::string m_default_string;
+        std::string m_X_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

@@ -11,7 +11,6 @@ if(__name__=="__main__"):
     input = np.ones([1,3,1,244,244])
     _backend.create_instance()
 
-
     mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')
     mnasnet0_5 = onnx_helper.OnnxGraph('./mnasnet0_5.onnx')
     #n2n = onnx_helper.OnnxGraph("./n2n.onnx")

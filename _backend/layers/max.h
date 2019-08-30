@@ -41,7 +41,7 @@ namespace layers {
         
         
         
-        std::string max_o;
+        std::string m_max_o;
         
 
         binding_descriptor   binding;

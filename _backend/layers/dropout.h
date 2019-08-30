@@ -42,11 +42,11 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        float ratio;
-        std::string data_i;
+        float m_ratio;
+        std::string m_data_i;
         
-        std::string output_o;
-        std::string mask_o;
+        std::string m_output_o;
+        std::string m_mask_o;
 
         binding_descriptor   binding;
        

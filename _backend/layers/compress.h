@@ -39,10 +39,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int axis;
-        std::string input_i; std::string condition_i;
+        int m_axis;
+        std::string m_input_i; std::string m_condition_i;
         
-        std::string output_o;
+        std::string m_output_o;
         
 
         binding_descriptor   binding;

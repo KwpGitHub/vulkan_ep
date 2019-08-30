@@ -44,10 +44,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::string case_change_action; int is_case_sensitive; std::string locale; std::vector<std::string> stopwords;
-        std::string X_i;
+        std::string m_case_change_action; int m_is_case_sensitive; std::string m_locale; std::vector<std::string> m_stopwords;
+        std::string m_X_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

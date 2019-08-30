@@ -5,24 +5,24 @@ namespace layers {
     RandomNormalLike::RandomNormalLike(std::string name) : backend::Layer(name) {    
         file.append(backend::file_path);
         file.append("shaders/bin/randomnormallike.spv");       
-        dev = backend::device;
+        dev = backend::g_device;
     }
        
         
     void RandomNormalLike::init( int _dtype,  float _mean,  float _scale,  float _seed) {      
-		 dtype = _dtype; 
- 		 mean = _mean; 
- 		 scale = _scale; 
- 		 seed = _seed; 
+		 m_dtype = _dtype; 
+ 		 m_mean = _mean; 
+ 		 m_scale = _scale; 
+ 		 m_seed = _seed; 
   
 
     }
     
     void RandomNormalLike::bind(std::string _input_i, std::string _output_o){    
-        input_i = _input_i; output_o = _output_o;        
-		SHAPES.push_back(backend::tensor_dict[input_i]->shape());
+        m_input_i = _input_i; m_output_o = _output_o;        
+		SHAPES.push_back(backend::tensor_dict[m_input_i]->shape());
  
-		SHAPES.push_back(backend::tensor_dict[output_o]->shape());
+		SHAPES.push_back(backend::tensor_dict[m_output_o]->shape());
  
         _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
@@ -31,11 +31,11 @@ namespace layers {
 
     void RandomNormalLike::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(backend::tensor_dict[input_i]->shape().w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(backend::tensor_dict[input_i]->shape().h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(backend::tensor_dict[input_i]->shape().d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[input_i]->data, *backend::tensor_dict[output_o]->data);
+        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
+        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_input_i]->data, *backend::tensor_dict[m_output_o]->data);
     }
 
     void RandomNormalLike::forward(){ 

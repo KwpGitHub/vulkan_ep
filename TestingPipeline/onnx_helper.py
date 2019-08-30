@@ -8,6 +8,7 @@ import onnx.utils
 from onnx.backend.base import Backend, Device, DeviceType, namedtupledict, BackendRep
 from onnx.tools.net_drawer import GetPydotGraph, GetOpNodeProducer
 from onnx.helper import make_tensor_value_info, make_graph, make_model
+import onnx.checker
 import numpy as np
 import os
 import time
@@ -59,6 +60,7 @@ class OnnxNode(object):
 class OnnxGraph:
     def __init__(self, filename):
         print()
+        _backend.test()  
         self.filename = filename
         start = time.perf_counter_ns() / 1000000
         model = onnx.load(filename)
@@ -72,6 +74,7 @@ class OnnxGraph:
         for val in model.graph.value_info:
             data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
             layers.tensors[val.name] = data
+
         for init_val in graph.initializer:
             name, data = self._create_tensor_filling_op(init_val)            
             layers.tensors[name] = data
@@ -89,11 +92,8 @@ class OnnxGraph:
         for n in graph.node:
             self.nodes.append(OnnxNode(n))
         
-        
         end = time.perf_counter_ns() / 1000000
-        print(self.filename, "::: DONE MODEL PARSE :::", end-start)
-        _backend.test()
-  
+        print(self.filename, "::: DONE MODEL PARSE :::", end-start)        
         x_start = time.perf_counter_ns() / 1000000
 
         start = time.perf_counter_ns() / 1000000
@@ -121,8 +121,8 @@ class OnnxGraph:
         print("::: DONE BUILDING PIPE :::", x_end-x_start)
         pydot_graph = GetPydotGraph(model.graph, name=model.graph.name, rankdir="LR", node_producer=GetOpNodeProducer("docstring"))
         pydot_graph.write_dot(filename+".dot")
-        _backend.test()
-
+    
+   
     def __call__(self):
         start = time.perf_counter_ns() / 1000000
         for layer in self.layer:

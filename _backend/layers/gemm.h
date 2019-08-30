@@ -47,10 +47,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        float alpha; float beta; int transA; int transB;
-        std::string A_i; std::string B_i; std::string C_i;
+        float m_alpha; float m_beta; int m_transA; int m_transB;
+        std::string m_A_i; std::string m_B_i; std::string m_C_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

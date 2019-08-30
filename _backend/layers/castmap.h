@@ -38,10 +38,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::string cast_to; std::string map_form; int max_map;
-        std::string X_i;
+        std::string m_cast_to; std::string m_map_form; int m_max_map;
+        std::string m_X_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

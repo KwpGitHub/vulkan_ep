@@ -74,9 +74,9 @@ namespace layers {
         vuh::Array<backend::Shape_t>* _SHAPES;
 
         
-        std::string data_i; std::string starts_i; std::string ends_i;
-        std::string axes_i; std::string steps_i;
-        std::string output_o;
+        std::string m_data_i; std::string m_starts_i; std::string m_ends_i;
+        std::string m_axes_i; std::string m_steps_i;
+        std::string m_output_o;
         
 
         binding_descriptor   binding;

@@ -5,22 +5,22 @@ namespace layers {
     LpNormalization::LpNormalization(std::string name) : backend::Layer(name) {    
         file.append(backend::file_path);
         file.append("shaders/bin/lpnormalization.spv");       
-        dev = backend::device;
+        dev = backend::g_device;
     }
        
         
     void LpNormalization::init( int _axis,  int _p) {      
-		 axis = _axis; 
- 		 p = _p; 
+		 m_axis = _axis; 
+ 		 m_p = _p; 
   
 
     }
     
     void LpNormalization::bind(std::string _input_i, std::string _output_o){    
-        input_i = _input_i; output_o = _output_o;        
-		SHAPES.push_back(backend::tensor_dict[input_i]->shape());
+        m_input_i = _input_i; m_output_o = _output_o;        
+		SHAPES.push_back(backend::tensor_dict[m_input_i]->shape());
  
-		SHAPES.push_back(backend::tensor_dict[output_o]->shape());
+		SHAPES.push_back(backend::tensor_dict[m_output_o]->shape());
  
         _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
@@ -29,11 +29,11 @@ namespace layers {
 
     void LpNormalization::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(backend::tensor_dict[input_i]->shape().w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(backend::tensor_dict[input_i]->shape().h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(backend::tensor_dict[input_i]->shape().d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[input_i]->data, *backend::tensor_dict[output_o]->data);
+        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
+        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_input_i]->data, *backend::tensor_dict[m_output_o]->data);
     }
 
     void LpNormalization::forward(){ 

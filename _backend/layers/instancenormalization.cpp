@@ -5,23 +5,23 @@ namespace layers {
     InstanceNormalization::InstanceNormalization(std::string name) : backend::Layer(name) {    
         file.append(backend::file_path);
         file.append("shaders/bin/instancenormalization.spv");       
-        dev = backend::device;
+        dev = backend::g_device;
     }
        
         
     void InstanceNormalization::init( float _epsilon) {      
-		 epsilon = _epsilon; 
+		 m_epsilon = _epsilon; 
   
 
     }
     
     void InstanceNormalization::bind(std::string _input_i, std::string _scale_i, std::string _B_i, std::string _output_o){    
-        input_i = _input_i; scale_i = _scale_i; B_i = _B_i; output_o = _output_o;        
-		SHAPES.push_back(backend::tensor_dict[input_i]->shape());
-  		SHAPES.push_back(backend::tensor_dict[scale_i]->shape());
-  		SHAPES.push_back(backend::tensor_dict[B_i]->shape());
+        m_input_i = _input_i; m_scale_i = _scale_i; m_B_i = _B_i; m_output_o = _output_o;        
+		SHAPES.push_back(backend::tensor_dict[m_input_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[m_scale_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[m_B_i]->shape());
  
-		SHAPES.push_back(backend::tensor_dict[output_o]->shape());
+		SHAPES.push_back(backend::tensor_dict[m_output_o]->shape());
  
         _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
@@ -30,11 +30,11 @@ namespace layers {
 
     void InstanceNormalization::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(backend::tensor_dict[input_i]->shape().w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(backend::tensor_dict[input_i]->shape().h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(backend::tensor_dict[input_i]->shape().d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[input_i]->data, *backend::tensor_dict[scale_i]->data, *backend::tensor_dict[B_i]->data, *backend::tensor_dict[output_o]->data);
+        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
+        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_input_i]->data, *backend::tensor_dict[m_scale_i]->data, *backend::tensor_dict[m_B_i]->data, *backend::tensor_dict[m_output_o]->data);
     }
 
     void InstanceNormalization::forward(){ 

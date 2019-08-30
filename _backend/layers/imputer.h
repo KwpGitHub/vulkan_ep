@@ -43,10 +43,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::vector<float> imputed_value_floats; std::vector<int> imputed_value_int64s; float replaced_value_float; int replaced_value_int64;
-        std::string X_i;
+        std::vector<float> m_imputed_value_floats; std::vector<int> m_imputed_value_int64s; float m_replaced_value_float; int m_replaced_value_int64;
+        std::string m_X_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

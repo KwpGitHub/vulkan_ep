@@ -1,6 +1,10 @@
 from collections import defaultdict 
 import numpy as np
 from google.protobuf.json_format import MessageToJson
+from onnx.backend.test.case import collect_snippets
+from onnx.backend.sample.ops import collect_sample_implementations
+from onnx.backend.test.case.node import expect
+
 import onnx
 import json
 import os
@@ -109,7 +113,7 @@ namespace layers {{
     {norm}::{norm}(std::string name) : backend::Layer(name) {{    
         file.append(backend::file_path);
         file.append("shaders/bin/{lower}.spv");       
-        dev = backend::device;
+        dev = backend::g_device;
     }}
        
         
@@ -129,10 +133,10 @@ namespace layers {{
 
     void {norm}::build(){{     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(backend::tensor_dict[{shader_input}]->shape().w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(backend::tensor_dict[{shader_input}]->shape().h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(backend::tensor_dict[{shader_input}]->shape().d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
+        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
+        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
         program->bind({{128}}, *_SHAPES{bind_input_lst}{bind_output_lst});
     }}
 
@@ -249,6 +253,9 @@ class {norm}:
     def run(self):
         self.run_(self.name)
 
+    def test(self):
+{python_testing_code}
+
 layer_map['{norm}'] = {norm}
 
 """.format_map
@@ -257,14 +264,21 @@ layer_map['{norm}'] = {norm}
 def onnx_proto():
     t = onnx.defs.get_all_schemas()
     ls = onnx.defs.get_function_ops()
+    snippets = collect_snippets()
+    sample_implementation = collect_sample_implementations()
+
     if(not os.path.isdir(os.path.join(os.getcwd(),'../_backend/layers\\'))):
         os.mkdir('../_backend/layers')
     if(not os.path.isdir(os.path.join(os.getcwd(),'../_backend/shaders\\'))):
         os.mkdir('../_backend/shaders')
+    
+    
+        
     activation = [ 'Tanh', 'Acos', 'Asin', 'Atan', 'Cos', 'Sin', 'Tan', 'Sinh', 'Cosh', 'Asinh', 'Acosh', 'Atanh', 'Softplus', 'Softsign', 'Sigmoid', 'Relu', 'PRelu', 'Elu', 'HardSigmoid', 'Hardmax', 'Selu', 'LogSoftmax', 'Softmax']
     elementwise = ['Abs', 'Neg', 'Exp', 'Ceil', 'Not', 'Floor', 'Log', 'IsNaN', 'Sqrt', 'Sign', 'Erf', 'NonZero']
     math_op = ['Add', 'And', 'Mul', 'Div', 'Sub', 'Or', 'Pow', 'Xor', 'Min', 'Max', 'Sum']
     
+    dump = list()
     single_input = []
     single_output = []
     single_element = []
@@ -281,8 +295,6 @@ def onnx_proto():
     layer_map = list()
     parameter_map = list()
     py_layers_map = list()
-    layer_op_func_store = open("layer_func.json", 'w')
-    layer_op = json.dump({}, layer_op_func_store)
     
     for op in t:
         ops[op.name] = op
@@ -299,16 +311,37 @@ def onnx_proto():
         OUTPUT_NAMES =              [str(x.name)+"_o"  for x in op.outputs if(str(x.option) == 'FormalParameterOption.Single')]        
         OPTIONAL_OUTPUT_NAMES =     [str(x.name)+"_o" for x in op.outputs if(str(x.option) == 'FormalParameterOption.Optional')]
         
+        code = list()
+        sample = 'pass'
+        if(op_name in snippets):
+            for x in snippets[op_name]:
+                code.append(x)
+        _code = ''.join("\n        def _{0}():\n            {1}".format(n.upper(), c.replace('\n', '\n            ')) for n, c in code) if(len(code) != 0) else '        pass'
+
+        if(op_name.lower() in sample_implementation):
+            sample = sample_implementation[op_name.lower()]
         if(op_name in ['Concat', 'Sum', 'Scan', 'Mean']): 
             OPTIONAL_INPUT_NAMES = ['x'+str(i)+'_i' for i in range(32)]
         if(op_name in ['Scan']):
             OPTIONAL_OUTPUT_NAMES = ['y'+str(i)+'_o' for i in range(32)]
-        p_map = {"inputs" :                 ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'inputs') for x in INPUT_NAMES] ),
+        dump.append({
+                'op' : op_name,
+                'input' : (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0],
+                'output' : (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0],
+                'python_op' : '',
+                'shader_op' : '',
+                'kernel_op' : '',
+        })
+
+
+        p_map = {
+                "inputs" :                 ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'inputs') for x in INPUT_NAMES] ),
                  "optional_input" :         ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'optional_input')  for x in OPTIONAL_INPUT_NAMES]),
                  "outputs" :                ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'outputs')  for x in OUTPUT_NAMES]),
                  "optional_output" :        ", ".join(['{{"{0}", {{"{1}", "Tensor*"}} }}'.format(x, 'optional_output')  for x in OPTIONAL_OUTPUT_NAMES]),
                  "parameters" :             ", ".join(['{{"{0}", {{"{1}", "{2}"}} }}'.format(x, 'parameters', y) for x,y in zip(PARAMETERS, PARAMETER_TYPES)]),
-                 "optional_parameters" :    ", ".join(['{{"{0}", {{"{1}", "{2}"}} }}'.format(x, 'optional_parameters', y)  for x,y in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES)])}
+                 "optional_parameters" :    ", ".join(['{{"{0}", {{"{1}", "{2}"}} }}'.format(x, 'optional_parameters', y)  for x,y in zip(OPTIONAL_PARAMETERS, OPTIONAL_PARAMETER_TYPES)])
+                 }
 
         mapt = {
                 'upper' :                       op_name.upper(),
@@ -323,37 +356,32 @@ def onnx_proto():
                 'optional_parameters' :         ', '.join(OPTIONAL_PARAMETERS),
                 'optional_parameter_types' :    ', '.join(OPTIONAL_PARAMETER_TYPES),
                 'doc':                          op.doc.replace('/*', '//').replace('*/', '//') + '\n' + '\n'.join(['input: ' + x.description for x in op.inputs]).replace('/*', '//').replace('*/', '//') + '\n' + '\n'.join(['output: ' + x.description for x in op.outputs]).replace('/*', '//').replace('*/', '//'),
-                'param_lst' :                   ' '.join( [ '{0} {1};'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
+                'param_lst' :                   ' '.join( [ '{0} m_{1};'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
 
                
                 'constructor_param_type' :      ''.join( [ ', {0}'.format(i) for i in PARAMETERS + OPTIONAL_PARAMETERS]),
 
-                'input_lst' :                   ' '.join( ['std::string {0};'.format(x) for x in INPUT_NAMES]),
-                'optional_input_lst' :          ' '.join( ['std::string {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
-                'output_lst' :                  ' '.join( ['std::string {0};'.format(x) for x in OUTPUT_NAMES]),
-                'optional_output_lst' :         ' '.join( ['std::string {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
-
-                'input_param_lst' :             ' '.join( ['backend::Shape_t {0};'.format(x) for x in INPUT_NAMES]),
-                'optional_input_param_lst' :    ' '.join( ['backend::Shape_t {0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
-                'output_param_lst' :            ' '.join( ['backend::Shape_t {0};'.format(x) for x in OUTPUT_NAMES]),
-                'optional_output_param_lst' :   ' '.join( ['backend::Shape_t {0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
-                                                         
+                'input_lst' :                   ' '.join( ['std::string m_{0};'.format(x) for x in INPUT_NAMES]),
+                'optional_input_lst' :          ' '.join( ['std::string m_{0};'.format(x) for x in OPTIONAL_INPUT_NAMES]),
+                'output_lst' :                  ' '.join( ['std::string m_{0};'.format(x) for x in OUTPUT_NAMES]),
+                'optional_output_lst' :         ' '.join( ['std::string m_{0};'.format(x) for x in OPTIONAL_OUTPUT_NAMES]),
+                                               
                 'init_param_lst' :              ', '.join( [ ' {0} _{1}'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
-                'init_input_lst_3':             ' '.join(['\t\t {0} = _{0}; \n'.format(i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
+                'init_input_lst_3':             ' '.join(['\t\t m_{0} = _{0}; \n'.format(i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
                 
                 'bind_lst' :                    ', '.join(['std::string _{0}'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),              
-                'bind_input_lst_2':             ' '.join(['{0} = _{0};'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
-                'bind_input_lst' :              ''.join([', *backend::tensor_dict[{0}]->data'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES ]),
-                'bind_output_lst' :             ''.join([', *backend::tensor_dict[{0}]->data'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+                'bind_input_lst_2':             ' '.join(['m_{0} = _{0};'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+                'bind_input_lst' :              ''.join([', *backend::tensor_dict[m_{0}]->data'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES ]),
+                'bind_output_lst' :             ''.join([', *backend::tensor_dict[m_{0}]->data'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 
-                'bind_input_lst_1' :              ' '.join(['\t\tSHAPES.push_back(backend::tensor_dict[{0}]->shape());\n '.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES]),
-                'bind_output_lst_1' :             ' '.join(['\t\tSHAPES.push_back(backend::tensor_dict[{0}]->shape());\n '.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+                'bind_input_lst_1' :              ' '.join(['\t\tSHAPES.push_back(backend::tensor_dict[m_{0}]->shape());\n '.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES]),
+                'bind_output_lst_1' :             ' '.join(['\t\tSHAPES.push_back(backend::tensor_dict[m_{0}]->shape());\n '.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 'bind_binding_lst_1' :            ' '.join(['\t\t//binding.{0} = {0};\n '.format(i)for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
 
                 'shader_layout_lst' :           '\n'.join(['layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};'.format(i,x) for i,x in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES, start=1)]),
                 'shader_shape_lst' :            '\n'.join(['\tvec4 {0}_shape = vec4(shape[{1}].c, shape[{1}].d, shape[{1}].h, shape[{1}].w);'.format(j,i) for i, j in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)]),
                 'shader_input' :                '{0}'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
-                'shader_output' :                '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
+                'shader_output' :               '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
                 'shader_input_shape' :          '{0}_shape'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
                 'shader_output_shape' :         '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
 
@@ -366,14 +394,12 @@ def onnx_proto():
                 'python_outputs_func' :         ', '.join('"{0}"'.format(x) for x in OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES),
                 'python_attribute_func' :       ', '.join('"{0}"'.format(x) for x in PARAMETERS + OPTIONAL_PARAMETERS),
                 'python_call' :                 ', '.join('self.{0}'.format(x) for x in PARAMETERS + OPTIONAL_PARAMETERS + INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES),
-
+                'python_testing_code' :         _code + ''.join('\n        _{0}()'.format(n.upper()) for n,_ in code) ,
                 'create_param_lst' :            ' '.join([', {0} _{1}'.format(j,i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)] + [ ', std::string _{0}'.format(i) for i in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]).replace('std::vector<std::string>', 'py::list').replace('std::string', 'py::str').replace('std::vector<float>', 'py::list').replace('std::vector<int>', 'py::list'),
                 'create_init_lst' :             ', '.join(['_{0}'.format(x) if('std::vector' not in i) else 'backend::convert<{1}>(_{0})'.format(x, i .replace('std::vector<','').replace('>','')) for x, i in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
                 'create_bind_lst' :             ', '.join(['_{0}'.format(x) for x in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
+                
         }        
-
-        
-       
 
         op_file.write(op.name+'=' + ', '.join(PARAMETERS + OPTIONAL_PARAMETERS) + '\n')
         
@@ -409,12 +435,16 @@ def onnx_proto():
             
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
    
+    #layer_op_func_store = open("layer_func.json", 'w')
+    #layer_op = json.dump(dump, layer_op_func_store)
+
+
     pybind_modules_file.write('\n'.join(pybind_modules))
     layers.writelines(layers_lst)
     op_file.close()
 
     layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
-    py_layers.write('import numpy as np\nimport _backend.nn as nn\nlayer_map = {}\ntensors = {}\n' + '\n\n'.join(py_layers_map))
+    py_layers.write('import numpy as np\nimport _backend.nn as nn\nimport onnx.helper\nfrom onnx.backend.test.case.node import expect\nlayer_map = {}\ntensors = {}\n' + '\n\n'.join(py_layers_map))
 
     print(single_element)
     print(double_element)

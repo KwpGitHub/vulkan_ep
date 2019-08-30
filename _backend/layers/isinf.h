@@ -34,10 +34,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int detect_negative; int detect_positive;
-        std::string X_i;
+        int m_detect_negative; int m_detect_positive;
+        std::string m_X_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

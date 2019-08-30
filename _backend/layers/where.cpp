@@ -5,7 +5,7 @@ namespace layers {
     Where::Where(std::string name) : backend::Layer(name) {    
         file.append(backend::file_path);
         file.append("shaders/bin/where.spv");       
-        dev = backend::device;
+        dev = backend::g_device;
     }
        
         
@@ -15,12 +15,12 @@ namespace layers {
     }
     
     void Where::bind(std::string _condition_i, std::string _X_i, std::string _Y_i, std::string _output_o){    
-        condition_i = _condition_i; X_i = _X_i; Y_i = _Y_i; output_o = _output_o;        
-		SHAPES.push_back(backend::tensor_dict[condition_i]->shape());
-  		SHAPES.push_back(backend::tensor_dict[X_i]->shape());
-  		SHAPES.push_back(backend::tensor_dict[Y_i]->shape());
+        m_condition_i = _condition_i; m_X_i = _X_i; m_Y_i = _Y_i; m_output_o = _output_o;        
+		SHAPES.push_back(backend::tensor_dict[m_condition_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[m_X_i]->shape());
+  		SHAPES.push_back(backend::tensor_dict[m_Y_i]->shape());
  
-		SHAPES.push_back(backend::tensor_dict[output_o]->shape());
+		SHAPES.push_back(backend::tensor_dict[m_output_o]->shape());
  
         _SHAPES = new vuh::Array<backend::Shape_t>(*dev, SHAPES);
 
@@ -29,11 +29,11 @@ namespace layers {
 
     void Where::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(backend::tensor_dict[condition_i]->shape().w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(backend::tensor_dict[condition_i]->shape().h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(backend::tensor_dict[condition_i]->shape().d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[condition_i]->data, *backend::tensor_dict[X_i]->data, *backend::tensor_dict[Y_i]->data, *backend::tensor_dict[output_o]->data);
+        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
+                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
+                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
+        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
+        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_condition_i]->data, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_Y_i]->data, *backend::tensor_dict[m_output_o]->data);
     }
 
     void Where::forward(){ 

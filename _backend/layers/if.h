@@ -34,8 +34,8 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int else_branch; int then_branch;
-        std::string cond_i;
+        int m_else_branch; int m_then_branch;
+        std::string m_cond_i;
         
         
         

@@ -48,10 +48,10 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        std::string mode; int output_height; int output_width; int sampling_ratio; float spatial_scale;
-        std::string X_i; std::string rois_i; std::string batch_indices_i;
+        std::string m_mode; int m_output_height; int m_output_width; int m_sampling_ratio; float m_spatial_scale;
+        std::string m_X_i; std::string m_rois_i; std::string m_batch_indices_i;
         
-        std::string Y_o;
+        std::string m_Y_o;
         
 
         binding_descriptor   binding;

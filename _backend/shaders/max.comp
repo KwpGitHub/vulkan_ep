@@ -28,6 +28,7 @@ void main(){
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < shape[0].c; j++){
            
+
             uint indx = x + uint(y*max_o_shape.x)                        + uint(z*max_o_shape.x*max_o_shape.y)                        + uint(j*max_o_shape.x*max_o_shape.y*max_o_shape.z)                        + uint(i*max_o_shape.x*max_o_shape.y*max_o_shape.z*max_o_shape.w);
 
             max_o[indx] = max_o[indx];

@@ -150,9 +150,9 @@ namespace layers {
         std::vector<backend::Shape_t> SHAPES;
         vuh::Array<backend::Shape_t>* _SHAPES;
 
-        int body;
+        int m_body;
         
-        std::string M_i; std::string cond_i;
+        std::string m_M_i; std::string m_cond_i;
         
         
 

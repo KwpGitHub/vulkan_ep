@@ -13,7 +13,7 @@
     <RootNamespace>TestingPipeline</RootNamespace>
     <InterpreterId>CondaEnv|CondaEnv|visual_sutdio_base</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <EnableNativeCodeDebugging>True</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -40,9 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="CondaEnv|CondaEnv|visual_sutdio_base" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="requirements.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
