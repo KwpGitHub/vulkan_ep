@@ -58,22 +58,25 @@ class OnnxNode(object):
         return (self.inputs, self.outputs, self.attrs)
 
 class OnnxGraph:
-    def __init__(self, filename):
-        print()
+    def __init__(self, filename):       
         _backend.test()  
         self.filename = filename
         start = time.perf_counter_ns() / 1000000
         model = onnx.load(filename)
-        model = onnx.shape_inference.infer_shapes(model)
+        #model = onnx.shape_inference.infer_shapes(model)
         graph = model.graph
 
         self.nodes = list()
         self.layer = list()
+
+        self.inputs = list()
+        self.outputs = list()
+
         layers.tensors[''] = np.zeros(10)
 
-        for val in model.graph.value_info:
-            data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
-            layers.tensors[val.name] = data
+        #for val in model.graph.value_info:
+        ##    data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
+        #    layers.tensors[val.name] = data
 
         for init_val in graph.initializer:
             name, data = self._create_tensor_filling_op(init_val)            
@@ -82,12 +85,15 @@ class OnnxGraph:
         for val in graph.input:
             if(val.name not in layers.tensors.keys()):            
                 data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
+                self.inputs.append(val.name)
                 layers.tensors[val.name] = data     
                 
         for val in graph.output:
-            if(val.name not in layers.tensors.keys()):
-                data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
-                layers.tensors[val.name] = data 
+            for _val in graph.input:
+                if(val.name not in layers.tensors.keys()):
+                    data = np.zeros([i.dim_value for i in _val.type.tensor_type.shape.dim])
+                    self.outputs.append(val.name)
+                    layers.tensors[val.name] = data 
                 
         for n in graph.node:
             self.nodes.append(OnnxNode(n))
@@ -123,105 +129,60 @@ class OnnxGraph:
         pydot_graph.write_dot(filename+".dot")
     
    
-    def __call__(self):
+    def __call__(self, *args):
+        tmp = None
+        for i, x in enumerate(self.inputs):
+            _backend.input(x, args[i])
+            tmp = _backend.output(x)
         start = time.perf_counter_ns() / 1000000
+            
         for layer in self.layer:
             layer.run()
+            tmp = _backend.output(layer.name)
         end = time.perf_counter_ns() / 1000000
         print(self.filename, "::: DONE RUNNING PIPE :::", end-start, "avg", (end-start)/len(self.layer))
+        output = list()
+        for y in self.outputs:
+            output.append(_backend.output(y))
+        return output
 
     def _create_tensor_filling_op(self, onnx_tensor, name=None):
       
-            assert name or onnx_tensor.name
-            name = name or onnx_tensor.name
+        assert name or onnx_tensor.name
+        name = name or onnx_tensor.name
 
-            def tensor2list(onnx_tensor):
-                # Use the onnx.numpy_helper because the data may be raw
-                return onnx.numpy_helper.to_array(onnx_tensor).flatten()
-            
-            if onnx_tensor.data_type == TensorProto.FLOAT:
-                pass
-            elif onnx_tensor.data_type == TensorProto.DOUBLE:
-                pass
-            elif onnx_tensor.data_type == TensorProto.INT64:
-                pass
-            elif onnx_tensor.data_type == TensorProto.UINT32:
-                pass
-            elif onnx_tensor.data_type == TensorProto.UINT8:
-                pass
-            elif onnx_tensor.data_type == TensorProto.INT8:
-                pass
-            elif onnx_tensor.data_type == TensorProto.UINT16:
-                pass
-            elif onnx_tensor.data_type == TensorProto.INT16:
-                pass
-            elif onnx_tensor.data_type == TensorProto.INT32:
-                pass
-            elif onnx_tensor.data_type == TensorProto.BOOL:
-                pass
-            elif onnx_tensor.data_type == TensorProto.STRING:
-                pass
-            else:
-                raise RuntimeError("unrecognized tensor type {}".format(onnx_tensor.data_type))
-    
-            if(onnx_tensor.dims == []):
-                return (name, tensor2list(onnx_tensor))
-            data = tensor2list(onnx_tensor).reshape(*onnx_tensor.dims)
-            
+        def tensor2list(onnx_tensor):
+            # Use the onnx.numpy_helper because the data may be raw
+            return onnx.numpy_helper.to_array(onnx_tensor).flatten()
 
-
-            return (name, data)
-  
-'''
-def graph_def_info(onnx_file):
-    onnx_model_str =  MessageToJson(onnx.load(onnx_file))
-    graph = json.loads(onnx_model_str)['graph']
-    
-    backend.create_instance(os.getcwd())
-    backend.test()
-    
-    nodes = {} 
-    
-    init_nodes = []
-    for data in graph['initializer']:
-        name    = data['name']
-        dims    = [int(x) for x in data['dims']]
-             
-        init_nodes.append(name)
-        if(data['dataType'] == 7):
-            data_t = [float(x) for x in data['int64Data']]
-            backend.create_tensor(name, data_t, dims)
-        elif(data['dataType'] == 1):
-            data_t  = [float(x) for x in data['floatData']]
-            backend.create_tensor(name, data_t, dims)
+        if onnx_tensor.data_type == TensorProto.FLOAT:
+            pass
+        elif onnx_tensor.data_type == TensorProto.DOUBLE:
+            pass
+        elif onnx_tensor.data_type == TensorProto.INT64:
+            pass
+        elif onnx_tensor.data_type == TensorProto.UINT32:
+            pass
+        elif onnx_tensor.data_type == TensorProto.UINT8:
+            pass
+        elif onnx_tensor.data_type == TensorProto.INT8:
+            pass
+        elif onnx_tensor.data_type == TensorProto.UINT16:
+            pass
+        elif onnx_tensor.data_type == TensorProto.INT16:
+            pass
+        elif onnx_tensor.data_type == TensorProto.INT32:
+            pass
+        elif onnx_tensor.data_type == TensorProto.BOOL:
+            pass
+        elif onnx_tensor.data_type == TensorProto.STRING:
+            pass
         else:
-            print(data['name'], data['dataType'])   
-
-    print("\n\n")
-    for node in graph['node']:
-        nodes[node['name']] = node
-        name = node['name']
-        op_type = node['opType'].lower()
-        input = node['input']
-        output = node['output']
-        layer = layer_map[op_type](name)
-        layer.input(*input)
-        layer.output(*output)
-        if('attribute' in node.keys()):
-            for attr_ in node['attribute']:
-                _x = [x for n,x in attr_.items() if(n != 'name' and n != 'type')]
-                if(type(_x[0]) == list and len(_x) == 1):
-                    layer.__dict__[attr_['name']] = _x[0]
-                else:
-                    layer.__dict__[attr_['name']] = _x
-        print(name)
-                
-    unint_nodes = {}
-    for node in graph['input'] + graph['output']:
-        if(node['name'] not in init_nodes):
-            tmp = np.zeros([int(i['dimValue']) for i in  node['type']['tensorType']['shape']['dim']])
-            backend.create_tensor_from_numpy(node['name'], tmp)
-    return nodes
-
-
-'''
+            raise RuntimeError("unrecognized tensor type {}".format(onnx_tensor.data_type))
+    
+        if(onnx_tensor.dims == []):
+            return (name, tensor2list(onnx_tensor))
+        data = tensor2list(onnx_tensor).reshape(*onnx_tensor.dims)
+            
+        return (name, data)
+  

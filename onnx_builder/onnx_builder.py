@@ -24,28 +24,6 @@ type_map = {
 ops = {}
 op_file = open('op_file.h','w')
 
-layer_map_str = """/*#include <map>
-#include "layers.h"
-namespace backend {{
-
-
-std::map<std::string, Layer*(*)(std::string n)> layer_map = {{
-/*
-{0}
-*/
-}};
-
-
-std::map<std::string, std::map<std::string, std::string> > parameter_map = {{
-/*
-{1}
-*/
-}};
-
-}}*/
-    """.format
-
-
 class_h_str = """#ifndef {upper}_H
 #define {upper}_H 
 
@@ -71,7 +49,7 @@ namespace layers {{
 
     class {norm} : public backend::Layer {{
         typedef struct {{
-            uint32_t size;
+            int t;
         }} binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
@@ -103,7 +81,10 @@ namespace layers {{
 }}
 #endif
 
-""".format_map
+""".format_map #header file
+
+
+ 
 
 
 cpp_class_str = """#include "{lower}.h"
@@ -136,8 +117,8 @@ namespace layers {{
         program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
                         vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
                         vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
-        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
-        program->bind({{128}}, *_SHAPES{bind_input_lst}{bind_output_lst});
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, 1);
+        program->bind({{0}}, *_SHAPES{bind_input_lst}{bind_output_lst});
     }}
 
     void {norm}::forward(){{ 
@@ -146,19 +127,19 @@ namespace layers {{
 
 }}
 
-""".format_map
+""".format_map # Cpp file
 
 
 class_shader_str = """
 #version 450
 struct Shape_t {{ uint n; uint c; uint d; uint h; uint w; }};
 
-layout(local_size_x_id = 0) in;
-layout(local_size_y_id = 1) in;
-layout(local_size_z_id = 2) in;
+ layout(local_size_x_id = 0) in;               
+ layout(local_size_y_id = 1) in;
+ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {{      
-   uint x;
+   int t;
 }} params;
 
 layout(std430, binding = 0) buffer lay0 {{ Shape_t shape[]; }};
@@ -170,7 +151,6 @@ void main(){{
     const uint y = gl_GlobalInvocationID.y;
     const uint z = gl_GlobalInvocationID.z;
 
-{shader_shape_lst}
     uint n = shape[0].n;
     
     if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){{
@@ -178,21 +158,16 @@ void main(){{
     }}
     for(uint i = 0; i < n; i++){{
         for(uint j = 0; j < shape[0].c; j++){{
-           
-
-            uint indx = x + uint(y*{shader_input_shape}.x)\
-                        + uint(z*{shader_input_shape}.x*{shader_input_shape}.y)\
-                        + uint(j*{shader_input_shape}.x*{shader_input_shape}.y*{shader_input_shape}.z)\
-                        + uint(i*{shader_input_shape}.x*{shader_input_shape}.y*{shader_input_shape}.z*{shader_input_shape}.w);
-
-            {shader_input}[indx] = {shader_output}[indx];
+            uint indx = x + uint(y*shape[0].w) + uint(z*shape[0].w*shape[0].h) + uint(j*shape[0].w*shape[0].h*shape[0].d) + uint(i*shape[0].w*shape[0].h*shape[0].d*shape[0].c);
+            //uint indx = x + uint(y * shape[0].w) + uint(z * shape[0].h * shape[0].w);
+            //{shader_output}[indx] = 1;
+            {shader_function}
         }}
     }}
        
 
 }}
-""".format_map
-
+""".format_map #shader  File
 
 layers_file_str = '''
 void init_layer_{norm}(py::module& m){{
@@ -212,7 +187,7 @@ void init_layer_{norm}(py::module& m){{
         backend::layer_dict[std::string(name)]->forward();
     }});
 
-}}\n\n'''.format_map
+}}\n\n'''.format_map # layers.h
 
 
 python_class_str = """
@@ -244,7 +219,7 @@ class {norm}:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -278,7 +253,7 @@ def onnx_proto():
     elementwise = ['Abs', 'Neg', 'Exp', 'Ceil', 'Not', 'Floor', 'Log', 'IsNaN', 'Sqrt', 'Sign', 'Erf', 'NonZero']
     math_op = ['Add', 'And', 'Mul', 'Div', 'Sub', 'Or', 'Pow', 'Xor', 'Min', 'Max', 'Sum']
     
-    dump = list()
+    dump = dict()
     single_input = []
     single_output = []
     single_element = []
@@ -287,9 +262,11 @@ def onnx_proto():
     simple_element = []
     
     layers = open('../_backend/layers.hpp', 'w')
-    layer_map_file = open("../_backend/layers_map.h", 'w')
     py_layers = open('../TestingPipeline/layers.py', 'w')
     pybind_modules_file = open('../_backend/pybind_modules.txt', 'w')
+    function_file = open("layer_func.json", 'r')
+    function_ops = json.load(function_file)
+
     pybind_modules = list()
     layers_lst = list()
     layer_map = list()
@@ -324,14 +301,13 @@ def onnx_proto():
             OPTIONAL_INPUT_NAMES = ['x'+str(i)+'_i' for i in range(32)]
         if(op_name in ['Scan']):
             OPTIONAL_OUTPUT_NAMES = ['y'+str(i)+'_o' for i in range(32)]
-        dump.append({
-                'op' : op_name,
-                'input' : (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0],
-                'output' : (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0],
+
+        dump[op_name] = {
+                'input' : INPUT_NAMES + OPTIONAL_INPUT_NAMES,
+                'output' : OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES,
                 'python_op' : '',
-                'shader_op' : '',
-                'kernel_op' : '',
-        })
+                'shader_op' : '{1}[indx] = {0}[indx];'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0], (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
+        }
 
 
         p_map = {
@@ -384,7 +360,7 @@ def onnx_proto():
                 'shader_output' :               '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
                 'shader_input_shape' :          '{0}_shape'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
                 'shader_output_shape' :         '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
-
+                'shader_function' :             function_ops[op_name]['shader_op'],
                 'call_python_binding' :         ', '.join(['std::string' for _ in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 
                 'pybind11_constructor':         ''.join([ ', {0}'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]).replace("Shape_t", "backend::Shape_t"),
@@ -430,10 +406,7 @@ def onnx_proto():
             s_cpp.write(class_shader_str(mapt))
             s_cpp.close()
             layers_lst.append( 'void init_layer_{norm}(py::module&);\n#include "./layers/{lower}.h"'.format_map(mapt) + layers_file_str(mapt) )
-            layer_map.append('	{{ "{0}", &createInstance<{0}>}}'.format(op_name))
-            parameter_map.append('{{ "{0}", {{{1}}} }}'.format(op_name, ', '.join(['{0}'.format(i) for k, i in p_map.items() if(i != '') ] )))
             
-    layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
    
     #layer_op_func_store = open("layer_func.json", 'w')
     #layer_op = json.dump(dump, layer_op_func_store)
@@ -443,7 +416,6 @@ def onnx_proto():
     layers.writelines(layers_lst)
     op_file.close()
 
-    layer_map_file.write(layer_map_str(", \n".join(layer_map), ", \n".join(parameter_map)))
     py_layers.write('import numpy as np\nimport _backend.nn as nn\nimport onnx.helper\nfrom onnx.backend.test.case.node import expect\nlayer_map = {}\ntensors = {}\n' + '\n\n'.join(py_layers_map))
 
     print(single_element)
@@ -453,7 +425,6 @@ def onnx_proto():
     print(simple_element)
     print(complex_element)
 
-    layer_map_file.close()
 
 
 if (__name__ == "__main__"):

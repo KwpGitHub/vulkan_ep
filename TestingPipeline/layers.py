@@ -51,7 +51,7 @@ class LSTM:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -178,7 +178,7 @@ class Identity:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -240,7 +240,7 @@ class Abs:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -309,7 +309,7 @@ class BatchNormalization:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -435,7 +435,7 @@ class Mean:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -513,7 +513,7 @@ class Add:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -584,7 +584,7 @@ class GlobalMaxPool:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -661,7 +661,7 @@ class Cast:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -756,7 +756,7 @@ class AveragePool:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1140,7 +1140,7 @@ class And:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1261,7 +1261,7 @@ class LRN:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1357,7 +1357,7 @@ class ArgMax:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1462,7 +1462,7 @@ class Resize:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1604,7 +1604,7 @@ class Expand:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1695,7 +1695,7 @@ class Neg:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1760,7 +1760,7 @@ class Mul:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1841,7 +1841,7 @@ class ArgMin:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1947,7 +1947,7 @@ class CastMap:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -1994,7 +1994,7 @@ class Exp:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2059,7 +2059,7 @@ class Div:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2141,7 +2141,7 @@ class ReverseSequence:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2232,7 +2232,7 @@ class Ceil:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2297,7 +2297,7 @@ class DepthToSpace:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2388,7 +2388,7 @@ class Clip:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2521,7 +2521,7 @@ class RNN:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2675,7 +2675,7 @@ class Concat:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2746,7 +2746,7 @@ class Constant:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2815,7 +2815,7 @@ class LpPool:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -2870,7 +2870,7 @@ class Conv:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3020,7 +3020,7 @@ class Not:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3091,7 +3091,7 @@ class Gather:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3176,7 +3176,7 @@ class ConvTranspose:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3479,7 +3479,7 @@ class Dropout:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3552,7 +3552,7 @@ class LeakyRelu:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3631,7 +3631,7 @@ class Elu:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3709,7 +3709,7 @@ class GlobalAveragePool:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3790,7 +3790,7 @@ class Gemm:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -3877,7 +3877,7 @@ class MaxPool:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4287,7 +4287,7 @@ class Equal:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4361,7 +4361,7 @@ class Tile:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4453,7 +4453,7 @@ class Flatten:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4531,7 +4531,7 @@ class Floor:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4608,7 +4608,7 @@ class GRU:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4733,7 +4733,7 @@ class GlobalLpPool:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4781,7 +4781,7 @@ class Greater:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4856,7 +4856,7 @@ class HardSigmoid:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -4937,7 +4937,7 @@ class Selu:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5019,7 +5019,7 @@ class Hardmax:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5129,7 +5129,7 @@ class If:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5175,7 +5175,7 @@ class Min:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5255,7 +5255,7 @@ class InstanceNormalization:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5348,7 +5348,7 @@ class Less:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5423,7 +5423,7 @@ class EyeLike:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5514,7 +5514,7 @@ class RandomNormal:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5565,7 +5565,7 @@ class Slice:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5729,7 +5729,7 @@ class PRelu:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5804,7 +5804,7 @@ class Log:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5869,7 +5869,7 @@ class LogSoftmax:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -5988,7 +5988,7 @@ class Loop:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6037,7 +6037,7 @@ class LpNormalization:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6085,7 +6085,7 @@ class MatMul:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6162,7 +6162,7 @@ class ReduceL2:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6309,7 +6309,7 @@ class Max:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6389,7 +6389,7 @@ class MaxRoiPool:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6437,7 +6437,7 @@ class Or:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6557,7 +6557,7 @@ class Pad:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6647,7 +6647,7 @@ class RandomUniformLike:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6694,7 +6694,7 @@ class Reciprocal:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6759,7 +6759,7 @@ class Pow:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6854,7 +6854,7 @@ class RandomNormalLike:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6904,7 +6904,7 @@ class OneHot:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -6990,7 +6990,7 @@ class RandomUniform:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7039,7 +7039,7 @@ class ReduceL1:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7180,7 +7180,7 @@ class ReduceLogSum:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7265,7 +7265,7 @@ class ReduceLogSumExp:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7414,7 +7414,7 @@ class ReduceMax:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7541,7 +7541,7 @@ class OneHotEncoder:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7588,7 +7588,7 @@ class IsNaN:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7648,7 +7648,7 @@ class ReduceMean:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7775,7 +7775,7 @@ class ReduceMin:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7916,7 +7916,7 @@ class TreeEnsembleRegressor:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -7965,7 +7965,7 @@ class ReduceProd:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8089,7 +8089,7 @@ class ReduceSum:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8216,7 +8216,7 @@ class ReduceSumSquare:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8341,7 +8341,7 @@ class Relu:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8401,7 +8401,7 @@ class Reshape:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8470,7 +8470,7 @@ class Shape:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8541,7 +8541,7 @@ class Sigmoid:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8605,7 +8605,7 @@ class Size:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8675,7 +8675,7 @@ class Softmax:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8793,7 +8793,7 @@ class Softplus:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8857,7 +8857,7 @@ class Softsign:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8922,7 +8922,7 @@ class SpaceToDepth:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -8978,7 +8978,7 @@ class TfIdfVectorizer:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9173,7 +9173,7 @@ class Split:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9300,7 +9300,7 @@ class Imputer:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9347,7 +9347,7 @@ class Sqrt:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9412,7 +9412,7 @@ class Squeeze:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9475,7 +9475,7 @@ class TopK:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9549,7 +9549,7 @@ class Sub:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9659,7 +9659,7 @@ class Sum:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9738,7 +9738,7 @@ class Shrink:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9810,7 +9810,7 @@ class Tanh:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9875,7 +9875,7 @@ class Transpose:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -9953,7 +9953,7 @@ class Unsqueeze:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10025,7 +10025,7 @@ class SVMClassifier:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10073,7 +10073,7 @@ class Xor:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10190,7 +10190,7 @@ class Acos:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10254,7 +10254,7 @@ class Asin:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10318,7 +10318,7 @@ class Atan:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10382,7 +10382,7 @@ class Cos:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10446,7 +10446,7 @@ class Sin:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10510,7 +10510,7 @@ class Tan:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10577,7 +10577,7 @@ class Multinomial:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10692,7 +10692,7 @@ class Scan:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10832,7 +10832,7 @@ class Compress:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -10930,7 +10930,7 @@ class ConstantOfShape:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11011,7 +11011,7 @@ class MaxUnpool:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11099,7 +11099,7 @@ class Scatter:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11181,7 +11181,7 @@ class Sinh:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11245,7 +11245,7 @@ class Cosh:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11309,7 +11309,7 @@ class Asinh:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11373,7 +11373,7 @@ class Acosh:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11442,7 +11442,7 @@ class NonMaxSuppression:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11694,7 +11694,7 @@ class Atanh:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11758,7 +11758,7 @@ class Sign:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11817,7 +11817,7 @@ class Erf:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11878,7 +11878,7 @@ class Where:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11939,7 +11939,7 @@ class NonZero:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -11999,7 +11999,7 @@ class MeanVarianceNormalization:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12078,7 +12078,7 @@ class StringNormalizer:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12217,7 +12217,7 @@ class Mod:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12318,7 +12318,7 @@ class ThresholdedRelu:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12405,7 +12405,7 @@ class MatMulInteger:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12485,7 +12485,7 @@ class QLinearMatMul:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12602,7 +12602,7 @@ class ConvInteger:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12690,7 +12690,7 @@ class QLinearConv:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12774,7 +12774,7 @@ class QuantizeLinear:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12836,7 +12836,7 @@ class DequantizeLinear:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12899,7 +12899,7 @@ class IsInf:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -12988,7 +12988,7 @@ class RoiAlign:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13214,7 +13214,7 @@ class ArrayFeatureExtractor:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13262,7 +13262,7 @@ class Binarizer:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13313,7 +13313,7 @@ class CategoryMapper:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13362,7 +13362,7 @@ class DictVectorizer:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13409,7 +13409,7 @@ class FeatureVectorizer:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13465,7 +13465,7 @@ class LabelEncoder:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13519,7 +13519,7 @@ class LinearClassifier:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13570,7 +13570,7 @@ class LinearRegressor:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13618,7 +13618,7 @@ class Normalizer:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13673,7 +13673,7 @@ class SVMRegressor:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13722,7 +13722,7 @@ class Scaler:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13787,7 +13787,7 @@ class TreeEnsembleClassifier:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):
@@ -13836,7 +13836,7 @@ class ZipMap:
         for i, x in enumerate(args):
             self.__dict__[self.output_params[i]] = x            
             if(x not in tensors.keys()):     
-                tensors[x] =  np.zeros(self.output_shape(tensors))
+                tensors[x] =  np.zeros(self.output_shape())
         return self
 
     def build(self):

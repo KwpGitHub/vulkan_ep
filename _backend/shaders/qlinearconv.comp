@@ -2,12 +2,12 @@
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 
-layout(local_size_x_id = 0) in;
-layout(local_size_y_id = 1) in;
-layout(local_size_z_id = 2) in;
+ layout(local_size_x_id = 0) in;               
+ layout(local_size_y_id = 1) in;
+ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-   uint x;
+   int t;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
@@ -28,16 +28,6 @@ void main(){
     const uint y = gl_GlobalInvocationID.y;
     const uint z = gl_GlobalInvocationID.z;
 
-	vec4 x_i_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
-	vec4 x_scale_i_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
-	vec4 x_zero_point_i_shape = vec4(shape[2].c, shape[2].d, shape[2].h, shape[2].w);
-	vec4 w_i_shape = vec4(shape[3].c, shape[3].d, shape[3].h, shape[3].w);
-	vec4 w_scale_i_shape = vec4(shape[4].c, shape[4].d, shape[4].h, shape[4].w);
-	vec4 w_zero_point_i_shape = vec4(shape[5].c, shape[5].d, shape[5].h, shape[5].w);
-	vec4 y_scale_i_shape = vec4(shape[6].c, shape[6].d, shape[6].h, shape[6].w);
-	vec4 y_zero_point_i_shape = vec4(shape[7].c, shape[7].d, shape[7].h, shape[7].w);
-	vec4 B_i_shape = vec4(shape[8].c, shape[8].d, shape[8].h, shape[8].w);
-	vec4 y_o_shape = vec4(shape[9].c, shape[9].d, shape[9].h, shape[9].w);
     uint n = shape[0].n;
     
     if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
@@ -45,11 +35,10 @@ void main(){
     }
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < shape[0].c; j++){
-           
-
-            uint indx = x + uint(y*x_i_shape.x)                        + uint(z*x_i_shape.x*x_i_shape.y)                        + uint(j*x_i_shape.x*x_i_shape.y*x_i_shape.z)                        + uint(i*x_i_shape.x*x_i_shape.y*x_i_shape.z*x_i_shape.w);
-
-            x_i[indx] = y_o[indx];
+            uint indx = x + uint(y*shape[0].w) + uint(z*shape[0].w*shape[0].h) + uint(j*shape[0].w*shape[0].h*shape[0].d) + uint(i*shape[0].w*shape[0].h*shape[0].d*shape[0].c);
+            //uint indx = x + uint(y * shape[0].w) + uint(z * shape[0].h * shape[0].w);
+            //y_o[indx] = 1;
+            y_o[indx] = x_i[indx];
         }
     }
        

@@ -31,7 +31,7 @@ namespace backend {
 }
 
 namespace backend {
-	inline std::map<std::string, Layer*> layer_dict;
+	static std::map<std::string, Layer*> layer_dict;
 
 	template<typename T> std::vector<T> convert(py::list l) {
 		std::vector<T> x;

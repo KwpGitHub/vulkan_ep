@@ -46,8 +46,8 @@ namespace layers {
         program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
                         vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
                         vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
-        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_W_i]->data, *backend::tensor_dict[m_R_i]->data, *backend::tensor_dict[m_B_i]->data, *backend::tensor_dict[m_sequence_lens_i]->data, *backend::tensor_dict[m_initial_h_i]->data, *backend::tensor_dict[m_initial_c_i]->data, *backend::tensor_dict[m_P_i]->data, *backend::tensor_dict[m_Y_o]->data, *backend::tensor_dict[m_Y_h_o]->data, *backend::tensor_dict[m_Y_c_o]->data);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, 1);
+        program->bind({0}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_W_i]->data, *backend::tensor_dict[m_R_i]->data, *backend::tensor_dict[m_B_i]->data, *backend::tensor_dict[m_sequence_lens_i]->data, *backend::tensor_dict[m_initial_h_i]->data, *backend::tensor_dict[m_initial_c_i]->data, *backend::tensor_dict[m_P_i]->data, *backend::tensor_dict[m_Y_o]->data, *backend::tensor_dict[m_Y_h_o]->data, *backend::tensor_dict[m_Y_c_o]->data);
     }
 
     void LSTM::forward(){ 

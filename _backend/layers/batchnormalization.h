@@ -44,7 +44,7 @@ namespace layers {
 
     class BatchNormalization : public backend::Layer {
         typedef struct {
-            uint32_t size;
+            int t;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;

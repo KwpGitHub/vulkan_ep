@@ -49,7 +49,7 @@ namespace backend {
 			dev = t.dev;
 		}
 
-		std::vector<float>& to_vector() {
+		std::vector<float> to_vector() {
 			std::vector<float> t(size, 0.0);
 			data->toHost(begin(t));
 			return t;

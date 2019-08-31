@@ -40,8 +40,8 @@ namespace layers {
         program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
                         vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
                         vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
-        program->spec(SHAPES[0].w, SHAPES[0].h, SHAPES[0].d);
-        program->bind({128}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_scale_i]->data, *backend::tensor_dict[m_B_i]->data, *backend::tensor_dict[m_mean_i]->data, *backend::tensor_dict[m_var_i]->data, *backend::tensor_dict[m_Y_o]->data, *backend::tensor_dict[m_mean_o]->data, *backend::tensor_dict[m_var_o]->data, *backend::tensor_dict[m_saved_mean_o]->data, *backend::tensor_dict[m_saved_var_o]->data);
+        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, 1);
+        program->bind({0}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_scale_i]->data, *backend::tensor_dict[m_B_i]->data, *backend::tensor_dict[m_mean_i]->data, *backend::tensor_dict[m_var_i]->data, *backend::tensor_dict[m_Y_o]->data, *backend::tensor_dict[m_mean_o]->data, *backend::tensor_dict[m_var_o]->data, *backend::tensor_dict[m_saved_mean_o]->data, *backend::tensor_dict[m_saved_var_o]->data);
     }
 
     void BatchNormalization::forward(){ 

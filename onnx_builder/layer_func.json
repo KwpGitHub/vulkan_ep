@@ -1,1243 +1,932 @@
-[
-  {
-    "op": "LSTM",
-    "input": "X_i",
-    "output": "Y_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "Identity",
-    "input": "input_i",
-    "output": "output_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "Abs",
-    "input": "X_i",
-    "output": "Y_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "BatchNormalization",
-    "input": "X_i",
-    "output": "Y_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "Mean",
-    "input": "x0_i",
-    "output": "mean_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "Add",
-    "input": "A_i",
-    "output": "C_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "GlobalMaxPool",
-    "input": "X_i",
-    "output": "Y_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "Cast",
-    "input": "input_i",
-    "output": "output_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "AveragePool",
-    "input": "X_i",
-    "output": "Y_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "And",
-    "input": "A_i",
-    "output": "C_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "LRN",
-    "input": "X_i",
-    "output": "Y_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "ArgMax",
-    "input": "data_i",
-    "output": "reduced_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "Resize",
-    "input": "X_i",
-    "output": "Y_o",
+{
+  "Abs": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Expand",
-    "input": "input_i",
-    "output": "output_o",
+  "Acos": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Neg",
-    "input": "X_i",
-    "output": "Y_o",
+  "Acosh": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Mul",
-    "input": "A_i",
-    "output": "C_o",
+  "Add": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "ArgMin",
-    "input": "data_i",
-    "output": "reduced_o",
+  "And": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "CastMap",
-    "input": "X_i",
-    "output": "Y_o",
+  "ArgMax": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Exp",
-    "input": "input_i",
-    "output": "output_o",
+  "ArgMin": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Div",
-    "input": "A_i",
-    "output": "C_o",
+  "ArrayFeatureExtractor": {
+    "input": [ "X_i", "Y_i" ],
+    "output": [ "Z_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Z_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ReverseSequence",
-    "input": "input_i",
-    "output": "Y_o",
+  "Asin": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Ceil",
-    "input": "X_i",
-    "output": "Y_o",
+  "Asinh": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "DepthToSpace",
-    "input": "input_i",
-    "output": "output_o",
+  "Atan": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Clip",
-    "input": "input_i",
-    "output": "output_o",
+  "Atanh": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "RNN",
-    "input": "X_i",
-    "output": "Y_o",
+  "AveragePool": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Concat",
-    "input": "x0_i",
-    "output": "concat_result_o",
+  "BatchNormalization": {
+    "input": [ "X_i", "scale_i", "B_i", "mean_i", "var_i" ],
+    "output": [ "Y_o", "mean_o", "var_o", "saved_mean_o", "saved_var_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Constant",
-    "input": "output_o",
-    "output": "output_o",
+  "Binarizer": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "LpPool",
-    "input": "X_i",
-    "output": "Y_o",
+  "Cast": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Conv",
-    "input": "X_i",
-    "output": "Y_o",
+  "CastMap": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Not",
-    "input": "X_i",
-    "output": "Y_o",
+  "CategoryMapper": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Gather",
-    "input": "data_i",
-    "output": "output_o",
+  "Ceil": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ConvTranspose",
-    "input": "X_i",
-    "output": "Y_o",
+  "Clip": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Dropout",
-    "input": "data_i",
-    "output": "output_o",
+  "Compress": {
+    "input": [ "input_i", "condition_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "LeakyRelu",
-    "input": "X_i",
-    "output": "Y_o",
+  "Concat": {
+    "input": [ "x0_i", "x1_i", "x2_i", "x3_i", "x4_i", "x5_i", "x6_i", "x7_i", "x8_i", "x9_i", "x10_i", "x11_i", "x12_i", "x13_i", "x14_i", "x15_i", "x16_i", "x17_i", "x18_i", "x19_i", "x20_i", "x21_i", "x22_i", "x23_i", "x24_i", "x25_i", "x26_i", "x27_i", "x28_i", "x29_i", "x30_i", "x31_i" ],
+    "output": [ "concat_result_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "concat_result_o[indx] = x0_i[indx];"
   },
-  {
-    "op": "Elu",
-    "input": "X_i",
-    "output": "Y_o",
+  "Constant": {
+    "input": [],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = output_o[indx];"
   },
-  {
-    "op": "GlobalAveragePool",
-    "input": "X_i",
-    "output": "Y_o",
+  "ConstantOfShape": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Gemm",
-    "input": "A_i",
-    "output": "Y_o",
+  "Conv": {
+    "input": [ "X_i", "W_i", "B_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "MaxPool",
-    "input": "X_i",
-    "output": "Y_o",
+  "ConvInteger": {
+    "input": [ "x_i", "w_i", "x_zero_point_i", "w_zero_point_i" ],
+    "output": [ "y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "y_o[indx] = x_i[indx];"
   },
-  {
-    "op": "Equal",
-    "input": "A_i",
-    "output": "C_o",
+  "ConvTranspose": {
+    "input": [ "X_i", "W_i", "B_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Tile",
-    "input": "input_i",
-    "output": "output_o",
+  "Cos": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Flatten",
-    "input": "input_i",
-    "output": "output_o",
+  "Cosh": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Floor",
-    "input": "X_i",
-    "output": "Y_o",
+  "DepthToSpace": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "GRU",
-    "input": "X_i",
-    "output": "Y_o",
+  "DequantizeLinear": {
+    "input": [ "x_i", "x_scale_i", "x_zero_point_i" ],
+    "output": [ "y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "y_o[indx] = x_i[indx];"
   },
-  {
-    "op": "GlobalLpPool",
-    "input": "X_i",
-    "output": "Y_o",
+  "DictVectorizer": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Greater",
-    "input": "A_i",
-    "output": "C_o",
+  "Div": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "HardSigmoid",
-    "input": "X_i",
-    "output": "Y_o",
+  "Dropout": {
+    "input": [ "data_i" ],
+    "output": [ "output_o", "mask_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Selu",
-    "input": "X_i",
-    "output": "Y_o",
+  "Elu": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Hardmax",
-    "input": "input_i",
-    "output": "output_o",
+  "Equal": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "If",
-    "input": "cond_i",
-    "output": "cond_i",
+  "Erf": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Min",
-    "input": "min_o",
-    "output": "min_o",
+  "Exp": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "InstanceNormalization",
-    "input": "input_i",
-    "output": "output_o",
+  "Expand": {
+    "input": [ "input_i", "shape_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Less",
-    "input": "A_i",
-    "output": "C_o",
+  "EyeLike": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "EyeLike",
-    "input": "input_i",
-    "output": "output_o",
+  "FeatureVectorizer": {
+    "input": [],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = Y_o[indx];"
   },
-  {
-    "op": "RandomNormal",
-    "input": "output_o",
-    "output": "output_o",
+  "Flatten": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Slice",
-    "input": "data_i",
-    "output": "output_o",
+  "Floor": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "PRelu",
-    "input": "X_i",
-    "output": "Y_o",
+  "Gather": {
+    "input": [ "data_i", "indices_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Log",
-    "input": "input_i",
-    "output": "output_o",
+  "Gemm": {
+    "input": [ "A_i", "B_i", "C_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = A_i[indx];"
   },
-  {
-    "op": "LogSoftmax",
-    "input": "input_i",
-    "output": "output_o",
+  "GlobalAveragePool": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Loop",
-    "input": "M_i",
-    "output": "M_i",
+  "GlobalLpPool": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "LpNormalization",
-    "input": "input_i",
-    "output": "output_o",
+  "GlobalMaxPool": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "MatMul",
-    "input": "A_i",
-    "output": "Y_o",
+  "Greater": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "ReduceL2",
-    "input": "data_i",
-    "output": "reduced_o",
+  "GRU": {
+    "input": [ "X_i", "W_i", "R_i", "B_i", "sequence_lens_i", "initial_h_i" ],
+    "output": [ "Y_o", "Y_h_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Max",
-    "input": "max_o",
-    "output": "max_o",
+  "Hardmax": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "MaxRoiPool",
-    "input": "X_i",
-    "output": "Y_o",
+  "HardSigmoid": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Or",
-    "input": "A_i",
-    "output": "C_o",
+  "Identity": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Pad",
-    "input": "data_i",
-    "output": "output_o",
+  "If": {
+    "input": [ "cond_i" ],
+    "output": [],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "cond_i[indx] = cond_i[indx];"
   },
-  {
-    "op": "RandomUniformLike",
-    "input": "input_i",
-    "output": "output_o",
+  "Imputer": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Reciprocal",
-    "input": "X_i",
-    "output": "Y_o",
+  "InstanceNormalization": {
+    "input": [ "input_i", "scale_i", "B_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Pow",
-    "input": "X_i",
-    "output": "Z_o",
+  "IsInf": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "RandomNormalLike",
-    "input": "input_i",
-    "output": "output_o",
+  "IsNaN": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "OneHot",
-    "input": "indices_i",
-    "output": "output_o",
+  "LabelEncoder": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "RandomUniform",
-    "input": "output_o",
-    "output": "output_o",
+  "LeakyRelu": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ReduceL1",
-    "input": "data_i",
-    "output": "reduced_o",
+  "Less": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "ReduceLogSum",
-    "input": "data_i",
-    "output": "reduced_o",
+  "LinearClassifier": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o", "Z_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ReduceLogSumExp",
-    "input": "data_i",
-    "output": "reduced_o",
+  "LinearRegressor": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ReduceMax",
-    "input": "data_i",
-    "output": "reduced_o",
+  "Log": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "OneHotEncoder",
-    "input": "X_i",
-    "output": "Y_o",
+  "LogSoftmax": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "IsNaN",
-    "input": "X_i",
-    "output": "Y_o",
+  "Loop": {
+    "input": [ "M_i", "cond_i" ],
+    "output": [],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "M_i[indx] = M_i[indx];"
   },
-  {
-    "op": "ReduceMean",
-    "input": "data_i",
-    "output": "reduced_o",
+  "LpNormalization": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "ReduceMin",
-    "input": "data_i",
-    "output": "reduced_o",
+  "LpPool": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "TreeEnsembleRegressor",
-    "input": "X_i",
-    "output": "Y_o",
+  "LRN": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ReduceProd",
-    "input": "data_i",
-    "output": "reduced_o",
+  "LSTM": {
+    "input": [ "X_i", "W_i", "R_i", "B_i", "sequence_lens_i", "initial_h_i", "initial_c_i", "P_i" ],
+    "output": [ "Y_o", "Y_h_o", "Y_c_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ReduceSum",
-    "input": "data_i",
-    "output": "reduced_o",
+  "MatMul": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = A_i[indx];"
   },
-  {
-    "op": "ReduceSumSquare",
-    "input": "data_i",
-    "output": "reduced_o",
+  "MatMulInteger": {
+    "input": [ "A_i", "B_i", "a_zero_point_i", "b_zero_point_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = A_i[indx];"
   },
-  {
-    "op": "Relu",
-    "input": "X_i",
-    "output": "Y_o",
+  "Max": {
+    "input": [],
+    "output": [ "max_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "max_o[indx] = max_o[indx];"
   },
-  {
-    "op": "Reshape",
-    "input": "data_i",
-    "output": "reshaped_o",
+  "MaxPool": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o", "Indices_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Shape",
-    "input": "data_i",
-    "output": "shape_o",
+  "MaxRoiPool": {
+    "input": [ "X_i", "rois_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Sigmoid",
-    "input": "X_i",
-    "output": "Y_o",
+  "MaxUnpool": {
+    "input": [ "X_i", "I_i", "output_shape_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Size",
-    "input": "data_i",
-    "output": "size_o",
+  "Mean": {
+    "input": [ "x0_i", "x1_i", "x2_i", "x3_i", "x4_i", "x5_i", "x6_i", "x7_i", "x8_i", "x9_i", "x10_i", "x11_i", "x12_i", "x13_i", "x14_i", "x15_i", "x16_i", "x17_i", "x18_i", "x19_i", "x20_i", "x21_i", "x22_i", "x23_i", "x24_i", "x25_i", "x26_i", "x27_i", "x28_i", "x29_i", "x30_i", "x31_i" ],
+    "output": [ "mean_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "mean_o[indx] = x0_i[indx];"
   },
-  {
-    "op": "Softmax",
-    "input": "input_i",
-    "output": "output_o",
+  "MeanVarianceNormalization": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Softplus",
-    "input": "X_i",
-    "output": "Y_o",
+  "Min": {
+    "input": [],
+    "output": [ "min_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "min_o[indx] = min_o[indx];"
   },
-  {
-    "op": "Softsign",
-    "input": "input_i",
-    "output": "output_o",
+  "Mod": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "SpaceToDepth",
-    "input": "input_i",
-    "output": "output_o",
+  "Mul": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "TfIdfVectorizer",
-    "input": "X_i",
-    "output": "Y_o",
+  "Multinomial": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Split",
-    "input": "input_i",
-    "output": "input_i",
+  "Neg": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Imputer",
-    "input": "X_i",
-    "output": "Y_o",
+  "NonMaxSuppression": {
+    "input": [ "boxes_i", "scores_i", "max_output_boxes_per_class_i", "iou_threshold_i", "score_threshold_i" ],
+    "output": [ "selected_indices_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "selected_indices_o[indx] = boxes_i[indx];"
   },
-  {
-    "op": "Sqrt",
-    "input": "X_i",
-    "output": "Y_o",
+  "NonZero": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Squeeze",
-    "input": "data_i",
-    "output": "squeezed_o",
+  "Normalizer": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "TopK",
-    "input": "X_i",
-    "output": "Values_o",
+  "Not": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Sub",
-    "input": "A_i",
-    "output": "C_o",
+  "OneHot": {
+    "input": [ "indices_i", "depth_i", "values_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = indices_i[indx];"
   },
-  {
-    "op": "Sum",
-    "input": "x0_i",
-    "output": "sum_o",
+  "OneHotEncoder": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Shrink",
-    "input": "input_i",
-    "output": "output_o",
+  "Or": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "Tanh",
-    "input": "input_i",
-    "output": "output_o",
+  "Pad": {
+    "input": [ "data_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Transpose",
-    "input": "data_i",
-    "output": "transposed_o",
+  "Pow": {
+    "input": [ "X_i", "Y_i" ],
+    "output": [ "Z_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Z_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Unsqueeze",
-    "input": "data_i",
-    "output": "expanded_o",
+  "PRelu": {
+    "input": [ "X_i", "slope_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Upsample",
-    "input": "X_i",
-    "output": "Y_o",
+  "QLinearConv": {
+    "input": [ "x_i", "x_scale_i", "x_zero_point_i", "w_i", "w_scale_i", "w_zero_point_i", "y_scale_i", "y_zero_point_i", "B_i" ],
+    "output": [ "y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "y_o[indx] = x_i[indx];"
   },
-  {
-    "op": "SVMClassifier",
-    "input": "X_i",
-    "output": "Y_o",
+  "QLinearMatMul": {
+    "input": [ "a_i", "a_scale_i", "a_zero_point_i", "b_i", "b_scale_i", "b_zero_point_i", "y_scale_i", "y_zero_point_i" ],
+    "output": [ "y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "y_o[indx] = a_i[indx];"
   },
-  {
-    "op": "Xor",
-    "input": "A_i",
-    "output": "C_o",
+  "QuantizeLinear": {
+    "input": [ "x_i", "y_scale_i", "y_zero_point_i" ],
+    "output": [ "y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "y_o[indx] = x_i[indx];"
   },
-  {
-    "op": "Acos",
-    "input": "input_i",
-    "output": "output_o",
+  "RandomNormal": {
+    "input": [],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = output_o[indx];"
   },
-  {
-    "op": "Asin",
-    "input": "input_i",
-    "output": "output_o",
+  "RandomNormalLike": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Atan",
-    "input": "input_i",
-    "output": "output_o",
+  "RandomUniform": {
+    "input": [],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = output_o[indx];"
   },
-  {
-    "op": "Cos",
-    "input": "input_i",
-    "output": "output_o",
+  "RandomUniformLike": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Sin",
-    "input": "input_i",
-    "output": "output_o",
+  "Reciprocal": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Tan",
-    "input": "input_i",
-    "output": "output_o",
+  "ReduceL1": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Multinomial",
-    "input": "input_i",
-    "output": "output_o",
+  "ReduceL2": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Scan",
-    "input": "x0_i",
-    "output": "y0_o",
+  "ReduceLogSum": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Compress",
-    "input": "input_i",
-    "output": "output_o",
+  "ReduceLogSumExp": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "ConstantOfShape",
-    "input": "input_i",
-    "output": "output_o",
+  "ReduceMax": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "MaxUnpool",
-    "input": "X_i",
-    "output": "output_o",
+  "ReduceMean": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Scatter",
-    "input": "data_i",
-    "output": "output_o",
+  "ReduceMin": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Sinh",
-    "input": "input_i",
-    "output": "output_o",
+  "ReduceProd": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Cosh",
-    "input": "input_i",
-    "output": "output_o",
+  "ReduceSum": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Asinh",
-    "input": "input_i",
-    "output": "output_o",
+  "ReduceSumSquare": {
+    "input": [ "data_i" ],
+    "output": [ "reduced_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reduced_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Acosh",
-    "input": "input_i",
-    "output": "output_o",
+  "Relu": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "NonMaxSuppression",
-    "input": "boxes_i",
-    "output": "selected_indices_o",
+  "Reshape": {
+    "input": [ "data_i", "shape_i" ],
+    "output": [ "reshaped_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "reshaped_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Atanh",
-    "input": "input_i",
-    "output": "output_o",
+  "Resize": {
+    "input": [ "X_i", "scales_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Sign",
-    "input": "input_i",
-    "output": "output_o",
+  "ReverseSequence": {
+    "input": [ "input_i", "sequence_lens_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = input_i[indx];"
   },
-  {
-    "op": "Erf",
-    "input": "input_i",
-    "output": "output_o",
+  "RNN": {
+    "input": [ "X_i", "W_i", "R_i", "B_i", "sequence_lens_i", "initial_h_i" ],
+    "output": [ "Y_o", "Y_h_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Where",
-    "input": "condition_i",
-    "output": "output_o",
+  "RoiAlign": {
+    "input": [ "X_i", "rois_i", "batch_indices_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "NonZero",
-    "input": "X_i",
-    "output": "Y_o",
+  "Scaler": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "MeanVarianceNormalization",
-    "input": "X_i",
-    "output": "Y_o",
+  "Scan": {
+    "input": [ "x0_i", "x1_i", "x2_i", "x3_i", "x4_i", "x5_i", "x6_i", "x7_i", "x8_i", "x9_i", "x10_i", "x11_i", "x12_i", "x13_i", "x14_i", "x15_i", "x16_i", "x17_i", "x18_i", "x19_i", "x20_i", "x21_i", "x22_i", "x23_i", "x24_i", "x25_i", "x26_i", "x27_i", "x28_i", "x29_i", "x30_i", "x31_i" ],
+    "output": [ "y0_o", "y1_o", "y2_o", "y3_o", "y4_o", "y5_o", "y6_o", "y7_o", "y8_o", "y9_o", "y10_o", "y11_o", "y12_o", "y13_o", "y14_o", "y15_o", "y16_o", "y17_o", "y18_o", "y19_o", "y20_o", "y21_o", "y22_o", "y23_o", "y24_o", "y25_o", "y26_o", "y27_o", "y28_o", "y29_o", "y30_o", "y31_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "y0_o[indx] = x0_i[indx];"
   },
-  {
-    "op": "StringNormalizer",
-    "input": "X_i",
-    "output": "Y_o",
+  "Scatter": {
+    "input": [ "data_i", "indices_i", "updates_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = data_i[indx];"
   },
-  {
-    "op": "Mod",
-    "input": "A_i",
-    "output": "C_o",
+  "Selu": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ThresholdedRelu",
-    "input": "X_i",
-    "output": "Y_o",
+  "Shape": {
+    "input": [ "data_i" ],
+    "output": [ "shape_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "shape_o[indx] = data_i[indx];"
   },
-  {
-    "op": "MatMulInteger",
-    "input": "A_i",
-    "output": "Y_o",
+  "Shrink": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "QLinearMatMul",
-    "input": "a_i",
-    "output": "y_o",
+  "Sigmoid": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "ConvInteger",
-    "input": "x_i",
-    "output": "y_o",
+  "Sign": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "QLinearConv",
-    "input": "x_i",
-    "output": "y_o",
+  "Sin": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "QuantizeLinear",
-    "input": "x_i",
-    "output": "y_o",
+  "Sinh": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "DequantizeLinear",
-    "input": "x_i",
-    "output": "y_o",
+  "Size": {
+    "input": [ "data_i" ],
+    "output": [ "size_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "size_o[indx] = data_i[indx];"
   },
-  {
-    "op": "IsInf",
-    "input": "X_i",
-    "output": "Y_o",
+  "Slice": {
+    "input": [ "data_i", "starts_i", "ends_i", "axes_i", "steps_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = data_i[indx];"
   },
-  {
-    "op": "RoiAlign",
-    "input": "X_i",
-    "output": "Y_o",
+  "Softmax": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "ArrayFeatureExtractor",
-    "input": "X_i",
-    "output": "Z_o",
+  "Softplus": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Binarizer",
-    "input": "X_i",
-    "output": "Y_o",
+  "Softsign": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "CategoryMapper",
-    "input": "X_i",
-    "output": "Y_o",
+  "SpaceToDepth": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "output_o[indx] = input_i[indx];"
   },
-  {
-    "op": "DictVectorizer",
-    "input": "X_i",
-    "output": "Y_o",
+  "Split": {
+    "input": [ "input_i" ],
+    "output": [],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "input_i[indx] = input_i[indx];"
   },
-  {
-    "op": "FeatureVectorizer",
-    "input": "Y_o",
-    "output": "Y_o",
+  "Sqrt": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "LabelEncoder",
-    "input": "X_i",
-    "output": "Y_o",
+  "Squeeze": {
+    "input": [ "data_i" ],
+    "output": [ "squeezed_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "squeezed_o[indx] = data_i[indx];"
   },
-  {
-    "op": "LinearClassifier",
-    "input": "X_i",
-    "output": "Y_o",
+  "StringNormalizer": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "LinearRegressor",
-    "input": "X_i",
-    "output": "Y_o",
+  "Sub": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "C_o[indx] = A_i[indx];"
   },
-  {
-    "op": "Normalizer",
-    "input": "X_i",
-    "output": "Y_o",
+  "Sum": {
+    "input": [ "x0_i", "x1_i", "x2_i", "x3_i", "x4_i", "x5_i", "x6_i", "x7_i", "x8_i", "x9_i", "x10_i", "x11_i", "x12_i", "x13_i", "x14_i", "x15_i", "x16_i", "x17_i", "x18_i", "x19_i", "x20_i", "x21_i", "x22_i", "x23_i", "x24_i", "x25_i", "x26_i", "x27_i", "x28_i", "x29_i", "x30_i", "x31_i" ],
+    "output": [ "sum_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "sum_o[indx] = x0_i[indx];"
   },
-  {
-    "op": "SVMRegressor",
-    "input": "X_i",
-    "output": "Y_o",
+  "SVMClassifier": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o", "Z_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
   },
-  {
-    "op": "Scaler",
-    "input": "X_i",
-    "output": "Y_o",
+  "SVMRegressor": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
     "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
+    "shader_op": "Y_o[indx] = X_i[indx];"
+  },
+  "Tan": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
+    "python_op": "",
+    "shader_op": "output_o[indx] = input_i[indx];"
+  },
+  "Tanh": {
+    "input": [ "input_i" ],
+    "output": [ "output_o" ],
+    "python_op": "",
+    "shader_op": "output_o[indx] = input_i[indx];"
+  },
+  "TfIdfVectorizer": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
+    "python_op": "",
+    "shader_op": "Y_o[indx] = X_i[indx];"
+  },
+  "ThresholdedRelu": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
+    "python_op": "",
+    "shader_op": "Y_o[indx] = X_i[indx];"
+  },
+  "Tile": {
+    "input": [ "input_i", "repeats_i" ],
+    "output": [ "output_o" ],
+    "python_op": "",
+    "shader_op": "output_o[indx] = input_i[indx];"
+  },
+  "TopK": {
+    "input": [ "X_i", "K_i" ],
+    "output": [ "Values_o", "Indices_o" ],
+    "python_op": "",
+    "shader_op": "Values_o[indx] = X_i[indx];"
+  },
+  "Transpose": {
+    "input": [ "data_i" ],
+    "output": [ "transposed_o" ],
+    "python_op": "",
+    "shader_op": "transposed_o[indx] = data_i[indx];"
+  },
+  "TreeEnsembleClassifier": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o", "Z_o" ],
+    "python_op": "",
+    "shader_op": "Y_o[indx] = X_i[indx];"
+  },
+  "TreeEnsembleRegressor": {
+    "input": [ "X_i" ],
+    "output": [ "Y_o" ],
+    "python_op": "",
+    "shader_op": "Y_o[indx] = X_i[indx];"
+  },
+  "Unsqueeze": {
+    "input": [ "data_i" ],
+    "output": [ "expanded_o" ],
+    "python_op": "",
+    "shader_op": "expanded_o[indx] = data_i[indx];"
+  },
+  "Upsample": {
+    "input": [ "X_i", "scales_i" ],
+    "output": [ "Y_o" ],
+    "python_op": "",
+    "shader_op": "Y_o[indx] = X_i[indx];"
+  },
+  "Where": {
+    "input": [ "condition_i", "X_i", "Y_i" ],
+    "output": [ "output_o" ],
+    "python_op": "",
+    "shader_op": "output_o[indx] = condition_i[indx];"
+  },
+  "Xor": {
+    "input": [ "A_i", "B_i" ],
+    "output": [ "C_o" ],
+    "python_op": "",
+    "shader_op": "C_o[indx] = A_i[indx];"
+  },
+  "ZipMap": {
+    "input": [ "X_i" ],
+    "output": [ "Z_o" ],
+    "python_op": "",
+    "shader_op": "Z_o[indx] = X_i[indx];"
   }
-  ,
-  {
-    "op": "TreeEnsembleClassifier",
-    "input": "X_i",
-    "output": "Y_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  },
-  {
-    "op": "ZipMap",
-    "input": "X_i",
-    "output": "Z_o",
-    "python_op": "",
-    "shader_op": "",
-    "kernel_op": ""
-  }
-]
+}

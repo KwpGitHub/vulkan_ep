@@ -108,12 +108,50 @@ void create_tensor(py::str name, py::array_t<float> input){
 
 }
 
+void input(py::str name, py::array_t<float> input) {
+	py::buffer_info buf = input.request();
+	auto bs = buf.shape;
+	float* p = (float*)buf.ptr;
+
+	std::vector<float> data; 
+	std::vector<uint32_t> s;
+
+	for (auto _s : bs)
+		s.push_back((uint32_t)_s);
+	for (int i = 0; i < std::accumulate(s.begin(), s.end(), 1, std::multiplies<uint32_t>()); ++i)
+		data.push_back(p[i]);
+
+	auto tensor = backend::tensor_dict[std::string(name)];
+	tensor->data->fromHost(std::begin(data), std::end(data));
+}
+
+py::array_t<float> output(py::str name) {
+	auto t = std::string(name);
+	auto tensor = backend::tensor_dict[std::string(name)];
+	std::vector<float> out = tensor->to_vector();
+	int temp = 0;
+	for (auto i : out) {
+		if (i == 1)
+			temp++;
+	}
+	auto result = py::array_t<float>(out.size());
+	py::buffer_info buf = result.request();
+	buf.shape = { tensor->dims.n, tensor->dims.c, tensor->dims.d, tensor->dims.h, tensor->dims.w };
+	float* ptr = (float*)buf.ptr;
+
+	for (size_t idx = 0; idx < out.size(); ++idx)
+		ptr[idx] = out[idx];
+	
+	return result;
+}
 
 PYBIND11_MODULE(_backend, m) {
 	m.doc() = "C nn Executor";
 	m.def("create_instance", &create_instance);
 	m.def("create_tensor", &create_tensor);
 	m.def("test", &test);
+	m.def("input", &input);
+	m.def("output", &output);
 
 	auto nn = m.def_submodule("nn", "Neural Network C Execution");
 	init_layer_LSTM(nn);

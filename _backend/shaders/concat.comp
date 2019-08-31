@@ -2,12 +2,12 @@
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 
-layout(local_size_x_id = 0) in;
-layout(local_size_y_id = 1) in;
-layout(local_size_z_id = 2) in;
+ layout(local_size_x_id = 0) in;               
+ layout(local_size_y_id = 1) in;
+ layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
-   uint x;
+   int t;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
@@ -51,39 +51,6 @@ void main(){
     const uint y = gl_GlobalInvocationID.y;
     const uint z = gl_GlobalInvocationID.z;
 
-	vec4 x0_i_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
-	vec4 x1_i_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
-	vec4 x2_i_shape = vec4(shape[2].c, shape[2].d, shape[2].h, shape[2].w);
-	vec4 x3_i_shape = vec4(shape[3].c, shape[3].d, shape[3].h, shape[3].w);
-	vec4 x4_i_shape = vec4(shape[4].c, shape[4].d, shape[4].h, shape[4].w);
-	vec4 x5_i_shape = vec4(shape[5].c, shape[5].d, shape[5].h, shape[5].w);
-	vec4 x6_i_shape = vec4(shape[6].c, shape[6].d, shape[6].h, shape[6].w);
-	vec4 x7_i_shape = vec4(shape[7].c, shape[7].d, shape[7].h, shape[7].w);
-	vec4 x8_i_shape = vec4(shape[8].c, shape[8].d, shape[8].h, shape[8].w);
-	vec4 x9_i_shape = vec4(shape[9].c, shape[9].d, shape[9].h, shape[9].w);
-	vec4 x10_i_shape = vec4(shape[10].c, shape[10].d, shape[10].h, shape[10].w);
-	vec4 x11_i_shape = vec4(shape[11].c, shape[11].d, shape[11].h, shape[11].w);
-	vec4 x12_i_shape = vec4(shape[12].c, shape[12].d, shape[12].h, shape[12].w);
-	vec4 x13_i_shape = vec4(shape[13].c, shape[13].d, shape[13].h, shape[13].w);
-	vec4 x14_i_shape = vec4(shape[14].c, shape[14].d, shape[14].h, shape[14].w);
-	vec4 x15_i_shape = vec4(shape[15].c, shape[15].d, shape[15].h, shape[15].w);
-	vec4 x16_i_shape = vec4(shape[16].c, shape[16].d, shape[16].h, shape[16].w);
-	vec4 x17_i_shape = vec4(shape[17].c, shape[17].d, shape[17].h, shape[17].w);
-	vec4 x18_i_shape = vec4(shape[18].c, shape[18].d, shape[18].h, shape[18].w);
-	vec4 x19_i_shape = vec4(shape[19].c, shape[19].d, shape[19].h, shape[19].w);
-	vec4 x20_i_shape = vec4(shape[20].c, shape[20].d, shape[20].h, shape[20].w);
-	vec4 x21_i_shape = vec4(shape[21].c, shape[21].d, shape[21].h, shape[21].w);
-	vec4 x22_i_shape = vec4(shape[22].c, shape[22].d, shape[22].h, shape[22].w);
-	vec4 x23_i_shape = vec4(shape[23].c, shape[23].d, shape[23].h, shape[23].w);
-	vec4 x24_i_shape = vec4(shape[24].c, shape[24].d, shape[24].h, shape[24].w);
-	vec4 x25_i_shape = vec4(shape[25].c, shape[25].d, shape[25].h, shape[25].w);
-	vec4 x26_i_shape = vec4(shape[26].c, shape[26].d, shape[26].h, shape[26].w);
-	vec4 x27_i_shape = vec4(shape[27].c, shape[27].d, shape[27].h, shape[27].w);
-	vec4 x28_i_shape = vec4(shape[28].c, shape[28].d, shape[28].h, shape[28].w);
-	vec4 x29_i_shape = vec4(shape[29].c, shape[29].d, shape[29].h, shape[29].w);
-	vec4 x30_i_shape = vec4(shape[30].c, shape[30].d, shape[30].h, shape[30].w);
-	vec4 x31_i_shape = vec4(shape[31].c, shape[31].d, shape[31].h, shape[31].w);
-	vec4 concat_result_o_shape = vec4(shape[32].c, shape[32].d, shape[32].h, shape[32].w);
     uint n = shape[0].n;
     
     if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){
@@ -91,11 +58,10 @@ void main(){
     }
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < shape[0].c; j++){
-           
-
-            uint indx = x + uint(y*x0_i_shape.x)                        + uint(z*x0_i_shape.x*x0_i_shape.y)                        + uint(j*x0_i_shape.x*x0_i_shape.y*x0_i_shape.z)                        + uint(i*x0_i_shape.x*x0_i_shape.y*x0_i_shape.z*x0_i_shape.w);
-
-            x0_i[indx] = concat_result_o[indx];
+            uint indx = x + uint(y*shape[0].w) + uint(z*shape[0].w*shape[0].h) + uint(j*shape[0].w*shape[0].h*shape[0].d) + uint(i*shape[0].w*shape[0].h*shape[0].d*shape[0].c);
+            //uint indx = x + uint(y * shape[0].w) + uint(z * shape[0].h * shape[0].w);
+            //concat_result_o[indx] = 1;
+            concat_result_o[indx] = x0_i[indx];
         }
     }
        
