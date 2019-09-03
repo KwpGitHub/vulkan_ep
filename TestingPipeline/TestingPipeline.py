@@ -8,7 +8,7 @@ import _backend
 
 
 if(__name__=="__main__"):
-    input = np.ones([1,3,1,244,244])
+    input = np.ones([1,3,1,224,224])
     _backend.create_instance()
 
     mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')

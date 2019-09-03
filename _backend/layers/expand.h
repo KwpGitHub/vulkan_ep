@@ -1,3 +1,4 @@
+#pragma once
 #ifndef EXPAND_H
 #define EXPAND_H 
 
@@ -35,7 +36,8 @@ namespace layers {
 
     class Expand : public backend::Layer {
         typedef struct {
-            int t;
+            uint32_t input_mask;
+            uint32_t output_mask;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;

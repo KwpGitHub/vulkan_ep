@@ -1,3 +1,4 @@
+#pragma once
 #ifndef DIV_H
 #define DIV_H 
 
@@ -30,7 +31,8 @@ namespace layers {
 
     class Div : public backend::Layer {
         typedef struct {
-            int t;
+            uint32_t input_mask;
+            uint32_t output_mask;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;

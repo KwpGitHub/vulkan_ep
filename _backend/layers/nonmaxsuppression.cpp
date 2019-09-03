@@ -32,11 +32,9 @@ namespace layers {
 
     void NonMaxSuppression::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, 1);
-        program->bind({0}, *_SHAPES, *backend::tensor_dict[m_boxes_i]->data, *backend::tensor_dict[m_scores_i]->data, *backend::tensor_dict[m_max_output_boxes_per_class_i]->data, *backend::tensor_dict[m_iou_threshold_i]->data, *backend::tensor_dict[m_score_threshold_i]->data, *backend::tensor_dict[m_selected_indices_o]->data);
+        program->grid(vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE_x), vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE_y), vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE_z));
+        program->spec(PROCESSKERNEL_SIZE_x, PROCESSKERNEL_SIZE_y, PROCESSKERNEL_SIZE_z);
+        program->bind({2, 1}, *_SHAPES, *backend::tensor_dict[m_boxes_i]->data, *backend::tensor_dict[m_scores_i]->data, *backend::tensor_dict[m_max_output_boxes_per_class_i]->data, *backend::tensor_dict[m_iou_threshold_i]->data, *backend::tensor_dict[m_score_threshold_i]->data, *backend::tensor_dict[m_selected_indices_o]->data);
     }
 
     void NonMaxSuppression::forward(){ 

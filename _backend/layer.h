@@ -13,7 +13,9 @@ namespace py = pybind11;
 
 namespace backend {
 	
-#define PROCESSKERNEL_SIZE 32
+#define PROCESSKERNEL_SIZE_x 1
+#define PROCESSKERNEL_SIZE_y 1
+#define PROCESSKERNEL_SIZE_z 1
 	
 	class Layer
 	{
@@ -31,7 +33,7 @@ namespace backend {
 }
 
 namespace backend {
-	static std::map<std::string, Layer*> layer_dict;
+	inline std::map<std::string, Layer*> layer_dict;
 
 	template<typename T> std::vector<T> convert(py::list l) {
 		std::vector<T> x;
@@ -40,8 +42,6 @@ namespace backend {
 		return x;
 	}
 
-	inline char static_execution = 0;
 }
-
 
 #endif //!LAYER_H

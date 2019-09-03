@@ -24,7 +24,8 @@ type_map = {
 ops = {}
 op_file = open('op_file.h','w')
 
-class_h_str = """#ifndef {upper}_H
+class_h_str = """#pragma once
+#ifndef {upper}_H
 #define {upper}_H 
 
 #include "../layer.h"
@@ -49,7 +50,8 @@ namespace layers {{
 
     class {norm} : public backend::Layer {{
         typedef struct {{
-            int t;
+            uint32_t input_mask;
+            uint32_t output_mask;
         }} binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
@@ -114,11 +116,9 @@ namespace layers {{
 
     void {norm}::build(){{     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, 1);
-        program->bind({{0}}, *_SHAPES{bind_input_lst}{bind_output_lst});
+        program->grid(vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE_x), vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE_y), vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE_z));
+        program->spec(PROCESSKERNEL_SIZE_x, PROCESSKERNEL_SIZE_y, PROCESSKERNEL_SIZE_z);
+        program->bind({{2, 1}}, *_SHAPES{bind_input_lst}{bind_output_lst});
     }}
 
     void {norm}::forward(){{ 
@@ -130,16 +130,14 @@ namespace layers {{
 """.format_map # Cpp file
 
 
-class_shader_str = """
-#version 450
+class_shader_str = """#version 450
 struct Shape_t {{ uint n; uint c; uint d; uint h; uint w; }};
 
- layout(local_size_x_id = 0) in;               
- layout(local_size_y_id = 1) in;
- layout(local_size_z_id = 2) in;
+layout(local_size_x_id = 0, local_size_y_id = 1, local_size_z_id = 2) in; // set up 3d workgroup
 
 layout(push_constant) uniform Parameters {{      
-   int t;
+   uint input_masks;
+   uint output_mask;
 }} params;
 
 layout(std430, binding = 0) buffer lay0 {{ Shape_t shape[]; }};
@@ -151,21 +149,25 @@ void main(){{
     const uint y = gl_GlobalInvocationID.y;
     const uint z = gl_GlobalInvocationID.z;
 
+{shader_shape_lst}
+
     uint n = shape[0].n;
-    
-    if(x >= shape[0].w || y >= shape[0].h || z >= shape[0].d){{
+    if( {shader_output_shape}.x <= x || {shader_output_shape}.y <= y || {shader_output_shape}.z <= z){{
         return;
     }}
+
     for(uint i = 0; i < n; i++){{
-        for(uint j = 0; j < shape[0].c; j++){{
-            uint indx = x + uint(y*shape[0].w) + uint(z*shape[0].w*shape[0].h) + uint(j*shape[0].w*shape[0].h*shape[0].d) + uint(i*shape[0].w*shape[0].h*shape[0].d*shape[0].c);
-            //uint indx = x + uint(y * shape[0].w) + uint(z * shape[0].h * shape[0].w);
-            //{shader_output}[indx] = 1;
-            {shader_function}
+        for(uint j = 0; j < {shader_output_shape}.a; j++){{
+            uint nc = uint(j*{shader_output_shape}.x*{shader_output_shape}.y*{shader_output_shape}.z) + uint(i*{shader_output_shape}.x*{shader_output_shape}.y*{shader_output_shape}.z*{shader_output_shape}.w);
+            uint indx = x + uint(y*{shader_output_shape}.x) + uint(z*{shader_output_shape}.x*{shader_output_shape}.y) + nc;
+            //uint indx = x + uint(y * {shader_output_shape}.x) + uint(z * {shader_output_shape}.x * {shader_output_shape}.y);
+          
+            {shader_output}[indx] = 1.0f;
+            //{shader_function}           
         }}
     }}
-       
-
+    
+    return;
 }}
 """.format_map #shader  File
 
@@ -306,7 +308,7 @@ def onnx_proto():
                 'input' : INPUT_NAMES + OPTIONAL_INPUT_NAMES,
                 'output' : OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES,
                 'python_op' : '',
-                'shader_op' : '{1}[indx] = {0}[indx];'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0], (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
+                'shader_op' : '{1}[indx] = 1.0f * {0}[indx];'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0], (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
         }
 
 
@@ -359,7 +361,7 @@ def onnx_proto():
                 'shader_input' :                '{0}'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
                 'shader_output' :               '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
                 'shader_input_shape' :          '{0}_shape'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
-                'shader_output_shape' :         '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
+                'shader_output_shape' :         '{0}_shape'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
                 'shader_function' :             function_ops[op_name]['shader_op'],
                 'call_python_binding' :         ', '.join(['std::string' for _ in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 

@@ -30,11 +30,9 @@ namespace layers {
 
     void TopK::build(){     
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
-        program->grid(  vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE),
-                        vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE), 
-                        vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE));
-        program->spec(PROCESSKERNEL_SIZE, PROCESSKERNEL_SIZE, 1);
-        program->bind({0}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_K_i]->data, *backend::tensor_dict[m_Values_o]->data, *backend::tensor_dict[m_Indices_o]->data);
+        program->grid(vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE_x), vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE_y), vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE_z));
+        program->spec(PROCESSKERNEL_SIZE_x, PROCESSKERNEL_SIZE_y, PROCESSKERNEL_SIZE_z);
+        program->bind({2, 1}, *_SHAPES, *backend::tensor_dict[m_X_i]->data, *backend::tensor_dict[m_K_i]->data, *backend::tensor_dict[m_Values_o]->data, *backend::tensor_dict[m_Indices_o]->data);
     }
 
     void TopK::forward(){ 

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SHAPE_H
 #define SHAPE_H 
 
@@ -27,7 +28,8 @@ namespace layers {
 
     class Shape : public backend::Layer {
         typedef struct {
-            int t;
+            uint32_t input_mask;
+            uint32_t output_mask;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;

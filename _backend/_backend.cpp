@@ -19,7 +19,7 @@ void create_instance() {
 	backend::g_instance = new vuh::Instance();
 	backend::g_device = new vuh::Device(backend::g_instance->devices().at(0));
 	backend::file_path = "C:\\Users\\mramados.AMR";
-	//backend::file_path = "C:\\Users\\monish";
+	backend::file_path = "C:\\Users\\monish";
 
 	backend::file_path.append("\\source\\repos\\vulkan_ep\\_backend\\");
 }
@@ -127,16 +127,18 @@ void input(py::str name, py::array_t<float> input) {
 
 py::array_t<float> output(py::str name) {
 	auto t = std::string(name);
+	std::cout << t << std::endl;
+
 	auto tensor = backend::tensor_dict[std::string(name)];
 	std::vector<float> out = tensor->to_vector();
 	int temp = 0;
 	for (auto i : out) {
-		if (i == 1)
+		if (i == 1.0)
 			temp++;
 	}
 	auto result = py::array_t<float>(out.size());
 	py::buffer_info buf = result.request();
-	buf.shape = { tensor->dims.n, tensor->dims.c, tensor->dims.d, tensor->dims.h, tensor->dims.w };
+	//result.shape = { tensor->dims.n, tensor->dims.c, tensor->dims.d, tensor->dims.h, tensor->dims.w };
 	float* ptr = (float*)buf.ptr;
 
 	for (size_t idx = 0; idx < out.size(); ++idx)

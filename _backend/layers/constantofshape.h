@@ -1,3 +1,4 @@
+#pragma once
 #ifndef CONSTANTOFSHAPE_H
 #define CONSTANTOFSHAPE_H 
 
@@ -27,7 +28,8 @@ namespace layers {
 
     class ConstantOfShape : public backend::Layer {
         typedef struct {
-            int t;
+            uint32_t input_mask;
+            uint32_t output_mask;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SLICE_H
 #define SLICE_H 
 
@@ -64,7 +65,8 @@ namespace layers {
 
     class Slice : public backend::Layer {
         typedef struct {
-            int t;
+            uint32_t input_mask;
+            uint32_t output_mask;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;

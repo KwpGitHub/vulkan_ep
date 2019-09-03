@@ -1,3 +1,4 @@
+#pragma once
 #ifndef CLIP_H
 #define CLIP_H 
 
@@ -29,7 +30,8 @@ namespace layers {
 
     class Clip : public backend::Layer {
         typedef struct {
-            int t;
+            uint32_t input_mask;
+            uint32_t output_mask;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;

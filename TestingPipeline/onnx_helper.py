@@ -63,7 +63,7 @@ class OnnxGraph:
         self.filename = filename
         start = time.perf_counter_ns() / 1000000
         model = onnx.load(filename)
-        #model = onnx.shape_inference.infer_shapes(model)
+        model = onnx.shape_inference.infer_shapes(model)
         graph = model.graph
 
         self.nodes = list()
@@ -74,9 +74,9 @@ class OnnxGraph:
 
         layers.tensors[''] = np.zeros(10)
 
-        #for val in model.graph.value_info:
-        ##    data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
-        #    layers.tensors[val.name] = data
+        for val in model.graph.value_info:
+            data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
+            layers.tensors[val.name] = data
 
         for init_val in graph.initializer:
             name, data = self._create_tensor_filling_op(init_val)            
@@ -89,11 +89,10 @@ class OnnxGraph:
                 layers.tensors[val.name] = data     
                 
         for val in graph.output:
-            for _val in graph.input:
-                if(val.name not in layers.tensors.keys()):
-                    data = np.zeros([i.dim_value for i in _val.type.tensor_type.shape.dim])
-                    self.outputs.append(val.name)
-                    layers.tensors[val.name] = data 
+            if(val.name not in layers.tensors.keys()):
+                data = np.zeros([i.dim_value for i in val.type.tensor_type.shape.dim])
+                self.outputs.append(val.name)
+                layers.tensors[val.name] = data 
                 
         for n in graph.node:
             self.nodes.append(OnnxNode(n))
@@ -125,15 +124,15 @@ class OnnxGraph:
         x_end = time.perf_counter_ns() / 1000000
 
         print("::: DONE BUILDING PIPE :::", x_end-x_start)
-        pydot_graph = GetPydotGraph(model.graph, name=model.graph.name, rankdir="LR", node_producer=GetOpNodeProducer("docstring"))
-        pydot_graph.write_dot(filename+".dot")
+        #pydot_graph = GetPydotGraph(model.graph, name=model.graph.name, rankdir="LR", node_producer=GetOpNodeProducer("docstring"))
+        #pydot_graph.write_dot(filename+".dot")
     
    
     def __call__(self, *args):
         tmp = None
         for i, x in enumerate(self.inputs):
             _backend.input(x, args[i])
-            tmp = _backend.output(x)
+            
         start = time.perf_counter_ns() / 1000000
             
         for layer in self.layer:
