@@ -94,9 +94,8 @@ void main(){
 
     
     for(uint i = 0; i < n; i++){
-        for(uint j = 0; j < concat_result_o_shape.a; j++){
+        for(uint j = 0; j < concat_result_o_shape.w; j++){
             uint indx = x + uint(y*concat_result_o_shape.x) + uint(z*concat_result_o_shape.x*concat_result_o_shape.y) +  uint(j*concat_result_o_shape.x*concat_result_o_shape.y*concat_result_o_shape.z) + uint(i*concat_result_o_shape.x*concat_result_o_shape.y*concat_result_o_shape.z*concat_result_o_shape.w);
-            //uint indx = x + uint(y * concat_result_o_shape.x) + uint(z * concat_result_o_shape.x * concat_result_o_shape.y);          
             concat_result_o[indx] = 1.0f;
             //concat_result_o[indx] = 1.0f * x0_i[indx];           
         }

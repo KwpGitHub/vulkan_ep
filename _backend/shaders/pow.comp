@@ -34,9 +34,8 @@ void main(){
 
     
     for(uint i = 0; i < n; i++){
-        for(uint j = 0; j < Z_o_shape.a; j++){
+        for(uint j = 0; j < Z_o_shape.w; j++){
             uint indx = x + uint(y*Z_o_shape.x) + uint(z*Z_o_shape.x*Z_o_shape.y) +  uint(j*Z_o_shape.x*Z_o_shape.y*Z_o_shape.z) + uint(i*Z_o_shape.x*Z_o_shape.y*Z_o_shape.z*Z_o_shape.w);
-            //uint indx = x + uint(y * Z_o_shape.x) + uint(z * Z_o_shape.x * Z_o_shape.y);          
             Z_o[indx] = 1.0f;
             //Z_o[indx] = 1.0f * X_i[indx];           
         }

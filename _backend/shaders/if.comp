@@ -30,9 +30,8 @@ void main(){
 
     
     for(uint i = 0; i < n; i++){
-        for(uint j = 0; j < cond_i_shape.a; j++){
+        for(uint j = 0; j < cond_i_shape.w; j++){
             uint indx = x + uint(y*cond_i_shape.x) + uint(z*cond_i_shape.x*cond_i_shape.y) +  uint(j*cond_i_shape.x*cond_i_shape.y*cond_i_shape.z) + uint(i*cond_i_shape.x*cond_i_shape.y*cond_i_shape.z*cond_i_shape.w);
-            //uint indx = x + uint(y * cond_i_shape.x) + uint(z * cond_i_shape.x * cond_i_shape.y);          
             cond_i[indx] = 1.0f;
             //cond_i[indx] = 1.0f * cond_i[indx];           
         }

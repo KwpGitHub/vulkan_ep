@@ -94,9 +94,8 @@ void main(){
 
     
     for(uint i = 0; i < n; i++){
-        for(uint j = 0; j < sum_o_shape.a; j++){
+        for(uint j = 0; j < sum_o_shape.w; j++){
             uint indx = x + uint(y*sum_o_shape.x) + uint(z*sum_o_shape.x*sum_o_shape.y) +  uint(j*sum_o_shape.x*sum_o_shape.y*sum_o_shape.z) + uint(i*sum_o_shape.x*sum_o_shape.y*sum_o_shape.z*sum_o_shape.w);
-            //uint indx = x + uint(y * sum_o_shape.x) + uint(z * sum_o_shape.x * sum_o_shape.y);          
             sum_o[indx] = 1.0f;
             //sum_o[indx] = 1.0f * x0_i[indx];           
         }

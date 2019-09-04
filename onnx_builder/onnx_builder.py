@@ -118,11 +118,11 @@ namespace layers {{
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
         program->grid(vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE_x), vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE_y), vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE_z));
         program->spec(PROCESSKERNEL_SIZE_x, PROCESSKERNEL_SIZE_y, PROCESSKERNEL_SIZE_z);
-       
+        (*program)({{2, 1}}, *_SHAPES{bind_input_lst}{bind_output_lst});       
     }}
 
     void {norm}::forward(){{ 
-        program->operator()({{2, 1}}, *_SHAPES{bind_input_lst}{bind_output_lst});
+        (*program)({{2, 1}}, *_SHAPES{bind_input_lst}{bind_output_lst});
         //program->run();
     }}
 
