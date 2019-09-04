@@ -36,11 +36,12 @@ namespace layers {
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
         program->grid(vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE_x), vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE_y), vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE_z));
         program->spec(PROCESSKERNEL_SIZE_x, PROCESSKERNEL_SIZE_y, PROCESSKERNEL_SIZE_z);
-        program->bind({2, 1}, *_SHAPES, *backend::tensor_dict[m_a_i]->data, *backend::tensor_dict[m_a_scale_i]->data, *backend::tensor_dict[m_a_zero_point_i]->data, *backend::tensor_dict[m_b_i]->data, *backend::tensor_dict[m_b_scale_i]->data, *backend::tensor_dict[m_b_zero_point_i]->data, *backend::tensor_dict[m_y_scale_i]->data, *backend::tensor_dict[m_y_zero_point_i]->data, *backend::tensor_dict[m_y_o]->data);
+       
     }
 
     void QLinearMatMul::forward(){ 
-        program->run();
+        program->operator()({2, 1}, *_SHAPES, *backend::tensor_dict[m_a_i]->data, *backend::tensor_dict[m_a_scale_i]->data, *backend::tensor_dict[m_a_zero_point_i]->data, *backend::tensor_dict[m_b_i]->data, *backend::tensor_dict[m_b_scale_i]->data, *backend::tensor_dict[m_b_zero_point_i]->data, *backend::tensor_dict[m_y_scale_i]->data, *backend::tensor_dict[m_y_zero_point_i]->data, *backend::tensor_dict[m_y_o]->data);
+        //program->run();
     }
 
 }

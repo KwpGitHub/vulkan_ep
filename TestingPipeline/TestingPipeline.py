@@ -14,7 +14,7 @@ if(__name__=="__main__"):
     mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')
     #mnasnet0_5 = onnx_helper.OnnxGraph('./mnasnet0_5.onnx')
     #n2n = onnx_helper.OnnxGraph("./n2n.onnx")
-    #bidaf = onnx_helper.OnnxGraph('./bidaf.onnx')
+    #bidaf = onnx_helper.OnnxGraph('./bidaf.onnx')  
    
     for _ in range(1000):
        t = mobilenet(input)    

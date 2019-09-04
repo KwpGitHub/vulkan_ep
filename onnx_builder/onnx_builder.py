@@ -118,11 +118,12 @@ namespace layers {{
         program = new vuh::Program<Specs, binding_descriptor>(*dev, file.c_str());
         program->grid(vuh::div_up(SHAPES[0].w, PROCESSKERNEL_SIZE_x), vuh::div_up(SHAPES[0].h, PROCESSKERNEL_SIZE_y), vuh::div_up(SHAPES[0].d, PROCESSKERNEL_SIZE_z));
         program->spec(PROCESSKERNEL_SIZE_x, PROCESSKERNEL_SIZE_y, PROCESSKERNEL_SIZE_z);
-        program->bind({{2, 1}}, *_SHAPES{bind_input_lst}{bind_output_lst});
+       
     }}
 
     void {norm}::forward(){{ 
-        program->run();
+        program->operator()({{2, 1}}, *_SHAPES{bind_input_lst}{bind_output_lst});
+        //program->run();
     }}
 
 }}
@@ -133,7 +134,10 @@ namespace layers {{
 class_shader_str = """#version 450
 struct Shape_t {{ uint n; uint c; uint d; uint h; uint w; }};
 
-layout(local_size_x_id = 0, local_size_y_id = 1, local_size_z_id = 2) in; // set up 3d workgroup
+// set up 3d workgroup
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {{      
    uint input_masks;
@@ -152,22 +156,20 @@ void main(){{
 {shader_shape_lst}
 
     uint n = shape[0].n;
+    
     if( {shader_output_shape}.x <= x || {shader_output_shape}.y <= y || {shader_output_shape}.z <= z){{
         return;
     }}
 
+    
     for(uint i = 0; i < n; i++){{
-        for(uint j = 0; j < {shader_output_shape}.a; j++){{
-            uint nc = uint(j*{shader_output_shape}.x*{shader_output_shape}.y*{shader_output_shape}.z) + uint(i*{shader_output_shape}.x*{shader_output_shape}.y*{shader_output_shape}.z*{shader_output_shape}.w);
-            uint indx = x + uint(y*{shader_output_shape}.x) + uint(z*{shader_output_shape}.x*{shader_output_shape}.y) + nc;
-            //uint indx = x + uint(y * {shader_output_shape}.x) + uint(z * {shader_output_shape}.x * {shader_output_shape}.y);
-          
+        for(uint j = 0; j < {shader_output_shape}.w; j++){{
+            uint indx = x + uint(y*{shader_output_shape}.x) + uint(z*{shader_output_shape}.x*{shader_output_shape}.y) +  uint(j*{shader_output_shape}.x*{shader_output_shape}.y*{shader_output_shape}.z) + uint(i*{shader_output_shape}.x*{shader_output_shape}.y*{shader_output_shape}.z*{shader_output_shape}.w);
             {shader_output}[indx] = 1.0f;
             //{shader_function}           
         }}
     }}
     
-    return;
 }}
 """.format_map #shader  File
 

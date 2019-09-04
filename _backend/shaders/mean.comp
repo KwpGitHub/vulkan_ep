@@ -1,7 +1,10 @@
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 
-layout(local_size_x_id = 0, local_size_y_id = 1, local_size_z_id = 2) in; // set up 3d workgroup
+// set up 3d workgroup
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
    uint input_masks;
@@ -84,20 +87,19 @@ void main(){
 	vec4 mean_o_shape = vec4(shape[32].c, shape[32].d, shape[32].h, shape[32].w);
 
     uint n = shape[0].n;
+    
     if( mean_o_shape.x <= x || mean_o_shape.y <= y || mean_o_shape.z <= z){
         return;
     }
 
+    
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < mean_o_shape.a; j++){
-            uint nc = uint(j*mean_o_shape.x*mean_o_shape.y*mean_o_shape.z) + uint(i*mean_o_shape.x*mean_o_shape.y*mean_o_shape.z*mean_o_shape.w);
-            uint indx = x + uint(y*mean_o_shape.x) + uint(z*mean_o_shape.x*mean_o_shape.y) + nc;
-            //uint indx = x + uint(y * mean_o_shape.x) + uint(z * mean_o_shape.x * mean_o_shape.y);
-          
+            uint indx = x + uint(y*mean_o_shape.x) + uint(z*mean_o_shape.x*mean_o_shape.y) +  uint(j*mean_o_shape.x*mean_o_shape.y*mean_o_shape.z) + uint(i*mean_o_shape.x*mean_o_shape.y*mean_o_shape.z*mean_o_shape.w);
+            //uint indx = x + uint(y * mean_o_shape.x) + uint(z * mean_o_shape.x * mean_o_shape.y);          
             mean_o[indx] = 1.0f;
             //mean_o[indx] = 1.0f * x0_i[indx];           
         }
     }
     
-    return;
 }

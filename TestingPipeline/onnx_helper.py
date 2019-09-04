@@ -1,16 +1,12 @@
 import onnx
-from onnx import checker, GraphProto, TensorProto, AttributeProto, ModelProto
+from onnx import TensorProto
 import onnx.numpy_helper
 import onnx.defs
 import onnx.optimizer
 import onnx.shape_inference
 import onnx.utils
-from onnx.backend.base import Backend, Device, DeviceType, namedtupledict, BackendRep
-from onnx.tools.net_drawer import GetPydotGraph, GetOpNodeProducer
-from onnx.helper import make_tensor_value_info, make_graph, make_model
 import onnx.checker
 import numpy as np
-import os
 import time
 
 import layers
@@ -124,8 +120,7 @@ class OnnxGraph:
         x_end = time.perf_counter_ns() / 1000000
 
         print("::: DONE BUILDING PIPE :::", x_end-x_start)
-        #pydot_graph = GetPydotGraph(model.graph, name=model.graph.name, rankdir="LR", node_producer=GetOpNodeProducer("docstring"))
-        #pydot_graph.write_dot(filename+".dot")
+
     
    
     def __call__(self, *args):
@@ -133,13 +128,13 @@ class OnnxGraph:
         for i, x in enumerate(self.inputs):
             _backend.input(x, args[i])
             
-        start = time.perf_counter_ns() / 1000000
-            
+        start = time.perf_counter_ns() / 1000000            
         for layer in self.layer:
             layer.run()
             tmp = _backend.output(layer.name)
         end = time.perf_counter_ns() / 1000000
         print(self.filename, "::: DONE RUNNING PIPE :::", end-start, "avg", (end-start)/len(self.layer))
+        
         output = list()
         for y in self.outputs:
             output.append(_backend.output(y))

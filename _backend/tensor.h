@@ -25,14 +25,12 @@ namespace backend {
 	};
 
 	class Tensor {		
-				
-		size_t size;
-
 	public:
 		std::string name;
 		vuh::Device* dev;
 		vuh::Array<float>* data;
 		Shape_t dims;
+		size_t size;
 
 		Tensor(): data(nullptr), size(0u), dev(nullptr) {}
 		
@@ -50,7 +48,7 @@ namespace backend {
 		}
 
 		std::vector<float> to_vector() {
-			std::vector<float> t(size, 0.0);
+			std::vector<float> t(size, 1.0);
 			data->toHost(begin(t));
 			return t;
 		}

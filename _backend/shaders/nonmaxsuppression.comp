@@ -1,7 +1,10 @@
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 
-layout(local_size_x_id = 0, local_size_y_id = 1, local_size_z_id = 2) in; // set up 3d workgroup
+// set up 3d workgroup
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
    uint input_masks;
@@ -30,20 +33,19 @@ void main(){
 	vec4 selected_indices_o_shape = vec4(shape[5].c, shape[5].d, shape[5].h, shape[5].w);
 
     uint n = shape[0].n;
+    
     if( selected_indices_o_shape.x <= x || selected_indices_o_shape.y <= y || selected_indices_o_shape.z <= z){
         return;
     }
 
+    
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < selected_indices_o_shape.a; j++){
-            uint nc = uint(j*selected_indices_o_shape.x*selected_indices_o_shape.y*selected_indices_o_shape.z) + uint(i*selected_indices_o_shape.x*selected_indices_o_shape.y*selected_indices_o_shape.z*selected_indices_o_shape.w);
-            uint indx = x + uint(y*selected_indices_o_shape.x) + uint(z*selected_indices_o_shape.x*selected_indices_o_shape.y) + nc;
-            //uint indx = x + uint(y * selected_indices_o_shape.x) + uint(z * selected_indices_o_shape.x * selected_indices_o_shape.y);
-          
+            uint indx = x + uint(y*selected_indices_o_shape.x) + uint(z*selected_indices_o_shape.x*selected_indices_o_shape.y) +  uint(j*selected_indices_o_shape.x*selected_indices_o_shape.y*selected_indices_o_shape.z) + uint(i*selected_indices_o_shape.x*selected_indices_o_shape.y*selected_indices_o_shape.z*selected_indices_o_shape.w);
+            //uint indx = x + uint(y * selected_indices_o_shape.x) + uint(z * selected_indices_o_shape.x * selected_indices_o_shape.y);          
             selected_indices_o[indx] = 1.0f;
             //selected_indices_o[indx] = 1.0f * boxes_i[indx];           
         }
     }
     
-    return;
 }

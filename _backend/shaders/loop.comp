@@ -1,7 +1,10 @@
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 
-layout(local_size_x_id = 0, local_size_y_id = 1, local_size_z_id = 2) in; // set up 3d workgroup
+// set up 3d workgroup
+layout(local_size_x_id = 0) in;
+layout(local_size_y_id = 1) in;
+layout(local_size_z_id = 2) in;
 
 layout(push_constant) uniform Parameters {      
    uint input_masks;
@@ -22,20 +25,19 @@ void main(){
 	vec4 cond_i_shape = vec4(shape[1].c, shape[1].d, shape[1].h, shape[1].w);
 
     uint n = shape[0].n;
+    
     if( M_i_shape.x <= x || M_i_shape.y <= y || M_i_shape.z <= z){
         return;
     }
 
+    
     for(uint i = 0; i < n; i++){
         for(uint j = 0; j < M_i_shape.a; j++){
-            uint nc = uint(j*M_i_shape.x*M_i_shape.y*M_i_shape.z) + uint(i*M_i_shape.x*M_i_shape.y*M_i_shape.z*M_i_shape.w);
-            uint indx = x + uint(y*M_i_shape.x) + uint(z*M_i_shape.x*M_i_shape.y) + nc;
-            //uint indx = x + uint(y * M_i_shape.x) + uint(z * M_i_shape.x * M_i_shape.y);
-          
+            uint indx = x + uint(y*M_i_shape.x) + uint(z*M_i_shape.x*M_i_shape.y) +  uint(j*M_i_shape.x*M_i_shape.y*M_i_shape.z) + uint(i*M_i_shape.x*M_i_shape.y*M_i_shape.z*M_i_shape.w);
+            //uint indx = x + uint(y * M_i_shape.x) + uint(z * M_i_shape.x * M_i_shape.y);          
             M_i[indx] = 1.0f;
             //M_i[indx] = 1.0f * M_i[indx];           
         }
     }
     
-    return;
 }
