@@ -134,10 +134,11 @@ namespace layers {{
 class_shader_str = """#version 450
 struct Shape_t {{ uint n; uint c; uint d; uint h; uint w; }};
 
-// set up 3d workgroup
 layout(local_size_x_id = 0) in;
 layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
+// set up 3d workgroup
+
 
 layout(push_constant) uniform Parameters {{      
    uint input_masks;
@@ -154,19 +155,22 @@ void main(){{
     const uint z = gl_GlobalInvocationID.z;
 
 {shader_shape_lst}
+   
+    uint _dim  = uint({shader_output_shape}.x * {shader_output_shape}.y * {shader_output_shape}.z * {shader_output_shape}.w * shape[0].n);
+    uint n_dim = uint({shader_output_shape}.x * {shader_output_shape}.y * {shader_output_shape}.z * {shader_output_shape}.w);
+    uint c_dim = uint({shader_output_shape}.x * {shader_output_shape}.y * {shader_output_shape}.z);
+    uint d_dim = uint({shader_output_shape}.x * {shader_output_shape}.y);
+    uint h_dim = uint({shader_output_shape}.x);
 
-    uint n = shape[0].n;
-    
     if( {shader_output_shape}.x <= x || {shader_output_shape}.y <= y || {shader_output_shape}.z <= z){{
         return;
     }}
-
-    
-    for(uint i = 0; i < n; i++){{
-        for(uint j = 0; j < {shader_output_shape}.w; j++){{
-            uint indx = x + uint(y*{shader_output_shape}.x) + uint(z*{shader_output_shape}.x*{shader_output_shape}.y) +  uint(j*{shader_output_shape}.x*{shader_output_shape}.y*{shader_output_shape}.z) + uint(i*{shader_output_shape}.x*{shader_output_shape}.y*{shader_output_shape}.z*{shader_output_shape}.w);
-            {shader_output}[indx] = 1.0f;
-            //{shader_function}           
+        
+    for(uint i = 0; i < _dim; i += n_dim){{
+        for(uint j = 0; j < n_dim; j += c_dim){{           
+            uint indx = i + j + z * d_dim + y * h_dim + x;
+            {shader_output}[indx] = {shader_input}[0];
+            //{shader_function}
         }}
     }}
     
@@ -250,9 +254,7 @@ def onnx_proto():
         os.mkdir('../_backend/layers')
     if(not os.path.isdir(os.path.join(os.getcwd(),'../_backend/shaders\\'))):
         os.mkdir('../_backend/shaders')
-    
-    
-        
+            
     activation = [ 'Tanh', 'Acos', 'Asin', 'Atan', 'Cos', 'Sin', 'Tan', 'Sinh', 'Cosh', 'Asinh', 'Acosh', 'Atanh', 'Softplus', 'Softsign', 'Sigmoid', 'Relu', 'PRelu', 'Elu', 'HardSigmoid', 'Hardmax', 'Selu', 'LogSoftmax', 'Softmax']
     elementwise = ['Abs', 'Neg', 'Exp', 'Ceil', 'Not', 'Floor', 'Log', 'IsNaN', 'Sqrt', 'Sign', 'Erf', 'NonZero']
     math_op = ['Add', 'And', 'Mul', 'Div', 'Sub', 'Or', 'Pow', 'Xor', 'Min', 'Max', 'Sum']
@@ -359,7 +361,7 @@ def onnx_proto():
                 'bind_binding_lst_1' :            ' '.join(['\t\t//binding.{0} = {0};\n '.format(i)for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]),
 
                 'shader_layout_lst' :           '\n'.join(['layout(std430, binding = {0}) buffer lay{0} {{ float {1}[]; }};'.format(i,x) for i,x in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES, start=1)]),
-                'shader_shape_lst' :            '\n'.join(['\tvec4 {0}_shape = vec4(shape[{1}].c, shape[{1}].d, shape[{1}].h, shape[{1}].w);'.format(j,i) for i, j in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)]),
+                'shader_shape_lst' :            '\n'.join(['\tvec4 {0}_shape = vec4(shape[{1}].w, shape[{1}].h, shape[{1}].d, shape[{1}].c);'.format(j,i) for i, j in enumerate(INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)]),
                 'shader_input' :                '{0}'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
                 'shader_output' :               '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
                 'shader_input_shape' :          '{0}_shape'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
@@ -422,29 +424,9 @@ def onnx_proto():
 
     py_layers.write('import numpy as np\nimport _backend.nn as nn\nimport onnx.helper\nfrom onnx.backend.test.case.node import expect\nlayer_map = {}\ntensors = {}\n' + '\n\n'.join(py_layers_map))
 
-    print(single_element)
-    print(double_element)
-    print(single_input)
-    print(single_output)
-    print(simple_element)
-    print(complex_element)
-
+    print("DONE")
 
 
 if (__name__ == "__main__"):
     onnx_proto()
   
-
-
-
-
-
-'''
-CategoryMap -> cat_strings-not Tensor is List()
-Process TensorProto/Graph obj
-
-
-
-
-
-'''

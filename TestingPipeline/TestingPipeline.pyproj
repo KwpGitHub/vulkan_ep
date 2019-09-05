@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>TestingPipeline</Name>
     <RootNamespace>TestingPipeline</RootNamespace>
-    <InterpreterId>Global|ContinuumAnalytics|Anaconda37-64</InterpreterId>
+    <InterpreterId>CondaEnv|CondaEnv|visual_sutdio_base</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <EnableNativeCodeDebugging>True</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>

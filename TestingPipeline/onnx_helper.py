@@ -64,9 +64,9 @@ class OnnxGraph:
 
         self.nodes = list()
         self.layer = list()
-
         self.inputs = list()
         self.outputs = list()
+        self.ops = list()
 
         layers.tensors[''] = np.zeros(10)
 
@@ -92,7 +92,11 @@ class OnnxGraph:
                 
         for n in graph.node:
             self.nodes.append(OnnxNode(n))
-        
+                          
+        for node in self.nodes:
+            if(node.op_type not in self.ops):
+                self.ops.append(node.op_type)
+
         end = time.perf_counter_ns() / 1000000
         print(self.filename, "::: DONE MODEL PARSE :::", end-start)        
         x_start = time.perf_counter_ns() / 1000000
@@ -118,6 +122,8 @@ class OnnxGraph:
         print("::: DONE LAYER BUILD :::", end-start, 'avg', (end-start)/len(self.layer))
         
         x_end = time.perf_counter_ns() / 1000000
+        
+        print("LAYERS USED: {0}".format(', '.join(self.ops)))
 
         print("::: DONE BUILDING PIPE :::", x_end-x_start)
 
@@ -131,7 +137,7 @@ class OnnxGraph:
         start = time.perf_counter_ns() / 1000000            
         for layer in self.layer:
             layer.run()
-            tmp = _backend.output(layer.name)
+            #tmp = _backend.output(layer.name)
         end = time.perf_counter_ns() / 1000000
         print(self.filename, "::: DONE RUNNING PIPE :::", end-start, "avg", (end-start)/len(self.layer))
         

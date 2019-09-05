@@ -1,10 +1,12 @@
 #version 450
 struct Shape_t { uint n; uint c; uint d; uint h; uint w; };
 
-// set up 3d workgroup
 layout(local_size_x_id = 0) in;
 layout(local_size_y_id = 1) in;
 layout(local_size_z_id = 2) in;
+
+// set up 3d workgroup
+
 
 layout(push_constant) uniform Parameters {      
    uint input_masks;
@@ -20,20 +22,23 @@ void main(){
     const uint y = gl_GlobalInvocationID.y;
     const uint z = gl_GlobalInvocationID.z;
 
-	vec4 output_o_shape = vec4(shape[0].c, shape[0].d, shape[0].h, shape[0].w);
+	vec4 output_o_shape = vec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
+   
+    uint _dim  = uint(output_o_shape.x * output_o_shape.y * output_o_shape.z * output_o_shape.w * shape[0].n);
+    uint n_dim = uint(output_o_shape.x * output_o_shape.y * output_o_shape.z * output_o_shape.w);
+    uint c_dim = uint(output_o_shape.x * output_o_shape.y * output_o_shape.z);
+    uint d_dim = uint(output_o_shape.x * output_o_shape.y);
+    uint h_dim = uint(output_o_shape.x);
 
-    uint n = shape[0].n;
-    
     if( output_o_shape.x <= x || output_o_shape.y <= y || output_o_shape.z <= z){
         return;
     }
-
-    
-    for(uint i = 0; i < n; i++){
-        for(uint j = 0; j < output_o_shape.w; j++){
-            uint indx = x + uint(y*output_o_shape.x) + uint(z*output_o_shape.x*output_o_shape.y) +  uint(j*output_o_shape.x*output_o_shape.y*output_o_shape.z) + uint(i*output_o_shape.x*output_o_shape.y*output_o_shape.z*output_o_shape.w);
-            output_o[indx] = 1.0f;
-            //output_o[indx] = 1.0f * output_o[indx];           
+        
+    for(uint i = 0; i < _dim; i += n_dim){
+        for(uint j = 0; j < n_dim; j += c_dim){           
+            uint indx = i + j + z * d_dim + y * h_dim + x;
+            output_o[indx] = output_o[0];
+            //output_o[indx] = 1.0f * output_o[indx];
         }
     }
     
