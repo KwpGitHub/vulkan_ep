@@ -13,7 +13,7 @@ namespace py = pybind11;
 
 namespace backend {
 	
-#define PROCESSKERNEL_SIZE_x 256
+#define PROCESSKERNEL_SIZE_x 64
 #define PROCESSKERNEL_SIZE_y 1
 #define PROCESSKERNEL_SIZE_z 1
 	
