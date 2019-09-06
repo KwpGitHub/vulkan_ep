@@ -14,7 +14,7 @@ if(__name__=="__main__"):
     mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')
    
     
-    for _ in range(100):
+    for _ in range(10):
        t = mobilenet(input)    
     print()
 
@@ -37,8 +37,8 @@ if(__name__=="__main__"):
     sess = ort.InferenceSession('./mobilenetv2.onnx', None)  
     dummy_input = np.random.randn(1,3,224,224).astype(np.float32)
     input_name = sess.get_inputs()[0].name  
-    start = time.perf_counter_ns()/ 1000000
+    start = time.perf_counter_ns() / 1000000
     output = sess.run(None, {input_name : dummy_input})
-    stop = time.perf_counter_ns()/ 1000000
+    stop = time.perf_counter_ns() / 1000000
     print('onnxruntime ::: ', stop-start)
     
