@@ -12,15 +12,13 @@ if(__name__=="__main__"):
     input = np.ones([1,3,1,224,224])
     _backend.create_instance()
     mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')
-   
-    
-    for _ in range(10):
-       t = mobilenet(input)    
-    print()
-
     #mnasnet0_5 = onnx_helper.OnnxGraph('./mnasnet0_5.onnx')
     #n2n = onnx_helper.OnnxGraph("./n2n.onnx")
     #bidaf = onnx_helper.OnnxGraph('./bidaf.onnx')  
+   
+    for _ in range(500):
+        mobilenet(input)
+
     
     #for _ in range(500):
     #   t = mnasnet0_5(input)

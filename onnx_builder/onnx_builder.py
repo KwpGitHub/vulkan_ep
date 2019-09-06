@@ -278,8 +278,7 @@ def onnx_proto():
     layers = open('../_backend/layers.hpp', 'w')
     py_layers = open('../TestingPipeline/layers.py', 'w')
     pybind_modules_file = open('../_backend/pybind_modules.txt', 'w')
-    function_file = open("layer_func.json", 'r')
-    function_ops = json.load(function_file)
+
 
     pybind_modules = list()
     layers_lst = list()
@@ -374,7 +373,6 @@ def onnx_proto():
                 'shader_output' :               '{0}'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
                 'shader_input_shape' :          '{0}_shape'.format((INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0] if (len(INPUT_NAMES + OPTIONAL_INPUT_NAMES) != 0) else (OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0]),
                 'shader_output_shape' :         '{0}_shape'.format((OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES)[0] if (len(OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES) != 0) else (INPUT_NAMES + OPTIONAL_INPUT_NAMES)[0]),
-                'shader_function' :             function_ops[op_name]['shader_op'],
                 'call_python_binding' :         ', '.join(['std::string' for _ in INPUT_NAMES + OPTIONAL_INPUT_NAMES + OUTPUT_NAMES + OPTIONAL_OUTPUT_NAMES]),
                 
                 'pybind11_constructor':         ''.join([ ', {0}'.format(j, i) for i, j in zip(PARAMETERS + OPTIONAL_PARAMETERS, PARAMETER_TYPES + OPTIONAL_PARAMETER_TYPES)]).replace("Shape_t", "backend::Shape_t"),
@@ -416,16 +414,12 @@ def onnx_proto():
             f_cpp = open("../_backend/layers/" + op_name.lower() + '.cpp', 'w')
             f_cpp.write(cpp_class_str(mapt))
             f_cpp.close()
-            s_cpp = open('../_backend/shaders/' + op_name.lower() + '.comp', 'w')
-            s_cpp.write(class_shader_str(mapt))
-            s_cpp.close()
+            #s_cpp = open('../_backend/shaders/' + op_name.lower() + '.comp', 'w')
+            #s_cpp.write(class_shader_str(mapt))
+            #s_cpp.close()
             layers_lst.append( 'void init_layer_{norm}(py::module&);\n#include "./layers/{lower}.h"'.format_map(mapt) + layers_file_str(mapt) )
             
    
-    #layer_op_func_store = open("layer_func.json", 'w')
-    #layer_op = json.dump(dump, layer_op_func_store)
-
-
     pybind_modules_file.write('\n'.join(pybind_modules))
     layers.writelines(layers_lst)
     op_file.close()

@@ -10,6 +10,7 @@ layout(local_size_z_id = 2) in;
 layout(push_constant) uniform Parameters {      
    uint input_masks;
    uint output_mask;
+   float epsilon;
 } params;
 
 layout(std430, binding = 0) buffer lay0 { Shape_t shape[]; };
@@ -26,17 +27,18 @@ layout(std430, binding = 10) buffer lay10 { float saved_var_o[]; };
 
 
 void main(){
-    
-	 uvec4 X_i_shape = uvec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
-	 uvec4 scale_i_shape = uvec4(shape[1].w, shape[1].h, shape[1].d, shape[1].c);
-	 uvec4 B_i_shape = uvec4(shape[2].w, shape[2].h, shape[2].d, shape[2].c);
-	 uvec4 mean_i_shape = uvec4(shape[3].w, shape[3].h, shape[3].d, shape[3].c);
-	 uvec4 var_i_shape = uvec4(shape[4].w, shape[4].h, shape[4].d, shape[4].c);
-	 uvec4 Y_o_shape = uvec4(shape[5].w, shape[5].h, shape[5].d, shape[5].c);
-	 uvec4 mean_o_shape = uvec4(shape[6].w, shape[6].h, shape[6].d, shape[6].c);
-	 uvec4 var_o_shape = uvec4(shape[7].w, shape[7].h, shape[7].d, shape[7].c);
-	 uvec4 saved_mean_o_shape = uvec4(shape[8].w, shape[8].h, shape[8].d, shape[8].c);
-	 uvec4 saved_var_o_shape = uvec4(shape[9].w, shape[9].h, shape[9].d, shape[9].c);
+
+    uvec4 X_i_shape = uvec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
+    uvec4 scale_i_shape = uvec4(shape[1].w, shape[1].h, shape[1].d, shape[1].c);
+    uvec4 B_i_shape = uvec4(shape[2].w, shape[2].h, shape[2].d, shape[2].c);
+    uvec4 mean_i_shape = uvec4(shape[3].w, shape[3].h, shape[3].d, shape[3].c);
+    uvec4 var_i_shape = uvec4(shape[4].w, shape[4].h, shape[4].d, shape[4].c);
+    uvec4 Y_o_shape = uvec4(shape[5].w, shape[5].h, shape[5].d, shape[5].c);
+    uvec4 mean_o_shape = uvec4(shape[6].w, shape[6].h, shape[6].d, shape[6].c);
+    uvec4 var_o_shape = uvec4(shape[7].w, shape[7].h, shape[7].d, shape[7].c);
+    uvec4 saved_mean_o_shape = uvec4(shape[8].w, shape[8].h, shape[8].d, shape[8].c);
+    uvec4 saved_var_o_shape = uvec4(shape[9].w, shape[9].h, shape[9].d, shape[9].c);
+    uint n = shape[0].n;
     uint _dim  = uint(Y_o_shape.x * Y_o_shape.y * Y_o_shape.z * Y_o_shape.w * shape[0].n);
     uint n_dim = uint(Y_o_shape.x * Y_o_shape.y * Y_o_shape.z * Y_o_shape.w);
     uint c_dim = uint(Y_o_shape.x * Y_o_shape.y * Y_o_shape.z);
@@ -59,10 +61,11 @@ void main(){
     */
 
     for(uint out_x = gl_GlobalInvocationID.x; out_x < c_dim; out_x += gl_NumWorkGroups.x * gl_WorkGroupSize.x){
-        for(uint i = 0; i < _dim; i += n_dim){
-            for(uint j = 0; j < n_dim; j += c_dim){            
-                Y_o[out_x + i + j] = X_i[0];
-                //Y_o[indx] = 1.0f * X_i[indx];
+        for(uint i = 0; i < n; i++){
+            for(uint j = 0; j < n_dim; j += c_dim){
+
+                Y_o[out_x + i*n_dim + j] = scale_i[i] * (X_i[out_x + i + j] - mean_i[i]) / sqrt(var_i[i] + params.epsilon) + B_i[i];
+                
             }
         }
     }    

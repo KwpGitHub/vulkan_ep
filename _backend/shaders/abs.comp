@@ -45,7 +45,7 @@ void main(){
     for(uint out_x = gl_GlobalInvocationID.x; out_x < c_dim; out_x += gl_NumWorkGroups.x * gl_WorkGroupSize.x){
         for(uint i = 0; i < _dim; i += n_dim){
             for(uint j = 0; j < n_dim; j += c_dim){            
-                Y_o[out_x + i + j] = X_i[0];
+                Y_o[out_x + i + j] = abs(X_i[out_x + i + j]);
                 //Y_o[indx] = 1.0f * X_i[indx];
             }
         }

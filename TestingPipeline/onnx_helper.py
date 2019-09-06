@@ -20,6 +20,57 @@ class OnnxAttributes(dict):
             d[arg.name] = convertAttributeProto(arg)
         return d
 
+class OnnxNode(object):
+    def __init__(self, node):
+        self.name = str(node.name)
+        self.op_type = str(node.op_type)
+        self.attrs = OnnxAttributes.from_onnx(node.attribute)
+        self.inputs = list(node.input)
+        self.outputs = list(node.output)
+    def bind():
+        return (self.inputs, self.outputs, self.attrs)
+
+def _create_tensor_filling_op(onnx_tensor, name=None):
+      
+        assert name or onnx_tensor.name
+        name = name or onnx_tensor.name
+
+        def tensor2list(onnx_tensor):
+            # Use the onnx.numpy_helper because the data may be raw
+            return onnx.numpy_helper.to_array(onnx_tensor).flatten()
+
+        if onnx_tensor.data_type == TensorProto.FLOAT:
+            pass
+        elif onnx_tensor.data_type == TensorProto.DOUBLE:
+            pass
+        elif onnx_tensor.data_type == TensorProto.INT64:
+            pass
+        elif onnx_tensor.data_type == TensorProto.UINT32:
+            pass
+        elif onnx_tensor.data_type == TensorProto.UINT8:
+            pass
+        elif onnx_tensor.data_type == TensorProto.INT8:
+            pass
+        elif onnx_tensor.data_type == TensorProto.UINT16:
+            pass
+        elif onnx_tensor.data_type == TensorProto.INT16:
+            pass
+        elif onnx_tensor.data_type == TensorProto.INT32:
+            pass
+        elif onnx_tensor.data_type == TensorProto.BOOL:
+            pass
+        elif onnx_tensor.data_type == TensorProto.STRING:
+            pass
+        else:
+            raise RuntimeError("unrecognized tensor type {}".format(onnx_tensor.data_type))
+    
+        if(onnx_tensor.dims == []):
+            return (name, tensor2list(onnx_tensor))
+        data = tensor2list(onnx_tensor).reshape(*onnx_tensor.dims)
+            
+        return (name, data)
+  
+
 def convertAttributeProto(onnx_arg):   
     if   onnx_arg.HasField('f'):
         return onnx_arg.f
@@ -28,7 +79,9 @@ def convertAttributeProto(onnx_arg):
     elif onnx_arg.HasField('s'):
         return onnx_arg.s
     elif onnx_arg.HasField('t'):
-        return onnx_arg.t  # this is a proto!
+        name, data = _create_tensor_filling_op(onnx_arg.t)
+        layers.tensors[name] = data
+        return name # this is a proto!
     elif onnx_arg.HasField('g'):
         return [] #this is graph
     elif len(onnx_arg.floats):
@@ -42,16 +95,6 @@ def convertAttributeProto(onnx_arg):
         return retval
     else:
         raise ValueError("Unsupported ONNX attribute: {}".format(onnx_arg))
-
-class OnnxNode(object):
-    def __init__(self, node):
-        self.name = str(node.name)
-        self.op_type = str(node.op_type)
-        self.attrs = OnnxAttributes.from_onnx(node.attribute)
-        self.inputs = list(node.input)
-        self.outputs = list(node.output)
-    def bind():
-        return (self.inputs, self.outputs, self.attrs)
 
 class OnnxGraph:
     def __init__(self, filename):       
@@ -75,7 +118,7 @@ class OnnxGraph:
             layers.tensors[val.name] = data
 
         for init_val in graph.initializer:
-            name, data = self._create_tensor_filling_op(init_val)            
+            name, data = _create_tensor_filling_op(init_val)            
             layers.tensors[name] = data
             
         for val in graph.input:
@@ -146,43 +189,4 @@ class OnnxGraph:
             output.append(_backend.output(y))
         return output
 
-    def _create_tensor_filling_op(self, onnx_tensor, name=None):
-      
-        assert name or onnx_tensor.name
-        name = name or onnx_tensor.name
-
-        def tensor2list(onnx_tensor):
-            # Use the onnx.numpy_helper because the data may be raw
-            return onnx.numpy_helper.to_array(onnx_tensor).flatten()
-
-        if onnx_tensor.data_type == TensorProto.FLOAT:
-            pass
-        elif onnx_tensor.data_type == TensorProto.DOUBLE:
-            pass
-        elif onnx_tensor.data_type == TensorProto.INT64:
-            pass
-        elif onnx_tensor.data_type == TensorProto.UINT32:
-            pass
-        elif onnx_tensor.data_type == TensorProto.UINT8:
-            pass
-        elif onnx_tensor.data_type == TensorProto.INT8:
-            pass
-        elif onnx_tensor.data_type == TensorProto.UINT16:
-            pass
-        elif onnx_tensor.data_type == TensorProto.INT16:
-            pass
-        elif onnx_tensor.data_type == TensorProto.INT32:
-            pass
-        elif onnx_tensor.data_type == TensorProto.BOOL:
-            pass
-        elif onnx_tensor.data_type == TensorProto.STRING:
-            pass
-        else:
-            raise RuntimeError("unrecognized tensor type {}".format(onnx_tensor.data_type))
     
-        if(onnx_tensor.dims == []):
-            return (name, tensor2list(onnx_tensor))
-        data = tensor2list(onnx_tensor).reshape(*onnx_tensor.dims)
-            
-        return (name, data)
-  

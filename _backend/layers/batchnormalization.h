@@ -47,6 +47,7 @@ namespace layers {
         typedef struct {
             uint32_t input_mask;
             uint32_t output_mask;
+			float epsilon;
         } binding_descriptor;
         
         vuh::Program<Specs, binding_descriptor>* program;
