@@ -18,29 +18,37 @@ layout(std430, binding = 2) buffer lay2 { float shape_o[]; };
 
 
 void main(){
-    const uint x = gl_GlobalInvocationID.x;
-    const uint y = gl_GlobalInvocationID.y;
-    const uint z = gl_GlobalInvocationID.z;
-
-	vec4 data_i_shape = vec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
-	vec4 shape_o_shape = vec4(shape[1].w, shape[1].h, shape[1].d, shape[1].c);
-   
+    
+	 uvec4 data_i_shape = uvec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
+	 uvec4 shape_o_shape = uvec4(shape[1].w, shape[1].h, shape[1].d, shape[1].c);
     uint _dim  = uint(shape_o_shape.x * shape_o_shape.y * shape_o_shape.z * shape_o_shape.w * shape[0].n);
     uint n_dim = uint(shape_o_shape.x * shape_o_shape.y * shape_o_shape.z * shape_o_shape.w);
     uint c_dim = uint(shape_o_shape.x * shape_o_shape.y * shape_o_shape.z);
     uint d_dim = uint(shape_o_shape.x * shape_o_shape.y);
     uint h_dim = uint(shape_o_shape.x);
 
-    if( shape_o_shape.x <= x || shape_o_shape.y <= y || shape_o_shape.z <= z){
-        return;
-    }
+  
+    /*
+    for(uint out_x = gl_GlobalInvocationID.x; out_x < shape_o_shape.x; out_x += gl_NumWorkGroups.x * gl_WorkGroupSize.x){
+    for(uint out_y = gl_GlobalInvocationID.y; out_y < shape_o_shape.y; out_y += gl_NumWorkGroups.y * gl_WorkGroupSize.y){
+    for(uint out_z = gl_GlobalInvocationID.z; out_z < shape_o_shape.z; out_z += gl_NumWorkGroups.z * gl_WorkGroupSize.z){
         
     for(uint i = 0; i < _dim; i += n_dim){
-        for(uint j = 0; j < n_dim; j += c_dim){           
-            uint indx = i + j + z * d_dim + y * h_dim + x;
-            shape_o[indx] = data_i[0];
+        for(uint j = 0; j < n_dim; j += c_dim){            
+            shape_o[out_x + out_y*h_dim + out_z*d_dim + i + j] = data_i[0];
             //shape_o[indx] = 1.0f * data_i[indx];
         }
     }
+    }}}
+    */
+
+    for(uint out_x = gl_GlobalInvocationID.x; out_x < c_dim; out_x += gl_NumWorkGroups.x * gl_WorkGroupSize.x){
+        for(uint i = 0; i < _dim; i += n_dim){
+            for(uint j = 0; j < n_dim; j += c_dim){            
+                shape_o[out_x + i + j] = data_i[0];
+                //shape_o[indx] = 1.0f * data_i[indx];
+            }
+        }
+    }    
     
 }

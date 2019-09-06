@@ -49,60 +49,68 @@ layout(std430, binding = 33) buffer lay33 { float sum_o[]; };
 
 
 void main(){
-    const uint x = gl_GlobalInvocationID.x;
-    const uint y = gl_GlobalInvocationID.y;
-    const uint z = gl_GlobalInvocationID.z;
-
-	vec4 x0_i_shape = vec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
-	vec4 x1_i_shape = vec4(shape[1].w, shape[1].h, shape[1].d, shape[1].c);
-	vec4 x2_i_shape = vec4(shape[2].w, shape[2].h, shape[2].d, shape[2].c);
-	vec4 x3_i_shape = vec4(shape[3].w, shape[3].h, shape[3].d, shape[3].c);
-	vec4 x4_i_shape = vec4(shape[4].w, shape[4].h, shape[4].d, shape[4].c);
-	vec4 x5_i_shape = vec4(shape[5].w, shape[5].h, shape[5].d, shape[5].c);
-	vec4 x6_i_shape = vec4(shape[6].w, shape[6].h, shape[6].d, shape[6].c);
-	vec4 x7_i_shape = vec4(shape[7].w, shape[7].h, shape[7].d, shape[7].c);
-	vec4 x8_i_shape = vec4(shape[8].w, shape[8].h, shape[8].d, shape[8].c);
-	vec4 x9_i_shape = vec4(shape[9].w, shape[9].h, shape[9].d, shape[9].c);
-	vec4 x10_i_shape = vec4(shape[10].w, shape[10].h, shape[10].d, shape[10].c);
-	vec4 x11_i_shape = vec4(shape[11].w, shape[11].h, shape[11].d, shape[11].c);
-	vec4 x12_i_shape = vec4(shape[12].w, shape[12].h, shape[12].d, shape[12].c);
-	vec4 x13_i_shape = vec4(shape[13].w, shape[13].h, shape[13].d, shape[13].c);
-	vec4 x14_i_shape = vec4(shape[14].w, shape[14].h, shape[14].d, shape[14].c);
-	vec4 x15_i_shape = vec4(shape[15].w, shape[15].h, shape[15].d, shape[15].c);
-	vec4 x16_i_shape = vec4(shape[16].w, shape[16].h, shape[16].d, shape[16].c);
-	vec4 x17_i_shape = vec4(shape[17].w, shape[17].h, shape[17].d, shape[17].c);
-	vec4 x18_i_shape = vec4(shape[18].w, shape[18].h, shape[18].d, shape[18].c);
-	vec4 x19_i_shape = vec4(shape[19].w, shape[19].h, shape[19].d, shape[19].c);
-	vec4 x20_i_shape = vec4(shape[20].w, shape[20].h, shape[20].d, shape[20].c);
-	vec4 x21_i_shape = vec4(shape[21].w, shape[21].h, shape[21].d, shape[21].c);
-	vec4 x22_i_shape = vec4(shape[22].w, shape[22].h, shape[22].d, shape[22].c);
-	vec4 x23_i_shape = vec4(shape[23].w, shape[23].h, shape[23].d, shape[23].c);
-	vec4 x24_i_shape = vec4(shape[24].w, shape[24].h, shape[24].d, shape[24].c);
-	vec4 x25_i_shape = vec4(shape[25].w, shape[25].h, shape[25].d, shape[25].c);
-	vec4 x26_i_shape = vec4(shape[26].w, shape[26].h, shape[26].d, shape[26].c);
-	vec4 x27_i_shape = vec4(shape[27].w, shape[27].h, shape[27].d, shape[27].c);
-	vec4 x28_i_shape = vec4(shape[28].w, shape[28].h, shape[28].d, shape[28].c);
-	vec4 x29_i_shape = vec4(shape[29].w, shape[29].h, shape[29].d, shape[29].c);
-	vec4 x30_i_shape = vec4(shape[30].w, shape[30].h, shape[30].d, shape[30].c);
-	vec4 x31_i_shape = vec4(shape[31].w, shape[31].h, shape[31].d, shape[31].c);
-	vec4 sum_o_shape = vec4(shape[32].w, shape[32].h, shape[32].d, shape[32].c);
-   
+    
+	 uvec4 x0_i_shape = uvec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
+	 uvec4 x1_i_shape = uvec4(shape[1].w, shape[1].h, shape[1].d, shape[1].c);
+	 uvec4 x2_i_shape = uvec4(shape[2].w, shape[2].h, shape[2].d, shape[2].c);
+	 uvec4 x3_i_shape = uvec4(shape[3].w, shape[3].h, shape[3].d, shape[3].c);
+	 uvec4 x4_i_shape = uvec4(shape[4].w, shape[4].h, shape[4].d, shape[4].c);
+	 uvec4 x5_i_shape = uvec4(shape[5].w, shape[5].h, shape[5].d, shape[5].c);
+	 uvec4 x6_i_shape = uvec4(shape[6].w, shape[6].h, shape[6].d, shape[6].c);
+	 uvec4 x7_i_shape = uvec4(shape[7].w, shape[7].h, shape[7].d, shape[7].c);
+	 uvec4 x8_i_shape = uvec4(shape[8].w, shape[8].h, shape[8].d, shape[8].c);
+	 uvec4 x9_i_shape = uvec4(shape[9].w, shape[9].h, shape[9].d, shape[9].c);
+	 uvec4 x10_i_shape = uvec4(shape[10].w, shape[10].h, shape[10].d, shape[10].c);
+	 uvec4 x11_i_shape = uvec4(shape[11].w, shape[11].h, shape[11].d, shape[11].c);
+	 uvec4 x12_i_shape = uvec4(shape[12].w, shape[12].h, shape[12].d, shape[12].c);
+	 uvec4 x13_i_shape = uvec4(shape[13].w, shape[13].h, shape[13].d, shape[13].c);
+	 uvec4 x14_i_shape = uvec4(shape[14].w, shape[14].h, shape[14].d, shape[14].c);
+	 uvec4 x15_i_shape = uvec4(shape[15].w, shape[15].h, shape[15].d, shape[15].c);
+	 uvec4 x16_i_shape = uvec4(shape[16].w, shape[16].h, shape[16].d, shape[16].c);
+	 uvec4 x17_i_shape = uvec4(shape[17].w, shape[17].h, shape[17].d, shape[17].c);
+	 uvec4 x18_i_shape = uvec4(shape[18].w, shape[18].h, shape[18].d, shape[18].c);
+	 uvec4 x19_i_shape = uvec4(shape[19].w, shape[19].h, shape[19].d, shape[19].c);
+	 uvec4 x20_i_shape = uvec4(shape[20].w, shape[20].h, shape[20].d, shape[20].c);
+	 uvec4 x21_i_shape = uvec4(shape[21].w, shape[21].h, shape[21].d, shape[21].c);
+	 uvec4 x22_i_shape = uvec4(shape[22].w, shape[22].h, shape[22].d, shape[22].c);
+	 uvec4 x23_i_shape = uvec4(shape[23].w, shape[23].h, shape[23].d, shape[23].c);
+	 uvec4 x24_i_shape = uvec4(shape[24].w, shape[24].h, shape[24].d, shape[24].c);
+	 uvec4 x25_i_shape = uvec4(shape[25].w, shape[25].h, shape[25].d, shape[25].c);
+	 uvec4 x26_i_shape = uvec4(shape[26].w, shape[26].h, shape[26].d, shape[26].c);
+	 uvec4 x27_i_shape = uvec4(shape[27].w, shape[27].h, shape[27].d, shape[27].c);
+	 uvec4 x28_i_shape = uvec4(shape[28].w, shape[28].h, shape[28].d, shape[28].c);
+	 uvec4 x29_i_shape = uvec4(shape[29].w, shape[29].h, shape[29].d, shape[29].c);
+	 uvec4 x30_i_shape = uvec4(shape[30].w, shape[30].h, shape[30].d, shape[30].c);
+	 uvec4 x31_i_shape = uvec4(shape[31].w, shape[31].h, shape[31].d, shape[31].c);
+	 uvec4 sum_o_shape = uvec4(shape[32].w, shape[32].h, shape[32].d, shape[32].c);
     uint _dim  = uint(sum_o_shape.x * sum_o_shape.y * sum_o_shape.z * sum_o_shape.w * shape[0].n);
     uint n_dim = uint(sum_o_shape.x * sum_o_shape.y * sum_o_shape.z * sum_o_shape.w);
     uint c_dim = uint(sum_o_shape.x * sum_o_shape.y * sum_o_shape.z);
     uint d_dim = uint(sum_o_shape.x * sum_o_shape.y);
     uint h_dim = uint(sum_o_shape.x);
 
-    if( sum_o_shape.x <= x || sum_o_shape.y <= y || sum_o_shape.z <= z){
-        return;
-    }
+  
+    /*
+    for(uint out_x = gl_GlobalInvocationID.x; out_x < sum_o_shape.x; out_x += gl_NumWorkGroups.x * gl_WorkGroupSize.x){
+    for(uint out_y = gl_GlobalInvocationID.y; out_y < sum_o_shape.y; out_y += gl_NumWorkGroups.y * gl_WorkGroupSize.y){
+    for(uint out_z = gl_GlobalInvocationID.z; out_z < sum_o_shape.z; out_z += gl_NumWorkGroups.z * gl_WorkGroupSize.z){
         
     for(uint i = 0; i < _dim; i += n_dim){
-        for(uint j = 0; j < n_dim; j += c_dim){           
-            uint indx = i + j + z * d_dim + y * h_dim + x;
-            sum_o[indx] = x0_i[0];
+        for(uint j = 0; j < n_dim; j += c_dim){            
+            sum_o[out_x + out_y*h_dim + out_z*d_dim + i + j] = x0_i[0];
             //sum_o[indx] = 1.0f * x0_i[indx];
         }
     }
+    }}}
+    */
+
+    for(uint out_x = gl_GlobalInvocationID.x; out_x < c_dim; out_x += gl_NumWorkGroups.x * gl_WorkGroupSize.x){
+        for(uint i = 0; i < _dim; i += n_dim){
+            for(uint j = 0; j < n_dim; j += c_dim){            
+                sum_o[out_x + i + j] = x0_i[0];
+                //sum_o[indx] = 1.0f * x0_i[indx];
+            }
+        }
+    }    
     
 }

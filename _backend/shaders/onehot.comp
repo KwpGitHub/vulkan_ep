@@ -20,31 +20,39 @@ layout(std430, binding = 4) buffer lay4 { float output_o[]; };
 
 
 void main(){
-    const uint x = gl_GlobalInvocationID.x;
-    const uint y = gl_GlobalInvocationID.y;
-    const uint z = gl_GlobalInvocationID.z;
-
-	vec4 indices_i_shape = vec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
-	vec4 depth_i_shape = vec4(shape[1].w, shape[1].h, shape[1].d, shape[1].c);
-	vec4 values_i_shape = vec4(shape[2].w, shape[2].h, shape[2].d, shape[2].c);
-	vec4 output_o_shape = vec4(shape[3].w, shape[3].h, shape[3].d, shape[3].c);
-   
+    
+	 uvec4 indices_i_shape = uvec4(shape[0].w, shape[0].h, shape[0].d, shape[0].c);
+	 uvec4 depth_i_shape = uvec4(shape[1].w, shape[1].h, shape[1].d, shape[1].c);
+	 uvec4 values_i_shape = uvec4(shape[2].w, shape[2].h, shape[2].d, shape[2].c);
+	 uvec4 output_o_shape = uvec4(shape[3].w, shape[3].h, shape[3].d, shape[3].c);
     uint _dim  = uint(output_o_shape.x * output_o_shape.y * output_o_shape.z * output_o_shape.w * shape[0].n);
     uint n_dim = uint(output_o_shape.x * output_o_shape.y * output_o_shape.z * output_o_shape.w);
     uint c_dim = uint(output_o_shape.x * output_o_shape.y * output_o_shape.z);
     uint d_dim = uint(output_o_shape.x * output_o_shape.y);
     uint h_dim = uint(output_o_shape.x);
 
-    if( output_o_shape.x <= x || output_o_shape.y <= y || output_o_shape.z <= z){
-        return;
-    }
+  
+    /*
+    for(uint out_x = gl_GlobalInvocationID.x; out_x < output_o_shape.x; out_x += gl_NumWorkGroups.x * gl_WorkGroupSize.x){
+    for(uint out_y = gl_GlobalInvocationID.y; out_y < output_o_shape.y; out_y += gl_NumWorkGroups.y * gl_WorkGroupSize.y){
+    for(uint out_z = gl_GlobalInvocationID.z; out_z < output_o_shape.z; out_z += gl_NumWorkGroups.z * gl_WorkGroupSize.z){
         
     for(uint i = 0; i < _dim; i += n_dim){
-        for(uint j = 0; j < n_dim; j += c_dim){           
-            uint indx = i + j + z * d_dim + y * h_dim + x;
-            output_o[indx] = indices_i[0];
+        for(uint j = 0; j < n_dim; j += c_dim){            
+            output_o[out_x + out_y*h_dim + out_z*d_dim + i + j] = indices_i[0];
             //output_o[indx] = 1.0f * indices_i[indx];
         }
     }
+    }}}
+    */
+
+    for(uint out_x = gl_GlobalInvocationID.x; out_x < c_dim; out_x += gl_NumWorkGroups.x * gl_WorkGroupSize.x){
+        for(uint i = 0; i < _dim; i += n_dim){
+            for(uint j = 0; j < n_dim; j += c_dim){            
+                output_o[out_x + i + j] = indices_i[0];
+                //output_o[indx] = 1.0f * indices_i[indx];
+            }
+        }
+    }    
     
 }
