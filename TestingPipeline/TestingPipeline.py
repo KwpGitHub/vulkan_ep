@@ -9,9 +9,12 @@ import _backend
 
 
 if(__name__=="__main__"):
-    input = np.ones([1,3,1,224,224])
-    _backend.create_instance()
-    mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')
+
+    mobilenet = onnx_helper.VulkanBackend.prepare(onnx.load('./mobilenetv2.onnx'))
+
+    #input = np.ones([1,3,1,224,224])
+    #_backend.create_instance()
+    #mobilenet = onnx_helper.OnnxGraph('./mobilenetv2.onnx')
     #mnasnet0_5 = onnx_helper.OnnxGraph('./mnasnet0_5.onnx')
     #n2n = onnx_helper.OnnxGraph("./n2n.onnx")
     #bidaf = onnx_helper.OnnxGraph('./bidaf.onnx')  
@@ -30,13 +33,13 @@ if(__name__=="__main__"):
     #for _ in range(1000):
     #    bidaf()
     
-    import time
+    #import time
     
-    sess = ort.InferenceSession('./mobilenetv2.onnx', None)  
-    dummy_input = np.random.randn(1,3,224,224).astype(np.float32)
-    input_name = sess.get_inputs()[0].name  
-    start = time.perf_counter_ns() / 1000000
-    output = sess.run(None, {input_name : dummy_input})
-    stop = time.perf_counter_ns() / 1000000
-    print('onnxruntime ::: ', stop-start)
+    #sess = ort.InferenceSession('./mobilenetv2.onnx', None)  
+    #dummy_input = np.random.randn(1,3,224,224).astype(np.float32)
+    #input_name = sess.get_inputs()[0].name  
+    #start = time.perf_counter_ns() / 1000000
+    #output = sess.run(None, {input_name : dummy_input})
+    #stop = time.perf_counter_ns() / 1000000
+    #print('onnxruntime ::: ', stop-start)
     
