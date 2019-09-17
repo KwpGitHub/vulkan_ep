@@ -19,20 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="buffer.cpp" />
-    <ClCompile Include="context.cpp" />
-    <ClCompile Include="c_api.c" />
-    <ClCompile Include="layer.cpp" />
-    <ClCompile Include="tensor.cpp" />
+    <ClCompile Include="c_api.cpp" />
+    <ClCompile Include="include\kernel\buffer.cpp" />
+    <ClCompile Include="include\kernel\context.cpp" />
+    <ClCompile Include="include\kernel\layer.cpp" />
+    <ClCompile Include="include\kernel\tensor.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="buffer.hpp" />
-    <ClInclude Include="common.hpp" />
-    <ClInclude Include="context.hpp" />
-    <ClInclude Include="kernel.hpp" />
-    <ClInclude Include="layer.hpp" />
-    <ClInclude Include="tensor.hpp" />
-    <ClInclude Include="utils.hpp" />
+    <ClInclude Include="include\kernel\buffer.hpp" />
+    <ClInclude Include="include\kernel\common.hpp" />
+    <ClInclude Include="include\kernel\context.hpp" />
+    <ClInclude Include="include\kernel\kernel.hpp" />
+    <ClInclude Include="include\kernel\layer.hpp" />
+    <ClInclude Include="include\kernel\tensor.hpp" />
+    <ClInclude Include="include\kernel\utils.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{27767530-F9BA-4EE8-9A1E-19BE65DED071}</ProjectGuid>
@@ -159,12 +160,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.1.108.0\Include;$(PythonHome)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\VulkanSDK\1.1.108.0\Include;$(PythonHome)\Include;$(projectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(PythonHome)libs;C:\VulkanSDK\1.1.108.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PythonHome)\libs;C:\VulkanSDK\1.1.108.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -194,9 +196,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>Multithreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\1.1.108.0\Include;$(PythonHome)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\VulkanSDK\1.1.108.0\Include;$(PythonHome)\Include;$(projectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -204,7 +207,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>libucrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <AdditionalDependencies>ucrt.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(PythonHome)libs;C:\VulkanSDK\1.1.108.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PythonHome)\libs;C:\VulkanSDK\1.1.108.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,0 +1,43 @@
+#include "kernel/common.hpp"
+#include "kernel/utils.hpp"
+
+namespace kernel {
+	/*std::vector<uint32_t> compile(const std::string& name, shaderc_shader_kind kind, const std::string& data)
+	{
+		std::vector<uint32_t> result;
+		shaderc::Compiler compiler;
+		shaderc::CompileOptions options;
+
+		// Like -DMY_DEFINE=1
+		//options.AddMacroDefinition("MY_DEFINE", "1");
+		options.SetGenerateDebugInfo();
+		options.SetTargetEnvironment(shaderc_target_env_vulkan, shaderc_env_version_vulkan_1_1);
+		shaderc::SpvCompilationResult module = compiler.CompileGlslToSpv(data.c_str(), data.size(), kind, name.c_str(), options);
+
+		if (module.GetCompilationStatus() != shaderc_compilation_status_success)
+			std::cerr << module.GetErrorMessage();
+
+		//std::vector<uint32_t> result(module.cbegin(), module.cend());
+		result.assign(module.cbegin(), module.cend());
+		return result;
+	}*/
+
+	void bindTensor(VkDevice& device, tensor& tensor, int binding, VkDescriptorSet descriptor_set)
+	{
+		VkDescriptorBufferInfo desc_buffer_info = {};
+		desc_buffer_info.buffer = tensor.getBuffer()->getVkBuffer();
+		desc_buffer_info.offset = 0;
+		desc_buffer_info.range = tensor.size();
+
+		VkWriteDescriptorSet write_descriptor_set = {};
+		write_descriptor_set.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		write_descriptor_set.dstSet = descriptor_set;
+		write_descriptor_set.dstBinding = binding;
+		write_descriptor_set.descriptorCount = 1;
+		write_descriptor_set.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+		write_descriptor_set.pBufferInfo = &desc_buffer_info;
+
+		vkUpdateDescriptorSets(device, 1, &write_descriptor_set, 0, NULL);
+	}
+	   
+}

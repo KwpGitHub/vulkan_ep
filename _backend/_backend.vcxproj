@@ -200,7 +200,7 @@
     <ClInclude Include="kernel\traits.hpp" />
     <ClInclude Include="kernel\utils.h" />
     <ClInclude Include="kernel\vuh.h" />
-    <ClInclude Include="layer.h" />
+    <ClInclude Include="layer.hpp" />
     <ClInclude Include="layers.hpp" />
     <ClInclude Include="layers\abs.h" />
     <ClInclude Include="layers\acos.h" />
@@ -484,7 +484,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultithreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)\include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)\include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories);C:\Users\monish\source\repos\vulkan_ep\c_api\include</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -522,7 +522,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>Multithreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)\Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)\Include;C:\VulkanSDK\1.1.108.0\Include;%(AdditionalIncludeDirectories);C:\Users\monish\source\repos\vulkan_ep\c_api\include</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>

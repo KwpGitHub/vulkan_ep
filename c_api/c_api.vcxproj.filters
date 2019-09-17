@@ -15,42 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="c_api.c">
+    <ClCompile Include="include\kernel\buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="buffer.cpp">
+    <ClCompile Include="include\kernel\context.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tensor.cpp">
+    <ClCompile Include="include\kernel\layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="layer.cpp">
+    <ClCompile Include="include\kernel\tensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="context.cpp">
+    <ClCompile Include="c_api.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="kernel.hpp">
+    <ClInclude Include="include\kernel\buffer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="buffer.hpp">
+    <ClInclude Include="include\kernel\common.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tensor.hpp">
+    <ClInclude Include="include\kernel\context.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="layer.hpp">
+    <ClInclude Include="include\kernel\kernel.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common.hpp">
+    <ClInclude Include="include\kernel\layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils.hpp">
+    <ClInclude Include="include\kernel\tensor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="context.hpp">
+    <ClInclude Include="include\kernel\utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

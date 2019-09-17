@@ -1,6 +1,9 @@
-#pragma once
-#include "kernel.hpp"
+#ifndef LAYER_H
+#define LAYER_H
+#include "kernel/kernel.hpp"
+
 #include <string>
+#include <vector>
 
 namespace kernel {
 	class context;
@@ -10,7 +13,8 @@ namespace kernel {
 	public:
 		layer();
 		virtual ~layer();
-		virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs) = 0;
+		virtual bool forward(std::vector<int>& ins, std::vector<int>& blobs, std::vector<int>& outs) = 0;
+
 	protected:
 		void initVulkanThing(int buffer_num);
 		void createDescriptorSetLayout(int buffer_num);
@@ -18,7 +22,7 @@ namespace kernel {
 		void createShaderModule(const uint32_t* spv, size_t sz, const std::string& source = std::string());
 		void createPipeline(size_t push_constants_size = 0, VkSpecializationInfo * specialization_info = 0);
 		void createCommandBuffer();
-		void recordCommandBuffer(void* push_constants = NULL, size_t push_constants_size = 0);
+		void recordCommandBuffer(void* push_constants = 0, size_t push_constants_size = 0);
 		void runCommandBuffer();
 
 		VkPipeline m_pipeline;
@@ -36,3 +40,5 @@ namespace kernel {
 	};
 }
 
+
+#endif

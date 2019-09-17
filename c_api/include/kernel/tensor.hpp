@@ -1,21 +1,27 @@
-#pragma once
+#ifndef TENSOR_H
+#define TENSOR_H
 #include <memory>
 #include <vulkan/vulkan.h>
-#include "kernel.hpp"
+#include "kernel/kernel.hpp"
+
 
 namespace kernel {
+	class buffer;
+
 	class tensor
 	{
 	public:
+		tensor();
 		tensor(Format fmt = kFormatFp32);
 		tensor(const char* data, std::vector<int>& shape, Format fmt = kFormatInvalid);
 		void* map();
 		void unMap();
 		Shape getShape() const;
 		int dimNum() const;
+		int dimSize(const int axis) const;
 		int count(const int satart_axis = 0, const int end_axis = -1) const;
 		
-		tensor reshape(const char* data, const std::vector<int>& shape, bool alloc = False, Format fmt = kFormatInvalid);
+		tensor reshape(const char* data, const std::vector<int>& shape, bool alloc = false, Format fmt = kFormatInvalid);
 
 		void setTo(float val);
 		int getFormat() const;
@@ -33,3 +39,4 @@ namespace kernel {
 	};
 }
 
+#endif

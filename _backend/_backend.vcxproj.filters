@@ -557,9 +557,6 @@
     <ClInclude Include="kernel\arr\arrayView.hpp">
       <Filter>Kernel Files\arr</Filter>
     </ClInclude>
-    <ClInclude Include="layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="layers_map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1032,6 +1029,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="layers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

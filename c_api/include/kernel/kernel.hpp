@@ -23,6 +23,7 @@ namespace kernel {
 		kOpTypePermute,
 		kOpTypeNum
 	};
+
 	enum PaddingMode { kPaddingModeSame, kPaddingModeValid, kPaddingModeCaffe, kPaddingModeNum };
 	enum FusedActivationType { kNone, kRelu, kRelu1, kRelu6, kActivationNum };
 	typedef std::vector<int> Shape;
@@ -30,6 +31,6 @@ namespace kernel {
 	bool isAvailable();
 }
 
-#include "tensor.hpp"
-#include "buffer.hpp"
-#include "layer.hpp"
+#include "kernel/tensor.hpp"
+#include "kernel/buffer.hpp"
+#include "kernel/layer.hpp"

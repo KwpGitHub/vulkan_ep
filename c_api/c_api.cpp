@@ -1,6 +1,5 @@
 #include <Python.h>
 #include "kernel/kernel.hpp"
-
 /*
  * Implements an example function.
  */
@@ -43,6 +42,7 @@ static PyMethodDef c_api_functions[] = {
  */
 int exec_c_api(PyObject *module) {
     PyModule_AddFunctions(module, c_api_functions);
+
     PyModule_AddStringConstant(module, "__author__", "mramados");
     PyModule_AddStringConstant(module, "__version__", "1.0.0");
     PyModule_AddIntConstant(module, "year", 2019);

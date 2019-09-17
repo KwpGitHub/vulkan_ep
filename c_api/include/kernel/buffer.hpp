@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BUFFER_H
+#define BUFFER_H
 #include <vulkan/vulkan.h>
 
 namespace kernel {
@@ -20,3 +21,4 @@ namespace kernel {
 	};
 }
 
+#endif

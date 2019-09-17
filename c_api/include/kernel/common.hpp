@@ -1,3 +1,5 @@
+#ifndef COMMON_H
+#define COMMON_H
 #include <math.h>
 #include <string.h>
 #include <map>
@@ -11,7 +13,7 @@
 
 #include <vulkan/vulkan.h>
 
-#include "kernel.hpp"
+#include "kernel/kernel.hpp"
 
 namespace kernel {
 	extern VkPhysicalDevice kPhysicalDevice;
@@ -20,13 +22,13 @@ namespace kernel {
 	extern VkCommandPool kCmdPool;
 	extern std::mutex kContextMtx;
 
-	enum ShapeIdx
+	/*enum ShapeIdx
 	{
 		kShapeIdxBatch = 0,
 		kShapeIdxChannel,
 		kShapeIdxHeight,
 		kShapeIdxWidth,
-	};
+	};*/
 
 #define VK_CHECK_RESULT(f) \
 { \
@@ -39,3 +41,4 @@ namespace kernel {
 
 
 }
+#endif
