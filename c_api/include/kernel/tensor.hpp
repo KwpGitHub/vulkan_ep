@@ -19,7 +19,8 @@ namespace kernel {
 		int dimNum() const;
 		int dimSize(const int axis) const;
 		int count(const int satart_axis = 0, const int end_axis = -1) const;
-		
+		char* tensor::toHost();
+
 		tensor reshape(const char* data, const std::vector<int>& shape, bool alloc = false, Format fmt = kFormatInvalid);
 
 		void setTo(float val);

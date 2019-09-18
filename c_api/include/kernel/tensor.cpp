@@ -80,4 +80,13 @@ namespace kernel {
 		dst = dst.reshape((const char*)p, m_shape, format);
 		unMap();
 	}
+
+	char* tensor::toHost() {
+		char* data = new char[size_in_byte];
+		
+		void* p = map();
+		memcpy(data, p, size_in_byte);
+		unMap();
+		return data;
+	}
 }

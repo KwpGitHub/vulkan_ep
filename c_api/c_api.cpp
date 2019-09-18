@@ -21,19 +21,36 @@ PyObject *c_api_example(PyObject *self, PyObject *args, PyObject *kwargs) {
     }
 
     /* Function implementation starts here */
-	int size = 1e9;
-	float* data = new float[size];
-	for (int i = 0; i < size; ++i)
-		data[i] = 1.1f;
+	int size = 10;
+	float* in = new float[size];
+	float* out = new float[size];
+	for (int i = 0; i < size; ++i) {
+		in[i] =  11.1f;
+		out[i] = 0.0f;
+	}
 	std::vector<int> shape;
-	auto b_data = (char*)data;
-	std::cout << sizeof(data) << " " << sizeof(b_data) << std::endl;
+	auto b_in = (char*)in;
+	auto b_out = (char*)out;
+	std::cout << sizeof(in) << " " << sizeof(b_in) << std::endl;
 	shape.push_back(size);
 
-	auto t = kernel::tensor(b_data, shape, kernel::kFormatFp32);
-	std::shared_ptr<kernel::layer> l (new kernel::layers::Relu(1.0));
+	auto i = kernel::tensor(b_in, shape, kernel::kFormatFp32);
+	auto o = kernel::tensor(b_out, shape, kernel::kFormatFp32);
 
+	std::vector<kernel::tensor> t_in;
+	std::vector<kernel::tensor> t_out;
+	t_in.push_back(i);
+	t_out.push_back(o);
 
+	std::shared_ptr<kernel::layer> l (new kernel::layers::Relu(0.0));
+
+	l->forward(t_in, t_in, t_out);
+
+	auto x = (float*)t_in[0].toHost();
+	auto y = (float*)t_out[0].toHost();
+
+	std::cout << y[0];
+		
     if (number < 0) {
         PyErr_SetObject(PyExc_ValueError, obj);
         return NULL;    /* return NULL indicates error */

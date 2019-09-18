@@ -5,7 +5,7 @@
 namespace kernel {
 	layer::layer() {
 		createContext();
-		m_device = VK_NULL_HANDLE;
+		m_device = kDevice;;
 		m_pipeline = VK_NULL_HANDLE;
 		m_cmd_buffer = VK_NULL_HANDLE;
 		m_descriptor_pool = VK_NULL_HANDLE;
