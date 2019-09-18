@@ -1,9 +1,11 @@
 #include <Python.h>
+#include <iostream>
+#include <memory>
 #include "kernel/kernel.hpp"
 /*
  * Implements an example function.
  */
-PyDoc_STRVAR(c_api_example_doc, "example(obj, number)\
+PyDoc_STRVAR(c_api_example_doc, "example()\
 \
 Example function");
 
@@ -13,12 +15,24 @@ PyObject *c_api_example(PyObject *self, PyObject *args, PyObject *kwargs) {
     int number = 0;
 
     /* Parse positional and keyword arguments */
-    static char* keywords[] = { "obj", "number", NULL };
+	/*static char* keywords[] = { "obj", "number", NULL };
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Oi", keywords, &obj, &number)) {
         return NULL;
     }
 
     /* Function implementation starts here */
+	int size = 1e9;
+	float* data = new float[size];
+	for (int i = 0; i < size; ++i)
+		data[i] = 1.1f;
+	std::vector<int> shape;
+	auto b_data = (char*)data;
+	std::cout << sizeof(data) << " " << sizeof(b_data) << std::endl;
+	shape.push_back(size);
+
+	auto t = kernel::tensor(b_data, shape, kernel::kFormatFp32);
+	std::shared_ptr<kernel::layer> l (new kernel::layers::Relu(1.0));
+
 
     if (number < 0) {
         PyErr_SetObject(PyExc_ValueError, obj);

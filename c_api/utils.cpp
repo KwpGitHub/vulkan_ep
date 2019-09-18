@@ -2,9 +2,10 @@
 #include "kernel/utils.hpp"
 
 namespace kernel {
-	/*std::vector<uint32_t> compile(const std::string& name, shaderc_shader_kind kind, const std::string& data)
+	std::vector<uint32_t> compile(const std::string& name, shaderc_shader_kind kind, const std::string& data)
 	{
 		std::vector<uint32_t> result;
+#ifdef USE_SHADERC
 		shaderc::Compiler compiler;
 		shaderc::CompileOptions options;
 
@@ -12,15 +13,21 @@ namespace kernel {
 		//options.AddMacroDefinition("MY_DEFINE", "1");
 		options.SetGenerateDebugInfo();
 		options.SetTargetEnvironment(shaderc_target_env_vulkan, shaderc_env_version_vulkan_1_1);
-		shaderc::SpvCompilationResult module = compiler.CompileGlslToSpv(data.c_str(), data.size(), kind, name.c_str(), options);
+		shaderc::SpvCompilationResult module = compiler.CompileGlslToSpv(
+			data.c_str(), data.size(), kind, name.c_str(), options);
 
-		if (module.GetCompilationStatus() != shaderc_compilation_status_success)
+		if (module.GetCompilationStatus() !=
+			shaderc_compilation_status_success) {
 			std::cerr << module.GetErrorMessage();
+		}
 
 		//std::vector<uint32_t> result(module.cbegin(), module.cend());
 		result.assign(module.cbegin(), module.cend());
 		return result;
-	}*/
+#else
+		return result;
+#endif
+	}
 
 	void bindTensor(VkDevice& device, tensor& tensor, int binding, VkDescriptorSet descriptor_set)
 	{
@@ -40,4 +47,6 @@ namespace kernel {
 		vkUpdateDescriptorSets(device, 1, &write_descriptor_set, 0, NULL);
 	}
 	   
+
+
 }

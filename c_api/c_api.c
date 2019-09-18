@@ -4,27 +4,22 @@
 /*
  * Implements an example function.
  */
-PyDoc_STRVAR(c_api_example_doc, "example(obj, number)\
+PyDoc_STRVAR(c_api_example_doc, "example()\
 \
 Example function");
 
 PyObject *c_api_example(PyObject *self, PyObject *args, PyObject *kwargs) {
     /* Shared references that do not need Py_DECREF before returning. */
-    PyObject *obj = NULL;
-    int number = 0;
 
+    int number = 0;
     /* Parse positional and keyword arguments */
-    static char* keywords[] = { "obj", "number", NULL };
+    /*static char* keywords[] = { "obj", "number", NULL };
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Oi", keywords, &obj, &number)) {
         return NULL;
     }
 
     /* Function implementation starts here */
-
-    if (number < 0) {
-        PyErr_SetObject(PyExc_ValueError, obj);
-        return NULL;    /* return NULL indicates error */
-    }
+	kernel::tensor t = kernel::tensor();
 
     Py_RETURN_NONE;
 }
@@ -45,7 +40,6 @@ int exec_c_api(PyObject *module) {
     PyModule_AddFunctions(module, c_api_functions);
     PyModule_AddStringConstant(module, "__author__", "mramados");
     PyModule_AddStringConstant(module, "__version__", "1.0.0");
-    PyModule_AddIntConstant(module, "year", 2019);
 
     return 0; /* success */
 }
@@ -62,15 +56,7 @@ static PyModuleDef_Slot c_api_slots[] = {
 };
 
 static PyModuleDef c_api_def = {
-    PyModuleDef_HEAD_INIT,
-    "c_api",
-    c_api_doc,
-    0,              /* m_size */
-    NULL,           /* m_methods */
-    c_api_slots,
-    NULL,           /* m_traverse */
-    NULL,           /* m_clear */
-    NULL,           /* m_free */
+    PyModuleDef_HEAD_INIT, "c_api", c_api_doc, 0, NULL, c_api_slots, NULL, NULL, NULL,
 };
 
 PyMODINIT_FUNC PyInit_c_api() {

@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="layers">
+      <UniqueIdentifier>{f62134cd-9c20-405c-b014-3a90c2c30a20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{c322068e-8056-4ed7-a30d-d9aed3735314}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\kernel\buffer.cpp">
@@ -33,6 +39,12 @@
     <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\layers\relu.cpp">
+      <Filter>layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\relu_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\kernel\buffer.hpp">
@@ -50,10 +62,16 @@
     <ClInclude Include="include\kernel\layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\kernel\tensor.hpp">
+    <ClInclude Include="include\kernel\utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\kernel\utils.hpp">
+    <ClInclude Include="include\layers\relu.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\shaders\spv_shader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kernel\tensor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

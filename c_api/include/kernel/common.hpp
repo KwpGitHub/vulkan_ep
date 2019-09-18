@@ -12,7 +12,7 @@
 #include <memory>
 
 #include <vulkan/vulkan.h>
-
+#include "shaders/spv_shader.hpp"
 #include "kernel/kernel.hpp"
 
 namespace kernel {
@@ -37,8 +37,6 @@ namespace kernel {
 			std::cout << "VULKAN KERNEL ERROR: " << (int)f; \
 		} \
 }
-
-
-
+	   	 
 }
 #endif

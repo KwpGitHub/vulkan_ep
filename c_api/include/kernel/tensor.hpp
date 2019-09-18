@@ -11,7 +11,6 @@ namespace kernel {
 	class tensor
 	{
 	public:
-		tensor();
 		tensor(Format fmt = kFormatFp32);
 		tensor(const char* data, std::vector<int>& shape, Format fmt = kFormatInvalid);
 		void* map();

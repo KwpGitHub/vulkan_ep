@@ -1,17 +1,22 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <float.h>
-//#include <shaderc/shaderc.hpp>
+#ifdef USE_SHADERC
+#include "shaderc/shaderc.hpp"
+#else
 typedef int shaderc_shader_kind;
 #define shaderc_compute_shader 0
-
+#endif
 
 #include "kernel/kernel.hpp"
 #include "kernel/context.hpp"
 
 namespace kernel {
-
-	//std::vector<uint32_t> compile(const std::string& name, shaderc_shader_kind kind, const std::string& data);
+	inline size_t alignSize(size_t sz, int n) {
+		return (sz + n - 1) & -n;
+	}
+	
+	std::vector<uint32_t> compile(const std::string& name, shaderc_shader_kind kind, const std::string& data);
 	void bindTensor(VkDevice& device, tensor& tensor, int binding, VkDescriptorSet descriptor_set);
 	/*
 	void computeConvOutputShapeAndPadding(const PaddingMode& padding_mode,
@@ -32,16 +37,13 @@ namespace kernel {
 	inline bool checkFormat(Format fmt) { return fmt > -1 && fmt < kFormatNum; }
 	inline size_t elementSize(Format fmt)
 	{
-		if (fmt == kFormatFp32 || fmt == kFormatInt32)
-		{
+		if (fmt == kFormatFp32 || fmt == kFormatInt32) {
 			return 4;
 		}
-		else if (fmt >= 0 && fmt < kFormatNum)
-		{
+		else if (fmt >= 0 && fmt < kFormatNum) {
 			printf("Unsupported format %d", fmt);
 		}
-		else
-		{
+		else {
 			printf("Invalid format %d", fmt);
 		}
 		return 0;

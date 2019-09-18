@@ -46,10 +46,10 @@ namespace kernel {
 	}
 
 	void createContext() {
-		//TODO lock kContext mtx;
+		kContextMtx.lock();
 		if (!kCtx)
 			kCtx.reset(new context());
-
+		kContextMtx.unlock();
 	}
 
 	bool isAvailable() {

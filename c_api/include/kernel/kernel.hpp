@@ -34,3 +34,6 @@ namespace kernel {
 #include "kernel/tensor.hpp"
 #include "kernel/buffer.hpp"
 #include "kernel/layer.hpp"
+
+
+#include "layers/relu.hpp"

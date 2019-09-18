@@ -2,10 +2,7 @@
 #include "kernel/utils.hpp"
 
 namespace kernel {
-	tensor::tensor() : size_in_byte(0), format(kFormatFp32) {
-		createContext();
-		m_device = kDevice;
-	}
+	
 
 	tensor::tensor(Format fmt) : size_in_byte(0), format(fmt) {
 		createContext();
@@ -80,7 +77,7 @@ namespace kernel {
 	int tensor::getFormat() const { return format; }
 	void tensor::copyTo(tensor& dst) {
 		void* p = map();
-		dst.reshape((const char*)p, m_shape, format);
+		dst = dst.reshape((const char*)p, m_shape, format);
 		unMap();
 	}
 }

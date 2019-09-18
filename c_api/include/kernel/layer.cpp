@@ -36,8 +36,7 @@ namespace kernel {
 		if (buffer_num <= 0)
 			return;
 		std::vector<VkDescriptorSetLayoutBinding> bindings(buffer_num);
-		for (int i = 0; i < buffer_num; i++)
-		{
+		for (int i = 0; i < buffer_num; i++) {
 			bindings[i].binding = i;
 			bindings[i].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
 			bindings[i].descriptorCount = 1;
@@ -127,6 +126,7 @@ namespace kernel {
 		VkCommandBufferBeginInfo beginInfo = {};
 		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 		beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+		kContextMtx.lock();
 		// TODO: lock mutex lock(kContextMtx);
 		VK_CHECK_RESULT(vkBeginCommandBuffer(m_cmd_buffer, &beginInfo));
 		if (push_constants)
@@ -136,6 +136,7 @@ namespace kernel {
 		vkCmdDispatch(m_cmd_buffer, m_group_x, m_group_y, m_group_z);
 
 		VK_CHECK_RESULT(vkEndCommandBuffer(m_cmd_buffer));
+		kContextMtx.unlock();
 	}
 
 	void layer::runCommandBuffer() {
@@ -151,8 +152,10 @@ namespace kernel {
 
 		VK_CHECK_RESULT(vkCreateFence(m_device, &fence_create_info_, NULL, &fence));
 		{
+			kContextMtx.lock();
 			//TODO: lock context cv::AutoLock lock(kContextMtx);
 			VK_CHECK_RESULT(vkQueueSubmit(kQueue, 1, &submit_info, fence));
+			kContextMtx.unlock();
 		}
 		VK_CHECK_RESULT(vkWaitForFences(m_device, 1, &fence, VK_TRUE, 100000000000));
 		vkDestroyFence(m_device, fence, NULL);
