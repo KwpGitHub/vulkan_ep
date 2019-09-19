@@ -2,6 +2,7 @@
 #define LOCAL_SZ_X 32
 layout(push_constant) uniform pushBlock {
       int total;
+      float alpha;
 } p;
 
 layout(binding = 0) readonly buffer buf1{
@@ -18,6 +19,7 @@ void main()
 {
     for (int i = int(gl_GlobalInvocationID.x); i < p.total; i += int(gl_NumWorkGroups.x * gl_WorkGroupSize.x))
     {
-        buffer2[i] = max(0, buffer1[i]);
+        float inpt = buffer1[i];
+        buffer2[i] = inpt < 0 ? p.alpha*inpt : inpt;
     }
 }
