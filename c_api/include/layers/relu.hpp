@@ -9,7 +9,7 @@ namespace kernel {
 		class Relu : public layer
 		{
 		public:
-			Relu(const float slope = 1.f);
+			Relu();
 			bool forward(tensor& in, tensor& out);
 			void reshapeOutTensor(tensor& in, tensor& out);
 			virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs);

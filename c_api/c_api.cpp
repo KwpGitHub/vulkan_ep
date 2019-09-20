@@ -1,6 +1,10 @@
 #include <Python.h>
 #include <iostream>
 #include <memory>
+#include <chrono>
+
+typedef std::chrono::high_resolution_clock Clock;
+
 #include "kernel/kernel.hpp"
 /*
  * Implements an example function.
@@ -42,9 +46,14 @@ PyObject *c_api_example(PyObject *self, PyObject *args, PyObject *kwargs) {
 	t_in.push_back(i);
 	t_out.push_back(o);
 
-	std::shared_ptr<kernel::layer> l (new kernel::layers::Relu(0.0));
 
+	std::shared_ptr<kernel::layer> l (new kernel::layers::Relu());
+
+	auto t1 = Clock::now();
 	l->forward(t_in, t_in, t_out);
+	auto t2 = Clock::now();
+
+	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << " milliseconds" << std::endl;
 
 	auto x = (float*)t_in[0].toHost();
 	auto y = (float*)t_out[0].toHost();

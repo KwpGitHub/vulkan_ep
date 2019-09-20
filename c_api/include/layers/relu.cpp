@@ -9,11 +9,10 @@
 namespace kernel {
 	namespace layers {
 		struct ReLUParam {
-			int total;
-			float slope;
+			int total;			
 		};
 
-		Relu::Relu(const float slope) : m_slope(slope) {
+		Relu::Relu() {
 			layer::initVulkanThing(2);
 			m_type = "Relu";
 		}
@@ -30,14 +29,14 @@ namespace kernel {
 		bool Relu::forward(tensor& in, tensor& out) {
 			if (m_pipeline == VK_NULL_HANDLE) {
 				m_total = in.count();
-				computeGroupCount();				
+				computeGroupCount();
 				createShaderModule(shaders::relu_spv, sizeof(shaders::relu_spv));
 				createPipeline(sizeof(ReLUParam));
 			}
 
 			bindTensor(m_device, in, 0, m_descriptor_set);
 			bindTensor(m_device, out, 1, m_descriptor_set);
-			ReLUParam param = { m_total, m_slope };
+			ReLUParam param = {m_total};
 			recordCommandBuffer((void*)& param, sizeof(ReLUParam));
 			runCommandBuffer();
 			return true;
