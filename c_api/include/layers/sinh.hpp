@@ -1,15 +1,15 @@
-#ifndef RELU_H
-#define RELU_H
+#ifndef sinh_H
+#define sinh_H
 
 #include "kernel/kernel.hpp"
 #include "kernel/layer.hpp"
 
 namespace kernel {
 	namespace layers {
-		class Relu : public layer
+		class Sinh : public layer
 		{
 		public:
-			Relu();
+			Sinh();
 			bool forward(tensor& in, tensor& out);
 			void reshapeOutTensor(tensor& in, tensor& out);
 			virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs);

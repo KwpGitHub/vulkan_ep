@@ -1,16 +1,16 @@
-#ifndef RELU_H
-#define RELU_H
+#ifndef XOR_H
+#define XOR_H
 
 #include "kernel/kernel.hpp"
 #include "kernel/layer.hpp"
 
 namespace kernel {
 	namespace layers {
-		class Relu : public layer
+		class Xor : public layer
 		{
 		public:
-			Relu();
-			bool forward(tensor& in, tensor& out);
+			Xor();
+			bool forward(tensor& in, tensor& in2, tensor& out);
 			void reshapeOutTensor(tensor& in, tensor& out);
 			virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs);
 		private:

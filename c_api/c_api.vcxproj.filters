@@ -19,6 +19,9 @@
     <Filter Include="Shader Files">
       <UniqueIdentifier>{c322068e-8056-4ed7-a30d-d9aed3735314}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\layers">
+      <UniqueIdentifier>{aae41e76-b34f-4dab-89f3-3851c432c552}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\kernel\buffer.cpp">
@@ -39,11 +42,266 @@
     <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\layers\relu.cpp">
-      <Filter>layers</Filter>
-    </ClCompile>
     <ClCompile Include="include\shaders\relu_spv.cpp">
       <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\abs_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\acos_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\acosh_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\add_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\and_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\asin_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\asinh_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\atan_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\atanh_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\ceil_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\clip_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\elu_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\equal_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\exp_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\floor_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\greater_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\hardsigmoid_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\leakyrelu_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\less_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\log_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\max_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\min_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\mod_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\mul_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\neg_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\not_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\or_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\pow_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\prelu_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\reciprocal_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\round_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\selu_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\sigmoid_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\sin_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\sinh_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\softplus_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\softsign_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\sqrt_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\sub_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\sum_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\tanh_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\tasnh_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\xor_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\round.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\selu.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\sigmoid.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\sin.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\sinh.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\softplus.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\softsign.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\sqrt.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\sub.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\sum.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\tanh.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\xor.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\abs.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\acos.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\acosh.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\add.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\and.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\asin.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\asinh.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\atan.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\atanh.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\ceil.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\clip.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\elu.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\equal.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\exp.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\floor.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\greater.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\hardsigmoid.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\leakyrelu.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\less.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\log.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\max.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\min.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\mod.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\mul.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\neg.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\not.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\or.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\pow.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\prelu.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\reciprocal.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\relu.cpp">
+      <Filter>Source Files\layers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +331,132 @@
     </ClInclude>
     <ClInclude Include="include\kernel\tensor.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\abs.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\acos.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\acosh.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\add.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\and.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\asin.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\asinh.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\atan.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\atanh.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\ceil.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\clip.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\elu.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\equal.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\exp.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\floor.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\greater.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\hardsigmoid.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\leakyrelu.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\less.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\log.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\max.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\min.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\mod.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\mul.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\neg.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\not.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\or.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\pow.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\prelu.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\reciprocal.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\round.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\selu.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\sigmoid.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\sin.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\sinh.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\softplus.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\softsign.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\sqrt.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\sub.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\sum.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\tanh.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\xor.hpp">
+      <Filter>layers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

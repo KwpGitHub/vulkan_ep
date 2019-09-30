@@ -1,16 +1,16 @@
-#ifndef RELU_H
-#define RELU_H
+#ifndef EQUAL_H
+#define EQUAL_H
 
 #include "kernel/kernel.hpp"
 #include "kernel/layer.hpp"
 
 namespace kernel {
 	namespace layers {
-		class Relu : public layer
+		class Equal : public layer
 		{
 		public:
-			Relu();
-			bool forward(tensor& in, tensor& out);
+			Equal();
+			bool forward(tensor& in, tensor& in2, tensor& out);
 			void reshapeOutTensor(tensor& in, tensor& out);
 			virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs);
 		private:
