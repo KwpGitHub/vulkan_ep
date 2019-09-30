@@ -22,7 +22,7 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
     /* Function implementation starts here */
 
 
-	int size = 10000000000;
+	int size = 1e6;
 	float* in = new float[size];
 	float* out = new float[size];
 	for (int i = 0; i < size; ++i) {
