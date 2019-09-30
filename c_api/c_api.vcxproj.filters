@@ -201,9 +201,6 @@
     <ClCompile Include="include\layers\sub.cpp">
       <Filter>Source Files\layers</Filter>
     </ClCompile>
-    <ClCompile Include="include\layers\sum.cpp">
-      <Filter>Source Files\layers</Filter>
-    </ClCompile>
     <ClCompile Include="include\layers\tanh.cpp">
       <Filter>Source Files\layers</Filter>
     </ClCompile>
@@ -302,6 +299,24 @@
     </ClCompile>
     <ClCompile Include="include\layers\relu.cpp">
       <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\cos.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\cosh.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\layers\tan.cpp">
+      <Filter>Source Files\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\cos_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\cosh_spv.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaders\tan_spv.cpp">
+      <Filter>Shader Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -449,13 +464,19 @@
     <ClInclude Include="include\layers\sub.hpp">
       <Filter>layers</Filter>
     </ClInclude>
-    <ClInclude Include="include\layers\sum.hpp">
-      <Filter>layers</Filter>
-    </ClInclude>
     <ClInclude Include="include\layers\tanh.hpp">
       <Filter>layers</Filter>
     </ClInclude>
     <ClInclude Include="include\layers\xor.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\cos.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\cosh.hpp">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layers\tan.hpp">
       <Filter>layers</Filter>
     </ClInclude>
   </ItemGroup>

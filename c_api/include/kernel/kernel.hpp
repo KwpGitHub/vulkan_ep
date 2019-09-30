@@ -38,6 +38,9 @@ namespace kernel {
 
 #include "layers/ceil.hpp"
 #include "layers/clip.hpp"
+#include "layers/cos.hpp"
+#include "layers/cosh.hpp"
+
 
 #include "layers/elu.hpp"
 #include "layers/equal.hpp"
@@ -78,8 +81,8 @@ namespace kernel {
 #include "layers/softsign.hpp"
 #include "layers/sqrt.hpp"
 #include "layers/sub.hpp"
-#include "layers/sum.hpp"
 
+#include "layers/tan.hpp"
 #include "layers/tanh.hpp"
 
 #include "layers/xor.hpp"

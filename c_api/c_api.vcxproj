@@ -35,6 +35,8 @@
     <ClCompile Include="include\layers\atanh.cpp" />
     <ClCompile Include="include\layers\ceil.cpp" />
     <ClCompile Include="include\layers\clip.cpp" />
+    <ClCompile Include="include\layers\cos.cpp" />
+    <ClCompile Include="include\layers\cosh.cpp" />
     <ClCompile Include="include\layers\elu.cpp" />
     <ClCompile Include="include\layers\equal.cpp" />
     <ClCompile Include="include\layers\exp.cpp" />
@@ -64,7 +66,7 @@
     <ClCompile Include="include\layers\softsign.cpp" />
     <ClCompile Include="include\layers\sqrt.cpp" />
     <ClCompile Include="include\layers\sub.cpp" />
-    <ClCompile Include="include\layers\sum.cpp" />
+    <ClCompile Include="include\layers\tan.cpp" />
     <ClCompile Include="include\layers\tanh.cpp" />
     <ClCompile Include="include\layers\xor.cpp" />
     <ClCompile Include="include\shaders\abs_spv.cpp" />
@@ -78,6 +80,8 @@
     <ClCompile Include="include\shaders\atan_spv.cpp" />
     <ClCompile Include="include\shaders\ceil_spv.cpp" />
     <ClCompile Include="include\shaders\clip_spv.cpp" />
+    <ClCompile Include="include\shaders\cosh_spv.cpp" />
+    <ClCompile Include="include\shaders\cos_spv.cpp" />
     <ClCompile Include="include\shaders\elu_spv.cpp" />
     <ClCompile Include="include\shaders\equal_spv.cpp" />
     <ClCompile Include="include\shaders\exp_spv.cpp" />
@@ -109,6 +113,7 @@
     <ClCompile Include="include\shaders\sub_spv.cpp" />
     <ClCompile Include="include\shaders\sum_spv.cpp" />
     <ClCompile Include="include\shaders\tanh_spv.cpp" />
+    <ClCompile Include="include\shaders\tan_spv.cpp" />
     <ClCompile Include="include\shaders\tasnh_spv.cpp" />
     <ClCompile Include="include\shaders\xor_spv.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -132,6 +137,8 @@
     <ClInclude Include="include\layers\atanh.hpp" />
     <ClInclude Include="include\layers\ceil.hpp" />
     <ClInclude Include="include\layers\clip.hpp" />
+    <ClInclude Include="include\layers\cos.hpp" />
+    <ClInclude Include="include\layers\cosh.hpp" />
     <ClInclude Include="include\layers\elu.hpp" />
     <ClInclude Include="include\layers\equal.hpp" />
     <ClInclude Include="include\layers\exp.hpp" />
@@ -161,7 +168,7 @@
     <ClInclude Include="include\layers\softsign.hpp" />
     <ClInclude Include="include\layers\sqrt.hpp" />
     <ClInclude Include="include\layers\sub.hpp" />
-    <ClInclude Include="include\layers\sum.hpp" />
+    <ClInclude Include="include\layers\tan.hpp" />
     <ClInclude Include="include\layers\tanh.hpp" />
     <ClInclude Include="include\layers\xor.hpp" />
     <ClInclude Include="include\shaders\spv_shader.hpp" />
