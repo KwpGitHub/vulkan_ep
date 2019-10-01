@@ -56,7 +56,6 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
 	std::shared_ptr<kernel::layer> sinh(new kernel::layers::Sinh());
 	std::shared_ptr<kernel::layer> tan(new kernel::layers::Tan());
 	std::shared_ptr<kernel::layer> tanh(new kernel::layers::Tanh());
-
 	
 	//activation
 	std::shared_ptr<kernel::layer> elu (new kernel::layers::Elu());
@@ -77,8 +76,8 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
 	std::shared_ptr<kernel::layer> round(new kernel::layers::Round());
 	std::shared_ptr<kernel::layer> exp(new kernel::layers::Exp());
 	std::shared_ptr<kernel::layer> sqrt(new kernel::layers::Sqrt());
+	std::shared_ptr<kernel::layer> reciprocal(new kernel::layers::Reciprocal());
 	
-
 	//logical
 	std::shared_ptr<kernel::layer> and (new kernel::layers::And());
 	std::shared_ptr<kernel::layer> or (new kernel::layers::Or());
@@ -99,6 +98,42 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
 	std::shared_ptr<kernel::layer> mod(new kernel::layers::Mod());
 	std::shared_ptr<kernel::layer> neg(new kernel::layers::Neg());
 	
+	//NN op
+	/*
+		Conv 1d 2d 3d
+		ConvT 1d 2d 3d
+
+
+		MaxPooling 1d 2d 3d
+		MaxUnPooling 1d 2d 3d
+		AvgPooling 1d 2d 3d
+		LPpooling 1d 2d
+		AdaptiveMaxPooling 1d 2d 3d
+		AdaptiveAvgPooling 1d 2d 3d
+
+
+		ReflectivePad 1d 2d
+		ReplicationPad 1d 2d 3d
+		ZeroPad 2d
+		ConstantPad 1d 2d 3d 
+
+		BatchNorm 1d 2d 3d
+		GroupNorm 
+		InstanceNorm 1d 2d 3d
+		LayerNorm
+		LRN - localResponseNorm
+
+		LSTM
+		GRU
+		RNN
+
+		MatMul
+
+		Dropout 1d 2d 3d 
+
+
+	*/
+
 
 
 	auto t1 = Clock::now();

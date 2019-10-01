@@ -10,7 +10,7 @@ namespace kernel {
 		{
 		public:
 			Pow();
-			bool forward(tensor& in, tensor& out);
+			bool forward(tensor& in, tensor& in2, tensor& out);
 			void reshapeOutTensor(tensor& in, tensor& out);
 			virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs);
 		private:

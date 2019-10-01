@@ -23,10 +23,10 @@ namespace kernel {
 		}
 
 		bool Pow::forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs) {
-			return forward(ins[0], outs[0]);
+			return forward(ins[0],ins[2], outs[0]);
 		}
 
-		bool Pow::forward(tensor& in, tensor& out) {
+		bool Pow::forward(tensor& in, tensor& in2, tensor& out) {
 			if (m_pipeline == VK_NULL_HANDLE) {
 				m_total = in.count();
 				computeGroupCount();
@@ -35,7 +35,8 @@ namespace kernel {
 			}
 
 			bindTensor(m_device, in, 0, m_descriptor_set);
-			bindTensor(m_device, out, 1, m_descriptor_set);
+			bindTensor(m_device, in2, 1, m_descriptor_set);
+			bindTensor(m_device, out, 2, m_descriptor_set);
 			PowParam param = { m_total };
 			recordCommandBuffer((void*)& param, sizeof(PowParam));
 			runCommandBuffer();

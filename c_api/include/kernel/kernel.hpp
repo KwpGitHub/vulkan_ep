@@ -7,7 +7,11 @@ namespace kernel {
 		kFormatFp16,
 		kFormatFp32,
 		kFormatFp64,
+		kFormatInt8,
+		kFormatInt16,
 		kFormatInt32,
+		kFormatInt64,
+		kFormatUInt8,
 		kFormatBool,
 		kFormatNum
 	};
@@ -86,3 +90,5 @@ namespace kernel {
 #include "layers/tanh.hpp"
 
 #include "layers/xor.hpp"
+
+
