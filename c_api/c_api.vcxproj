@@ -301,6 +301,7 @@
       <AdditionalIncludeDirectories>C:\VulkanSDK\1.1.108.0\Include;$(PythonHome)\Include;$(projectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp14</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
