@@ -100,13 +100,13 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
 	
 	//NN op
 	/*
-		Conv 1d 2d 3d
+		!Conv 1d 2d 3d
 		ConvT 1d 2d 3d
 
 
-		MaxPooling 1d 2d 3d
+		!MaxPooling 1d 2d 3d
 		MaxUnPooling 1d 2d 3d
-		AvgPooling 1d 2d 3d
+		!AvgPooling 1d 2d 3d
 		LPpooling 1d 2d
 		AdaptiveMaxPooling 1d 2d 3d
 		AdaptiveAvgPooling 1d 2d 3d
@@ -121,7 +121,7 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
 		GroupNorm 
 		InstanceNorm 1d 2d 3d
 		LayerNorm
-		LRN - localResponseNorm
+		!LRN - localResponseNorm
 
 		LSTM
 		GRU
