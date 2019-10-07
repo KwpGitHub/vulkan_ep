@@ -39,14 +39,14 @@ void main()
     wstart = max(wstart, 0);
     float maxval = -1./0.;
     int maxidx = -1;
-    int off = (n * p.channels + c) * p.in_h * p.in_w;
-	for (int w = wstart; w < wend; ++w) {
+    int off = (n * p.channels + c) * p.in_w;
+    for (int w = wstart; w < wend; ++w) {
         if (in_buffer[off + w] > maxval) {
-          maxidx = h * p.in_w + w;
+          maxidx = w;
           maxval = in_buffer[off + maxidx];
         }
       }
-    }
+    
     out_buffer[index] = maxval;
     if (p.need_mask == 1)
         mask_buffer[index] = maxidx;

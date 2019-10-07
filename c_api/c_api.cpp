@@ -127,7 +127,7 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
 		GRU
 		RNN
 
-		MatMul
+		!MatMul
 
 		Dropout 1d 2d 3d 
 

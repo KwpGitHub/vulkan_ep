@@ -173,6 +173,65 @@
     <ClInclude Include="include\layers\xor.hpp" />
     <ClInclude Include="include\shaders\spv_shader.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\abs.comp" />
+    <None Include="shaders\acos.comp" />
+    <None Include="shaders\acosh.comp" />
+    <None Include="shaders\add.comp" />
+    <None Include="shaders\and.comp" />
+    <None Include="shaders\asin.comp" />
+    <None Include="shaders\asinh.comp" />
+    <None Include="shaders\atan.comp" />
+    <None Include="shaders\atanh.comp" />
+    <None Include="shaders\avgpool1d.comp" />
+    <None Include="shaders\avgpool2d.comp" />
+    <None Include="shaders\avgpool3d.comp" />
+    <None Include="shaders\ceil.comp" />
+    <None Include="shaders\clip.comp" />
+    <None Include="shaders\conv1d.comp" />
+    <None Include="shaders\conv2d.comp" />
+    <None Include="shaders\conv3d.comp" />
+    <None Include="shaders\cos.comp" />
+    <None Include="shaders\cosh.comp" />
+    <None Include="shaders\elu.comp" />
+    <None Include="shaders\equal.comp" />
+    <None Include="shaders\exp.comp" />
+    <None Include="shaders\floor.comp" />
+    <None Include="shaders\greater.comp" />
+    <None Include="shaders\hardsigmoid.comp" />
+    <None Include="shaders\leakyrelu.comp" />
+    <None Include="shaders\less.comp" />
+    <None Include="shaders\localresponsenorm1d.comp" />
+    <None Include="shaders\localresponsenorm2d.comp" />
+    <None Include="shaders\localresponsenorm3d.comp" />
+    <None Include="shaders\log.comp" />
+    <None Include="shaders\max.comp" />
+    <None Include="shaders\maxpool1d.comp" />
+    <None Include="shaders\maxpool2d.comp" />
+    <None Include="shaders\maxpool3d.comp" />
+    <None Include="shaders\min.comp" />
+    <None Include="shaders\mod.comp" />
+    <None Include="shaders\mul.comp" />
+    <None Include="shaders\neg.comp" />
+    <None Include="shaders\not.comp" />
+    <None Include="shaders\or.comp" />
+    <None Include="shaders\pow.comp" />
+    <None Include="shaders\prelu.comp" />
+    <None Include="shaders\reciprocal.comp" />
+    <None Include="shaders\relu.comp" />
+    <None Include="shaders\round.comp" />
+    <None Include="shaders\selu.comp" />
+    <None Include="shaders\sigmoid.comp" />
+    <None Include="shaders\sin.comp" />
+    <None Include="shaders\sinh.comp" />
+    <None Include="shaders\softplus.comp" />
+    <None Include="shaders\softsign.comp" />
+    <None Include="shaders\sqrt.comp" />
+    <None Include="shaders\sub.comp" />
+    <None Include="shaders\tan.comp" />
+    <None Include="shaders\tanh.comp" />
+    <None Include="shaders\xor.comp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{27767530-F9BA-4EE8-9A1E-19BE65DED071}</ProjectGuid>
     <RootNamespace>c_api</RootNamespace>

@@ -22,9 +22,9 @@ layout(push_constant) uniform pushBlock {
     int channels;
     int batch;
     int has_bias;
-    int M; \\out_h * out_w * out_d;
-    int K; \\filter_h * filter_w * filter_d * in_channel
-    int N; \\out_channel
+    int M; //out_h * out_w * out_d;
+    int K; //filter_h * filter_w * filter_d * in_channel
+    int N; //out_channel
     int basic_shader_batch_idx;
     int basic_shader_partition_idx;
     int basic_shader_partition_size;
@@ -35,7 +35,7 @@ layout(binding = 0) readonly buffer buf1{
 };
 
 layout(binding = 1) readonly buffer buf2{
-    float w[];
+    float W[];
 };
 
 layout(binding = 2) readonly buffer buf3{
@@ -43,7 +43,7 @@ layout(binding = 2) readonly buffer buf3{
 };
 
 layout(binding = 3) writeonly buffer buf4{
-    float W[];
+    float Y[];
 };
 
 layout(local_size_x = LOCAL_SZ_X, local_size_y = 1, local_size_z = 1) in;

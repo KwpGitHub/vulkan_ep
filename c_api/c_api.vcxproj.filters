@@ -22,6 +22,9 @@
     <Filter Include="Source Files\layers">
       <UniqueIdentifier>{aae41e76-b34f-4dab-89f3-3851c432c552}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader Code">
+      <UniqueIdentifier>{25d12949-bc8c-4d31-b1f8-fdec8af04367}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\kernel\buffer.cpp">
@@ -479,5 +482,178 @@
     <ClInclude Include="include\layers\tan.hpp">
       <Filter>layers</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\abs.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\acos.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\acosh.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\add.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\and.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\asin.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\asinh.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\atan.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\atanh.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\avgpool1d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\avgpool2d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\avgpool3d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\ceil.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\clip.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\conv1d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\conv2d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\conv3d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\cos.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\cosh.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\elu.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\equal.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\exp.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\floor.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\greater.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\hardsigmoid.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\leakyrelu.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\less.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\localresponsenorm1d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\localresponsenorm2d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\localresponsenorm3d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\log.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\max.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\maxpool1d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\maxpool2d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\maxpool3d.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\min.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\mod.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\mul.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\neg.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\not.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\or.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\pow.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\prelu.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\reciprocal.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\relu.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\round.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\selu.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\sigmoid.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\sin.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\sinh.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\softplus.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\softsign.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\sqrt.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\sub.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\tan.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\tanh.comp">
+      <Filter>Shader Code</Filter>
+    </None>
+    <None Include="shaders\xor.comp">
+      <Filter>Shader Code</Filter>
+    </None>
   </ItemGroup>
 </Project>

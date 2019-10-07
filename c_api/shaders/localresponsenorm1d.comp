@@ -17,7 +17,9 @@ layout(binding = 0) readonly buffer Input0{
 layout(binding = 1) writeonly buffer Output{
     float dst_buffer[];
 };
+
 layout(local_size_x = LOCAL_SZ_X, local_size_y = 1, local_size_z = 1) in;
+
 void main()
 {
   int gid = int(gl_GlobalInvocationID.x);
@@ -26,7 +28,7 @@ void main()
   {
     int x = index % p.width;
     int b = index / p.width;
-    int offset = b * p.channels * p.width + y * p.width + x;
+    int offset = b * p.channels * p.width + x;
     int channel_off = p.width;
     float scale_val;
     int head = 0;
