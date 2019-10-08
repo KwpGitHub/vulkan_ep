@@ -22,6 +22,7 @@ namespace kernel{ namespace shaders {
 	extern const unsigned int equal_spv[476];
 	extern const unsigned int exp_spv[404];
 	extern const unsigned int floor_spv[404];
+	extern const unsigned int gemm_spv[1970];
 	extern const unsigned int greater_spv[476];
 	extern const unsigned int hardsigmoid_spv[482];
 	extern const unsigned int leakyrelu_spv[498];
@@ -30,7 +31,6 @@ namespace kernel{ namespace shaders {
 	extern const unsigned int localresponsenorm2d_spv[1845];
 	extern const unsigned int localresponsenorm3d_spv[1995];
 	extern const unsigned int log_spv[404];
-	extern const unsigned int MatMul_spv[1784];
 	extern const unsigned int max_spv[468];
 	extern const unsigned int maxpool1d_spv[1074];
 	extern const unsigned int maxpool2d_spv[1449];
