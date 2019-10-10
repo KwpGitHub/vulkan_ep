@@ -44,7 +44,7 @@ namespace kernel {
 		}
 
 		bool Max::computeGroupCount() {
-			m_group_x = alignSize(m_total, LOCAL_SZ_X) / LOCAL_SZ_X;
+			m_group_x =(int)alignSize(m_total, LOCAL_SZ_X) / LOCAL_SZ_X;
 			if (m_group_x > maxComputeWorkGroupCount)
 				m_group_x = maxComputeWorkGroupCount;
 			m_group_y = 1;
