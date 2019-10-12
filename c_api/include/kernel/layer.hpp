@@ -13,7 +13,8 @@ namespace kernel {
 	public:
 		layer();
 		virtual ~layer();
-		virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs) = 0;
+		//virtual bool forward(tensor& in, tensor& out) = 0;
+		virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& outs) = 0;
 
 	protected:
 		void initVulkanThing(int buffer_num);

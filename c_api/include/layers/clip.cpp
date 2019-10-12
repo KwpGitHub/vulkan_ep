@@ -3,7 +3,7 @@
 #include "clip.hpp"
 #include <algorithm>
 
-#define LOCAL_SZ_X 32
+#define LOCAL_SZ_X 1024
 #define maxComputeWorkGroupCount 65535
 
 namespace kernel {
@@ -24,7 +24,7 @@ namespace kernel {
 			out = out.reshape(nullptr, shape);
 		}
 
-		bool Clip::forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs) {
+		bool Clip::forward(std::vector<tensor>& ins, std::vector<tensor>& outs) {
 			return forward(ins[0], outs[0]);
 		}
 

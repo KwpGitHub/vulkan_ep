@@ -12,7 +12,7 @@ namespace kernel {
 			Xor();
 			bool forward(tensor& in, tensor& in2, tensor& out);
 			void reshapeOutTensor(tensor& in, tensor& out);
-			virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& blobs, std::vector<tensor>& outs);
+			virtual bool forward(std::vector<tensor>& ins, std::vector<tensor>& outs);
 		private:
 			bool computeGroupCount();
 			int m_total;

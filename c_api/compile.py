@@ -22,7 +22,6 @@ for i in range(0, len(list)):
 
 	bin_file = prefix + '.tmp'
 	cmd = ' glslangValidator -V ' + path + ' -S comp -o ' + bin_file
-	print('compiling')
 	if os.system(cmd) != 0:
 		continue
 

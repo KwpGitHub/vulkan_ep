@@ -98,6 +98,7 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
 	std::shared_ptr<kernel::layer> mod(new kernel::layers::Mod());
 	std::shared_ptr<kernel::layer> neg(new kernel::layers::Neg());
 	
+	
 	//NN op
 	/*
 		--!Conv 1d 2d 3d
@@ -135,15 +136,17 @@ PyObject *c_api_test(PyObject *self, PyObject *args, PyObject *kwargs) {
 	*/
 
 
+	for (int i = 0; i < 10; ++i) {
+		auto t1 = Clock::now();
+		abs->forward(t_in,  t_out);
+		auto t2 = Clock::now();
+		size_t tm = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+		std::cout << tm / 1000 << " milliseconds" << std::endl;
+	}
+	auto x = (float*)i.toHost();
+	auto y = (float*)o.toHost();
 
-	auto t1 = Clock::now();
-	relu->forward(t_in, t_in, t_out);
-	auto t2 = Clock::now();
-
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << " milliseconds" << std::endl;
-
-	auto x = (float*)t_in[0].toHost();
-	auto y = (float*)t_out[0].toHost();
+	
 
 	std::cout << y[0] << std::endl;
 		
